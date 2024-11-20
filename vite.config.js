@@ -14,7 +14,7 @@ export default defineConfig({
     vue(),
   ],
   //  publicPath: process.env.NODE_ENV === 'production' ? '/' + process.env.CI_PROJECT_NAME + '/' : '/',
-  publicPath: process.env.NODE_ENV === "production" ? "/twinTecnology" : "/",
+  publicPath: process.env.NODE_ENV === "production" ? "/twinTecnology/" : "/",
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
