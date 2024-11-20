@@ -10,7 +10,6 @@ import './assets/main.css';
 
 // import { tooltip } from './assets/new/css/bootstrap'
 // import Swal from 'sweetalert2';
-
 import { createApp } from 'vue'
 import App from './App.vue'
 
