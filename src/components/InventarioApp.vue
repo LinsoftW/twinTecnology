@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container-fluid">
+    <div v-if="!esperando" class="container-fluid">
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-2 text-gray-800">INVENTARIO</h1>
         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" v-b-tooltip.hover
@@ -232,11 +232,34 @@
       </div>
     </div>
   </div>
+  <template v-if="esperando">
+    <div v-on="loading('Actualizando datos...')">
+
+    </div>
+  </template>
 </template>
 <script setup>
 import { ref, reactive, onMounted } from 'vue';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+
+const esperando = ref(false);
+
+const loading = (texto) => {
+  Swal.fire({
+  // title: "Sweet!",
+  text: texto,
+  imageUrl: "/cargando2.gif",
+  imageWidth: 100,
+  imageHeight: 100,
+  imageAlt: "Custom image",
+  showConfirmButton: false
+});
+}
+
+const cerrarAlert = () => {
+  Swal.close();
+}
 
 const siFoto = ref(true);
 const sicodigo = ref(true);
@@ -485,21 +508,29 @@ const borrarU = (id, correo) => {
     confirmButtonText: "Sí, eliminar"
   }).then((result) => {
     if (result.isConfirmed) {
+      esperando.value = true;
       // Eliminar //
       axios.delete(`http://${ipPublica.value}/fullstack/public/productos/${id}`)
         .then(() => {
+          esperando.value = false;
+          cerrarAlert();
+          consultar();
+          cancelarU();
           Swal.fire({
             title: "Eliminado",
             text: "Producto eliminado satisfactoriamente.",
             icon: "success"
           });
           cargado.value = false;
-          consultar();
-          cancelarU();
         })
-
-
     }
+  }).catch((error) => {
+    esperando.value = false;
+    cerrarAlert();
+    Swal.fire({
+        icon: "error",
+        title: error.response.data.message
+      })
   });
 }
 

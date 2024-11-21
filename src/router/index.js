@@ -22,6 +22,11 @@ const router = createRouter({
             component: MenuApp,
         },
         {
+            path: '/gest_pedidos',
+            name: 'gest_pedidos',
+            component: MenuApp,
+        },
+        {
             path: '/login',
             name: 'login',
             component: LoginApp,

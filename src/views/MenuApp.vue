@@ -40,13 +40,13 @@
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
-          aria-controls="collapseTwo">
+        <a :class="'nav-link ' + collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+          :aria-expanded="activa" aria-controls="collapseTwo" @click="Exp_Consultar()">
           <i class="fas fa-fw fa-eye"></i>
           <span>CONSULTAS
           </span>
         </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseTwo" :class="'collapse ' + show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Consultar:</h6>
             <!-- <a class="collapse-item" @click="click_inventario">Inventario</a>
@@ -56,14 +56,17 @@
                   class="fas fa-fw fa-eye"></i> Usuarios</a>
             </router-link>
             <router-link class="button" to="/inventario">
-              <a class="collapse-item" v-bind:class="ActivaLink(2)" :key="2" @click="obtenerLinkA(2)"> <i class="fas fa-fw fa-eye"></i>
+              <a class="collapse-item" v-bind:class="ActivaLink(2)" :key="2" @click="obtenerLinkA(2)"> <i
+                  class="fas fa-fw fa-eye"></i>
                 Productos</a>
             </router-link>
             <router-link class="button" to="/pedidos">
-              <a class="collapse-item" v-bind:class="ActivaLink(3)" :key="3" @click="obtenerLinkA(3)"> <i class="fas fa-fw fa-eye"></i> Pedidos</a>
+              <a class="collapse-item" v-bind:class="ActivaLink(3)" :key="3" @click="obtenerLinkA(3)"> <i
+                  class="fas fa-fw fa-eye"></i> Pedidos</a>
             </router-link>
             <router-link class="button" to="/sucursales">
-              <a class="collapse-item" v-bind:class="ActivaLink(4)" :key="4" @click="obtenerLinkA(4)"> <i class="fas fa-fw fa-eye"></i> Sucursales</a>
+              <a class="collapse-item" v-bind:class="ActivaLink(4)" :key="4" @click="obtenerLinkA(4)"> <i
+                  class="fas fa-fw fa-eye"></i> Sucursales</a>
             </router-link>
             <!-- <a class="collapse-item" href="cards.html">Cards</a> -->
           </div>
@@ -72,26 +75,32 @@
 
       <!-- Nav Item - Utilities Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-          aria-expanded="true" aria-controls="collapseUtilities">
+
+        <a :class="'nav-link ' + collapsed1" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+          :aria-expanded="activa1" aria-controls="collapseUtilities" @click="Exp_Gestion()">
           <i class="fas fa-fw fa-cog"></i>
           <span>GESTIÓN</span>
         </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+        <div id="collapseUtilities" :class="'collapse ' + show1" aria-labelledby="headingUtilities"
+          data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Gestionar:</h6>
             <!-- <a class="collapse-item button" @click="click_sucursales">Sucursales</a> -->
             <router-link class="button" to="/gest_user">
-              <a class="collapse-item" v-bind:class="ActivaLink(5)" :key="5" @click="obtenerLinkA(5)"> <i class="fas fa-fw fa-cogs"></i> Usuarios</a>
+              <a class="collapse-item" v-bind:class="ActivaLink(5)" :key="5" @click="obtenerLinkA(5)"> <i
+                  class="fas fa-fw fa-cogs"></i> Usuarios</a>
             </router-link>
             <router-link class="button" to="/gest_inventario">
-              <a class="collapse-item" v-bind:class="ActivaLink(6)" :key="6" @click="obtenerLinkA(6)"> <i class="fas fa-fw fa-cogs"></i> Productos</a>
+              <a class="collapse-item" v-bind:class="ActivaLink(6)" :key="6" @click="obtenerLinkA(6)"> <i
+                  class="fas fa-fw fa-cogs"></i> Productos</a>
             </router-link>
             <router-link class="button" to="/gest_pedidos">
-              <a class="collapse-item" v-bind:class="ActivaLink(7)" :key="7" @click="obtenerLinkA(7)"> <i class="fas fa-fw fa-cogs"></i> Pedidos</a>
+              <a class="collapse-item" v-bind:class="ActivaLink(7)" :key="7" @click="obtenerLinkA(7)"> <i
+                  class="fas fa-fw fa-cogs"></i> Pedidos</a>
             </router-link>
             <router-link class="button" to="/gest_sucursal">
-              <a class="collapse-item" v-bind:class="ActivaLink(8)" :key="8" @click="obtenerLinkA(8)"> <i class="fas fa-fw fa-cogs"></i> Sucursales</a>
+              <a class="collapse-item" v-bind:class="ActivaLink(8)" :key="8" @click="obtenerLinkA(8)"> <i
+                  class="fas fa-fw fa-cogs"></i> Sucursales</a>
             </router-link>
             <!-- https://ervchldgqphohvvkotag.supabase.co/storage/v1/object/sign/DiskTwinTecnology/ImgUsuarios/MOTOS.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJEaXNrVHdpblRlY25vbG9neS9JbWdVc3Vhcmlvcy9NT1RPUy5wbmciLCJpYXQiOjE3MzE4Njc4MDksImV4cCI6MTczMjQ3MjYwOX0.qEfY5yBMSPd55zzgJdYPmiphc6oXjHlbMbmBLyl6b0M&t=2024-11-17T18%3A26%3A48.194Z -->
             <!-- <a class="collapse-item" @click="click_productos"> Productos</a> -->
@@ -222,15 +231,15 @@
             </li>
 
             <!-- Nav Item - Alerts -->
-            <li class="nav-item dropdown no-arrow mx-1">
+            <li :class="'nav-item dropdown no-arrow mx-1 ' + showNot" @click="Exp_Not()">
               <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
+                aria-haspopup="true" :aria-expanded="activaNot">
                 <i class="fas fa-bell fa-fw"></i>
                 <!-- Counter - Alerts -->
                 <span class="badge badge-danger badge-counter">0</span>
               </a>
               <!-- Dropdown - Alerts -->
-              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+              <div :class="'dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in ' + showNot"
                 aria-labelledby="alertsDropdown">
                 <h6 class="dropdown-header">
                   Notificaciones
@@ -341,15 +350,15 @@
             <div class="topbar-divider d-none d-sm-block"></div>
 
             <!-- Nav Item - User Information -->
-            <li class="nav-item dropdown no-arrow">
+            <li :class="'nav-item dropdown no-arrow ' + showUser" @click="Exp_User">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
+                aria-haspopup="true" :aria-expanded="activaUser">
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ userName }}</span>
                 <img v-if="imgPerfil" class="img-profile rounded-circle" v-bind:src="imgPerfil">
                 <img v-else class="img-profile rounded-circle" src="/src/assets/new/img/undraw_profile.svg">
               </a>
               <!-- Dropdown - User Information -->
-              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+              <div :class="'dropdown-menu dropdown-menu-right shadow animated--grow-in ' +showUser " aria-labelledby="userDropdown">
                 <a class="dropdown-item" href="#" @click="cargarImagen">
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Cambiar imagen de perfil
@@ -392,7 +401,7 @@
           <SucursalApp :key="Ksucursales" />
         </div>
         <div v-if="route.path == '/gest_inventario'">
-          <ProductosApp :key="Kgest_inventario"/>
+          <ProductosApp :key="Kgest_inventario" />
         </div>
         <div v-if="route.path == '/inventario'">
           <InventarioApp :key="Kinventario" />
@@ -405,6 +414,9 @@
         </div>
         <div v-if="route.path == '/gest_sucursal'">
           <GetSucursalesApp :key="Kgest_sucursal" />
+        </div>
+        <div v-if="route.path == '/gest_pedidos'">
+          <GestPedidoApp :key="Kgest_pedidos" />
         </div>
 
         <!-- /.container-fluid -->
@@ -472,6 +484,7 @@ import Swal from 'sweetalert2';
 import UserApp from '@/components/UserApp.vue';
 import GestUserApp from '@/components/GestUserApp.vue';
 import GetSucursalesApp from '@/components/GetSucursalesApp.vue';
+import GestPedidoApp from '@/components/GestPedidoApp.vue';
 
 const Kinicio = ref(0);
 const Kpedidos = ref(0);
@@ -495,8 +508,48 @@ const datosPrueba = ref([]);
 
 const listado = ref([])
 
+const collapsed = ref('collapsed');
+
+const activa = ref(false);
+
+const show = ref('')
+
+const collapsed1 = ref('collapsed');
+
+const activa1 = ref(false);
+
+const show1 = ref('')
+
+const activaUser = ref(false);
+
+const showUser = ref('');
+
+const activaNot = ref(false);
+
+const showNot = ref('');
+
+const Exp_User = () => {
+  if (activaUser.value == false) {
+     activaUser.value = true;
+     showUser.value = 'show'
+  }else{
+    activaUser.value = false;
+     showUser.value = ''
+  }
+}
+
+const Exp_Not = () => {
+  if (activaNot.value == false) {
+     activaNot.value = true;
+     showNot.value = 'show'
+  }else{
+    activaNot.value = false;
+     showNot.value = ''
+  }
+}
+
 const obtenerLinkA = (alink) => {
-   link.value = alink;
+  link.value = alink;
 }
 
 const MueveMenu = () => {
@@ -505,17 +558,65 @@ const MueveMenu = () => {
   } else {
     Ctoggled.value = '';
   }
-
   // router.go()
   // console.log("OKK")
   // bodyLogin.classList.add('sidebar-toggled');
   // ulBody.classList.add('toggled');
 }
 
+// Expandir o no las opciones del menu
+const Exp_Consultar = () => {
+  if (collapsed.value == "") {
+    collapsed.value = 'collapsed';
+    activa.value = false;
+    show.value = '';
+
+    // collapsed1.value = 'collapsed';
+    // activa1.value = false;
+    // show1.value = '';
+    if (collapsed1.value == '') {
+      collapsed1.value = 'collapsed';
+      activa1.value = false;
+      show1.value = '';
+    } else {
+      collapsed1.value = 'collapsed';
+      activa1.value = false;
+      show1.value = '';
+    }
+
+  } else {
+    collapsed.value = '';
+    activa.value = true;
+    show.value = 'show';
+  }
+}
+
+const Exp_Gestion = () => {
+  if (collapsed1.value == '') {
+    collapsed1.value = 'collapsed';
+    activa1.value = false;
+    show1.value = '';
+
+    if (collapsed.value == '') {
+      collapsed.value = 'collapsed';
+      activa.value = false;
+      show.value = '';
+    } else {
+      collapsed.value = 'collapsed';
+      activa.value = false;
+      show.value = '';
+    }
+  } else {
+    collapsed1.value = '';
+    activa1.value = true;
+    show1.value = 'show';
+  }
+}
+
 const ActivaLink = (valor) => {
   if (valor == link.value) {
     return 'active'
-  }else{
+  } else {
     return ''
   }
 }
@@ -626,7 +727,7 @@ const obtenerListadoLimpio = () => {
 
 }
 
-onMounted( () => {
+onMounted(() => {
   consultar();
 })
 

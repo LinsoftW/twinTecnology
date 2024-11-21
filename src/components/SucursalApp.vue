@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container-fluid">
+    <div v-if="!esperando" class="container-fluid">
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">SUCURSALES</h1>
         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" v-b-tooltip.hover
@@ -68,7 +68,7 @@
 
                               src="../assets/new/img/undraw_profile_1.svg"> <i class="fas fa-circle text-primary"></i></td> -->
 
-                      <td>{{ datos.attributes.nombre }}</td>
+                      <td>{{ datos.attributes.sucursal }}</td>
 
                       <td>{{ datos.attributes.abreviatura }}</td>
 
@@ -170,6 +170,11 @@
     </div>
 
   </div>
+  <template v-if="esperando">
+    <div v-on="loading('Actualizando datos...')">
+
+    </div>
+  </template>
 </template>
 <script setup>
 
@@ -177,6 +182,24 @@ import axios from 'axios';
 import router from '@/router';
 import Swal from 'sweetalert2';
 import { onMounted, reactive, ref } from 'vue';
+
+const esperando = ref(false);
+
+const loading = (texto) => {
+  Swal.fire({
+  // title: "Sweet!",
+  text: texto,
+  imageUrl: "/cargando2.gif",
+  imageWidth: 100,
+  imageHeight: 100,
+  imageAlt: "Custom image",
+  showConfirmButton: false
+});
+}
+
+const cerrarAlert = () => {
+  Swal.close();
+}
 
 // CRUD completo
 
@@ -217,7 +240,7 @@ const formSucursal = reactive({
   data: {
     type: 'Sucursals',
     attributes: {
-      nombre: "",
+      sucursal: "",
       abreviatura: "",
       descripcion: "",
       observacion: "",
@@ -370,25 +393,37 @@ const borrarU = (id, correo) => {
     confirmButtonText: "Sí, eliminar"
   }).then((result) => {
     if (result.isConfirmed) {
+      esperando.value = true;
       // Eliminar //
       axios.delete(`http://${ipPublica.value}/fullstack/public/sucursals/${id}`)
         .then(() => {
+          esperando.value = false;
+          cerrarAlert();
+          consultar();
+          cancelarU();
           Swal.fire({
             title: "Eliminado",
             text: "Sucursal eliminado satisfactoriamente.",
             icon: "success"
           });
           cargado.value = false;
-          consultar();
+          // consultar();
         })
     }
+  }).catch((error) => {
+    esperando.value = false;
+    cerrarAlert();
+    Swal.fire({
+        icon: "error",
+        title: error.response.data.message
+      })
   });
 }
 
 const cancelarU = () => {
   editar.value = false;
   formSucursal.data.attributes.descripcion = '';
-  formSucursal.data.attributes.nombre = '';
+  formSucursal.data.attributes.sucursal = '';
   formSucursal.data.attributes.observacion = '';
   formSucursal.data.attributes.abreviatura = '';
 }
