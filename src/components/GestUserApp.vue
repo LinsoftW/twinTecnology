@@ -205,10 +205,16 @@
                   </div> -->
 
                   <div class="row">
-                    <div class="col-lg-4"></div>
+                    <div class="col-lg-2"></div>
+                    <div class="form-group h4 col-lg-4">
+                      <a @click="agregarTrabajador" class="btn btn-primary btn-user btn-block">
+                        Archivar y continuar agregando
+                      </a>
+                    </div>
+
                     <div class="form-group h4 col-lg-4">
                       <a @click="agregarTrabajador" class="btn btn-info btn-user btn-block">
-                        Agregar trabajador
+                        Guardar datos
                       </a>
                     </div>
                   </div>

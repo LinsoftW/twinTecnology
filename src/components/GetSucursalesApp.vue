@@ -90,7 +90,7 @@
                           v-b-tooltip.hover title="Editar"><span class="fas fa-edit"></span></button>&nbsp;
 
                         <button class="btn btn-danger btn-sm btn-circle"
-                          @click="borrarU(datos.id, datos.attributes.abreviatura)" v-b-tooltip.hover
+                          @click="borrarU(datos.id, datos.attributes.sucursal)" v-b-tooltip.hover
                           title="Eliminar"><span class="fas fa-trash"></span></button>
 
                       </td>
@@ -438,6 +438,7 @@ const almacenDatosSucursales = (Lista) => {
   // if (localStorage.getItem('ListadoCacheSucursal')) {
   //       localStorage.removeItem('ListadoCacheSucursal');
   //   }else{
+  localStorage.removeItem('ListadoCacheSucursal');
   const parsed = JSON.stringify(Lista);
   localStorage.setItem('ListadoCacheSucursal', parsed);
   // dataCache.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
@@ -601,6 +602,7 @@ const editarU = () => {
       esperando.value = false;
       cerrarAlert();
       consultar();
+      cancelarU();
       formSucursal.data.attributes.descripcion = ''
       formSucursal.data.attributes.observacion = '';
       formSucursal.data.attributes.codigo = '';
@@ -637,8 +639,8 @@ const borrarU = (id, correo) => {
         .then(() => {
           esperando.value = false;
           consultar();
-          cancelarU();
           cerrarAlert();
+          cancelarU();
           Swal.fire({
             title: "Eliminado",
             text: "Sucursal eliminado satisfactoriamente.",

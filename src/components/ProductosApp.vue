@@ -151,10 +151,15 @@
 
 
                     <div class="row">
-                      <div v-if="editar == false" class="col-lg-3"></div>
+                      <!-- <div v-if="editar == false" class="col-lg-1"></div> -->
+                      <div v-if="editar == false" class="form-group h4 col-lg-6">
+                        <a @click="agregarU" class="btn btn-primary btn-user btn-block">
+                          Archivar y continuar agregando
+                        </a>
+                      </div>
                       <div v-if="editar == false" class="form-group h4 col-lg-6">
                         <a @click="agregarU" class="btn btn-info btn-user btn-block">
-                          Agregar producto
+                          Guardar datos
                         </a>
                       </div>
                       <div v-if="editar" class="form-group h4 col-lg-6">
