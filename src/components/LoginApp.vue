@@ -76,7 +76,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 // import ModalApp from './ModalApp.vue';
 
-const ipPublica = ref('192.168.63.123');
+const ipPublica = ref('192.168.166.123');
 
 let listado = ref([]);
 
