@@ -405,7 +405,7 @@ let disableS = ref('');
 
 let setTiempoBusca = '';
 
-const ipPublica = ref('192.168.166.123');
+const ipPublica = ref('192.168.121.123');
 
 const formProductos = reactive({
   data: {
