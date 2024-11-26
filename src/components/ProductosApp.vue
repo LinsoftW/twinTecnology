@@ -272,11 +272,13 @@ let disableS = ref('');
 
 let setTiempoBusca = '';
 
+const datos_archivados = ref([]);
+
 const ipPublica = ref('192.168.121.123');
 
 const formProductos = reactive({
   data: {
-    type: 'Productos',
+    type: 'Producto',
     attributes: {
       codigo: "",
       descripcion: "",
@@ -288,25 +290,23 @@ const formProductos = reactive({
 const agregarU = () => {
   // console.log(formProductos.object)
   esperando.value = true;
+  // datos_archivados.value.push(formProductos);
   axios.post(`http://`+ ipPublica.value +`/fullstack/public/productos`, formProductos)
     .then((response) => {
       cargado.value = false;
-      // almacenDatosProductos()
       esperando.value = false;
       cerrarAlert();
       consultar();
       formProductos.data.attributes.observacion = ''
       formProductos.data.attributes.descripcion = '';
       formProductos.data.attributes.codigo = '';
+      actualizar_datos();
       Swal.fire({
         icon: "success",
         title: "Producto agregado satisfactoriamente."
       })
-      // editar.value = false;
-      // localStorage.setItem("editar", editar.value);
     })
     .catch((error) => {
-      // console.log(error.response.data.message)
       if (error.response.status === 400) {
         errors.value = error.response.data.message;
       }
@@ -316,8 +316,8 @@ const agregarU = () => {
         icon: "error",
         title: error.response.data.message
       })
-      // console.log(error.message)
     })
+    // console.log(datos_archivados.value);
 
 }
 
@@ -446,6 +446,7 @@ const obtenerListadoLimpioSucursales = () => {
 
 const almacenDatosProductos = (Lista) => {
   // if (localStorage.getItem('ListadoCache')) {
+  datos_archivados.value.push(Lista);
       localStorage.removeItem('ListadoCache');
   //   }else{
       const parsed = JSON.stringify(Lista);
@@ -462,6 +463,8 @@ const consultar = async () => {
         // console.log(listado.value)
         almacenDatosProductos(listado.value);
         obtenerListadoLimpio();
+        actualizar_datos();
+        cargado.value = true;
         // console.log(response.data.data)
         // datosSinPaginar.value = response.data.data;
         // cantidad.value = Math.ceil(response.data.data.length / elementPagina.value);
@@ -473,6 +476,7 @@ const consultar = async () => {
     // console.log(listado.value)
     almacenDatosProductos(listado.value);
     obtenerListadoLimpio();
+    actualizar_datos();
     // datosSinPaginar.value = listado.value;
     // cantidad.value = Math.ceil(listado.value.length / elementPagina.value);
     // obtenerPagina(1);
@@ -522,7 +526,7 @@ const buscandoElemento = () => {
 
 const editarU = () => {
   esperando.value = true;
-  axios.put(`http://${ipPublica.value}/public/productos/${id.value}`, formProductos)
+  axios.put(`http://${ipPublica.value}/fullstack/public/productos/${id.value}`, formProductos)
     .then((response) => {
       // console.log(response)
       esperando.value = false;
@@ -531,7 +535,7 @@ const editarU = () => {
       formProductos.data.attributes.descripcion = ''
       formProductos.data.attributes.observacion = '';
       formProductos.data.attributes.codigo = '';
-      toast.fire({
+      Swal.fire({
         icon: "success",
         title: "Editado satisfactoriamente."
       })
@@ -619,6 +623,13 @@ const cancelarU = () => {
   formProductos.data.attributes.descripcion = '';
   formProductos.data.attributes.codigo = '';
   formProductos.data.attributes.observacion = '';
+}
+
+const actualizar_datos = () => {
+  listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
+  obtenerListadoLimpio();
+  listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
+  listadoSucursales = obtenerListadoLimpioSucursales();
 }
 
 onMounted(async () => {

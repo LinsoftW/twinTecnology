@@ -68,7 +68,7 @@
 
                               src="../assets/new/img/undraw_profile_1.svg"> <i class="fas fa-circle text-primary"></i></td> -->
 
-                      <td>{{ datos.attributes.sucursal }}</td>
+                      <td>{{ datos.attributes.nombre }}</td>
 
                       <td>{{ datos.attributes.abreviatura }}</td>
 
@@ -240,7 +240,7 @@ const formSucursal = reactive({
   data: {
     type: 'Sucursals',
     attributes: {
-      sucursal: "",
+      nombre: "",
       abreviatura: "",
       descripcion: "",
       observacion: "",
@@ -338,13 +338,33 @@ const obtenerListadoLimpio = () => {
 
 }
 
+const actualizar_datos = () => {
+  // listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
+  // obtenerListadoLimpio();
+  listado.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
+  obtenerListadoLimpio();
+}
+
+const almacenDatosSucursales = (Lista) => {
+  // if (localStorage.getItem('ListadoCacheSucursal')) {
+  //       localStorage.removeItem('ListadoCacheSucursal');
+  //   }else{
+  localStorage.removeItem('ListadoCacheSucursal');
+  const parsed = JSON.stringify(Lista);
+  localStorage.setItem('ListadoCacheSucursal', parsed);
+  // dataCache.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
+  // }
+}
+
 const consultar = async () => {
   if (cargado.value == false) {
     let response = await axios.get(`http://${ipPublica.value}/fullstack/public/sucursals`)
       .then((response) => {
         listado.value = response.data.data;
+        almacenDatosSucursales(listado.value);
         // console.log(response.data)
         obtenerListadoLimpio()
+        actualizar_datos()
         // datosSinPaginar.value = response.data.data;
         // cantidad.value = Math.ceil(response.data.data.length / elementPagina.value);
         // obtenerPagina(1);
@@ -361,7 +381,7 @@ const consultar = async () => {
 }
 
 const editarU = () => {
-  axios.put(`http://${ipPublica.value}/public/sucursals/${id.value}`, formSucursal)
+  axios.put(`http://${ipPublica.value}/fullstack/public/sucursals/${id.value}`, formSucursal)
     .then((response) => {
       // console.log(response)
       consultar();
@@ -403,7 +423,7 @@ const borrarU = (id, correo) => {
           cancelarU();
           Swal.fire({
             title: "Eliminado",
-            text: "Sucursal eliminado satisfactoriamente.",
+            text: "Sucursal eliminada satisfactoriamente.",
             icon: "success"
           });
           cargado.value = false;
@@ -423,7 +443,7 @@ const borrarU = (id, correo) => {
 const cancelarU = () => {
   editar.value = false;
   formSucursal.data.attributes.descripcion = '';
-  formSucursal.data.attributes.sucursal = '';
+  formSucursal.data.attributes.nombre = '';
   formSucursal.data.attributes.observacion = '';
   formSucursal.data.attributes.abreviatura = '';
 }

@@ -247,7 +247,7 @@
   <div :class="showModBack" @click="abrirModal()"></div>
 </template>
 <script setup>
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted, watch } from 'vue';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 
@@ -516,6 +516,7 @@ const almacenDatosProductos = (Lista) => {
   //   }else{
   const parsed = JSON.stringify(Lista);
   localStorage.setItem('ListadoCache', parsed);
+  // console.log(JSON.parse(localStorage.getItem('ListadoCache')));
   // dataCache.value = JSON.parse(localStorage.getItem('ListadoCache'));
   // }
 }
@@ -527,6 +528,7 @@ const consultar = async () => {
         listado.value = response.data.data;
         almacenDatosProductos(listado.value);
         obtenerListadoLimpio();
+        cargado.value = true;
         // console.log(response.data.data)
         // datosSinPaginar.value = response.data.data;
         // cantidad.value = Math.ceil(response.data.data.length / elementPagina.value);
@@ -563,6 +565,7 @@ const borrarU = (id, correo) => {
   }).then((result) => {
     if (result.isConfirmed) {
       esperando.value = true;
+      cargado.value = false;
       // Eliminar //
       axios.delete(`http://${ipPublica.value}/fullstack/public/productos/${id}`)
         .then(() => {
@@ -575,7 +578,7 @@ const borrarU = (id, correo) => {
             text: "Producto eliminado satisfactoriamente.",
             icon: "success"
           });
-          cargado.value = false;
+          // cargado.value = false;
         })
     }
   }).catch((error) => {
@@ -603,9 +606,14 @@ const cambiarLimite = () => {
   obtenerPagina(1);
 }
 
-onMounted(async => {
+watch(listado.value, (newX) => {
+  console.log(`El nuevo listado es ${newX}`)
+})
+
+onMounted(() => {
   listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
   obtenerListadoLimpio();
+  cargado.value = true;
   // if (cargado.value == false) {
   //   consultar();
   //   // consultarSucursales();

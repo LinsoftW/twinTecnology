@@ -76,7 +76,7 @@
 
                               src="../assets/new/img/undraw_profile_1.svg"> <i class="fas fa-circle text-primary"></i></td> -->
 
-                      <td>{{ datos.attributes.sucursal }}</td>
+                      <td>{{ datos.attributes.nombre }}</td>
 
                       <td>{{ datos.attributes.abreviatura }}</td>
 
@@ -204,16 +204,14 @@
 
                   <form class="user">
 
-
-
                     <div class="row">
 
                       <div class="form-group col-lg-6">
 
                         <label class="text-info">Nombre: <label style="color: red;">*</label></label>
 
-                        <input type="text" class="form-control" id="codigo" aria-describedby="emailHelp"
-                          v-model="formSucursal.data.attributes.sucursal" placeholder="Nombre...">
+                        <input type="text" class="form-control" id="nombres" aria-describedby="emailHelp"
+                          v-model="formSucursal.data.attributes.nombre" placeholder="Nombre...">
 
                       </div>
 
@@ -221,7 +219,7 @@
 
                         <label class="text-info">Abreviatura: <label style="color: red;">*</label></label>
 
-                        <input type="text" class="form-control" id="descripcion" aria-describedby="emailHelp"
+                        <input type="text" class="form-control" id="abreviatura" aria-describedby="emailHelp"
                           v-model="formSucursal.data.attributes.abreviatura" placeholder="Abreviatura...">
 
                       </div>
@@ -251,7 +249,7 @@
 
                       <div class="form-group col-lg-12">
 
-                        <label class="text-info">Observaciones:</label>
+                        <label class="text-info">Observaciones: <label style="color: red;">*</label></label>
 
                         <textarea class="form-control" id="observaciones"
                           v-model="formSucursal.data.attributes.observacion"
@@ -424,15 +422,22 @@ const ipPublica = ref('192.168.121.123');
 
 const formSucursal = reactive({
   data: {
-    type: 'Sucursals',
+    type: 'Sucursal',
     attributes: {
-      sucursal: "",
+      nombre: "",
       abreviatura: "",
       descripcion: "",
       observacion: "",
     }
   }
 })
+
+const actualizar_datos = () => {
+  // listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
+  // obtenerListadoLimpio();
+  listado.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
+  obtenerListadoLimpio();
+}
 
 const almacenDatosSucursales = (Lista) => {
   // if (localStorage.getItem('ListadoCacheSucursal')) {
@@ -446,18 +451,20 @@ const almacenDatosSucursales = (Lista) => {
 }
 
 const agregarU = () => {
-  console.log(formSucursal.value)
+  esperando.value = true;
   axios.post(`http://${ipPublica.value}/fullstack/public/sucursals`, formSucursal)
     .then((response) => {
       cargado.value = false;
+      esperando.value = false;
+      cerrarAlert();
       consultar();
       formSucursal.data.attributes.observacion = ''
       formSucursal.data.attributes.descripcion = '';
-      formSucursal.data.attributes.sucursal = '';
+      formSucursal.data.attributes.nombre = '';
       formSucursal.data.attributes.abreviatura = '';
       Swal.fire({
         icon: "success",
-        title: "Producto agregado satisfactoriamente."
+        title: "Sucursal agregada satisfactoriamente."
       })
       // editar.value = false;
       // localStorage.setItem("editar", editar.value);
@@ -573,6 +580,7 @@ const consultar = async () => {
         almacenDatosSucursales(listado.value);
         // console.log(response.data)
         obtenerListadoLimpio()
+        actualizar_datos()
         // datosSinPaginar.value = response.data.data;
         // cantidad.value = Math.ceil(response.data.data.length / elementPagina.value);
         // obtenerPagina(1);
@@ -582,6 +590,7 @@ const consultar = async () => {
   } else {
     almacenDatosSucursales(listado.value);
     obtenerListadoLimpio()
+    actualizar_datos()
     // datosSinPaginar.value = listado.value;
     // cantidad.value = Math.ceil(listado.value.length / elementPagina.value);
     // obtenerPagina(1);
@@ -596,7 +605,7 @@ const buscandoElemento = () => {
 
 const editarU = () => {
   esperando.value = true;
-  axios.put(`http://${ipPublica.value}/public/sucursals/${id.value}`, formSucursal)
+  axios.put(`http://${ipPublica.value}/fullstack/public/sucursals/${id.value}`, formSucursal)
     .then((response) => {
       // console.log(response)
       esperando.value = false;
@@ -606,12 +615,10 @@ const editarU = () => {
       formSucursal.data.attributes.descripcion = ''
       formSucursal.data.attributes.observacion = '';
       formSucursal.data.attributes.codigo = '';
-      toast.fire({
+      Swal.fire({
         icon: "success",
         title: "Editado satisfactoriamente."
       })
-      editar.value = false;
-      localStorage.setItem("editar", editar.value);
     })
     .catch((error) => {
       if (error.response.status === 400) {
@@ -619,6 +626,10 @@ const editarU = () => {
       }
       esperando.value = false;
       cerrarAlert();
+      Swal.fire({
+        icon: "danger",
+        title: "Error realizando operación."
+      })
     })
 }
 

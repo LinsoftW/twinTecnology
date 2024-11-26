@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div v-if="!esperando" class="container-fluid">
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -278,86 +278,91 @@
       </div>
 
       <!--Listado de productos -->
-        <div class="col-xl-8 col-lg-7">
-          <div class="card shadow mb-4">
-            <!-- Card Header - Dropdown -->
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-              <h6 class="m-0 font-weight-bold text-info">PRODUCTOS EN STOCK</h6>
-            </div>
-            <!-- Card Body -->
-            <div class="card-body">
+      <div class="col-xl-8 col-lg-7">
+        <div class="card shadow mb-4">
+          <!-- Card Header - Dropdown -->
+          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-info">PRODUCTOS EN STOCK</h6>
+          </div>
+          <!-- Card Body -->
+          <div class="card-body">
 
-              <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                  <thead>
-                    <tr style="text-align: center;">
-                      <th>No</th>
-                      <!-- <th>FOTO</th> -->
-                      <th>CÓDIGO</th>
-                      <th>SUCURSAL</th>
-                      <th>DESCRIPCION</th>
-                      <th>OBSERVACIONES</th>
-                      <th>ACCIONES</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="datos in datosPaginados" :key="datos.id">
-                      <td v-if="datos.attributes.deleted_at == null">{{ datos.id }}</td>
-                      <!-- <td style="text-align: end;"><img class="img-profile rounded-circle img-thumbnail"
+            <div class="table-responsive">
+              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                  <tr style="text-align: center;">
+                    <th>No</th>
+                    <!-- <th>FOTO</th> -->
+                    <th>CÓDIGO</th>
+                    <th>SUCURSAL</th>
+                    <th>DESCRIPCION</th>
+                    <th>OBSERVACIONES</th>
+                    <!-- <th>ACCIONES</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="datos in datosPaginados" :key="datos.id">
+                    <td v-if="datos.attributes.deleted_at == null">{{ datos.id }}</td>
+                    <!-- <td style="text-align: end;"><img class="img-profile rounded-circle img-thumbnail"
                           src="../assets/new/img/undraw_profile_1.svg"> <i class="fas fa-circle text-primary"></i></td> -->
-                      <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.codigo }}</td>
-                      <td v-if="datos.attributes.deleted_at == null">Sucursal</td>
-                      <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.descripcion }}</td>
-                      <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.observacion }}</td>
-                      <td v-if="datos.attributes.deleted_at == null" style="text-align: center;">
-                        <button class="btn btn-success btn-sm btn-circle" @click="clickEditar(datos.id)"
-                          v-b-tooltip.hover title="Editar"><span class="fas fa-edit"></span></button>&nbsp;
-                          <!-- <button class="btn btn-success btn-sm btn-circle" @click="editarUModel"
-                          v-b-tooltip.hover title="Editar"><span class="fas fa-edit"></span></button>&nbsp; -->
-                        <button class="btn btn-danger btn-sm btn-circle"
-                          @click="borrarU(datos.id, datos.attributes.codigo)" v-b-tooltip.hover title="Eliminar"><span
-                            class="fas fa-trash"></span></button>
-                      </td>
-                    </tr>
+                    <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.codigo }}</td>
+                    <td v-if="datos.attributes.deleted_at == null">Sucursal</td>
+                    <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.descripcion }}</td>
+                    <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.observacion }}</td>
+                    <!-- <td v-if="datos.attributes.deleted_at == null" style="text-align: center;">
+                      <button class="btn btn-success btn-sm btn-circle" @click="clickEditar(datos.id)" v-b-tooltip.hover
+                        title="Editar"><span class="fas fa-edit"></span></button>&nbsp;
+
+                      <button class="btn btn-danger btn-sm btn-circle"
+                        @click="borrarU(datos.id, datos.attributes.codigo)" v-b-tooltip.hover title="Eliminar"><span
+                          class="fas fa-trash"></span></button>
+                    </td> -->
+                  </tr>
 
 
-                  </tbody>
-                </table>
+                </tbody>
+              </table>
 
-                <div class="text-center">
-                  <nav aria-label="Page navigation example" style="text-align: center;">
-                    <label>Mostrando &nbsp;</label>
-                    <select style="width: 60px" @change="cambiarLimite()" v-model="elementPagina">
-                      <option value="5">5</option>
-                      <option value="10">10</option>
-                      <option value="20">20</option>
-                      <option value="50">50</option>
-                      <option value="100">100</option>
-                    </select>
+              <div class="text-center">
+                <nav aria-label="Page navigation example" style="text-align: center;">
+                  <label>Mostrando &nbsp;</label>
+                  <select style="width: 60px" @change="cambiarLimite()" v-model="elementPagina">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                  </select>
 
-                    <label>&nbsp;registros </label>
-                    <ul class="pagination Mestilo btn-sm">
+                  <label>&nbsp;registros </label>
+                  <ul class="pagination Mestilo btn-sm">
 
-                      <li class="page-item" :class="`${disableA}`" @click="obtenerAnterior"><a class="page-link"
-                          href="#">Anterior</a></li>
-                      <li v-for="pagina in cantidad" class="page-item" v-bind:class="isActivo(pagina)" :key="pagina"
-                        @click="obtenerPagina(pagina)"><a class="page-link" href="#">{{ pagina
-                          }}</a></li>
-                      <li class="page-item" :class="`${disableS}`" @click="obtenerSiguiente"><a class="page-link"
-                          href="#">Siguiente</a></li>
-                    </ul>
-                  </nav>
-                </div>
+                    <li class="page-item" :class="`${disableA}`" @click="obtenerAnterior"><a class="page-link"
+                        href="#">Anterior</a></li>
+                    <li v-for="pagina in cantidad" class="page-item" v-bind:class="isActivo(pagina)" :key="pagina"
+                      @click="obtenerPagina(pagina)"><a class="page-link" href="#">{{ pagina
+                        }}</a></li>
+                    <li class="page-item" :class="`${disableS}`" @click="obtenerSiguiente"><a class="page-link"
+                        href="#">Siguiente</a></li>
+                  </ul>
+                </nav>
               </div>
-
             </div>
+
           </div>
         </div>
-        <!-- FIN -->
+      </div>
+      <!-- FIN -->
 
 
 
     </div>
+
+    <template v-if="esperando">
+    <div v-on="loading('Actualizando datos...')">
+
+    </div>
+  </template>
 
   </div>
 </template>
@@ -370,6 +375,20 @@ import axios from 'axios';
 import router from '@/router';
 import Swal from 'sweetalert2';
 
+const esperando = ref(false);
+
+const loading = (texto) => {
+  Swal.fire({
+  // title: "Sweet!",
+  text: texto,
+  imageUrl: "/cargando2.gif",
+  imageWidth: 100,
+  imageHeight: 100,
+  imageAlt: "Custom image",
+  showConfirmButton: false
+});
+}
+
 // let recarga = ref(false);
 
 // const Cosc_Clar = ref('info');
@@ -379,9 +398,9 @@ const bodyLogin = document.getElementById('page-top');
 
 onMounted(async () => {
   // if (route.path == '/inicio') {
-    bodyLogin.classList.remove('bg-gradient-info');
-    // bodyLogin.classList.add('sidebar-toggled');
-    // console.log("INICIO")
+  bodyLogin.classList.remove('bg-gradient-info');
+  // bodyLogin.classList.add('sidebar-toggled');
+  // console.log("INICIO")
   // }
   // Cosc_Clar.value = localStorage.getItem('background');
   // consultar();
@@ -393,13 +412,13 @@ onMounted(async () => {
 const cambiarLimite = () => {
   let i = 0;
   newListado.value = [];
-    for (let index = 0; index < listado.value.length; index++) {
-      const element = listado.value[index];
-      if (element.attributes.deleted_at == null) {
-        newListado.value[i] = element;
-        i++;
-      }
+  for (let index = 0; index < listado.value.length; index++) {
+    const element = listado.value[index];
+    if (element.attributes.deleted_at == null) {
+      newListado.value[i] = element;
+      i++;
     }
+  }
   datosSinPaginar.value = newListado.value;
   cantidad.value = Math.ceil(newListado.value.length / elementPagina.value);
   obtenerPagina(1);
@@ -437,6 +456,8 @@ let disableS = ref('');
 let setTiempoBusca = '';
 
 let cargado = ref(false);
+
+const ipPublica = ref('192.168.121.123');
 
 const formProductos = reactive({
   codigo: "",
@@ -520,16 +541,18 @@ const borrarU = (id, correo) => {
   }).then((result) => {
     if (result.isConfirmed) {
       // Eliminar //
-      axios.delete(`http://localhost/fullstack/public/api/nom/productos/${id}`)
+      axios.delete(`http://${ipPublica.value}/fullstack/public/productos/${id}`)
         .then(() => {
+          esperando.value = false;
+          consultar();
+          cancelarU();
+          cerrarAlert();
           Swal.fire({
             title: "Eliminado",
             text: "Producto eliminado satisfactoriamente.",
             icon: "success"
           });
           cargado.value = false;
-          consultar();
-          cancelarU();
         })
 
 
@@ -537,6 +560,10 @@ const borrarU = (id, correo) => {
   });
 }
 // Fin CRUD
+
+const cerrarAlert = () => {
+  Swal.close();
+}
 
 // Paginado
 const obtenerPagina = (nopage) => {
@@ -632,10 +659,13 @@ const obtenerListadoLimpio = () => {
 
 const consultar = async () => {
   if (cargado.value == false) {
-    let response = await axios.get('http://localhost/fullstack/public/api/nom/productos')
+    let response = await axios.get(`http://` + ipPublica.value + `/fullstack/public/productos`)
       .then((response) => {
         listado.value = response.data.data;
+        almacenDatosProductos(listado.value);
         obtenerListadoLimpio();
+        actualizar_datos();
+        cargado.value = true;
         // console.log(response.data.data)
         // datosSinPaginar.value = response.data.data;
         // cantidad.value = Math.ceil(response.data.data.length / elementPagina.value);
@@ -644,7 +674,10 @@ const consultar = async () => {
         // router.go();
       });
   } else {
+    almacenDatosProductos(listado.value);
     obtenerListadoLimpio();
+    actualizar_datos();
+    cargado.value = true;
     // datosSinPaginar.value = listado.value;
     // cantidad.value = Math.ceil(listado.value.length / elementPagina.value);
     // obtenerPagina(1);
