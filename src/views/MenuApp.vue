@@ -35,7 +35,7 @@
 
       <!-- Heading -->
       <div class="sidebar-heading">
-        Gestión
+        Operaciones
       </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
@@ -43,7 +43,7 @@
         <a :class="'nav-link ' + collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
           :aria-expanded="activa" aria-controls="collapseTwo" @click="Exp_Consultar()">
           <i class="fas fa-fw fa-eye"></i>
-          <span>CONSULTAS
+          <span>CONSULTAR
           </span>
         </a>
         <div id="collapseTwo" :class="'collapse ' + show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -79,7 +79,7 @@
         <a :class="'nav-link ' + collapsed1" href="#" data-toggle="collapse" data-target="#collapseUtilities"
           :aria-expanded="activa1" aria-controls="collapseUtilities" @click="Exp_Gestion()">
           <i class="fas fa-fw fa-cog"></i>
-          <span>GESTIÓN</span>
+          <span>GESTIONAR</span>
         </a>
         <div id="collapseUtilities" :class="'collapse ' + show1" aria-labelledby="headingUtilities"
           data-parent="#accordionSidebar">
@@ -102,6 +102,47 @@
               <a class="collapse-item" v-bind:class="ActivaLink(8)" :key="8" @click="obtenerLinkA(8)"> <i
                   class="fas fa-fw fa-cogs"></i> Sucursales</a>
             </router-link>
+            <!-- https://ervchldgqphohvvkotag.supabase.co/storage/v1/object/sign/DiskTwinTecnology/ImgUsuarios/MOTOS.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJEaXNrVHdpblRlY25vbG9neS9JbWdVc3Vhcmlvcy9NT1RPUy5wbmciLCJpYXQiOjE3MzE4Njc4MDksImV4cCI6MTczMjQ3MjYwOX0.qEfY5yBMSPd55zzgJdYPmiphc6oXjHlbMbmBLyl6b0M&t=2024-11-17T18%3A26%3A48.194Z -->
+            <!-- <a class="collapse-item" @click="click_productos"> Productos</a> -->
+            <!-- <router-link class="button" to="/productos">
+              <a class="collapse-item">Productos</a>
+            </router-link> -->
+            <!-- <a class="collapse-item" href="#">Otros</a> -->
+            <!-- <a class="collapse-item" href="utilities-border.html">Borders</a>
+                        <a class="collapse-item" href="utilities-animation.html">Animations</a>
+                        <a class="collapse-item" href="utilities-other.html">Other</a> -->
+          </div>
+        </div>
+      </li>
+
+      <li class="nav-item">
+
+        <a :class="'nav-link ' + collapsed2" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+          :aria-expanded="activa2" aria-controls="collapseUtilities" @click="Exp_Nomenc()">
+          <i class="fas fa-fw fa-edit"></i>
+          <span>ADMINISTRAR</span>
+        </a>
+        <div id="collapseUtilities" :class="'collapse ' + show2" aria-labelledby="headingUtilities"
+          data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Administrar:</h6>
+            <!-- <a class="collapse-item button" @click="click_sucursales">Sucursales</a> -->
+            <router-link class="button" to="/gest_nomencladores">
+              <a class="collapse-item" v-bind:class="ActivaLink(9)" :key="9" @click="obtenerLinkA(9)"> <i
+                  class="fas fa-fw fa-edit"></i> Nomencladores</a>
+            </router-link>
+            <!-- <router-link class="button" to="/gest_inventario">
+              <a class="collapse-item" v-bind:class="ActivaLink(6)" :key="6" @click="obtenerLinkA(6)"> <i
+                  class="fas fa-fw fa-cogs"></i> Productos</a>
+            </router-link>
+            <router-link class="button" to="/gest_pedidos">
+              <a class="collapse-item" v-bind:class="ActivaLink(7)" :key="7" @click="obtenerLinkA(7)"> <i
+                  class="fas fa-fw fa-cogs"></i> Pedidos</a>
+            </router-link>
+            <router-link class="button" to="/gest_sucursal">
+              <a class="collapse-item" v-bind:class="ActivaLink(8)" :key="8" @click="obtenerLinkA(8)"> <i
+                  class="fas fa-fw fa-cogs"></i> Sucursales</a>
+            </router-link> -->
             <!-- https://ervchldgqphohvvkotag.supabase.co/storage/v1/object/sign/DiskTwinTecnology/ImgUsuarios/MOTOS.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJEaXNrVHdpblRlY25vbG9neS9JbWdVc3Vhcmlvcy9NT1RPUy5wbmciLCJpYXQiOjE3MzE4Njc4MDksImV4cCI6MTczMjQ3MjYwOX0.qEfY5yBMSPd55zzgJdYPmiphc6oXjHlbMbmBLyl6b0M&t=2024-11-17T18%3A26%3A48.194Z -->
             <!-- <a class="collapse-item" @click="click_productos"> Productos</a> -->
             <!-- <router-link class="button" to="/productos">
@@ -358,7 +399,8 @@
                 <img v-else class="img-profile rounded-circle" src="/src/assets/new/img/undraw_profile.svg">
               </a>
               <!-- Dropdown - User Information -->
-              <div :class="'dropdown-menu dropdown-menu-right shadow animated--grow-in ' +showUser " aria-labelledby="userDropdown">
+              <div :class="'dropdown-menu dropdown-menu-right shadow animated--grow-in ' + showUser"
+                aria-labelledby="userDropdown">
                 <a class="dropdown-item" href="#" @click="cargarImagen">
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Cambiar imagen de perfil
@@ -417,6 +459,9 @@
         </div>
         <div v-if="route.path == '/gest_pedidos'">
           <GestPedidoApp :key="Kgest_pedidos" />
+        </div>
+        <div v-if="route.path == '/gest_nomencladores'">
+          <GestNomencladoresApp :key="Kgest_nomencladores" />
         </div>
 
         <!-- /.container-fluid -->
@@ -485,6 +530,7 @@ import UserApp from '@/components/UserApp.vue';
 import GestUserApp from '@/components/GestUserApp.vue';
 import GetSucursalesApp from '@/components/GetSucursalesApp.vue';
 import GestPedidoApp from '@/components/GestPedidoApp.vue';
+import GestNomencladoresApp from '@/components/GestNomencladoresApp.vue';
 
 const Kinicio = ref(0);
 const Kpedidos = ref(0);
@@ -506,7 +552,13 @@ const ulBody = document.getElementById('accordionSidebar');
 
 const datosPrueba = ref([]);
 
-const listado = ref([])
+const listado = ref([]);
+
+const listadoSucursales = ref([]);
+
+const newListado = ref([])
+
+const newListadoSucursal = ref([])
 
 const collapsed = ref('collapsed');
 
@@ -520,6 +572,12 @@ const activa1 = ref(false);
 
 const show1 = ref('')
 
+const collapsed2 = ref('collapsed');
+
+const activa2 = ref(false);
+
+const show2 = ref('')
+
 const activaUser = ref(false);
 
 const showUser = ref('');
@@ -528,23 +586,47 @@ const activaNot = ref(false);
 
 const showNot = ref('');
 
+const ipPublica = ref('192.168.121.123');
+
+let cargado = ref(false);
+
+let datosPaginados = ref([]);
+
+let datosSinPaginar = ref([]);
+
+let buscando = ref('');
+
+let editar = ref(false);
+
+let id = ref('');
+
+let cantidad = ref(0);
+
+let elementPagina = ref(5);
+
+let inicio = ref(0);
+
+let fin = ref(0);
+
+let paginaActual = ref(1);
+
 const Exp_User = () => {
   if (activaUser.value == false) {
-     activaUser.value = true;
-     showUser.value = 'show'
-  }else{
+    activaUser.value = true;
+    showUser.value = 'show'
+  } else {
     activaUser.value = false;
-     showUser.value = ''
+    showUser.value = ''
   }
 }
 
 const Exp_Not = () => {
   if (activaNot.value == false) {
-     activaNot.value = true;
-     showNot.value = 'show'
-  }else{
+    activaNot.value = true;
+    showNot.value = 'show'
+  } else {
     activaNot.value = false;
-     showNot.value = ''
+    showNot.value = ''
   }
 }
 
@@ -564,6 +646,22 @@ const MueveMenu = () => {
   // ulBody.classList.add('toggled');
 }
 
+const obtenerListadoLimpioSucursales = () => {
+  let i = 0;
+  // if (cargado.value = false) {
+  newListadoSucursal.value = [];
+  for (let index = 0; index < listadoSucursales.value.length; index++) {
+    const element = listadoSucursales.value[index];
+    if (element.attributes.deleted_at == null) {
+      newListadoSucursal.value[i] = element;
+      i++;
+    }
+  }
+  return newListadoSucursal;
+  // }
+
+}
+
 // Expandir o no las opciones del menu
 const Exp_Consultar = () => {
   if (collapsed.value == "") {
@@ -571,23 +669,26 @@ const Exp_Consultar = () => {
     activa.value = false;
     show.value = '';
 
-    // collapsed1.value = 'collapsed';
-    // activa1.value = false;
-    // show1.value = '';
-    if (collapsed1.value == '') {
-      collapsed1.value = 'collapsed';
-      activa1.value = false;
-      show1.value = '';
-    } else {
-      collapsed1.value = 'collapsed';
-      activa1.value = false;
-      show1.value = '';
-    }
+    collapsed1.value = 'collapsed';
+    activa1.value = false;
+    show1.value = '';
+
+    collapsed2.value = 'collapsed';
+    activa2.value = false;
+    show2.value = '';
 
   } else {
     collapsed.value = '';
     activa.value = true;
     show.value = 'show';
+
+    collapsed1.value = 'collapsed';
+    activa1.value = false;
+    show1.value = '';
+
+    collapsed2.value = 'collapsed';
+    activa2.value = false;
+    show2.value = '';
   }
 }
 
@@ -597,19 +698,53 @@ const Exp_Gestion = () => {
     activa1.value = false;
     show1.value = '';
 
-    if (collapsed.value == '') {
-      collapsed.value = 'collapsed';
-      activa.value = false;
-      show.value = '';
-    } else {
-      collapsed.value = 'collapsed';
-      activa.value = false;
-      show.value = '';
-    }
+    collapsed.value = 'collapsed';
+    activa.value = false;
+    show.value = '';
+
+    collapsed2.value = 'collapsed';
+    activa2.value = false;
+    show2.value = '';
   } else {
     collapsed1.value = '';
     activa1.value = true;
     show1.value = 'show';
+
+    collapsed2.value = 'collapsed';
+    activa2.value = false;
+    show2.value = '';
+
+    collapsed.value = 'collapsed';
+    activa.value = false;
+    show.value = '';
+  }
+}
+
+const Exp_Nomenc = () => {
+  if (collapsed2.value == '') {
+    collapsed2.value = 'collapsed';
+    activa2.value = false;
+    show2.value = '';
+
+    collapsed1.value = 'collapsed';
+    activa1.value = false;
+    show1.value = '';
+
+    collapsed.value = 'collapsed';
+    activa.value = false;
+    show.value = '';
+  } else {
+    collapsed2.value = '';
+    activa2.value = true;
+    show2.value = 'show';
+
+    collapsed1.value = 'collapsed';
+    activa1.value = false;
+    show1.value = '';
+
+    collapsed.value = 'collapsed';
+    activa.value = false;
+    show.value = '';
   }
 }
 
@@ -647,21 +782,32 @@ const ActivaLink = (valor) => {
 //   Kinicio.value += 1;
 // })
 
-const consultar = async () => {
-  let response = await axios.get('http://localhost/fullstack/public/productos')
-    .then((response) => {
-      // listado.value = response.data.data;
-      // console.log(response.data)
-      datosPrueba.value = response.data.data;
-      // datosSinPaginar.value = response.data.data;
-      // cantidad.value = Math.ceil(response.data.data.length / elementPagina.value);
-      // obtenerPagina(1);
-      listado.value = response.data.data;
-      // router.go();
-    });
-
+const almacenDatosProductos = (Lista) => {
+  // if (localStorage.getItem('ListadoCache')) {
+  //datos_archivados.value.push(Lista);
+  localStorage.removeItem('ListadoCache');
+  //   }else{
+  const parsed = JSON.stringify(Lista);
+  localStorage.setItem('ListadoCache', parsed);
+  // dataCache.value = JSON.parse(localStorage.getItem('ListadoCache'));
+  // }
 }
 
+// const consultar = async () => {
+//   if (cargado.value == false) {
+//     let response = await axios.get(`http://` + ipPublica.value + `/fullstack/public/productos`)
+//       .then((response) => {
+//         listado.value = response.data.data;
+//         almacenDatosProductos(listado.value);
+//         obtenerListadoLimpio();
+//         cargado.value = true;
+//       });
+//   } else {
+//     almacenDatosProductos(listado.value);
+//     obtenerListadoLimpio();
+//   }
+
+// }
 // Paginado
 const obtenerPagina = (nopage) => {
   paginaActual.value = nopage;
@@ -728,7 +874,15 @@ const obtenerListadoLimpio = () => {
 }
 
 onMounted(() => {
-  consultar();
+if (localStorage.getItem('userName')) {
+    // listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
+    // obtenerListadoLimpio();
+    // listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
+    // listadoSucursales = obtenerListadoLimpioSucursales();
+  } else {
+    router.push('/login');
+  }
+  // consultar();
 })
 
 const Cambia_Color = () => {

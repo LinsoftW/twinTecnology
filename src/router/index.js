@@ -61,6 +61,11 @@ const router = createRouter({
             name: 'gest_sucursal',
             component: MenuApp,
         },
+        {
+            path: '/gest_nomencladores',
+            name: 'gest_nomencladores',
+            component: MenuApp,
+        },
     ]
 })
 

@@ -2,7 +2,7 @@
   <div>
     <div v-if="!esperando" class="container-fluid">
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">PRODUCTOS </h1>
+        <h1 class="h3 mb-0 text-gray-800">TABLAS FIJAS (NOMENCLADORES)</h1>
         <!-- {{ listado }} -->
         <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" v-b-tooltip.hover
         title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar productos</a> -->
@@ -635,16 +635,14 @@ const actualizar_datos = () => {
 }
 
 onMounted(async () => {
-  // localStorage.setItem("userName", form.nombre);
   if (localStorage.getItem('userName')) {
     listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
     obtenerListadoLimpio();
     listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
     listadoSucursales = obtenerListadoLimpioSucursales();
-  }else{
+  } else {
     router.push('/login');
   }
-
   // console.log(datosPaginados1)
   // if (cargado.value == false) {
   //   consultar();

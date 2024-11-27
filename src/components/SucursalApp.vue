@@ -3,10 +3,13 @@
     <div v-if="!esperando" class="container-fluid">
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">SUCURSALES</h1>
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" v-b-tooltip.hover
-        title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar sucursal</a>
+        <router-link class="button" to="/gest_sucursal">
+          <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" v-b-tooltip.hover
+            title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar sucursal</a>
+        </router-link>
+
       </div>
-<!-- Datos del producto a agregar -->
+      <!-- Datos del producto a agregar -->
 
       <div class="row">
 
@@ -161,10 +164,10 @@
       <!-- codigo, descripcion, cantidad -->
       <!-- permitir seleccionar que quiere mostrar -->
       <!-- poner todos los datos en la tabla inventario -->
-       <!-- elementos de busqueda -->
-        <!-- por Sucursal -->
-         <!-- por codigo -->
-         <!-- por cantidad -->
+      <!-- elementos de busqueda -->
+      <!-- por Sucursal -->
+      <!-- por codigo -->
+      <!-- por cantidad -->
 
       <!-- FIN -->
     </div>
@@ -187,14 +190,14 @@ const esperando = ref(false);
 
 const loading = (texto) => {
   Swal.fire({
-  // title: "Sweet!",
-  text: texto,
-  imageUrl: "/cargando2.gif",
-  imageWidth: 100,
-  imageHeight: 100,
-  imageAlt: "Custom image",
-  showConfirmButton: false
-});
+    // title: "Sweet!",
+    text: texto,
+    imageUrl: "/cargando2.gif",
+    imageWidth: 100,
+    imageHeight: 100,
+    imageAlt: "Custom image",
+    showConfirmButton: false
+  });
 }
 
 const cerrarAlert = () => {
@@ -434,9 +437,9 @@ const borrarU = (id, correo) => {
     esperando.value = false;
     cerrarAlert();
     Swal.fire({
-        icon: "error",
-        title: error.response.data.message
-      })
+      icon: "error",
+      title: error.response.data.message
+    })
   });
 }
 
@@ -451,28 +454,28 @@ const cancelarU = () => {
 const cambiarLimite = () => {
   let i = 0;
   newListado.value = [];
-    for (let index = 0; index < listado.value.length; index++) {
-      const element = listado.value[index];
-      if (element.attributes.deleted_at == null) {
-        newListado.value[i] = element;
-        i++;
-      }
+  for (let index = 0; index < listado.value.length; index++) {
+    const element = listado.value[index];
+    if (element.attributes.deleted_at == null) {
+      newListado.value[i] = element;
+      i++;
     }
+  }
   datosSinPaginar.value = newListado.value;
   cantidad.value = Math.ceil(newListado.value.length / elementPagina.value);
   obtenerPagina(1);
 }
 
 onMounted(async => {
-  listado.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
-  obtenerListadoLimpio();
-  // if (cargado.value == false) {
-  //   consultar();
-  // }
+  if (localStorage.getItem('userName')) {
+    listado.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
+    obtenerListadoLimpio();
+    cargado.value = true;
+  } else {
+    router.push('/login');
+  }
 
 })
 
 </script>
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

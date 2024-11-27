@@ -90,8 +90,8 @@
                           v-b-tooltip.hover title="Editar"><span class="fas fa-edit"></span></button>&nbsp;
 
                         <button class="btn btn-danger btn-sm btn-circle"
-                          @click="borrarU(datos.id, datos.attributes.sucursal)" v-b-tooltip.hover
-                          title="Eliminar"><span class="fas fa-trash"></span></button>
+                          @click="borrarU(datos.id, datos.attributes.nombre)" v-b-tooltip.hover title="Eliminar"><span
+                            class="fas fa-trash"></span></button>
 
                       </td>
 
@@ -605,6 +605,7 @@ const buscandoElemento = () => {
 
 const editarU = () => {
   esperando.value = true;
+  console.log(id.value)
   axios.put(`http://${ipPublica.value}/fullstack/public/sucursals/${id.value}`, formSucursal)
     .then((response) => {
       // console.log(response)
@@ -614,7 +615,7 @@ const editarU = () => {
       cancelarU();
       formSucursal.data.attributes.descripcion = ''
       formSucursal.data.attributes.observacion = '';
-      formSucursal.data.attributes.codigo = '';
+      formSucursal.data.attributes.nombre = '';
       Swal.fire({
         icon: "success",
         title: "Editado satisfactoriamente."
@@ -664,9 +665,9 @@ const borrarU = (id, correo) => {
     esperando.value = false;
     cerrarAlert();
     Swal.fire({
-        icon: "error",
-        title: error.response.data.message
-      })
+      icon: "danger",
+      title: "Error realizando operación."
+    })
   });
 }
 // Fin CRUD
@@ -680,7 +681,7 @@ const clickEditar = async (idSelect) => {
     const element = listado.value[index].id;
     if (element == idSelect) {
       formSucursal.data.attributes.descripcion = listado.value[index].attributes.descripcion;
-      formSucursal.data.attributes.sucursal = listado.value[index].attributes.sucursal;
+      formSucursal.data.attributes.nombre = listado.value[index].attributes.nombre;
       formSucursal.data.attributes.observacion = listado.value[index].attributes.observacion;
       formSucursal.data.attributes.abreviatura = listado.value[index].attributes.abreviatura;
       break;
@@ -720,8 +721,13 @@ const cambiarLimite = () => {
 }
 
 onMounted(async => {
-  listado.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
-  obtenerListadoLimpio();
+  if (localStorage.getItem('userName')) {
+    listado.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
+    obtenerListadoLimpio();
+  } else {
+    router.push('/login');
+  }
+
   // if (cargado.value == false) {
   //   consultar();
   // }

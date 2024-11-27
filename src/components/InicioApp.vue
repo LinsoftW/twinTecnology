@@ -5,7 +5,8 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
       <h1 class="h3 mb-0 text-gray-800">PÁGINA INICIAL</h1>
       <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" v-b-tooltip.hover
-        title="Generar resumen diario"><i class="fas fa-download fa-sm text-white-50"></i> Generar Resumen</a>
+        title="Generar resumen diario" @click="generar_pdf()"><i class="fas fa-download fa-sm text-white-50"></i>
+        Generar Resumen</a>
     </div>
 
     <!-- Content Row -->
@@ -359,10 +360,10 @@
     </div>
 
     <template v-if="esperando">
-    <div v-on="loading('Actualizando datos...')">
+      <div v-on="loading('Creando archivo PDF...')">
 
-    </div>
-  </template>
+      </div>
+    </template>
 
   </div>
 </template>
@@ -379,14 +380,14 @@ const esperando = ref(false);
 
 const loading = (texto) => {
   Swal.fire({
-  // title: "Sweet!",
-  text: texto,
-  imageUrl: "/cargando2.gif",
-  imageWidth: 100,
-  imageHeight: 100,
-  imageAlt: "Custom image",
-  showConfirmButton: false
-});
+    // title: "Sweet!",
+    text: texto,
+    imageUrl: "/cargando2.gif",
+    imageWidth: 100,
+    imageHeight: 100,
+    imageAlt: "Custom image",
+    showConfirmButton: false
+  });
 }
 
 // let recarga = ref(false);
@@ -397,15 +398,18 @@ const route = useRoute();
 const bodyLogin = document.getElementById('page-top');
 
 onMounted(async () => {
-  // if (route.path == '/inicio') {
-  bodyLogin.classList.remove('bg-gradient-info');
-  // bodyLogin.classList.add('sidebar-toggled');
-  // console.log("INICIO")
-  // }
-  // Cosc_Clar.value = localStorage.getItem('background');
-  // consultar();
-  listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
-  obtenerListadoLimpio();
+  if (localStorage.getItem('userName')) {
+    bodyLogin.classList.remove('bg-gradient-info');
+    // bodyLogin.classList.add('sidebar-toggled');
+    // console.log("INICIO")
+    // }
+    // Cosc_Clar.value = localStorage.getItem('background');
+    // consultar();
+    listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
+    obtenerListadoLimpio();
+  } else {
+    router.push('/login');
+  }
 
 })
 
@@ -691,6 +695,53 @@ const buscandoElemento = () => {
 }
 
 // Fin paginado
+
+// IMPRIMIR
+
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+
+const generar_pdf = async () => {
+
+  esperando.value = true;
+
+  let response = await axios.get(`http://` + ipPublica.value + `/fullstack/public/productos`)
+    .then((response) => {
+      listado.value = response.data.data;
+    })
+
+  let nuevoArreglo = ref([]);
+
+  for (let index = 0; index < listado.value.length; index++) {
+    nuevoArreglo.value.push({id: listado.value[index].id, codigo: listado.value[index].attributes.codigo, type: listado.value[index].type, descripcion: listado.value[index].attributes.descripcion, observacion: listado.value[index].attributes.observacion})
+  }
+
+  // console.log(nuevoArreglo.value)
+  // console.log(listado.value)
+  const doc = new jsPDF('p', 'pt');
+
+  let columnas = [
+    { title: "No", dataKey: "id" },
+    { title: "Codigo", dataKey: "codigo" },
+    { title: "Sucursal", dataKey: "type" },
+    { title: "Descripcion", dataKey: "descripcion" },
+    { title: "Observacion", dataKey: "observacion" }
+  ]
+
+  doc.autoTable(columnas, nuevoArreglo.value)
+  // const doc = new jsPDF({
+  //   orientation: "landscape",
+  //   unit: "in",
+  //   format: [10, 10]
+  // });
+
+  doc.text("Listado de productos", 220, 25);
+  doc.save("Resumen.pdf");
+
+  cerrarAlert();
+  esperando.value = false;
+
+}
 
 
 </script>

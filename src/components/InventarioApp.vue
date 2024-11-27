@@ -3,8 +3,11 @@
     <div v-if="!esperando" class="container-fluid">
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-2 text-gray-800">INVENTARIO</h1>
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" v-b-tooltip.hover
+        <router-link class="button" to="/gest_inventario">
+          <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" v-b-tooltip.hover
           title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar productos</a>
+        </router-link>
+
       </div>
 
       <!-- TABLA INVENTARIOS -->
@@ -156,8 +159,8 @@
                     <td v-if="datos.attributes.deleted_at == null && siacciones" style="text-align: center;">
                       <button class="btn btn-info btn-sm btn-circle" v-b-tooltip.hover title="Conformar pedido"><span
                           class="fas fa-check"></span></button>&nbsp;
-                      <button class="btn btn-success btn-sm btn-circle" @click="clickEditar(datos.id)" v-b-tooltip.hover
-                        title="Editar"><span class="fas fa-edit"></span></button>&nbsp;
+                      <!-- <button class="btn btn-success btn-sm btn-circle" @click="clickEditar(datos.id)" v-b-tooltip.hover
+                        title="Editar"><span class="fas fa-edit"></span></button>&nbsp; -->
                       <!-- <button class="btn btn-success btn-sm btn-circle" @click="editarUModel"
                           v-b-tooltip.hover title="Editar"><span class="fas fa-edit"></span></button>&nbsp; -->
                       <button class="btn btn-danger btn-sm btn-circle"
@@ -611,15 +614,18 @@ watch(listado.value, (newX) => {
 })
 
 onMounted(() => {
-  listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
-  obtenerListadoLimpio();
-  cargado.value = true;
-  // if (cargado.value == false) {
-  //   consultar();
-  //   // consultarSucursales();
-  // }
-
+  if (localStorage.getItem('userName')) {
+    // listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
+    // obtenerListadoLimpio();
+    // listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
+    // listadoSucursales = obtenerListadoLimpioSucursales();
+    cargado.value = true;
+  } else {
+    router.push('/login');
+  }
+  // consultar();
 })
+
 
 </script>
 <style lang="scss" scoped></style>

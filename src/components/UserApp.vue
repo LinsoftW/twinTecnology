@@ -2,8 +2,11 @@
   <div class="container-fluid">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
       <h1 class="h3 mb-0 text-gray-800">TRABAJADORES</h1>
-      <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" v-b-tooltip.hover
+      <router-link class="button" to="/gest_user">
+        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" v-b-tooltip.hover
         title="Generar resumen diario"><i class="fas fa-plus fa-sm"></i> Agregar trabajador</a>
+      </router-link>
+
     </div>
 
     <!-- Usuarios -->
@@ -125,6 +128,21 @@
 
 </template>
 <script setup>
+import router from '@/router';
+import { onMounted } from 'vue';
+
+onMounted(() => {
+  if (localStorage.getItem('userName')) {
+    // listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
+    // obtenerListadoLimpio();
+    // listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
+    // listadoSucursales = obtenerListadoLimpioSucursales();
+    // cargado.value = true;
+  } else {
+    router.push('/login');
+  }
+  // consultar();
+})
 
 </script>
 <style lang="scss"></style>

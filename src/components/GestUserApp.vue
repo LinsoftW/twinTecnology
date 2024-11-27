@@ -233,7 +233,8 @@
   </div>
 </template>
 <script setup>
-import { reactive, ref } from 'vue';
+import router from '@/router';
+import { onMounted, reactive, ref } from 'vue';
 
 const form = reactive({
   nombre: '',
@@ -246,6 +247,18 @@ const form = reactive({
 })
 
 const editar = ref(false)
+
+onMounted(() => {
+if (localStorage.getItem('userName')) {
+    // listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
+    // obtenerListadoLimpio();
+    // listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
+    // listadoSucursales = obtenerListadoLimpioSucursales();
+  } else {
+    router.push('/login');
+  }
+  // consultar();
+})
 
 </script>
 <style lang="scss">

@@ -152,6 +152,19 @@
   </div>
 </template>
 <script setup>
+import router from '@/router';
+import { onMounted } from 'vue';
+
+
+onMounted(async () => {
+  // localStorage.setItem("userName", form.nombre);
+  if (localStorage.getItem('userName')) {
+    
+  }else{
+    router.push('/login');
+  }
+
+})
 
 </script>
 <style lang="scss" scoped></style>

@@ -77,6 +77,20 @@
   </div>
 </template>
 <script setup>
+import router from '@/router';
+import { onMounted } from 'vue';
+
+onMounted(() => {
+if (localStorage.getItem('userName')) {
+    // listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
+    // obtenerListadoLimpio();
+    // listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
+    // listadoSucursales = obtenerListadoLimpioSucursales();
+  } else {
+    router.push('/login');
+  }
+  // consultar();
+})
 
 </script>
 <style lang="scss" scoped></style>
