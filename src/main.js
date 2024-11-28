@@ -11,6 +11,7 @@ import './assets/main.css';
 // import { tooltip } from './assets/new/css/bootstrap'
 // import Swal from 'sweetalert2';
 import { createApp } from 'vue'
+import { plugin, defaultConfig } from '@formkit/vue'
 import App from './App.vue'
 
 // Importando las rutas
@@ -18,6 +19,6 @@ import router from './router'
 
 const app = createApp(App);
 
-app.use(router).mount('#app')
+app.use(router, plugin, defaultConfig).mount('#app')
 
 // app.directive('tooltip', tooltip)

@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
 
       <div class="col-xl-10 col-lg-12 col-md-9">
-        <br><br><br><br>
+        <br>
         <div class="card o-hidden border-0 shadow-lg my-5">
           <div class="card-body p-0">
             <!-- Nested Row within Card Body -->
@@ -17,39 +17,51 @@
               <div class="col-lg-6">
                 <div class="p-5">
                   <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4"> MyInventario  !!!<div class="sidebar-brand-icon rotate-n-15"><img src="/clipboard-list.png" alt="" style="width: 35px; height:35px"></div></h1>
+                    <div class="sidebar-brand-icon rotate-n-15"><img src="/clipboard-list.png" alt=""
+                        style="width: 35px; height:35px"></div>
+                    <h1 class="h2 text-gray-900 mb-4"> MyInventario </h1>
+                    <!-- <h4 class="h6 text-gray-900 mb-4">Sistema para el registro y control de los productos del almacen
+                    </h4> -->
 
                   </div>
-                  <form class="user">
-                    <div class="form-group">
+                  <form class="">
+                    <div class="form-group text-left">
+                      <label style="color: black;"><i class="fa fa-user"></i> Correo
+                        electrónico:</label>
                       <input type="text" class="form-control form-control-user" id="exampleInputEmail"
                         aria-describedby="emailHelp" v-model="form.nombre"
-                        placeholder="Nombre de usuario o correo electrónico">
+                        placeholder="Correo electrónico" @change="ValidacionEmail()" @keyup="ValidacionEmail()">
+                      <div class="text-center"><label v-if="emailError" :style="'color: ' + color">{{ emailError
+                          }}</label></div>
+
                       <!--<input type="email" class="form-control form-control-user" id="exampleInputEmail"
                           aria-describedby="emailHelp" placeholder="Nombre de usuario o correo electrónico">-->
                     </div>
-                    <div class="form-group">
+                    <div class="form-group text-left">
+                      <label style="color: black;"><i class="fa fa-key"></i> Contraseña:</label>
                       <input type="password" v-model="form.passw" class="form-control form-control-user"
                         id="exampleInputPassword" placeholder="Contraseña">
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                       <div class="custom-control custom-checkbox small">
                         <input type="checkbox" class="custom-control-input" id="customCheck">
                         <label class="custom-control-label" for="customCheck">Recuerdáme</label>
                       </div>
-                    </div>
+                    </div> -->
+                    <hr>
                     <a @click="autenticate" class="btn btn-info btn-user btn-block">
-                      Entrar
+                      <i class="fa fa-check"></i> Continuar
                     </a>
                   </form>
                   <hr>
                   <div class="text-center">
-                    <router-link to="/"><a class="small">Olvidaste la contraseña</a></router-link>
-                  </div>
-                  <div class="text-center">
-                    <router-link to="/"><a class="small">Registrarme</a></router-link>
+                    <router-link to="/"><a class="small">Registrarse en el sistema</a></router-link>
 
                   </div>
+                  <div class="text-center">
+                    <router-link to="/"><a class="small">¿Olvidaste la contraseña?</a></router-link>
+                  </div>
+
                 </div>
               </div>
             </div>
@@ -59,6 +71,8 @@
       </div>
 
     </div>
+    <div class="text-center"><label class="text-center" style="color: black;">Copyright © Todos los derechos reservados.
+        2024</label></div>
 
   </div>
   <template v-if="esperando">
@@ -79,6 +93,10 @@ import Swal from 'sweetalert2';
 const ipPublica = ref('192.168.121.123');
 
 let listado = ref([]);
+
+let color = ref('red');
+
+const emailError = ref('');
 
 let dataCache = ref([]);
 
@@ -153,7 +171,43 @@ const successFull = (mensaje, posicion) => {
   })
 }
 
-const tiempo = ref(0);
+// Validar campos
+function ValidarEmail(params) {
+  let regExp = /^\S+@\S+\.\S+$/;
+
+  return regExp.test(params);
+}
+
+function ValidarArroba(params) {
+  let regExp1 = /^[^\s@]+@[^\s@]+\.[^\s@]+/;
+
+  return regExp1.test(params);
+}
+
+function ValidacionEmail() {
+  if (!ValidarEmail(form.nombre)) {
+    emailError.value = 'Email no válido';
+    color.value = 'red';
+    // console.error('Email no valido')
+  } else if (!ValidarArroba(form.nombre)) {
+    // console.error('Doble arroba')
+    emailError.value = 'Tiene repetido el arroba';
+    color.value = 'red';
+  }
+  else {
+    emailError.value = 'Email válido';
+    color.value = 'green';
+    return 'OKKK';
+  }
+
+  if (form.nombre.length == 0 && form.nombre == null) {
+    emailError.value = 'Debe llenar el campo';
+    color.value = 'red';
+  }
+
+
+}
+// Fin validacion
 
 const esperando = ref(false);
 
@@ -173,48 +227,68 @@ const autenticate = async () => {
   // }
 
   // }
-  if (form.nombre == 'admin' && form.passw == '123') {
-    localStorage.setItem("userName", form.nombre);
-    // const start = new Date();
-    esperando.value = true;
-    // console.log(esperando.value)
-    await consultar();
-    await consultarSucursales();
-    if (esperando.value == false) {
-      successFull('Bienvenido al sistema', 'top-end');
-      router.push('/inicio');
-    }
-    // console.log(esperando.value)
-    // const end = new Date();
-    // tiempo.value = end.getTime() - start.getTime();
-    // console.log(tiempo.value)
+  if (ValidacionEmail() == "OKKK") {
+    // console.log('Okkkk')
+    if (form.nombre == 'admin@admin.co' && form.passw == '123') {
+      localStorage.setItem("userName", form.nombre);
+      // const start = new Date();
+      esperando.value = true;
+      // console.log(esperando.value)
+      await consultar();
+      await consultarSucursales();
+      if (esperando.value == false) {
+        successFull('Bienvenido al sistema', 'top-end');
+        router.push('/inicio');
+      }
+      // console.log(esperando.value)
+      // const end = new Date();
+      // tiempo.value = end.getTime() - start.getTime();
+      // console.log(tiempo.value)
 
-    // esperar();
-    // console.log(end.getTime() - start.getTime(), "ms");
-    // successFull('Bienvenido al sistema', 'top-end');
-    // window.location = '/inicio';
-    // router.push('/inicio')
+      // esperar();
+      // console.log(end.getTime() - start.getTime(), "ms");
+      // successFull('Bienvenido al sistema', 'top-end');
+      // window.location = '/inicio';
+      // router.push('/inicio')
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Error de autenticación",
+      });
+    }
   } else {
-    Swal.fire({
-      icon: "error",
-      title: "Oops...",
-      text: "Error de autenticación",
-    });
+    if (emailError.value != 'Email válido') {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: emailError.value,
+      });
+    }
+    if (form.passw.length == 0 && form.passw == null) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Campo contraseña en blanco",
+      });
+    }
+
   }
+
 }
 
 let timerInterval;
 
 const loading = () => {
   Swal.fire({
-  // title: "Sweet!",
-  text: "Cargando datos...",
-  imageUrl: "/cargando2.gif",
-  imageWidth: 100,
-  imageHeight: 100,
-  imageAlt: "Custom image",
-  showConfirmButton: false
-});
+    // title: "Sweet!",
+    text: "Cargando datos...",
+    imageUrl: "/cargando2.gif",
+    imageWidth: 100,
+    imageHeight: 100,
+    imageAlt: "Custom image",
+    showConfirmButton: false
+  });
 }
 
 const cerrarAlert = () => {
@@ -222,6 +296,4 @@ const cerrarAlert = () => {
 }
 
 </script>
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

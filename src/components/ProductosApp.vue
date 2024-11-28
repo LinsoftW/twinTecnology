@@ -112,6 +112,8 @@
                   <form class="user">
 
                     <div class="row">
+                      <!-- <FormKit label="Username" type="text" help="Pick a new username"
+                        validation="required|matches:/^@[a-zA-Z]+$/|length:5" value="@FormKit" /> -->
                       <div class="form-group col-lg-4">
                         <label class="text-info">Código: <label style="color: red;">*</label></label>
                         <input type="text" class="form-control" id="codigo" aria-describedby="emailHelp"
@@ -641,7 +643,7 @@ onMounted(async () => {
     obtenerListadoLimpio();
     listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
     listadoSucursales = obtenerListadoLimpioSucursales();
-  }else{
+  } else {
     router.push('/login');
   }
 

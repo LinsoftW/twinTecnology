@@ -875,6 +875,7 @@ const obtenerListadoLimpio = () => {
 
 onMounted(() => {
 if (localStorage.getItem('userName')) {
+  Ctoggled.value = 'toggled';
     // listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
     // obtenerListadoLimpio();
     // listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
