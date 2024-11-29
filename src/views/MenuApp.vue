@@ -20,12 +20,12 @@
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
+      <li class="nav-item" v-bind:class="ActivaLink(10)" :key="10" @click="obtenerLinkA(10)">
 
         <router-link class="button" to="/inicio">
           <a class="nav-link">
-            <i class="fas fa-fw fa-home"></i>
-            <span>INICIO</span></a>
+            <i class="fas fa-tachometer-alt"></i>
+            <span>Inicio</span></a>
 
         </router-link>
 
@@ -35,100 +35,89 @@
 
       <!-- Heading -->
       <div class="sidebar-heading">
-        Operaciones
+        PRODUCTOS
       </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
         <a :class="'nav-link ' + collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
           :aria-expanded="activa" aria-controls="collapseTwo" @click="Exp_Consultar()">
-          <i class="fas fa-fw fa-eye"></i>
-          <span>CONSULTAR
+          <i class="fas fa-shopping-bag"></i>
+          <span>Productos
           </span>
         </a>
         <div id="collapseTwo" :class="'collapse ' + show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Consultar:</h6>
+            <h6 class="collapse-header">Gestionar</h6>
             <!-- <a class="collapse-item" @click="click_inventario">Inventario</a>
             <a class="collapse-item" @click="click_pedidos">Pedidos</a> -->
-            <router-link class="button" to="/user">
+            <router-link class="button" to="/inventario">
               <a class="collapse-item" v-bind:class="ActivaLink(1)" :key="1" @click="obtenerLinkA(1)"><i
-                  class="fas fa-fw fa-eye"></i> Usuarios</a>
+                  class="far fa-check-circle"></i> Inventario</a>
             </router-link>
             <router-link class="button" to="/inventario">
               <a class="collapse-item" v-bind:class="ActivaLink(2)" :key="2" @click="obtenerLinkA(2)"> <i
-                  class="fas fa-fw fa-eye"></i>
-                Productos</a>
+                  class="far fa-check-circle"></i>
+                Categorías</a>
             </router-link>
-            <router-link class="button" to="/pedidos">
+            <!-- <router-link class="button" to="/pedidos">
               <a class="collapse-item" v-bind:class="ActivaLink(3)" :key="3" @click="obtenerLinkA(3)"> <i
                   class="fas fa-fw fa-eye"></i> Pedidos</a>
-            </router-link>
+            </router-link>-->
             <router-link class="button" to="/sucursales">
-              <a class="collapse-item" v-bind:class="ActivaLink(4)" :key="4" @click="obtenerLinkA(4)"> <i
-                  class="fas fa-fw fa-eye"></i> Sucursales</a>
+              <a class="collapse-item" v-bind:class="ActivaLink(3)" :key="3" @click="obtenerLinkA(3)"> <i
+                  class="far fa-check-circle"></i> Carga masiva</a>
             </router-link>
             <!-- <a class="collapse-item" href="cards.html">Cards</a> -->
           </div>
         </div>
       </li>
 
-      <!-- Nav Item - Utilities Collapse Menu -->
-      <li class="nav-item">
+      <li class="nav-item" v-bind:class="ActivaLink(4)" :key="4" @click="obtenerLinkA(4)">
 
-        <a :class="'nav-link ' + collapsed1" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-          :aria-expanded="activa1" aria-controls="collapseUtilities" @click="Exp_Gestion()">
-          <i class="fas fa-fw fa-cog"></i>
-          <span>GESTIONAR</span>
-        </a>
-        <div id="collapseUtilities" :class="'collapse ' + show1" aria-labelledby="headingUtilities"
-          data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Gestionar:</h6>
-            <!-- <a class="collapse-item button" @click="click_sucursales">Sucursales</a> -->
-            <router-link class="button" to="/gest_user">
-              <a class="collapse-item" v-bind:class="ActivaLink(5)" :key="5" @click="obtenerLinkA(5)"> <i
-                  class="fas fa-fw fa-cogs"></i> Usuarios</a>
-            </router-link>
-            <router-link class="button" to="/gest_inventario">
-              <a class="collapse-item" v-bind:class="ActivaLink(6)" :key="6" @click="obtenerLinkA(6)"> <i
-                  class="fas fa-fw fa-cogs"></i> Productos</a>
-            </router-link>
-            <router-link class="button" to="/gest_pedidos">
-              <a class="collapse-item" v-bind:class="ActivaLink(7)" :key="7" @click="obtenerLinkA(7)"> <i
-                  class="fas fa-fw fa-cogs"></i> Pedidos</a>
-            </router-link>
-            <router-link class="button" to="/gest_sucursal">
-              <a class="collapse-item" v-bind:class="ActivaLink(8)" :key="8" @click="obtenerLinkA(8)"> <i
-                  class="fas fa-fw fa-cogs"></i> Sucursales</a>
-            </router-link>
-            <!-- https://ervchldgqphohvvkotag.supabase.co/storage/v1/object/sign/DiskTwinTecnology/ImgUsuarios/MOTOS.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJEaXNrVHdpblRlY25vbG9neS9JbWdVc3Vhcmlvcy9NT1RPUy5wbmciLCJpYXQiOjE3MzE4Njc4MDksImV4cCI6MTczMjQ3MjYwOX0.qEfY5yBMSPd55zzgJdYPmiphc6oXjHlbMbmBLyl6b0M&t=2024-11-17T18%3A26%3A48.194Z -->
-            <!-- <a class="collapse-item" @click="click_productos"> Productos</a> -->
-            <!-- <router-link class="button" to="/productos">
-              <a class="collapse-item">Productos</a>
-            </router-link> -->
-            <!-- <a class="collapse-item" href="#">Otros</a> -->
-            <!-- <a class="collapse-item" href="utilities-border.html">Borders</a>
-                        <a class="collapse-item" href="utilities-animation.html">Animations</a>
-                        <a class="collapse-item" href="utilities-other.html">Other</a> -->
-          </div>
-        </div>
+        <router-link class="button" to="/inicio">
+          <a class="nav-link">
+            <i class="fas fa-fw fa-shopping-cart"></i>
+            <span>Ventas</span></a>
+
+        </router-link>
+
       </li>
 
+      <li class="nav-item" v-bind:class="ActivaLink(5)" :key="5" @click="obtenerLinkA(5)">
+
+        <router-link class="button" to="/inicio">
+          <a class="nav-link">
+            <i class="fas fa-cart-plus"></i>
+            <span>Compras</span></a>
+
+        </router-link>
+
+      </li>
+      <li class="nav-item" v-bind:class="ActivaLink(6)" :key="6" @click="obtenerLinkA(6)">
+
+        <router-link class="button" to="/inicio">
+          <a class="nav-link">
+            <i class="fas fa-chart-line"></i>
+            <span>Reportes</span></a>
+
+        </router-link>
+
+      </li>
       <li class="nav-item">
 
         <a :class="'nav-link ' + collapsed2" href="#" data-toggle="collapse" data-target="#collapseUtilities"
           :aria-expanded="activa2" aria-controls="collapseUtilities" @click="Exp_Nomenc()">
-          <i class="fas fa-fw fa-edit"></i>
-          <span>ADMINISTRAR</span>
+          <i class="fas fa-fw fa-cog"></i>
+          <span>Configuración</span>
         </a>
         <div id="collapseUtilities" :class="'collapse ' + show2" aria-labelledby="headingUtilities"
           data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Administrar:</h6>
+            <h6 class="collapse-header">Configurar:</h6>
             <!-- <a class="collapse-item button" @click="click_sucursales">Sucursales</a> -->
             <router-link class="button" to="/gest_nomencladores">
-              <a class="collapse-item" v-bind:class="ActivaLink(9)" :key="9" @click="obtenerLinkA(9)"> <i
+              <a class="collapse-item" v-bind:class="ActivaLink(7)" :key="7" @click="obtenerLinkA(7)"> <i
                   class="fas fa-fw fa-edit"></i> Nomencladores</a>
             </router-link>
             <!-- <router-link class="button" to="/gest_inventario">
@@ -632,6 +621,13 @@ const Exp_Not = () => {
 
 const obtenerLinkA = (alink) => {
   link.value = alink;
+  collapsed.value = 'collapsed';
+  activa.value = false;
+  show.value = '';
+  collapsed2.value = 'collapsed';
+  activa2.value = false;
+  show2.value = '';
+
 }
 
 const MueveMenu = () => {
@@ -749,6 +745,11 @@ const Exp_Nomenc = () => {
 }
 
 const ActivaLink = (valor) => {
+  // if (valor != 1) {
+    // collapsed.value = 'collapsed';
+    // activa.value = false;
+    // show.value = '';
+  // }
   if (valor == link.value) {
     return 'active'
   } else {
@@ -874,8 +875,8 @@ const obtenerListadoLimpio = () => {
 }
 
 onMounted(() => {
-if (localStorage.getItem('userName')) {
-  Ctoggled.value = 'toggled';
+  if (localStorage.getItem('userName')) {
+    Ctoggled.value = 'toggled';
     // listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
     // obtenerListadoLimpio();
     // listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));

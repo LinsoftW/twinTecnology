@@ -13,167 +13,169 @@
     <div class="row">
 
       <!-- Cantidad de Moneda nacional -->
-      <div class="col-xl-1"></div>
+      <div class="col-xl-2 col-md-6 mb-4">
+        <div class="card border-left-primary border-bottom-primary shadow h-100 py-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="h5 mb-0 font-weight-bold text-gray-800">100</div>
+                <div class="text-md font-weight-bold text-primary mb-1">
+                  Productos registrados</div>
+              </div>
+              <div class="col-auto">
+                <i class="fas fa-poll-h fa-3x text-gray-300"></i>
+              </div>
+              <hr>
+
+            </div>
+          </div>
+          <div class="card-footer"><a href="#"><label>Más información <i
+                  class="far fa-arrow-alt-circle-right"></i></label></a></div>
+        </div>
+      </div>
+      <!-- total de compras -->
       <div class="col-xl-2 col-md-6 mb-4">
         <div class="card border-left-success shadow h-100 py-2">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
-                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                  MN</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">S./ 109.15</div>
+                <div class="text-md font-weight-bold text-success mb-1">
+                  Total de compras</div>
               </div>
               <div class="col-auto">
-                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                <i class="fas fa-shopping-bag fa-3x text-gray-300"></i>
               </div>
+              <hr>
+
             </div>
           </div>
+          <div class="card-footer"><a href="#"><label>Más información <i
+                  class="far fa-arrow-alt-circle-right"></i></label></a></div>
+        </div>
+      </div>
+      <!-- Total de ventas  -->
+      <div class="col-xl-2 col-md-6 mb-4">
+        <div class="card border-left-warning border-bottom-warning shadow h-100 py-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="h5 mb-0 font-weight-bold text-gray-800">100</div>
+                <div class="text-md font-weight-bold text-warning mb-1">
+                  Total de ventas</div>
+              </div>
+              <div class="col-auto">
+                <i class="fas fa-cart-plus fa-3x text-gray-300"></i>
+              </div>
+              <hr>
+
+            </div>
+          </div>
+          <div class="card-footer"><a href="#"><label>Más información <i
+                  class="far fa-arrow-alt-circle-right"></i></label></a></div>
         </div>
       </div>
 
-      <!-- USD -->
+      <!-- Ganancias -->
       <div class="col-xl-2 col-md-6 mb-4">
-        <div class="card border-left-success shadow h-100 py-2">
+        <div class="card border-left-danger border-bottom-danger shadow h-100 py-2">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
-                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                  USD</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">100</div>
+                <div class="text-md font-weight-bold text-danger mb-1">
+                  Ganancias</div>
               </div>
               <div class="col-auto">
-                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                <i class="fas fa-chart-line fa-3x text-gray-300"></i>
               </div>
+              <hr>
+
             </div>
           </div>
+          <div class="card-footer"><a href="#"><label>Más información <i
+                  class="far fa-arrow-alt-circle-right"></i></label></a></div>
         </div>
       </div>
 
-      <!-- EUROS -->
+      <!-- productos poco en stock  -->
       <div class="col-xl-2 col-md-6 mb-4">
-        <div class="card border-left-success shadow h-100 py-2">
+        <div class="card border-left-info border-bottom-info shadow h-100 py-2">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
-                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                  EURO</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">3</div>
+                <div class="text-md font-weight-bold text-info mb-1">
+                  Productos poco stock</div>
               </div>
               <div class="col-auto">
-                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                <i class="fas fa-briefcase fa-3x text-gray-300"></i>
               </div>
+              <hr>
+
             </div>
           </div>
+          <div class="card-footer"><a href="#"><label>Más información <i
+                  class="far fa-arrow-alt-circle-right"></i></label></a></div>
         </div>
       </div>
 
-      <!-- TRANSFERENCIAS -->
+      <!-- Ventas del dia  -->
       <div class="col-xl-2 col-md-6 mb-4">
-        <div class="card border-left-success shadow h-100 py-2">
+        <div class="card border-left-secondary border-bottom-secondary shadow h-100 py-2">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
-                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                  TRANSFERENCIAS</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">100</div>
+                <div class="text-md font-weight-bold text-secondary mb-1">
+                  Ventas del día</div>
               </div>
               <div class="col-auto">
-                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                <i class="fas fa-chart-line fa-3x text-gray-300"></i>
               </div>
+              <hr>
+
             </div>
           </div>
+          <div class="card-footer"><a href="#"><label>Más información <i
+                  class="far fa-arrow-alt-circle-right"></i></label></a></div>
         </div>
       </div>
 
-      <!-- VUELTOS -->
-      <div class="col-xl-2 col-md-6 mb-4">
-        <div class="card border-left-success shadow h-100 py-2">
-          <div class="card-body">
-            <div class="row no-gutters align-items-center">
-              <div class="col mr-2">
-                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                  VUELTOS</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
-              </div>
-              <div class="col-auto">
-                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 
-    <!-- Fila con PEDIDOS -->
-
-    <div class="card shadow mb-4">
-      <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-info">LISTADO DE PEDIDOS <img class="img-fluid" style="width:50px;"
-            src="../assets/new/img/undraw_posting_photo.svg" alt="..."></h6>
-        <!-- <div class="text-right">
-                            <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width:5rem;" src="../assets/new/img/undraw_posting_photo.svg" alt="...">
-                        </div> -->
-      </div>
-      <div class="card-body">
-        <!-- <div class="text-left">
-                            <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 10rem;" src="../assets/new/img/undraw_posting_photo.svg" alt="...">
-                        </div> -->
-        <!-- Tabla Pedidos -->
-        <div class="table-responsive">
-          <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-            <thead>
-              <tr>
-                <th>PRODUCTO</th>
-                <th>DIRECCIÓN DE ENTREGA</th>
-                <th>MANAGER</th>
-                <th>GESTOR</th>
-                <th>MÉTODO DE PAGO</th>
-                <th>ESTADO</th>
-              </tr>
-            </thead>
-            <!-- <tfoot>
-                                    <tr>
-                                        <th>PRODUCTO</th>
-                                        <th>DIRECCIÓN DE ENTREGA</th>
-                                        <th>MANAGER</th>
-                                        <th>GESTOR</th>
-                                        <th>MÉTODO DE PAGO</th>
-                                        <th>ESTADO</th>
-                                    </tr>
-                                </tfoot> -->
-            <tbody>
-              <tr>
-                <th>Tablet</th>
-                <th>La Habana Cuba</th>
-                <th>Eugenio</th>
-                <th>Pepe</th>
-                <th>Pendiente</th>
-                <th>Pendiente</th>
-              </tr>
-              <tr>
-                <th>Tablet</th>
-                <th>La Habana Cuba</th>
-                <th>Eugenio</th>
-                <th>Pepe</th>
-                <th>Pendiente</th>
-                <th>Pendiente</th>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
 
     <!-- Content Row -->
 
     <div class="row">
 
+      <div class="col-xl-12 col-lg-7">
+
+        <!-- Area Chart -->
+        <div class="card shadow mb-4">
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">TOTAL DE VENTAS DEL MES</h6>
+          </div>
+          <div class="card-body">
+
+              <BarChart ref="doughnutRef" :chartData="testData" :options="options" />
+
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
+
+    <div class="row">
+
       <!-- Usuarios -->
-      <div class="col-xl-4 col-lg-5">
+      <div class="col-md-5 col-lg-6">
         <div class="card shadow mb-4">
           <!-- Card Header - Dropdown -->
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-info">LISTADO DE TRABAJADORES</h6>
+            <h6 class="m-0 font-weight-bold text-info">PRODUCTOS MÁS VENDIDOS</h6>
             <div class="dropdown no-arrow">
               <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
@@ -192,78 +194,69 @@
           <!-- Card Body -->
           <div class="card-body">
 
-            <!-- Personas -->
             <div class="table-responsive">
               <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
-                  <tr>
-                    <th>FOTO</th>
-                    <th>CORREO</th>
-                    <th>CODIGO</th>
-                    <th>ACCIONES</th>
-
+                  <tr style="text-align: center;">
+                    <th>No</th>
+                    <!-- <th>FOTO</th> -->
+                    <th>CÓDIGO</th>
+                    <th>SUCURSAL</th>
+                    <th>DESCRIPCION</th>
+                    <th>OBSERVACIONES</th>
+                    <!-- <th>ACCIONES</th> -->
                   </tr>
                 </thead>
                 <tbody>
-                  <!-- <tr>
-                    <th><img class="img-profile rounded-circle" src="../assets/new/img/undraw_profile_1.svg"> <i
-                        class="fas fa-circle text-info"></i></th>
-                    <th>Moraima</th>
-                    <th>Manager</th>
-                    <th>100</th>
-                  </tr>
-                  <tr>
-                    <th><img class="img-profile rounded-circle" src="../assets/new/img/undraw_profile_2.svg"><i
-                        class="fas fa-circle text-success"></i></th>
-                    <th>Pepe</th>
-                    <th>Gestora</th>
-                    <th>59.10</th>
-                  </tr> -->
-                  <!-- <tr v-for="datos in datosPaginados" :key="datos.idcorreo">
-                    <td style="text-align: end;"><img class="img-profile rounded-circle img-thumbnail" src="../assets/new/img/undraw_profile_1.svg"> <i
-                        class="fas fa-circle text-primary"></i></td>
-                    <td>{{ datos.direccion }}</td>
-                    <td>{{ datos.codigo }}</td>
-                    <td style="text-align: center;">
-                      <button class="btn btn-success btn-sm btn-circle" @click="clickEditar(datos.idcorreo)" v-b-tooltip.hover title="Editar"><span
-                          class="fas fa-edit"></span></button>&nbsp;
+                  <tr v-for="datos in datosPaginados" :key="datos.id">
+                    <td v-if="datos.attributes.deleted_at == null">{{ datos.id }}</td>
+                    <!-- <td style="text-align: end;"><img class="img-profile rounded-circle img-thumbnail"
+                          src="../assets/new/img/undraw_profile_1.svg"> <i class="fas fa-circle text-primary"></i></td> -->
+                    <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.codigo }}</td>
+                    <td v-if="datos.attributes.deleted_at == null">Sucursal</td>
+                    <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.descripcion }}</td>
+                    <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.observacion }}</td>
+                    <!-- <td v-if="datos.attributes.deleted_at == null" style="text-align: center;">
+                      <button class="btn btn-success btn-sm btn-circle" @click="clickEditar(datos.id)" v-b-tooltip.hover
+                        title="Editar"><span class="fas fa-edit"></span></button>&nbsp;
+
                       <button class="btn btn-danger btn-sm btn-circle"
-                        @click="borrarU(datos.idcorreo, datos.direccion)" v-b-tooltip.hover title="Eliminar"><span
+                        @click="borrarU(datos.id, datos.attributes.codigo)" v-b-tooltip.hover title="Eliminar"><span
                           class="fas fa-trash"></span></button>
-                    </td>
-                  </tr> -->
+                    </td> -->
+                  </tr>
+
 
                 </tbody>
               </table>
-              <!-- Paginacion -->
-              <!-- <div class="text-center">
+
+              <div class="text-center">
                 <nav aria-label="Page navigation example" style="text-align: center;">
-                <label>Mostrando &nbsp;</label>
-                <select style="width: 60px" @change="consultar()" v-model="elementPagina">
-                  <option value="5">5</option>
-                  <option value="10">10</option>
-                  <option value="20">20</option>
-                  <option value="50">50</option>
-                  <option value="100">100</option>
-                </select>
+                  <label>Mostrando &nbsp;</label>
+                  <select style="width: 60px" @change="cambiarLimite()" v-model="elementPagina">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                  </select>
 
-                <label>&nbsp;registros </label>
-                <ul class="pagination Mestilo btn-sm">
+                  <label>&nbsp;registros </label>
+                  <ul class="pagination Mestilo btn-sm">
 
-                  <li class="page-item" :class="`${disableA}`" @click="obtenerAnterior"><a class="page-link"
-                      href="#">Anterior</a></li>
-                  <li v-for="pagina in cantidad" class="page-item" v-bind:class="isActivo(pagina)" :key="pagina"
-                    @click="obtenerPagina(pagina)"><a class="page-link" href="#">{{ pagina
-                      }}</a></li>
-                  <li class="page-item" :class="`${disableS}`" @click="obtenerSiguiente"><a class="page-link"
-                      href="#">Siguiente</a></li>
-                </ul>
-              </nav>
-              </div> -->
-
+                    <li class="page-item" :class="`${disableA}`" @click="obtenerAnterior"><a class="page-link"
+                        href="#">Anterior</a></li>
+                    <li v-for="pagina in cantidad" class="page-item" v-bind:class="isActivo(pagina)" :key="pagina"
+                      @click="obtenerPagina(pagina)"><a class="page-link" href="#">{{ pagina
+                        }}</a></li>
+                    <li class="page-item" :class="`${disableS}`" @click="obtenerSiguiente"><a class="page-link"
+                        href="#">Siguiente</a></li>
+                  </ul>
+                </nav>
+              </div>
             </div>
 
-            <div class="mt-4 text-center small">
+            <!-- <div class="mt-4 text-center small">
               <span class="mr-2">
                 <i class="fas fa-circle text-primary"></i> Activo
               </span>
@@ -273,17 +266,17 @@
               <span class="mr-2">
                 <i class="fas fa-circle text-info"></i> Baja
               </span>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
 
       <!--Listado de productos -->
-      <div class="col-xl-8 col-lg-7">
+      <div class="col-md-6 col-lg-6">
         <div class="card shadow mb-4">
           <!-- Card Header - Dropdown -->
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-info">PRODUCTOS EN STOCK</h6>
+            <h6 class="m-0 font-weight-bold text-info">PRODUCTOS POCO EN STOCK</h6>
           </div>
           <!-- Card Body -->
           <div class="card-body">
@@ -370,11 +363,52 @@
 
 <script setup>
 
-import { onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
 import router from '@/router';
 import Swal from 'sweetalert2';
+import { BarChart } from 'vue-chart-3';
+import { Chart, registerables } from "chart.js";
+
+Chart.register(...registerables);
+
+const data = ref([30, 40, 60, 70, 5]);
+
+const doughnutRef = ref();
+
+const testData = {
+      labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
+      datasets: [
+        {
+          data: [30, 40, 60, 70, 5],
+          backgroundColor: ['#77CEFF', '#0079AF', '#123E6B', '#97B0C4', '#A5C8ED'],
+        },
+      ],
+    };
+
+const options = ref({
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom',
+        },
+        title: {
+          display: true,
+          text: 'Ventas del mes',
+        },
+      },
+    });
+
+// const testData = computed(() => ({
+//       labels: ['Paris', 'Nîmes', 'Toulon', 'Perpignan', 'Autre'],
+//       datasets: [
+//         {
+//           data: data.value,
+//           backgroundColor: ['#77CEFF', '#0079AF', '#123E6B', '#97B0C4', '#A5C8ED'],
+//         },
+//       ],
+//     }));
 
 const esperando = ref(false);
 
@@ -713,7 +747,7 @@ const generar_pdf = async () => {
   let nuevoArreglo = ref([]);
 
   for (let index = 0; index < listado.value.length; index++) {
-    nuevoArreglo.value.push({id: listado.value[index].id, codigo: listado.value[index].attributes.codigo, type: listado.value[index].type, descripcion: listado.value[index].attributes.descripcion, observacion: listado.value[index].attributes.observacion})
+    nuevoArreglo.value.push({ id: listado.value[index].id, codigo: listado.value[index].attributes.codigo, type: listado.value[index].type, descripcion: listado.value[index].attributes.descripcion, observacion: listado.value[index].attributes.observacion })
   }
 
   // console.log(nuevoArreglo.value)

@@ -18,14 +18,17 @@
     "@formkit/vue": "^1.6.9",
     "@fortawesome/fontawesome-free": "^6.6.0",
     "axios": "^1.7.7",
+    "chart.js": "^3.9.1",
     "jquery": "^3.7.1",
     "jspdf": "^2.5.2",
     "jspdf-autotable": "^3.8.4",
     "sass-loader": "16.0.3",
     "sweetalert2": "^11.6.13",
     "vue": "^3.5.12",
+    "vue-chart-3": "^3.1.8",
     "vue-material-design-icons": "^5.3.1",
     "vue-router": "^4.4.5",
+    "vue3-easy-data-table": "^1.5.47",
     "vue3-popper": "^1.5.0"
   },
   "devDependencies": {

@@ -5,7 +5,7 @@
         <h1 class="h3 mb-2 text-gray-800">INVENTARIO</h1>
         <router-link class="button" to="/gest_inventario">
           <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" v-b-tooltip.hover
-          title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar productos</a>
+            title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar productos</a>
         </router-link>
 
       </div>
@@ -21,33 +21,48 @@
       <!--Opciones de busqueda -->
       <!-- <div class=""> -->
       <div class="col-xl-12 col-lg-12">
-        <div class="mb-2">
+        <div class="card shadow mb-4">
           <!-- Card Header - Dropdown -->
-          <div class=" justify-content-between">
-            <h6 class="m-0 text-info">Opciones de búsqueda</h6>
+          <div class=" card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 text-info">Criterios de búsqueda</h6>
           </div>
           <!-- Card Body -->
           <div class="card-body ">
             <div class="container-fluid row">
-              <div class="col-xl-4 col-lg-4">
+              <div class="col-xl-2 col-lg-3">
                 <label>Por Sucursal</label>
                 <select class="form-control form-control-sm" name="" id="" placeholder="Por Sucursales">
                   <option value="">Sucursal 1</option>
                   <option value="">Sucursal 2</option>
                 </select>
               </div>
-              <div class="col-xl-4 col-lg-4">
+              <div class="col-xl-2 col-lg-3">
                 <label>Por código</label>
                 <select class="form-control form-control-sm" name="" id="" placeholder="Por codigos">
-                  <option value="">Código 1</option>
-                  <option value="">Código 2</option>
+                  <option value="">124263</option>
+                  <option value="">765849</option>
                 </select>
               </div>
-              <div class="col-xl-4 col-lg-4">
-                <label>Por cantidad</label>
+              <div class="col-xl-2 col-lg-3">
+                <label>Por Producto</label>
                 <select class="form-control form-control-sm" name="" id="" placeholder="Por cantidades">
                   <option value="">5</option>
                   <option value="">10</option>
+                </select>
+              </div>
+              <div class="col-xl-2 col-lg-3">
+                <label>Por categoría</label>
+                <select class="form-control form-control-sm" name="" id="" placeholder="Por cantidades">
+                  <option value="">Zapatos</option>
+                  <option value="">Pantalones</option>
+                </select>
+              </div>
+              <div class="col-xl-2 col-lg-3">
+                <label>Ventas desde</label>
+
+                <select class="form-control form-control-sm" name="" id="" placeholder="Por cantidades">
+                  <option value="">Zapatos</option>
+                  <option value="">Pantalones</option>
                 </select>
               </div>
             </div>
@@ -124,20 +139,13 @@
           <!-- Card Body -->
           <div class="card-body">
             <!-- <b-button id="button-2" variant="outline-success">Html chat</b-button> -->
-
+            <EasyDataTable :headers="headers" :items="items" buttons-pagination />
             <div class="table-responsive">
               <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                   <tr style="text-align: center;">
                     <th>No</th>
-                    <!-- <th v-if="siFoto">FOTO</th>
-                    <th v-if="sicodigo">CÓDIGO</th>
-                    <th v-if="sisucursal">SUCURSAL</th>
-                    <th v-if="sidescripcion">DESCRIPCION</th>
-                    <th v-if="siobservaciones">OBSERVACIONES</th>
-                    <th v-if="siestado">ESTADO</th>
-                    <th v-if="siacciones">ACCIONES</th> -->
-                    <!-- <th>FOTO</th> -->
+
                     <th v-if="sicodigo">CÓDIGO</th>
                     <th v-if="sisucursal">SUCURSAL</th>
                     <th v-if="sidescripcion">DESCRIPCION</th>
@@ -148,8 +156,7 @@
                 <tbody>
                   <tr v-for="datos in datosPaginados" :key="datos.id">
                     <td v-if="datos.attributes.deleted_at == null">{{ datos.id }}</td>
-                    <!-- <td style="text-align: end;"><img class="img-profile rounded-circle img-thumbnail"
-                          src="../assets/new/img/undraw_profile_1.svg"> <i class="fas fa-circle text-primary"></i></td> -->
+
                     <td v-if="datos.attributes.deleted_at == null && sicodigo">{{ datos.attributes.codigo }}</td>
                     <td v-if="datos.attributes.deleted_at == null && sisucursal">Sucursal</td>
                     <td v-if="datos.attributes.deleted_at == null && sidescripcion">{{ datos.attributes.descripcion }}
@@ -159,10 +166,7 @@
                     <td v-if="datos.attributes.deleted_at == null && siacciones" style="text-align: center;">
                       <button class="btn btn-info btn-sm btn-circle" v-b-tooltip.hover title="Conformar pedido"><span
                           class="fas fa-check"></span></button>&nbsp;
-                      <!-- <button class="btn btn-success btn-sm btn-circle" @click="clickEditar(datos.id)" v-b-tooltip.hover
-                        title="Editar"><span class="fas fa-edit"></span></button>&nbsp; -->
-                      <!-- <button class="btn btn-success btn-sm btn-circle" @click="editarUModel"
-                          v-b-tooltip.hover title="Editar"><span class="fas fa-edit"></span></button>&nbsp; -->
+
                       <button class="btn btn-danger btn-sm btn-circle"
                         @click="borrarU(datos.id, datos.attributes.codigo)" v-b-tooltip.hover title="Eliminar"><span
                           class="fas fa-trash"></span></button>
@@ -235,7 +239,8 @@
             <!-- <a class="btn btn-info" @click="AColumnas">Aceptar</a> -->
             <a class="btn btn-primary btn-sm" @click="AColumnas">Ninguna</a>
             <a class="btn btn-info btn-sm" @click="MostrarTodas">Todas</a>
-            <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal" @click="abrirModal()">Cerrar</button>
+            <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal"
+              @click="abrirModal()">Cerrar</button>
           </div>
         </div>
       </div>
@@ -253,6 +258,27 @@
 import { ref, reactive, onMounted, watch } from 'vue';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+
+const headers = [
+  { text: "NO", value: "player"},
+  { text: "CODIGO", value: "team"},
+  { text: "CATEGORIA", value: "number"},
+  { text: "P.COMPRA", value: "position"},
+  { text: "P.VENTA", value: "indicator.height"},
+  { text: "UNIDAD", value: "indicator.weight", sortable: true},
+  { text: "STOCK", value: "lastAttended", width: 200},
+  { text: "VENTAS", value: "country"},
+];
+
+const itemsLoad = ref([]);
+
+const items = ref([
+  { player: "Stephen Curry", team: "GSW", number: 30, position: 'G', indicator: {"height": '6-2', "weight": 185}, lastAttended: "Davidson", country: "USA"},
+  { player: "Lebron James", team: "LAL", number: 6, position: 'F', indicator: {"height": '6-9', "weight": 250}, lastAttended: "St. Vincent-St. Mary HS (OH)", country: "USA"},
+  { player: "Kevin Durant", team: "BKN", number: 7, position: 'F', indicator: {"height": '6-10', "weight": 240}, lastAttended: "Texas-Austin", country: "USA"},
+  { player: "Giannis Antetokounmpo", team: "MIL", number: 34, position: 'F', indicator: {"height": '6-11', "weight": 242}, lastAttended: "Filathlitikos", country: "Greece"},
+]);
+
 
 const esperando = ref(false);
 
@@ -297,7 +323,7 @@ const abrirModal = () => {
     activaHide.value = false;
     displayModal.value = 'display: block; padding-right: 17px;';
     showModBack.value = 'modal-backdrop fade show';
-  }else{
+  } else {
     showModal.value = '';
     activaModal.value = false;
     show.value = '';

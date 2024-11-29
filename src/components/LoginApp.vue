@@ -28,7 +28,7 @@
                     <div class="form-group text-left">
                       <label style="color: black;"><i class="fa fa-user"></i> Correo
                         electrónico:</label>
-                      <input type="text" class="form-control form-control-user" id="exampleInputEmail"
+                      <input type="text" class="form-control form-control-user" id="correo"
                         aria-describedby="emailHelp" v-model="form.nombre"
                         placeholder="Correo electrónico" @change="ValidacionEmail()" @keyup="ValidacionEmail()">
                       <div class="text-center"><label v-if="emailError" :style="'color: ' + color">{{ emailError
@@ -40,7 +40,9 @@
                     <div class="form-group text-left">
                       <label style="color: black;"><i class="fa fa-key"></i> Contraseña:</label>
                       <input type="password" v-model="form.passw" class="form-control form-control-user"
-                        id="exampleInputPassword" placeholder="Contraseña">
+                        id="contras" placeholder="Contraseña" @keyup="ValidarPassWord()" @change="ValidarPassWord()">
+                        <div class="text-center"><label v-if="passwError" :style="'color: ' + colorP">{{ passwError
+                          }}</label></div>
                     </div>
                     <!-- <div class="form-group">
                       <div class="custom-control custom-checkbox small">
@@ -96,7 +98,11 @@ let listado = ref([]);
 
 let color = ref('red');
 
+let colorP = ref('red');
+
 const emailError = ref('');
+
+const passwError = ref('');
 
 let dataCache = ref([]);
 
@@ -184,8 +190,24 @@ function ValidarArroba(params) {
   return regExp1.test(params);
 }
 
+function ValidarPassWord(){
+  // console.log('OKk')
+  if (form.passw.length === 0){
+    // console.log("Vacio")
+    passwError.value = 'Debe llenar el campo';
+    colorP.value = 'red';
+  }else{
+    passwError.value = '';
+  }
+}
+
 function ValidacionEmail() {
-  if (!ValidarEmail(form.nombre)) {
+  // console.log(form.nombre.length)
+  if (form.nombre.length === 0){
+    // console.log("Vacio")
+    emailError.value = 'Debe llenar el campo';
+    color.value = 'red';
+  }else if (!ValidarEmail(form.nombre)) {
     emailError.value = 'Email no válido';
     color.value = 'red';
     // console.error('Email no valido')
@@ -193,18 +215,11 @@ function ValidacionEmail() {
     // console.error('Doble arroba')
     emailError.value = 'Tiene repetido el arroba';
     color.value = 'red';
-  }
-  else {
+  }else {
     emailError.value = 'Email válido';
     color.value = 'green';
     return 'OKKK';
   }
-
-  if (form.nombre.length == 0 && form.nombre == null) {
-    emailError.value = 'Debe llenar el campo';
-    color.value = 'red';
-  }
-
 
 }
 // Fin validacion
