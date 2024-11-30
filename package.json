@@ -1,6 +1,6 @@
 {
   "name": "appfull",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -17,6 +17,8 @@
     "@capacitor/core": "^6.1.2",
     "@formkit/vue": "^1.6.9",
     "@fortawesome/fontawesome-free": "^6.6.0",
+    "@venegrad/vue3-autocomplete": "^1.0.7",
+    "@vuepic/vue-datepicker": "^10.0.0",
     "axios": "^1.7.7",
     "chart.js": "^3.9.1",
     "jquery": "^3.7.1",

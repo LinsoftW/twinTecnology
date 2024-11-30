@@ -3,10 +3,24 @@
     <div v-if="!esperando" class="container-fluid">
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-2 text-gray-800">INVENTARIO</h1>
-        <router-link class="button" to="/gest_inventario">
+        <div class="row">
+          <div class="col-md-12 justify-content-between">
+            <!-- <router-link class="button" to="/gest_inventario"> -->
+            <!-- <a @click="abrirModalAddProd()" href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm"
+              v-b-tooltip.hover title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar productos </a> -->
+            <!-- </router-link> -->
+            <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" v-b-tooltip.hover
+              title="Generar resumen diario"><i class="fas fa-download fa-sm "></i> Excel</a> -->
+            <a href="#" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm" v-b-tooltip.hover
+              title="Imprimir"><i class="fas fa-print fa-sm "></i> Imprimir</a>
+          </div>
+        </div>
+
+
+        <!-- <router-link class="button" to="/gest_inventario">
           <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" v-b-tooltip.hover
             title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar productos</a>
-        </router-link>
+        </router-link> -->
 
       </div>
 
@@ -30,6 +44,7 @@
           <div class="card-body ">
             <div class="container-fluid row">
               <div class="col-xl-2 col-lg-3">
+
                 <label>Por Sucursal</label>
                 <select class="form-control form-control-sm" name="" id="" placeholder="Por Sucursales">
                   <option value="">Sucursal 1</option>
@@ -38,6 +53,7 @@
               </div>
               <div class="col-xl-2 col-lg-3">
                 <label>Por código</label>
+                <!-- <input class="form-control form-control-sm" type="text" v-model="searchValue" placeholder="Codigo a buscar"> -->
                 <select class="form-control form-control-sm" name="" id="" placeholder="Por codigos">
                   <option value="">124263</option>
                   <option value="">765849</option>
@@ -45,6 +61,7 @@
               </div>
               <div class="col-xl-2 col-lg-3">
                 <label>Por Producto</label>
+                <!-- <input class="form-control form-control-sm" type="text" v-model="searchNombre" placeholder="Nombre del producto"> -->
                 <select class="form-control form-control-sm" name="" id="" placeholder="Por cantidades">
                   <option value="">5</option>
                   <option value="">10</option>
@@ -59,11 +76,19 @@
               </div>
               <div class="col-xl-2 col-lg-3">
                 <label>Ventas desde</label>
-
-                <select class="form-control form-control-sm" name="" id="" placeholder="Por cantidades">
+                <VueDatePicker v-model="date"></VueDatePicker>
+                <!-- <select class="form-control form-control-sm" name="" id="" placeholder="Por cantidades">
                   <option value="">Zapatos</option>
                   <option value="">Pantalones</option>
-                </select>
+                </select> -->
+              </div>
+              <div class="col-xl-2 col-lg-3">
+                <label>Ventas hasta</label>
+                <VueDatePicker v-model="date2"></VueDatePicker>
+                <!-- <select class="form-control form-control-sm" name="" id="" placeholder="Por cantidades">
+                  <option value="">Zapatos</option>
+                  <option value="">Pantalones</option>
+                </select> -->
               </div>
             </div>
           </div>
@@ -138,9 +163,58 @@
           </div>
           <!-- Card Body -->
           <div class="card-body">
-            <!-- <b-button id="button-2" variant="outline-success">Html chat</b-button> -->
-            <EasyDataTable :headers="headers" :items="items" buttons-pagination />
-            <div class="table-responsive">
+            <!-- Tabla de vue -->
+            <div class="row">
+              <div class="col-md-6">
+                <!-- <div class="row"> -->
+                <div class="justify-content-between">
+                  <!-- <router-link class="button" to="/gest_inventario"> -->
+                  <a @click="abrirModalAddProd()" href="#" class="d-sm-inline-block btn btn-sm btn-info shadow-sm"
+                    v-b-tooltip.hover title="Agregar producto"><i class="fas fa-plus fa-sm "></i> Agregar productos </a>
+                  <!-- </router-link> -->
+                  <a href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2" v-b-tooltip.hover
+                    title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a>
+                </div>
+                <!-- </div> -->
+              </div>
+              <div class="col-md-3">
+                <span class="text-info">Filtrar por columna: </span>
+                <select v-model="searchField" class="">
+                  <option>type</option>
+                  <option>attributes.codigo</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <span class="text-info">Buscar: </span>
+                <input class="" type="text" v-model="searchValue" placeholder="" />
+              </div>
+            </div>
+            <br>
+
+            <EasyDataTable table-class-name="customize-table" :headers="headers" :items="items" buttons-pagination
+              border-cell v-model:items-selected="itemsSelected" header-text-direction="center"
+              body-text-direction="center" :search-field="searchField" :search-value="searchValue" @click-row="showRow"
+              :rows-per-page="5">
+              <template #item-opciones="item">
+                <div class="operation-wrapper">
+                  <button class="btn btn-primary btn-sm btn-circle" @click="editarU(item.id)" v-b-tooltip.hover
+                    title="Modificar"><span class="fas fa-pencil-alt"></span></button>
+                  <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
+                    title="Aumentar"><span class="fas fa-plus"></span></button>
+                  <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
+                    title="Restar"><span class="fas fa-minus"></span></button>
+                  <button class="btn btn-danger btn-sm btn-circle ml-1"
+                    @click="borrarU(item.id, item.attributes.codigo)" v-b-tooltip.hover title="Eliminar"><span
+                      class="fas fas fa-trash-alt"></span></button>
+                </div>
+              </template>
+              <!-- <template #loading>
+                <img src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
+                  style="width: 100px; height: 80px;" />
+              </template> -->
+            </EasyDataTable>
+            <!-- Fin -->
+            <!-- <div class="table-responsive">
               <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                   <tr style="text-align: center;">
@@ -201,7 +275,7 @@
                   </ul>
                 </nav>
               </div>
-            </div>
+            </div> -->
 
           </div>
         </div>
@@ -245,6 +319,7 @@
         </div>
       </div>
     </div>
+    <AddProducto v-show="popup" @cerrar="abrirModalAddProd()" />
   </div>
   <template v-if="esperando">
     <div v-on="loading('Actualizando datos...')">
@@ -255,30 +330,51 @@
   <div :class="showModBack" @click="abrirModal()"></div>
 </template>
 <script setup>
-import { ref, reactive, onMounted, watch } from 'vue';
+import { ref, reactive, onMounted, watch, computed } from 'vue';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import AddProducto from './modal/AddProducto.vue';
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
+
+const date = ref();
+
+const date2 = ref();
+
+const itemsSelected = ref([]);
+
+const popup = ref(false);
+
+const abrirModalAddProd = () => {
+  popup.value = !popup.value;
+  listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
+  obtenerListadoLimpio();
+}
+
+const showRow = () => {
+  if (itemsSelected.value.length > 1) {
+    console.log("Selecciono " + itemsSelected.value.length)
+  }
+
+}
+
+const searchField = ref("attributes.codigo");
+
+const searchValue = ref("");
 
 const headers = [
-  { text: "NO", value: "player"},
-  { text: "CODIGO", value: "team"},
-  { text: "CATEGORIA", value: "number"},
-  { text: "P.COMPRA", value: "position"},
-  { text: "P.VENTA", value: "indicator.height"},
-  { text: "UNIDAD", value: "indicator.weight", sortable: true},
-  { text: "STOCK", value: "lastAttended", width: 200},
-  { text: "VENTAS", value: "country"},
+  { text: "NO", value: "id", width: 50, sortable: true },
+  { text: "CODIGO", value: "attributes.codigo", sortable: true },
+  { text: "CATEGORIA", value: "type" },
+  { text: "P.COMPRA", value: "precioC", sortable: true },
+  { text: "P.VENTA", value: "precioV", sortable: true },
+  { text: "UNIDAD", value: "unidad" },
+  { text: "STOCK", value: "stock", sortable: true },
+  { text: "VENTAS", value: "cantV", sortable: true },
+  { text: "OPCIONES", value: "opciones" }
 ];
 
-const itemsLoad = ref([]);
-
-const items = ref([
-  { player: "Stephen Curry", team: "GSW", number: 30, position: 'G', indicator: {"height": '6-2', "weight": 185}, lastAttended: "Davidson", country: "USA"},
-  { player: "Lebron James", team: "LAL", number: 6, position: 'F', indicator: {"height": '6-9', "weight": 250}, lastAttended: "St. Vincent-St. Mary HS (OH)", country: "USA"},
-  { player: "Kevin Durant", team: "BKN", number: 7, position: 'F', indicator: {"height": '6-10', "weight": 240}, lastAttended: "Texas-Austin", country: "USA"},
-  { player: "Giannis Antetokounmpo", team: "MIL", number: 34, position: 'F', indicator: {"height": '6-11', "weight": 242}, lastAttended: "Filathlitikos", country: "Greece"},
-]);
-
+const items = ref([]);
 
 const esperando = ref(false);
 
@@ -510,32 +606,40 @@ let newListadoSucursal = ref([]);
 
 const obtenerListadoLimpio = () => {
   let i = 0;
-  if (cargado.value = false) {
-    newListado.value = [];
-    for (let index = 0; index < listado.value.length; index++) {
-      const element = listado.value[index];
-      if (element.attributes.deleted_at == null) {
-        newListado.value[i] = element;
-        i++;
-      }
-    }
-    datosSinPaginar.value = newListado.value;
-    cantidad.value = Math.ceil(newListado.value.length / elementPagina.value);
-    obtenerPagina(1);
-    cargado.value = true;
-  } else {
-    newListado.value = []
-    for (let index = 0; index < listado.value.length; index++) {
-      const element = listado.value[index];
-      if (element.attributes.deleted_at == null) {
-        newListado.value[i] = element;
-        i++;
-      }
-    }
-    datosSinPaginar.value = newListado.value;
-    cantidad.value = Math.ceil(newListado.value.length / elementPagina.value);
-    obtenerPagina(1);
+  items.value = [];
+  // console.log("Actualizando")
+  // cargar datos en tabla-vue
+  for (let index = 0; index < listado.value.length; index++) {
+    // const element = listado.value[index];
+    items.value.push(listado.value[index])
   }
+  // console.log(items.value)
+  // if (cargado.value = false) {
+  //   newListado.value = [];
+  //   for (let index = 0; index < listado.value.length; index++) {
+  //     const element = listado.value[index];
+  //     if (element.attributes.deleted_at == null) {
+  //       newListado.value[i] = element;
+  //       i++;
+  //     }
+  //   }
+  //   datosSinPaginar.value = newListado.value;
+  //   cantidad.value = Math.ceil(newListado.value.length / elementPagina.value);
+  //   obtenerPagina(1);
+  //   cargado.value = true;
+  // } else {
+  //   newListado.value = []
+  //   for (let index = 0; index < listado.value.length; index++) {
+  //     const element = listado.value[index];
+  //     if (element.attributes.deleted_at == null) {
+  //       newListado.value[i] = element;
+  //       i++;
+  //     }
+  //   }
+  //   datosSinPaginar.value = newListado.value;
+  //   cantidad.value = Math.ceil(newListado.value.length / elementPagina.value);
+  //   obtenerPagina(1);
+  // }
 
 }
 
@@ -641,8 +745,9 @@ watch(listado.value, (newX) => {
 
 onMounted(() => {
   if (localStorage.getItem('userName')) {
-    // listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
-    // obtenerListadoLimpio();
+    listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
+    obtenerListadoLimpio();
+    // console.log(itemsSelected.value);
     // listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
     // listadoSucursales = obtenerListadoLimpioSucursales();
     cargado.value = true;
@@ -654,4 +759,48 @@ onMounted(() => {
 
 
 </script>
-<style lang="scss" scoped></style>
+<style scoped>
+.customize-table {
+  --easy-table-border: 1px solid #f5f5f7;
+  --easy-table-row-border: 1px solid #c8ced8;
+
+  --easy-table-header-font-size: 14px;
+  --easy-table-header-height: 50px;
+  --easy-table-header-font-color: #09111b;
+  --easy-table-header-background-color: #d6ddde;
+
+  --easy-table-header-item-padding: 10px 15px;
+
+  --easy-table-body-even-row-font-color: #fff;
+  --easy-table-body-even-row-background-color: #fff;
+
+  --easy-table-body-row-font-color: #0f1011;
+  --easy-table-body-row-background-color: #fff;
+  --easy-table-body-row-height: 50px;
+  --easy-table-body-row-font-size: 14px;
+
+  --easy-table-body-row-hover-font-color: #2d3a4f;
+  --easy-table-body-row-hover-background-color: #eee;
+
+  --easy-table-body-item-padding: 10px 15px;
+
+  --easy-table-footer-background-color: #d6ddde;
+  --easy-table-footer-font-color: #0d0e11;
+  --easy-table-footer-font-size: 14px;
+  --easy-table-footer-padding: 0px 10px;
+  --easy-table-footer-height: 50px;
+
+  --easy-table-rows-per-page-selector-width: 70px;
+  --easy-table-rows-per-page-selector-option-padding: 10px;
+  --easy-table-rows-per-page-selector-z-index: 1;
+
+
+  --easy-table-scrollbar-track-color: #2d3a4f;
+  --easy-table-scrollbar-color: #2d3a4f;
+  --easy-table-scrollbar-thumb-color: #4c5d7a;
+  ;
+  --easy-table-scrollbar-corner-color: #2d3a4f;
+
+  --easy-table-loading-mask-background-color: #2d3a4f;
+}
+</style>

@@ -18,7 +18,7 @@
           <div class="card-body">
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
-                <div class="h5 mb-0 font-weight-bold text-gray-800">100</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ cantidad }}</div>
                 <div class="text-md font-weight-bold text-primary mb-1">
                   Productos registrados</div>
               </div>
@@ -87,7 +87,7 @@
                   Ganancias</div>
               </div>
               <div class="col-auto">
-                <i class="fas fa-chart-line fa-3x text-gray-300"></i>
+                <i class="fas fa-dollar-sign fa-3x text-gray-300"></i>
               </div>
               <hr>
 
@@ -440,6 +440,8 @@ onMounted(async () => {
     // Cosc_Clar.value = localStorage.getItem('background');
     // consultar();
     listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
+    // cantidad.value = listado.value.length;
+    // console.log(listado.value)
     obtenerListadoLimpio();
   } else {
     router.push('/login');
@@ -692,6 +694,7 @@ const obtenerListadoLimpio = () => {
     cantidad.value = Math.ceil(newListado.value.length / elementPagina.value);
     obtenerPagina(1);
   }
+  cantidad.value = newListado.value.length;
 
 }
 
