@@ -29,8 +29,11 @@
 
             </div>
           </div>
-          <div class="card-footer"><a href="#"><label>Más información <i
-                  class="far fa-arrow-alt-circle-right"></i></label></a></div>
+          <div class="card-footer">
+            <router-link to="/inventario">
+              <a href="#"><label>Más información <i class="far fa-arrow-alt-circle-right"></i></label></a>
+            </router-link>
+          </div>
         </div>
       </div>
       <!-- total de compras -->
@@ -158,7 +161,7 @@
           </div>
           <div class="card-body">
 
-              <BarChart ref="doughnutRef" :chartData="testData" :options="options" />
+            <BarChart ref="doughnutRef" :chartData="testData" :options="options" />
 
           </div>
         </div>
@@ -175,7 +178,7 @@
         <div class="card shadow mb-4">
           <!-- Card Header - Dropdown -->
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-info">PRODUCTOS MÁS VENDIDOS</h6>
+            <h6 class="m-0 font-weight-bold text-info">LOS 10 PRODUCTOS MÁS VENDIDOS</h6>
             <div class="dropdown no-arrow">
               <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
@@ -193,68 +196,52 @@
           </div>
           <!-- Card Body -->
           <div class="card-body">
-
-            <div class="table-responsive">
-              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <thead>
-                  <tr style="text-align: center;">
-                    <th>No</th>
-                    <!-- <th>FOTO</th> -->
-                    <th>CÓDIGO</th>
-                    <th>SUCURSAL</th>
-                    <th>DESCRIPCION</th>
-                    <th>OBSERVACIONES</th>
-                    <!-- <th>ACCIONES</th> -->
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="datos in datosPaginados" :key="datos.id">
-                    <td v-if="datos.attributes.deleted_at == null">{{ datos.id }}</td>
-                    <!-- <td style="text-align: end;"><img class="img-profile rounded-circle img-thumbnail"
-                          src="../assets/new/img/undraw_profile_1.svg"> <i class="fas fa-circle text-primary"></i></td> -->
-                    <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.codigo }}</td>
-                    <td v-if="datos.attributes.deleted_at == null">Sucursal</td>
-                    <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.descripcion }}</td>
-                    <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.observacion }}</td>
-                    <!-- <td v-if="datos.attributes.deleted_at == null" style="text-align: center;">
-                      <button class="btn btn-success btn-sm btn-circle" @click="clickEditar(datos.id)" v-b-tooltip.hover
-                        title="Editar"><span class="fas fa-edit"></span></button>&nbsp;
-
-                      <button class="btn btn-danger btn-sm btn-circle"
-                        @click="borrarU(datos.id, datos.attributes.codigo)" v-b-tooltip.hover title="Eliminar"><span
-                          class="fas fa-trash"></span></button>
-                    </td> -->
-                  </tr>
-
-
-                </tbody>
-              </table>
-
-              <div class="text-center">
-                <nav aria-label="Page navigation example" style="text-align: center;">
-                  <label>Mostrando &nbsp;</label>
-                  <select style="width: 60px" @change="cambiarLimite()" v-model="elementPagina">
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                  </select>
-
-                  <label>&nbsp;registros </label>
-                  <ul class="pagination Mestilo btn-sm">
-
-                    <li class="page-item" :class="`${disableA}`" @click="obtenerAnterior"><a class="page-link"
-                        href="#">Anterior</a></li>
-                    <li v-for="pagina in cantidad" class="page-item" v-bind:class="isActivo(pagina)" :key="pagina"
-                      @click="obtenerPagina(pagina)"><a class="page-link" href="#">{{ pagina
-                        }}</a></li>
-                    <li class="page-item" :class="`${disableS}`" @click="obtenerSiguiente"><a class="page-link"
-                        href="#">Siguiente</a></li>
-                  </ul>
-                </nav>
+            <!-- <div class="col-md-3 col-xl-3 col-lg-3">
+                <span class="text-info">Filtrar por columna: </span>
+                <select v-model="searchField" class="form-control form-control-user">
+                  <option>type</option>
+                  <option>attributes.codigo</option>
+                </select>
+              </div> -->
+            <div class="row">
+              <div class="col-md-6 col-xl-6 col-lg-12">
+                <div class="justify-content-between">
+                  <!-- <router-link class="button" to="/gest_inventario"> -->
+                  <a @click="abrirModalAddProd()" href="#" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm"
+                    v-b-tooltip.hover title="Agregar producto"><i class="fas fa-print fa-sm "></i> Imprimir </a>
+                  <!-- </router-link> -->
+                  <a @click="ExportExcel()" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
+                    v-b-tooltip.hover title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a>
+                </div>
+              </div>
+              <div class="col-md-6 col-xl-6 col-lg-12">
+                <span class="text-info">Buscar: </span>
+                <input class="" type="text" v-model="searchValue" placeholder="" />
               </div>
             </div>
+            <br>
+
+            <EasyDataTable table-class-name="customize-table" :headers="headers" :items="items" buttons-pagination
+              border-cell header-text-direction="center" body-text-direction="center" :search-field="searchField"
+              :search-value="searchValue" :rows-per-page="5">
+              <template #item-opciones="item">
+                <div class="operation-wrapper">
+                  <button class="btn btn-primary btn-sm btn-circle" @click="editarU(item.id)" v-b-tooltip.hover
+                    title="Modificar"><span class="fas fa-eye"></span></button>
+                  <!-- <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
+                    title="Aumentar"><span class="fas fa-plus"></span></button>
+                  <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
+                    title="Restar"><span class="fas fa-minus"></span></button>
+                  <button class="btn btn-danger btn-sm btn-circle ml-1"
+                    @click="borrarU(item.id, item.attributes.codigo)" v-b-tooltip.hover title="Eliminar"><span
+                      class="fas fas fa-trash-alt"></span></button> -->
+                </div>
+              </template>
+              <!-- <template #loading>
+                <img src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
+                  style="width: 100px; height: 80px;" />
+              </template> -->
+            </EasyDataTable>
 
             <!-- <div class="mt-4 text-center small">
               <span class="mr-2">
@@ -280,68 +267,44 @@
           </div>
           <!-- Card Body -->
           <div class="card-body">
-
-            <div class="table-responsive">
-              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <thead>
-                  <tr style="text-align: center;">
-                    <th>No</th>
-                    <!-- <th>FOTO</th> -->
-                    <th>CÓDIGO</th>
-                    <th>SUCURSAL</th>
-                    <th>DESCRIPCION</th>
-                    <th>OBSERVACIONES</th>
-                    <!-- <th>ACCIONES</th> -->
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="datos in datosPaginados" :key="datos.id">
-                    <td v-if="datos.attributes.deleted_at == null">{{ datos.id }}</td>
-                    <!-- <td style="text-align: end;"><img class="img-profile rounded-circle img-thumbnail"
-                          src="../assets/new/img/undraw_profile_1.svg"> <i class="fas fa-circle text-primary"></i></td> -->
-                    <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.codigo }}</td>
-                    <td v-if="datos.attributes.deleted_at == null">Sucursal</td>
-                    <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.descripcion }}</td>
-                    <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.observacion }}</td>
-                    <!-- <td v-if="datos.attributes.deleted_at == null" style="text-align: center;">
-                      <button class="btn btn-success btn-sm btn-circle" @click="clickEditar(datos.id)" v-b-tooltip.hover
-                        title="Editar"><span class="fas fa-edit"></span></button>&nbsp;
-
-                      <button class="btn btn-danger btn-sm btn-circle"
-                        @click="borrarU(datos.id, datos.attributes.codigo)" v-b-tooltip.hover title="Eliminar"><span
-                          class="fas fa-trash"></span></button>
-                    </td> -->
-                  </tr>
-
-
-                </tbody>
-              </table>
-
-              <div class="text-center">
-                <nav aria-label="Page navigation example" style="text-align: center;">
-                  <label>Mostrando &nbsp;</label>
-                  <select style="width: 60px" @change="cambiarLimite()" v-model="elementPagina">
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                  </select>
-
-                  <label>&nbsp;registros </label>
-                  <ul class="pagination Mestilo btn-sm">
-
-                    <li class="page-item" :class="`${disableA}`" @click="obtenerAnterior"><a class="page-link"
-                        href="#">Anterior</a></li>
-                    <li v-for="pagina in cantidad" class="page-item" v-bind:class="isActivo(pagina)" :key="pagina"
-                      @click="obtenerPagina(pagina)"><a class="page-link" href="#">{{ pagina
-                        }}</a></li>
-                    <li class="page-item" :class="`${disableS}`" @click="obtenerSiguiente"><a class="page-link"
-                        href="#">Siguiente</a></li>
-                  </ul>
-                </nav>
+            <div class="row">
+              <div class="col-md-6 col-xl-6 col-lg-12">
+                <div class="justify-content-between">
+                  <!-- <router-link class="button" to="/gest_inventario"> -->
+                  <a @click="abrirModalAddProd()" href="#" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm"
+                    v-b-tooltip.hover title="Agregar producto"><i class="fas fa-print fa-sm "></i> Imprimir </a>
+                  <!-- </router-link> -->
+                  <a @click="ExportExcel()" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
+                    v-b-tooltip.hover title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a>
+                </div>
+              </div>
+              <div class="col-md-6 col-xl-6 col-lg-12">
+                <span class="text-info">Buscar: </span>
+                <input class="" type="text" v-model="searchValue1" placeholder="" />
               </div>
             </div>
+            <br>
+            <EasyDataTable table-class-name="customize-table" :headers="headers" :items="items" buttons-pagination
+              border-cell header-text-direction="center" body-text-direction="center" :search-field="searchField"
+              :search-value="searchValue1" :rows-per-page="5">
+              <template #item-opciones="item">
+                <div class="operation-wrapper">
+                  <button class="btn btn-primary btn-sm btn-circle" @click="editarU(item.id)" v-b-tooltip.hover
+                    title="Modificar"><span class="fas fa-eye"></span></button>
+                  <!-- <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
+                    title="Aumentar"><span class="fas fa-plus"></span></button>
+                  <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
+                    title="Restar"><span class="fas fa-minus"></span></button>
+                  <button class="btn btn-danger btn-sm btn-circle ml-1"
+                    @click="borrarU(item.id, item.attributes.codigo)" v-b-tooltip.hover title="Eliminar"><span
+                      class="fas fas fa-trash-alt"></span></button> -->
+                </div>
+              </template>
+              <!-- <template #loading>
+                <img src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
+                  style="width: 100px; height: 80px;" />
+              </template> -->
+            </EasyDataTable>
 
           </div>
         </div>
@@ -378,27 +341,49 @@ const data = ref([30, 40, 60, 70, 5]);
 const doughnutRef = ref();
 
 const testData = {
-      labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
-      datasets: [
-        {
-          data: [30, 40, 60, 70, 5],
-          backgroundColor: ['#77CEFF', '#0079AF', '#123E6B', '#97B0C4', '#A5C8ED'],
-        },
-      ],
-    };
+  labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
+  datasets: [
+    {
+      data: [30, 40, 60, 70, 5],
+      backgroundColor: ['#77CEFF', '#0079AF', '#123E6B', '#97B0C4', '#A5C8ED'],
+    },
+  ],
+};
 
 const options = ref({
-      responsive: true,
-      plugins: {
-        legend: {
-          position: 'bottom',
-        },
-        title: {
-          display: true,
-          text: 'Ventas del mes',
-        },
-      },
-    });
+  responsive: true,
+  plugins: {
+    legend: {
+      position: 'bottom',
+    },
+    title: {
+      display: true,
+      text: 'Ventas del mes',
+    },
+  },
+});
+
+const itemsSelected = ref([]);
+
+const searchField = ref("attributes.codigo");
+
+const searchValue = ref("");
+
+const searchValue1 = ref("");
+
+const headers = [
+  { text: "NO", value: "id", width: 50, sortable: true },
+  { text: "CODIGO", value: "attributes.codigo", sortable: true },
+  { text: "CATEGORIA", value: "type" },
+  { text: "P.COMPRA", value: "precioC", sortable: true },
+  { text: "P.VENTA", value: "precioV", sortable: true },
+  { text: "UNIDAD", value: "unidad" },
+  { text: "STOCK", value: "stock", sortable: true },
+  { text: "VENTAS", value: "cantV", sortable: true },
+  { text: "OPCIONES", value: "opciones", fixed: true }
+];
+
+const items = ref([]);
 
 // const testData = computed(() => ({
 //       labels: ['Paris', 'Nîmes', 'Toulon', 'Perpignan', 'Autre'],
@@ -696,6 +681,11 @@ const obtenerListadoLimpio = () => {
   }
   cantidad.value = newListado.value.length;
 
+  items.value = [];
+  for (let index = 0; index < listado.value.length; index++) {
+    items.value.push(listado.value[index])
+  }
+
 }
 
 const consultar = async () => {
@@ -707,21 +697,12 @@ const consultar = async () => {
         obtenerListadoLimpio();
         actualizar_datos();
         cargado.value = true;
-        // console.log(response.data.data)
-        // datosSinPaginar.value = response.data.data;
-        // cantidad.value = Math.ceil(response.data.data.length / elementPagina.value);
-        // obtenerPagina(1);
-        // cargado.value = true;
-        // router.go();
       });
   } else {
     almacenDatosProductos(listado.value);
     obtenerListadoLimpio();
     actualizar_datos();
     cargado.value = true;
-    // datosSinPaginar.value = listado.value;
-    // cantidad.value = Math.ceil(listado.value.length / elementPagina.value);
-    // obtenerPagina(1);
   }
 
 }

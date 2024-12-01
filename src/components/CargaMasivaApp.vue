@@ -2,19 +2,13 @@
   <div>
     <div v-if="!esperando" class="container-fluid">
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-2 text-gray-800">INVENTARIO</h1>
-        <div class="row">
+        <h1 class="h3 mb-2 text-gray-800">CARGA MASIVA DE ARCHIVOS</h1>
+        <!-- <div class="row">
           <div class="col-md-12 justify-content-between">
-            <!-- <router-link class="button" to="/gest_inventario"> -->
-            <!-- <a @click="abrirModalAddProd()" href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm"
-              v-b-tooltip.hover title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar productos </a> -->
-            <!-- </router-link> -->
-            <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" v-b-tooltip.hover
-              title="Generar resumen diario"><i class="fas fa-download fa-sm "></i> Excel</a> -->
             <a @click="ImprimirDoc()" href="#" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm"
               v-b-tooltip.hover title="Imprimir"><i class="fas fa-print fa-sm "></i> Imprimir</a>
           </div>
-        </div>
+        </div> -->
 
 
         <!-- <router-link class="button" to="/gest_inventario">
@@ -38,57 +32,24 @@
         <div class="card shadow mb-4">
           <!-- Card Header - Dropdown -->
           <div class=" card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 text-info">Criterios de búsqueda</h6>
+            <h6 class="m-0 font-weight-bold text-info">SELECCIONE EL  ARCHIVO A CARGAR (* Excel)</h6>
           </div>
           <!-- Card Body -->
           <div class="card-body ">
-            <div class="container-fluid row">
-              <div class="col-xl-2 col-lg-3">
-
-                <label>Por Sucursal</label>
-                <select class="form-control form-control-sm" name="" id="" placeholder="Por Sucursales">
-                  <option value="">Sucursal 1</option>
-                  <option value="">Sucursal 2</option>
+            <div class="row d-sm-flex align-items-center justify-content-between mb-4 ">
+              <!-- <div class="col-xl-3 col-lg-6 col-md-6 ">
+                <label class="m-2 ">Por Sucursal</label>
+                <select class="form-control form-control-user">
+                  <option value="">Productos</option>
+                  <option value="">Categorías</option>
                 </select>
+              </div> -->
+              <div class="col-xl-9 col-lg-6 col-md-6">
+                <!-- <label>Por Sucursal</label> -->
+                <input type="file" class="form-control form-control-user"/>
               </div>
-              <div class="col-xl-2 col-lg-3">
-                <label>Por código</label>
-                <!-- <input class="form-control form-control-sm" type="text" v-model="searchValue" placeholder="Codigo a buscar"> -->
-                <select class="form-control form-control-sm" name="" id="" placeholder="Por codigos">
-                  <option value="">124263</option>
-                  <option value="">765849</option>
-                </select>
-              </div>
-              <div class="col-xl-2 col-lg-3">
-                <label>Por Producto</label>
-                <!-- <input class="form-control form-control-sm" type="text" v-model="searchNombre" placeholder="Nombre del producto"> -->
-                <select class="form-control form-control-sm" name="" id="" placeholder="Por cantidades">
-                  <option value="">5</option>
-                  <option value="">10</option>
-                </select>
-              </div>
-              <div class="col-xl-2 col-lg-3">
-                <label>Por categoría</label>
-                <select class="form-control form-control-sm" name="" id="" placeholder="Por cantidades">
-                  <option value="">Zapatos</option>
-                  <option value="">Pantalones</option>
-                </select>
-              </div>
-              <div class="col-xl-2 col-lg-3">
-                <label>Ventas desde</label>
-                <VueDatePicker v-model="date"></VueDatePicker>
-                <!-- <select class="form-control form-control-sm" name="" id="" placeholder="Por cantidades">
-                  <option value="">Zapatos</option>
-                  <option value="">Pantalones</option>
-                </select> -->
-              </div>
-              <div class="col-xl-2 col-lg-3">
-                <label>Ventas hasta</label>
-                <VueDatePicker v-model="date2"></VueDatePicker>
-                <!-- <select class="form-control form-control-sm" name="" id="" placeholder="Por cantidades">
-                  <option value="">Zapatos</option>
-                  <option value="">Pantalones</option>
-                </select> -->
+              <div class="col-xl-3 col-lg-6 col-md-6 col-sm-4">
+                <button class="form-control form-control-user d-sm-inline-block btn btn-sm btn-info shadow-sm m-2"><i class="fas fa-upload"></i>  CARGAR ARCHIVO</button>
               </div>
             </div>
           </div>
@@ -133,154 +94,6 @@
       </div> -->
       </div>
 
-      <!--Listado de productos -->
-      <div class="col-xl-12 col-lg-7">
-        <div class="card shadow mb-4">
-          <!-- Card Header - Dropdown -->
-          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-info">PRODUCTOS EN STOCK</h6>
-            <div :class="'dropdown no-arrow ' + show">
-              <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                aria-haspopup="true" :aria-expanded="activaShow" @click="Exp_3Ptos()">
-                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-              </a>
-              <div :class="'dropdown-menu dropdown-menu-right shadow animated--fade-in ' + show"
-                aria-labelledby="dropdownMenuLink">
-                <div class="dropdown-header">Acciones:</div>
-                <a class="dropdown-item" href="#" @click="Exp_3Ptos()"><span class="fa fa-cog"></span> Administrar</a>
-                <a class="dropdown-item" href="#" @click="Exp_3Ptos()"><span class="fa fa-check"></span> Conformar
-                  pedidos</a>
-                <!-- <a class="dropdown-item" href="#"><span class="fa fa-bars"></span> Agregar o quitar columnas</a> -->
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#filasColumnas"
-                  @click="abrirModal()">
-                  <span class="fa fa-bars"></span> Agregar o quitar columnas
-                </a>
-
-                <!-- <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Otros</a> -->
-              </div>
-            </div>
-          </div>
-          <!-- Card Body -->
-          <div class="card-body">
-            <!-- Tabla de vue -->
-            <div class="row">
-              <div class="col-md-6 col-xl-6 col-lg-6">
-                <!-- <div class="row"> -->
-                <div class="justify-content-between">
-                  <!-- <router-link class="button" to="/gest_inventario"> -->
-                  <a @click="abrirModalAddProd()" href="#" class="d-sm-inline-block btn btn-sm btn-info shadow-sm"
-                    v-b-tooltip.hover title="Agregar producto"><i class="fas fa-plus fa-sm "></i> Agregar productos </a>
-                  <!-- </router-link> -->
-                  <a @click="ExportExcel()" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
-                    v-b-tooltip.hover title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a>
-                </div>
-                <!-- </div> -->
-              </div>
-              <div class="col-md-3 col-xl-3 col-lg-3">
-                <span class="text-info">Filtrar por columna: </span>
-                <select v-model="searchField" class="form-control form-control-user">
-                  <option>type</option>
-                  <option>attributes.codigo</option>
-                </select>
-              </div>
-              <div class="col-md-3 col-xl-3 col-lg-3">
-                <span class="text-info">Buscar: </span>
-                <input class="form-control form-control-user" type="text" v-model="searchValue" placeholder="" />
-              </div>
-            </div>
-            <br>
-
-            <EasyDataTable table-class-name="customize-table" :headers="headers" :items="items" buttons-pagination
-              border-cell v-model:items-selected="itemsSelected" header-text-direction="center"
-              body-text-direction="center" :search-field="searchField" :search-value="searchValue" @click-row="showRow"
-              :rows-per-page="5">
-              <template #item-opciones="item">
-                <div class="operation-wrapper">
-                  <button class="btn btn-primary btn-sm btn-circle" @click="editarU(item.id)" v-b-tooltip.hover
-                    title="Modificar"><span class="fas fa-pencil-alt"></span></button>
-                  <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
-                    title="Aumentar"><span class="fas fa-plus"></span></button>
-                  <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
-                    title="Restar"><span class="fas fa-minus"></span></button>
-                  <button class="btn btn-danger btn-sm btn-circle ml-1"
-                    @click="borrarU(item.id, item.attributes.codigo)" v-b-tooltip.hover title="Eliminar"><span
-                      class="fas fas fa-trash-alt"></span></button>
-                </div>
-              </template>
-              <!-- <template #loading>
-                <img src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
-                  style="width: 100px; height: 80px;" />
-              </template> -->
-            </EasyDataTable>
-            <!-- Fin -->
-            <!-- <div class="table-responsive">
-              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <thead>
-                  <tr style="text-align: center;">
-                    <th>No</th>
-
-                    <th v-if="sicodigo">CÓDIGO</th>
-                    <th v-if="sisucursal">SUCURSAL</th>
-                    <th v-if="sidescripcion">DESCRIPCION</th>
-                    <th v-if="siobservaciones">OBSERVACIONES</th>
-                    <th v-if="siacciones">ACCIONES</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="datos in datosPaginados" :key="datos.id">
-                    <td v-if="datos.attributes.deleted_at == null">{{ datos.id }}</td>
-
-                    <td v-if="datos.attributes.deleted_at == null && sicodigo">{{ datos.attributes.codigo }}</td>
-                    <td v-if="datos.attributes.deleted_at == null && sisucursal">Sucursal</td>
-                    <td v-if="datos.attributes.deleted_at == null && sidescripcion">{{ datos.attributes.descripcion }}
-                    </td>
-                    <td v-if="datos.attributes.deleted_at == null && siobservaciones">{{ datos.attributes.observacion }}
-                    </td>
-                    <td v-if="datos.attributes.deleted_at == null && siacciones" style="text-align: center;">
-                      <button class="btn btn-info btn-sm btn-circle" v-b-tooltip.hover title="Conformar pedido"><span
-                          class="fas fa-check"></span></button>&nbsp;
-
-                      <button class="btn btn-danger btn-sm btn-circle"
-                        @click="borrarU(datos.id, datos.attributes.codigo)" v-b-tooltip.hover title="Eliminar"><span
-                          class="fas fa-trash"></span></button>
-                    </td>
-                  </tr>
-
-
-                </tbody>
-              </table>
-
-              <div class="text-center">
-                <nav aria-label="Page navigation example" style="text-align: center;">
-                  <label>Mostrando &nbsp;</label>
-                  <select style="width: 60px" @change="cambiarLimite()" v-model="elementPagina">
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                  </select>
-
-                  <label>&nbsp;registros </label>
-                  <ul class="pagination Mestilo btn-sm">
-
-                    <li class="page-item" :class="`${disableA}`" @click="obtenerAnterior"><a class="page-link"
-                        href="#">Anterior</a></li>
-                    <li v-for="pagina in cantidad" class="page-item" v-bind:class="isActivo(pagina)" :key="pagina"
-                      @click="obtenerPagina(pagina)"><a class="page-link" href="#">{{ pagina
-                        }}</a></li>
-                    <li class="page-item" :class="`${disableS}`" @click="obtenerSiguiente"><a class="page-link"
-                        href="#">Siguiente</a></li>
-                  </ul>
-                </nav>
-              </div>
-            </div> -->
-
-          </div>
-        </div>
-      </div>
-      <!-- FIN -->
     </div>
     <!-- Logout Modal-->
     <div :class="'modal fade ' + showModal" id="filasColumnas" tabindex="-1" role="dialog"
@@ -338,8 +151,6 @@ import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 
 const emit = defineEmits(['consultar'])
-
-// const props = defineProps(['key'])
 
 function Consultar_Productos() {
   emit('consultar', 1);
@@ -626,22 +437,25 @@ let newListado = ref([]);
 
 let newListadoSucursal = ref([]);
 
-const obtenerListadoLimpio = async () => {
+const obtenerListadoLimpio = () => {
+  let i = 0;
   items.value = [];
   // cargar datos en tabla-vue
-  // console.log('Actualizando 1...')
   for (let index = 0; index < listado.value.length; index++) {
     items.value.push(listado.value[index])
   }
 
-  return await items;
-
 }
 
 const almacenDatosProductos = (Lista) => {
+  // if (localStorage.getItem('ListadoCache')) {
   localStorage.removeItem('ListadoCache');
+  //   }else{
   const parsed = JSON.stringify(Lista);
   localStorage.setItem('ListadoCache', parsed);
+  // console.log(JSON.parse(localStorage.getItem('ListadoCache')));
+  // dataCache.value = JSON.parse(localStorage.getItem('ListadoCache'));
+  // }
 }
 
 const consultar = async () => {
@@ -693,8 +507,8 @@ const borrarU = (id, correo) => {
       axios.delete(`http://${ipPublica.value}/fullstack/public/productos/${id}`)
         .then(() => {
           esperando.value = false;
-          consultar();
           cerrarAlert();
+          consultar();
           cancelarU();
           Swal.fire({
             title: "Eliminado",
@@ -729,14 +543,9 @@ const cambiarLimite = () => {
   obtenerPagina(1);
 }
 
-// watch(listado, async (newQuestion, oldQuestion) => {
-//   // console.log(`El nuevo listado es ${newQuestion}`)
-//   // console.log(`El nuevo listado es ${listado.value}`)
-//   // almacenDatosProductos(listado.value);
-//   obtenerListadoLimpio();
-//   cargado.value = true;
-//   // console.log(`El viejo listado es ${oldQuestion}`)
-// })
+watch(listado.value, (newX) => {
+  console.log(`El nuevo listado es ${newX}`)
+})
 
 onMounted(() => {
   if (localStorage.getItem('userName')) {
@@ -746,7 +555,6 @@ onMounted(() => {
     // listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
     // listadoSucursales = obtenerListadoLimpioSucursales();
     cargado.value = true;
-    // console.log(props.key)
   } else {
     router.push('/login');
   }

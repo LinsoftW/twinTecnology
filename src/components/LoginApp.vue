@@ -26,7 +26,7 @@
                   </div>
                   <form class="">
                     <div class="form-group text-left">
-                      <label style="color: black;"><i class="fa fa-user"></i> Correo
+                      <label style="color: black;"><i class="fa fa-user-circle"></i> Correo
                         electrónico:</label>
                       <input type="text" class="form-control form-control-user" id="correo"
                         aria-describedby="emailHelp" v-model="form.nombre"

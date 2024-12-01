@@ -66,6 +66,16 @@ const router = createRouter({
             name: 'gest_nomencladores',
             component: MenuApp,
         },
+        {
+            path: '/cmasiva',
+            name: 'cmasiva',
+            component: MenuApp,
+        },
+        {
+            path: '/categorias',
+            name: 'categorias',
+            component: MenuApp,
+        },
     ]
 })
 

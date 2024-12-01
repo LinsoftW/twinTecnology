@@ -55,7 +55,7 @@
               <a class="collapse-item" v-bind:class="ActivaLink(1)" :key="1" @click="obtenerLinkA(1)"><i
                   class="far fa-check-circle"></i> Inventario</a>
             </router-link>
-            <router-link class="button" to="/inventario">
+            <router-link class="button" to="/categorias">
               <a class="collapse-item" v-bind:class="ActivaLink(2)" :key="2" @click="obtenerLinkA(2)"> <i
                   class="far fa-check-circle"></i>
                 Categorías</a>
@@ -64,7 +64,7 @@
               <a class="collapse-item" v-bind:class="ActivaLink(3)" :key="3" @click="obtenerLinkA(3)"> <i
                   class="fas fa-fw fa-eye"></i> Pedidos</a>
             </router-link>-->
-            <router-link class="button" to="/sucursales">
+            <router-link class="button" to="/cmasiva">
               <a class="collapse-item" v-bind:class="ActivaLink(3)" :key="3" @click="obtenerLinkA(3)"> <i
                   class="far fa-check-circle"></i> Carga masiva</a>
             </router-link>
@@ -118,7 +118,15 @@
             <!-- <a class="collapse-item button" @click="click_sucursales">Sucursales</a> -->
             <router-link class="button" to="/gest_nomencladores">
               <a class="collapse-item" v-bind:class="ActivaLink(7)" :key="7" @click="obtenerLinkA(7)"> <i
-                  class="fas fa-fw fa-edit"></i> Nomencladores</a>
+                  class="fas fa-fw fa-cogs"></i> Datos empresa</a>
+            </router-link>
+            <router-link class="button" to="/gest_nomencladores">
+              <a class="collapse-item" v-bind:class="ActivaLink(8)" :key="8" @click="obtenerLinkA(8)"> <i
+                  class="fas fa-fw fa-cogs"></i> Datos usuarios</a>
+            </router-link>
+            <router-link class="button" to="/gest_nomencladores">
+              <a class="collapse-item" v-bind:class="ActivaLink(9)" :key="9" @click="obtenerLinkA(9)"> <i
+                  class="fas fa-fw fa-cogs"></i> Datos provedores</a>
             </router-link>
             <!-- <router-link class="button" to="/gest_inventario">
               <a class="collapse-item" v-bind:class="ActivaLink(6)" :key="6" @click="obtenerLinkA(6)"> <i
@@ -435,7 +443,13 @@
           <ProductosApp :key="Kgest_inventario" />
         </div>
         <div v-if="route.path == '/inventario'">
-          <InventarioApp :key="Kinventario" />
+          <InventarioApp :key="Kinventario" @consultar="consultar" />
+        </div>
+        <div v-if="route.path == '/cmasiva'">
+          <CargaMasivaApp :key="Kcmasiva" @consultar="consultar" />
+        </div>
+        <div v-if="route.path == '/categorias'">
+          <CategoriasApp :key="Kcategorias" @consultar="consultar" />
         </div>
         <div v-if="route.path == '/user'">
           <UserApp :key="Kuser" />
@@ -520,6 +534,8 @@ import GestUserApp from '@/components/GestUserApp.vue';
 import GetSucursalesApp from '@/components/GetSucursalesApp.vue';
 import GestPedidoApp from '@/components/GestPedidoApp.vue';
 import GestNomencladoresApp from '@/components/GestNomencladoresApp.vue';
+import CargaMasivaApp from '@/components/CargaMasivaApp.vue';
+import CategoriasApp from '@/components/CategoriasApp.vue';
 
 const Kinicio = ref(0);
 const Kpedidos = ref(0);
@@ -746,9 +762,9 @@ const Exp_Nomenc = () => {
 
 const ActivaLink = (valor) => {
   // if (valor != 1) {
-    // collapsed.value = 'collapsed';
-    // activa.value = false;
-    // show.value = '';
+  // collapsed.value = 'collapsed';
+  // activa.value = false;
+  // show.value = '';
   // }
   if (valor == link.value) {
     return 'active'
@@ -784,31 +800,40 @@ const ActivaLink = (valor) => {
 // })
 
 const almacenDatosProductos = (Lista) => {
-  // if (localStorage.getItem('ListadoCache')) {
-  //datos_archivados.value.push(Lista);
   localStorage.removeItem('ListadoCache');
-  //   }else{
   const parsed = JSON.stringify(Lista);
   localStorage.setItem('ListadoCache', parsed);
-  // dataCache.value = JSON.parse(localStorage.getItem('ListadoCache'));
-  // }
 }
 
-// const consultar = async () => {
-//   if (cargado.value == false) {
-//     let response = await axios.get(`http://` + ipPublica.value + `/fullstack/public/productos`)
-//       .then((response) => {
-//         listado.value = response.data.data;
-//         almacenDatosProductos(listado.value);
-//         obtenerListadoLimpio();
-//         cargado.value = true;
-//       });
-//   } else {
-//     almacenDatosProductos(listado.value);
-//     obtenerListadoLimpio();
-//   }
+const consultar = async (n) => {
+  // console.log("Desde INVENTARIO");
+  // if (cargado.value == false) {
+  // console.log(n)
+  if (n == 1) {
+    let response = await axios.get(`http://` + ipPublica.value + `/fullstack/public/productos`)
+      .then((response) => {
+        listado.value = response.data.data;
+        almacenDatosProductos(listado.value);
+        // cargado.value = true;
+        Kinventario.value = Kinventario.value + 1;
+      });
 
-// }
+  }
+  if (n == 2) {
+    console.log("Excel")
+    // Kinventario.value = Kinventario.value + 1;
+  }
+  if (n == 3) {
+    console.log("Imprimir")
+  }
+
+  // } else {
+  //   almacenDatosProductos(listado.value);
+  //   cargado.value = true;
+  // }
+
+}
+
 // Paginado
 const obtenerPagina = (nopage) => {
   paginaActual.value = nopage;

@@ -28,9 +28,10 @@
                     <!-- <FormKit label="Username" type="text" help="Pick a new username"
                         validation="required|matches:/^@[a-zA-Z]+$/|length:5" value="@FormKit" /> -->
                     <div class="form-group col-lg-4">
-                      <label class="text-info">Código: <label style="color: red;">*</label></label> <i class="fas fa-barcode"></i>
+                      <label class="text-info">Código: <label style="color: red;">*</label></label> <i class="fas fa-barcode"></i> <a class="btn btn-secondary btn-xs" @click="generarBArCode()"><i class="fas fa-sync"></i></a>
                       <input type="text" class="form-control" id="codigo" aria-describedby="emailHelp"
                         v-model="formProductos.data.attributes.codigo" placeholder="Código" required>
+
                     </div>
                     <div class="form-group col-lg-8">
                       <label class="text-info">Descripción: <label style="color: red;">*</label></label>
@@ -48,14 +49,20 @@
                         aria-describedby="emailHelp" v-model="form.apellido1" placeholder="Observaciones acerca del producto"> -->
                   </div>
                   <div class="row">
-                    <div class="form-group col-lg-12">
+                    <div class="form-group col-lg-4">
                       <label class="text-info">Sucursal: <label style="color: red;">*</label></label>
                       <select name="rol" id="rol" style="width: 100%; text-align:center" placeholder="Sucursal"
                         class="text-gray-900 form-control">
                         <option v-for="dato in listadoSucursales" :key="dato.id" :value="dato.attributes.nombre">{{
                           dato.attributes.nombre }}</option>
-                        <!-- <option value="Matanzas">Matanzas</option> -->
-                        <!-- <option value="Mensajero">Mensajero</option> -->
+                      </select>
+                    </div>
+                    <div class="form-group col-lg-4">
+                      <label class="text-info">Categoría: <label style="color: red;">*</label></label>
+                      <select name="rol" id="rol" style="width: 100%; text-align:center" placeholder="Sucursal"
+                        class="text-gray-900 form-control">
+                        <option v-for="dato in listadoSucursales" :key="dato.id" :value="dato.attributes.nombre">{{
+                          dato.attributes.nombre }}</option>
                       </select>
                     </div>
                   </div>
@@ -115,7 +122,7 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref } from 'vue';
+import { onActivated, onMounted, reactive, ref } from 'vue';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
@@ -135,6 +142,15 @@ const formProductos = reactive({
     }
   }
 })
+
+function generarBArCode () {
+
+  let cod = Math.floor(Math.random() * 9999);
+  if (cod.length < 4){
+    generarBArCode();
+  }
+  formProductos.data.attributes.codigo = cod;
+}
 
 let errors = ref([]);
 
@@ -182,12 +198,13 @@ const agregarU = () => {
     .then((response) => {
       cargado.value = false;
       esperando.value = false;
+      // console.log(response.data.data)
       // cerrarAlert();
-      consultar();
+      // consultar();
       formProductos.data.attributes.observacion = ''
       formProductos.data.attributes.descripcion = '';
       formProductos.data.attributes.codigo = '';
-      actualizar_datos();
+      // actualizar_datos();
       Swal.fire({
         icon: "success",
         title: "Producto agregado satisfactoriamente."
@@ -284,6 +301,7 @@ const consultar = async () => {
       .then((response) => {
         listado.value = response.data.data;
         almacenDatosProductos(listado.value);
+        obtenerListadoLimpio();
         cargado.value = true;
       });
   } else {
@@ -291,6 +309,10 @@ const consultar = async () => {
   }
 
 }
+
+onActivated(async () => {
+  generarBArCode()
+})
 
 onMounted(async () => {
   // localStorage.setItem("userName", form.nombre);
@@ -334,6 +356,9 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   transition: all 250ms ease-in-out;
+  overflow: scroll;
+  scrollbar-color: #66bab8 #858796;
+  scrollbar-width: thin;
 
   @media (max-width: 768px) {
         width: 95%;
