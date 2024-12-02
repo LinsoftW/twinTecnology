@@ -206,6 +206,12 @@
                   <button class="btn btn-danger btn-sm btn-circle ml-1"
                     @click="borrarU(item.id, item.attributes.codigo)" v-b-tooltip.hover title="Eliminar"><span
                       class="fas fas fa-trash-alt"></span></button>
+                  <button class="btn btn-info btn-sm btn-circle ml-1" @click="generarCodeBar(item.attributes.codigo)"
+                    v-b-tooltip.hover title="Código de barra"><span class="fas fas fa-barcode"></span></button>
+                  <!-- <a class="dropdown-item" href="#" data-toggle="modal" data-target="#BarCode"
+                    @click="abrirModalBarCode()">
+                    <span class="fa fa-bars"></span> Agregar o quitar columnas
+                  </a> -->
                 </div>
               </template>
               <!-- <template #loading>
@@ -319,6 +325,30 @@
         </div>
       </div>
     </div>
+
+    <!-- Logout Modal-->
+    <div :class="'modal fade ' + showModal1" id="BarCode" tabindex="-1" role="dialog"
+      aria-labelledby="exampleModalLabel" :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Codigo de barra</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close" @click="abrirModalBarCode()">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body text-center">
+            <vue-barcode :value="cod" tag="svg"></vue-barcode>
+
+          </div>
+          <div class="modal-footer">
+            <!-- <a class="btn btn-info" @click="AColumnas">Aceptar</a> -->
+            <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal"
+              @click="abrirModalBarCode()">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <AddProducto v-show="popup" @cerrar="abrirModalAddProd()" />
   </div>
   <template v-if="esperando">
@@ -416,6 +446,30 @@ const cerrarAlert = () => {
   Swal.close();
 }
 
+const cod = ref();
+
+const generarCodeBar = (codig) => {
+  abrirModalBarCode(codig);
+  //   Swal.fire({
+  //   title: "<strong>HTML <u>example</u></strong>",
+  //   icon: "info",
+  //   html: `
+  //     <vue-barcode value="${codig}" tag="svg"></vue-barcode>
+  //   `,
+  //   showCloseButton: true,
+  //   showCancelButton: true,
+  //   focusConfirm: false,
+  //   confirmButtonText: `
+  //     <i class="fa fa-thumbs-up"></i> Great!
+  //   `,
+  //   confirmButtonAriaLabel: "Thumbs up, great!",
+  //   cancelButtonText: `
+  //     <i class="fa fa-thumbs-down"></i>
+  //   `,
+  //   cancelButtonAriaLabel: "Thumbs down"
+  // });
+}
+
 const show = ref('');
 
 const showModal = ref('');
@@ -449,6 +503,43 @@ const abrirModal = () => {
     activaHide.value = true;
     displayModal.value = 'display: none;';
     showModBack.value = '';
+  }
+}
+
+const show1 = ref('');
+
+const showModal1 = ref('');
+
+const activaHide1 = ref(true);
+
+const activaShow1 = ref(false);
+
+const activaModal1 = ref(false);
+
+const displayModal1 = ref(''); //display: block; padding-right: 17px;
+
+const rolModal1 = ref(''); // dialog
+
+const showModBack1 = ref(''); //modal-backdrop fade show
+
+const abrirModalBarCode = (codig) => {
+  if (showModal1.value == '') {
+    cod.value = codig;
+    showModal1.value = 'show';
+    activaModal1.value = true;
+    show1.value = '';
+    activaShow1.value = false;
+    activaHide1.value = false;
+    displayModal1.value = 'display: block; padding-right: 17px;';
+    showModBack1.value = 'modal-backdrop fade show';
+  } else {
+    showModal1.value = '';
+    activaModal1.value = false;
+    show1.value = '';
+    activaShow1.value = false;
+    activaHide1.value = true;
+    displayModal1.value = 'display: none;';
+    showModBack1.value = '';
   }
 }
 

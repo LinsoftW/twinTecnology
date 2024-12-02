@@ -19,7 +19,8 @@ import { DoughnutChart } from 'vue-chart-3';
 import Vue3EasyDataTable from 'vue3-easy-data-table';
 import 'vue3-easy-data-table/dist/style.css';
 import VueDatePicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'
+import '@vuepic/vue-datepicker/dist/main.css';
+import VueBarcode from '@chenfengyuan/vue-barcode';
 
 import App from './App.vue'
 
@@ -31,6 +32,8 @@ const app = createApp(App);
 app.component('EasyDataTable', Vue3EasyDataTable);
 
 app.component('VueDatePicker', VueDatePicker);
+
+app.component(VueBarcode.name, VueBarcode);
 
 app.use(router, plugin, defaultConfig, DoughnutChart).mount('#app')
 

@@ -5,7 +5,7 @@
         <div class="modal" role="dialog" aria-labelledby="modalTitle" aria-describedby="modalDescription">
           <header class="modal-header" id="modalTitle">
             <slot name="header">
-              DATOS DEL NUEVO PRODUCTO
+             CODIGO DE BARRA DEL PRODUCTO
             </slot>
             <div class="btn-close" @click="closeVentana">
               &times;
