@@ -92,7 +92,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 // import ModalApp from './ModalApp.vue';
 
-const ipPublica = ref('192.168.121.123');
+const ipPublica = ref('127.0.0.1');
 
 let listado = ref([]);
 
@@ -112,7 +112,7 @@ const almacenDatosProductos = (Lista) => {
   } else {
     const parsed = JSON.stringify(Lista);
     localStorage.setItem('ListadoCache', parsed);
-    dataCache.value = JSON.parse(localStorage.getItem('ListadoCache'));
+    // dataCache.value = JSON.parse(localStorage.getItem('ListadoCache'));
   }
 }
 
@@ -122,7 +122,7 @@ const almacenDatosSucursales = (Lista) => {
   } else {
     const parsed = JSON.stringify(Lista);
     localStorage.setItem('ListadoCacheSucursal', parsed);
-    dataCache.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
+    // dataCache.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
   }
 }
 
@@ -246,15 +246,16 @@ const autenticate = async () => {
     // console.log('Okkkk')
     if (form.nombre == 'admin@admin.co' && form.passw == '123') {
       localStorage.setItem("userName", form.nombre);
+      localStorage.setItem("Carg_dat", '0');
       // const start = new Date();
-      esperando.value = true;
+      // esperando.value = true;
       // console.log(esperando.value)
-      await consultar();
-      await consultarSucursales();
-      if (esperando.value == false) {
+      // await consultar();
+      // await consultarSucursales();
+      // if (esperando.value == false) {
         successFull('Bienvenido al sistema', 'top-end');
         router.push('/inicio');
-      }
+      // }
       // console.log(esperando.value)
       // const end = new Date();
       // tiempo.value = end.getTime() - start.getTime();

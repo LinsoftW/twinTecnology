@@ -35,7 +35,7 @@
 
       <!-- Heading -->
       <div class="sidebar-heading">
-        PRODUCTOS
+        GESTIÓN
       </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
@@ -43,7 +43,7 @@
         <a :class="'nav-link ' + collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
           :aria-expanded="activa" aria-controls="collapseTwo" @click="Exp_Consultar()">
           <i class="fas fa-shopping-bag"></i>
-          <span>Productos
+          <span>Inventario
           </span>
         </a>
         <div id="collapseTwo" :class="'collapse ' + show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -53,7 +53,7 @@
             <a class="collapse-item" @click="click_pedidos">Pedidos</a> -->
             <router-link class="button" to="/inventario">
               <a class="collapse-item" v-bind:class="ActivaLink(1)" :key="1" @click="obtenerLinkA(1)"><i
-                  class="far fa-check-circle"></i> Inventario</a>
+                  class="far fa-check-circle"></i> Productos</a>
             </router-link>
             <router-link class="button" to="/categorias">
               <a class="collapse-item" v-bind:class="ActivaLink(2)" :key="2" @click="obtenerLinkA(2)"> <i
@@ -64,10 +64,10 @@
               <a class="collapse-item" v-bind:class="ActivaLink(3)" :key="3" @click="obtenerLinkA(3)"> <i
                   class="fas fa-fw fa-eye"></i> Pedidos</a>
             </router-link>-->
-            <router-link class="button" to="/cmasiva">
+            <!-- <router-link class="button" to="/cmasiva">
               <a class="collapse-item" v-bind:class="ActivaLink(3)" :key="3" @click="obtenerLinkA(3)"> <i
                   class="far fa-check-circle"></i> Carga masiva</a>
-            </router-link>
+            </router-link> -->
             <!-- <a class="collapse-item" href="cards.html">Cards</a> -->
           </div>
         </div>
@@ -392,8 +392,12 @@
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" :aria-expanded="activaUser">
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ userName }}</span>
+
                 <img v-if="imgPerfil" class="img-profile rounded-circle" v-bind:src="imgPerfil">
                 <img v-else class="img-profile rounded-circle" src="/src/assets/new/img/undraw_profile.svg">
+                <div class="topbar-divider d-none d-sm-block" v-if="esperando"></div>
+                <img src="/cargando2.gif" style="width: 40px; height:40px" v-if="esperando"
+                  class="img-profile rounded-circle">
               </a>
               <!-- Dropdown - User Information -->
               <div :class="'dropdown-menu dropdown-menu-right shadow animated--grow-in ' + showUser"
@@ -430,7 +434,7 @@
 
         <!-- Begin Page Content -->
         <div v-if="route.path == '/inicio'">
-          <InicioApp :key="Kinicio" />
+          <InicioApp :key="Kinicio" @esperar="tiempoEspera()" />
           <!-- <InicioApp /> -->
         </div>
         <div v-if="route.path == '/pedidos'">
@@ -523,7 +527,7 @@ import axios from 'axios';
 import InventarioApp from '@/components/InventarioApp.vue';
 import PedidosApp from '@/components/PedidosApp.vue';
 import router from '@/router';
-import { onUpdated, reactive, ref } from 'vue';
+import { onUpdated, reactive, ref, watch } from 'vue';
 import { useRoute } from 'vue-router'
 import { onMounted } from 'vue';
 import SucursalApp from '@/components/SucursalApp.vue';
@@ -542,6 +546,12 @@ const Kpedidos = ref(0);
 const Kinventario = ref(0);
 const Kproductos = ref(0);
 const Ksucursales = ref(0);
+
+const tiempoEspera = async (n) => {
+  console.log(n)
+}
+
+const esperando = ref(false);
 
 const activalo = ref('');
 
@@ -591,7 +601,7 @@ const activaNot = ref(false);
 
 const showNot = ref('');
 
-const ipPublica = ref('192.168.121.123');
+const ipPublica = ref('127.0.0.1');
 
 let cargado = ref(false);
 
@@ -805,10 +815,39 @@ const almacenDatosProductos = (Lista) => {
   localStorage.setItem('ListadoCache', parsed);
 }
 
-const consultar = async (n) => {
-  // console.log("Desde INVENTARIO");
+const almacenDatosSucursales = (Lista) => {
+  localStorage.removeItem('ListadoCacheSucursal');
+  const parsed = JSON.stringify(Lista);
+  localStorage.setItem('ListadoCacheSucursal', parsed);
+}
+
+const consultarPrincipal = async () => {
   // if (cargado.value == false) {
-  // console.log(n)
+  let response = await axios.get(`http://` + ipPublica.value + `/fullstack/public/productos`)
+    .then((response) => {
+      listado.value = response.data.data;
+      almacenDatosProductos(listado.value);
+      // obtenerListadoLimpio();
+
+    });
+  let response1 = await axios.get(`http://` + ipPublica.value + `/fullstack/public/sucursals`)
+    .then((response1) => {
+      listadoSucursales.value = response1.data.data;
+      almacenDatosSucursales(listadoSucursales.value);
+      // listadoSucursales = obtenerListadoLimpioSucursales();
+
+    });
+  // } else {
+  //   almacenDatosProductos(listado.value);
+  //   // obtenerListadoLimpio();
+  // }
+  // Kinventario.value = Kinventario.value + 1;
+  // cargado.value = true;
+  // esperando.value = false;
+
+}
+
+const consultar = async (n) => {
   if (n == 1) {
     let response = await axios.get(`http://` + ipPublica.value + `/fullstack/public/productos`)
       .then((response) => {
@@ -826,6 +865,8 @@ const consultar = async (n) => {
   if (n == 3) {
     console.log("Imprimir")
   }
+
+
 
   // } else {
   //   almacenDatosProductos(listado.value);
@@ -899,9 +940,67 @@ const obtenerListadoLimpio = () => {
 
 }
 
-onMounted(() => {
+const consultarSucursales = async () => {
+  // if (cargado.value == false) {
+  let response = await axios.get(`http://` + ipPublica.value + `/fullstack/public/sucursals`)
+    .then((response) => {
+      listadoSucursales.value = response.data.data;
+      // console.log(response.data)
+      // datosSinPaginar.value = response.data.data;
+      // cantidad.value = Math.ceil(response.data.data.length / elementPagina.value);
+      // obtenerPagina(1);
+      // cargado.value = true;
+      // router.go();
+      almacenDatosSucursales(listadoSucursales.value);
+      listadoSucursales = obtenerListadoLimpioSucursales();
+
+    });
+
+  esperando.value = false;
+  // }
+  // EsperarTiempo();
+
+}
+
+watch(localStorage.getItem('Carg_dat'), async (x, y) => {
+  console.log("Nuevo valor de Carg_dat" + x)
+  if (x == '0') {
+    console.log("Cargando porq actualizaron")
+    let dato = await consultarPrincipal()
+      .then((dato) => {
+        esperando.value = false;
+        console.log("Cargado TODOO")
+        localStorage.setItem("Carg_dat", '1');
+        Kinicio.value = Kinicio.value + 1;
+        // console.log(Kinventario.value)
+      });
+  }
+})
+
+onMounted(async () => {
   if (localStorage.getItem('userName')) {
-    Ctoggled.value = 'toggled';
+    if (localStorage.getItem('Carg_dat') == '0') {
+      Ctoggled.value = 'toggled';
+      esperando.value = true;
+      // console.log(Kinventario.value)
+      // EsperarTiempo()
+      // cargado.value = false;
+      console.log("Cargando datos...")
+      let dato = await consultarPrincipal()
+        .then((dato) => {
+          esperando.value = false;
+          console.log("Cargado TODOO")
+          localStorage.setItem("Carg_dat", '1');
+          Kinicio.value = Kinicio.value + 1;
+          // console.log(Kinventario.value)
+        });
+
+    }else
+    {
+      Ctoggled.value = 'toggled';
+    }
+    // await consultarSucursales();
+    // await consultarSucursales();
     // listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
     // obtenerListadoLimpio();
     // listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
@@ -973,6 +1072,8 @@ const salir = () => {
       localStorage.removeItem('userName');
       localStorage.removeItem('ListadoCache');
       localStorage.removeItem('ListadoCacheSucursal');
+      localStorage.removeItem('Carg_dat');
+      localStorage.clear();
       router.push('/login')
     }
   });

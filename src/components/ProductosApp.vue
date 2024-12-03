@@ -1,8 +1,9 @@
 <template>
   <div>
-    <div v-if="!esperando" class="container-fluid">
+    <div class="container-fluid">
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">PRODUCTOS </h1>
+        <img src="/cargando2.gif" style="width: 40px; height:40px" v-if="esperando" >
         <!-- {{ listado }} -->
         <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" v-b-tooltip.hover
         title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar productos</a> -->
@@ -197,11 +198,11 @@
     </div>
 
   </div>
-  <template v-if="esperando">
+  <!-- <template v-if="esperando">
     <div v-on="loading('Actualizando datos...')">
 
     </div>
-  </template>
+  </template> -->
 </template>
 <script setup>
 
@@ -276,7 +277,7 @@ let setTiempoBusca = '';
 
 const datos_archivados = ref([]);
 
-const ipPublica = ref('192.168.121.123');
+const ipPublica = ref('127.0.0.1');
 
 const formProductos = reactive({
   data: {

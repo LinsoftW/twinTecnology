@@ -2,7 +2,7 @@
   <!-- <div>
     <button @click="rec">Recarga</button>
   </div> -->
-    <MenuApp :key="yap"/>
+    <MenuApp :key="yap" />
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';

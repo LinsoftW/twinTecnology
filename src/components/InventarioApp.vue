@@ -1,8 +1,9 @@
 <template>
   <div>
-    <div v-if="!esperando" class="container-fluid">
+    <div class="container-fluid">
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-2 text-gray-800">INVENTARIO</h1>
+        <!-- <img src="/cargando2.gif" style="width: 40px; height:40px" v-if="esperando" > -->
         <div class="row">
           <div class="col-md-12 justify-content-between">
             <!-- <router-link class="button" to="/gest_inventario"> -->
@@ -11,7 +12,9 @@
             <!-- </router-link> -->
             <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" v-b-tooltip.hover
               title="Generar resumen diario"><i class="fas fa-download fa-sm "></i> Excel</a> -->
-            <a @click="ImprimirDoc()" href="#" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm"
+            <a @click="ExportExcel()" href="#" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm m-2"
+                    v-b-tooltip.hover title="Agregar productos según archivo"><i class="fas fa-upload fa-sm "></i> Carga masiva</a>
+              <a @click="ImprimirDoc()" href="#" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm"
               v-b-tooltip.hover title="Imprimir"><i class="fas fa-print fa-sm "></i> Imprimir</a>
           </div>
         </div>
@@ -45,10 +48,10 @@
             <div class="container-fluid row">
               <div class="col-xl-2 col-lg-3">
 
-                <label>Por Sucursal</label>
+                <label>Por sucursal</label>
                 <select class="form-control form-control-sm" name="" id="" placeholder="Por Sucursales">
-                  <option value="">Sucursal 1</option>
-                  <option value="">Sucursal 2</option>
+                  <option value="">La Habana</option>
+                  <option value="">Matanzas</option>
                 </select>
               </div>
               <div class="col-xl-2 col-lg-3">
@@ -60,7 +63,7 @@
                 </select>
               </div>
               <div class="col-xl-2 col-lg-3">
-                <label>Por Producto</label>
+                <label>Por producto</label>
                 <!-- <input class="form-control form-control-sm" type="text" v-model="searchNombre" placeholder="Nombre del producto"> -->
                 <select class="form-control form-control-sm" name="" id="" placeholder="Por cantidades">
                   <option value="">5</option>
@@ -139,7 +142,7 @@
           <!-- Card Header - Dropdown -->
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-info">PRODUCTOS EN STOCK</h6>
-            <div :class="'dropdown no-arrow ' + show">
+            <!-- <div :class="'dropdown no-arrow ' + show">
               <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
                 aria-haspopup="true" :aria-expanded="activaShow" @click="Exp_3Ptos()">
                 <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
@@ -150,16 +153,14 @@
                 <a class="dropdown-item" href="#" @click="Exp_3Ptos()"><span class="fa fa-cog"></span> Administrar</a>
                 <a class="dropdown-item" href="#" @click="Exp_3Ptos()"><span class="fa fa-check"></span> Conformar
                   pedidos</a>
-                <!-- <a class="dropdown-item" href="#"><span class="fa fa-bars"></span> Agregar o quitar columnas</a> -->
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#filasColumnas"
                   @click="abrirModal()">
                   <span class="fa fa-bars"></span> Agregar o quitar columnas
                 </a>
 
-                <!-- <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Otros</a> -->
+                <a class="dropdown-item" href="#">Otros</a>
               </div>
-            </div>
+            </div> -->
           </div>
           <!-- Card Body -->
           <div class="card-body">
@@ -351,11 +352,11 @@
     </div>
     <AddProducto v-show="popup" @cerrar="abrirModalAddProd()" />
   </div>
-  <template v-if="esperando">
+  <!-- <template v-if="esperando">
     <div v-on="loading('Actualizando datos...')">
 
     </div>
-  </template>
+  </template> -->
 
   <div :class="showModBack" @click="abrirModal()"></div>
 </template>
@@ -396,6 +397,8 @@ const abrirModalAddProd = () => {
   // console.log(x);
   if (popup.value == false) {
     // console.log('Actualiza');
+    localStorage.removeItem('Carg_dat');
+    localStorage.setItem('Carg_dat', '0');
     emit('consultar', 1);
     listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
     obtenerListadoLimpio();
@@ -408,6 +411,18 @@ const showRow = () => {
     console.log("Selecciono " + itemsSelected.value.length)
   }
 
+}
+
+const almacenDatosSucursales = (Lista) => {
+  if (localStorage.getItem('ListadoCacheSucursal')) {
+    localStorage.removeItem('ListadoCacheSucursal');
+    const parsed = JSON.stringify(Lista);
+    localStorage.setItem('ListadoCacheSucursal', parsed);
+  } else {
+    const parsed = JSON.stringify(Lista);
+    localStorage.setItem('ListadoCacheSucursal', parsed);
+    // dataCache.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
+  }
 }
 
 const searchField = ref("attributes.codigo");
@@ -643,7 +658,7 @@ let disableS = ref('');
 
 let setTiempoBusca = '';
 
-const ipPublica = ref('192.168.121.123');
+const ipPublica = ref('127.0.0.1');
 
 const formProductos = reactive({
   data: {

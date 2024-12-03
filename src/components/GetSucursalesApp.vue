@@ -418,7 +418,7 @@ let disableS = ref('');
 
 let setTiempoBusca = '';
 
-const ipPublica = ref('192.168.121.123');
+const ipPublica = ref('127.0.0.1');
 
 const formSucursal = reactive({
   data: {

@@ -1,9 +1,10 @@
 <template>
-  <div v-if="!esperando" class="container-fluid">
+  <div class="container-fluid">
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
       <h1 class="h3 mb-0 text-gray-800">PÁGINA INICIAL</h1>
+      <!-- <img src="/cargando2.gif" style="width: 40px; height:40px" v-if="esperando" > -->
       <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" v-b-tooltip.hover
         title="Generar resumen diario" @click="generar_pdf()"><i class="fas fa-download fa-sm text-white-50"></i>
         Generar Resumen</a>
@@ -315,11 +316,11 @@
 
     </div>
 
-    <template v-if="esperando">
+    <!-- <template v-if="esperando">
       <div v-on="loading('Creando archivo PDF...')">
 
       </div>
-    </template>
+    </template> -->
 
   </div>
 </template>
@@ -333,6 +334,8 @@ import router from '@/router';
 import Swal from 'sweetalert2';
 import { BarChart } from 'vue-chart-3';
 import { Chart, registerables } from "chart.js";
+
+const emit = defineEmits(['esperar'])
 
 Chart.register(...registerables);
 
@@ -409,6 +412,10 @@ const loading = (texto) => {
   });
 }
 
+function EsperarTiempo() {
+  emit('esperar', 1);
+}
+
 // let recarga = ref(false);
 
 // const Cosc_Clar = ref('info');
@@ -416,18 +423,81 @@ const loading = (texto) => {
 const route = useRoute();
 const bodyLogin = document.getElementById('page-top');
 
+const consultarSucursales = async () => {
+  // if (cargado.value == false) {
+  let response = await axios.get(`http://` + ipPublica.value + `/fullstack/public/sucursals`)
+    .then((response) => {
+      listadoSucursales.value = response.data.data;
+      // console.log(response.data)
+      // datosSinPaginar.value = response.data.data;
+      // cantidad.value = Math.ceil(response.data.data.length / elementPagina.value);
+      // obtenerPagina(1);
+      // cargado.value = true;
+      // router.go();
+      almacenDatosSucursales(listadoSucursales.value);
+      listadoSucursales = obtenerListadoLimpioSucursales();
+
+    });
+
+  esperando.value = false;
+
+
+  // }
+  // EsperarTiempo();
+
+}
+
+const almacenDatosSucursales = (Lista) => {
+  if (localStorage.getItem('ListadoCacheSucursal')) {
+    localStorage.removeItem('ListadoCacheSucursal');
+    const parsed = JSON.stringify(Lista);
+    localStorage.setItem('ListadoCacheSucursal', parsed);
+  } else {
+    const parsed = JSON.stringify(Lista);
+    localStorage.setItem('ListadoCacheSucursal', parsed);
+    // dataCache.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
+  }
+}
+
+const obtenerListadoLimpioSucursales = () => {
+  let i = 0;
+  // if (cargado.value = false) {
+  newListadoSucursal.value = [];
+  for (let index = 0; index < listadoSucursales.value.length; index++) {
+    const element = listadoSucursales.value[index];
+    if (element.attributes.deleted_at == null) {
+      newListadoSucursal.value[i] = element;
+      i++;
+    }
+  }
+  return newListadoSucursal;
+  // }
+
+}
+
 onMounted(async () => {
   if (localStorage.getItem('userName')) {
-    bodyLogin.classList.remove('bg-gradient-info');
+
+    if (localStorage.getItem('Carg_dat') == '1') {
+      console.log("Cargar ahora")
+      bodyLogin.classList.remove('bg-gradient-info');
+      listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
+      obtenerListadoLimpio();
+    }else{
+      console.log("Sigo esperando")
+    }
+    // esperando.value = true;
+    // EsperarTiempo()
+    // cargado.value = false;
+    // await consultar();
+    // await consultarSucursales();
+    // await consultarSucursales();
     // bodyLogin.classList.add('sidebar-toggled');
     // console.log("INICIO")
     // }
     // Cosc_Clar.value = localStorage.getItem('background');
     // consultar();
-    listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
-    // cantidad.value = listado.value.length;
-    // console.log(listado.value)
-    obtenerListadoLimpio();
+
   } else {
     router.push('/login');
   }
@@ -454,6 +524,8 @@ const cambiarLimite = () => {
 let errors = ref([]);
 
 let listado = ref([]);
+
+let listadoSucursales = ref([]);
 
 let datosPaginados = ref([]);
 
@@ -482,7 +554,7 @@ let setTiempoBusca = '';
 
 let cargado = ref(false);
 
-const ipPublica = ref('192.168.121.123');
+const ipPublica = ref('127.0.0.1');
 
 const formProductos = reactive({
   codigo: "",
@@ -695,16 +767,26 @@ const consultar = async () => {
         listado.value = response.data.data;
         almacenDatosProductos(listado.value);
         obtenerListadoLimpio();
-        actualizar_datos();
+        // actualizar_datos();
         cargado.value = true;
       });
   } else {
     almacenDatosProductos(listado.value);
     obtenerListadoLimpio();
-    actualizar_datos();
+    // actualizar_datos();
     cargado.value = true;
   }
+  // esperando.value = false;
+}
 
+const almacenDatosProductos = (Lista) => {
+  if (localStorage.getItem('ListadoCache')) {
+    localStorage.removeItem('ListadoCache');
+  } else {
+    const parsed = JSON.stringify(Lista);
+    localStorage.setItem('ListadoCache', parsed);
+    // dataCache.value = JSON.parse(localStorage.getItem('ListadoCache'));
+  }
 }
 
 const buscandoElemento = () => {
@@ -756,7 +838,7 @@ const generar_pdf = async () => {
   doc.text("Listado de productos", 220, 25);
   doc.save("Resumen.pdf");
 
-  cerrarAlert();
+  // cerrarAlert();
   esperando.value = false;
 
 }

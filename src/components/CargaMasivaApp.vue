@@ -1,8 +1,9 @@
 <template>
   <div>
-    <div v-if="!esperando" class="container-fluid">
+    <div class="container-fluid">
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-2 text-gray-800">CARGA MASIVA DE ARCHIVOS</h1>
+        <!-- <img src="/cargando2.gif" style="width: 40px; height:40px" v-if="esperando" > -->
         <!-- <div class="row">
           <div class="col-md-12 justify-content-between">
             <a @click="ImprimirDoc()" href="#" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm"
@@ -134,11 +135,11 @@
     </div>
     <AddProducto v-show="popup" @cerrar="abrirModalAddProd()" />
   </div>
-  <template v-if="esperando">
+  <!-- <template v-if="esperando">
     <div v-on="loading('Actualizando datos...')">
 
     </div>
-  </template>
+  </template> -->
 
   <div :class="showModBack" @click="abrirModal()"></div>
 </template>
@@ -363,7 +364,7 @@ let disableS = ref('');
 
 let setTiempoBusca = '';
 
-const ipPublica = ref('192.168.121.123');
+const ipPublica = ref('127.0.0.1');
 
 const formProductos = reactive({
   data: {

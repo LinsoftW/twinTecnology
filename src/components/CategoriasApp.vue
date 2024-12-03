@@ -1,8 +1,9 @@
 <template>
   <div>
-    <div v-if="!esperando" class="container-fluid">
+    <div class="container-fluid">
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">CATEGORÍAS </h1>
+        <!-- <img src="/cargando2.gif" style="width: 40px; height:40px" v-if="esperando" > -->
         <!-- {{ listado }} -->
         <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" v-b-tooltip.hover
         title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar productos</a> -->
@@ -10,7 +11,7 @@
 
       <!-- Datos del producto a agregar -->
       <div class="row">
-        <div class="col-xl-4 col-lg-5">
+        <div class="col-xl-3 col-lg-5">
           <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
@@ -72,7 +73,7 @@
                       </div>
                       <div v-if="editar" class="form-group h4 col-lg-6">
                         <a @click="editarU" class="btn btn-info btn-block">
-                          Modificar categoría
+                          Modificar
                         </a>
                       </div>
                       <div v-if="editar" class="form-group h4 col-lg-6">
@@ -90,7 +91,7 @@
           </div>
         </div>
         <!--Listado de productos -->
-        <div class="col-xl-8 col-lg-7">
+        <div class="col-xl-9 col-lg-7">
           <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -158,11 +159,11 @@
     </div>
 
   </div>
-  <template v-if="esperando">
+  <!-- <template v-if="esperando">
     <div v-on="loading('Actualizando datos...')">
 
     </div>
-  </template>
+  </template> -->
 </template>
 <script setup>
 
@@ -255,7 +256,7 @@ let setTiempoBusca = '';
 
 const datos_archivados = ref([]);
 
-const ipPublica = ref('192.168.121.123');
+const ipPublica = ref('127.0.0.1');
 
 const formProductos = reactive({
   data: {

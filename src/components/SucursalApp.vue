@@ -1,8 +1,9 @@
 <template>
   <div>
-    <div v-if="!esperando" class="container-fluid">
+    <div class="container-fluid">
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">SUCURSALES</h1>
+        <!-- <img src="/cargando2.gif" style="width: 40px; height:40px" v-if="esperando" > -->
         <router-link class="button" to="/gest_sucursal">
           <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" v-b-tooltip.hover
             title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar sucursal</a>
@@ -173,11 +174,11 @@
     </div>
 
   </div>
-  <template v-if="esperando">
+  <!-- <template v-if="esperando">
     <div v-on="loading('Actualizando datos...')">
 
     </div>
-  </template>
+  </template> -->
 </template>
 <script setup>
 
@@ -237,7 +238,7 @@ let disableS = ref('');
 
 let setTiempoBusca = '';
 
-const ipPublica = ref('192.168.121.123');
+const ipPublica = ref('127.0.0.1');
 
 const formSucursal = reactive({
   data: {
