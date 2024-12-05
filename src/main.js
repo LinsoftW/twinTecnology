@@ -3,11 +3,11 @@ import './assets/main.css';
 // window.$ = $;
 // window.jQuery = $;
 
-// import '/src/assets/new/vendor/jquery/jquery'
-// import '/src/assets/new/vendor/bootstrap/js/bootstrap.bundle';
+import '/src/assets/new/vendor/jquery/jquery'
+import '/src/assets/new/vendor/bootstrap/js/bootstrap.bundle';
 
-// import '/src/assets/jquery.easing.min';
-// import '/src/assets/sb-admin-2.min';
+import '/src/assets/jquery.easing.min';
+import '/src/assets/sb-admin-2.min';
 // import '/src/assets/Chart.min.js'
 // import '/src/assets/chart-area-demo.js'
 

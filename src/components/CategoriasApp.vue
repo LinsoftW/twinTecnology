@@ -68,7 +68,7 @@
                       </div> -->
                       <div v-if="editar == false" class="form-group h4 col-lg-6">
                         <a @click="agregarU" class="btn btn-info btn-block">
-                          Guardar datos
+                          Agregar
                         </a>
                       </div>
                       <div v-if="editar" class="form-group h4 col-lg-6">
@@ -624,10 +624,13 @@ const actualizar_datos = () => {
 onMounted(async () => {
   // localStorage.setItem("userName", form.nombre);
   if (localStorage.getItem('userName')) {
-    listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
-    obtenerListadoLimpio();
-    listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
-    listadoSucursales = obtenerListadoLimpioSucursales();
+    if (localStorage.getItem('Carg_dat') != '0') {
+      listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
+      obtenerListadoLimpio();
+      listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
+      listadoSucursales = obtenerListadoLimpioSucursales();
+    }
+
   } else {
     router.push('/login');
   }

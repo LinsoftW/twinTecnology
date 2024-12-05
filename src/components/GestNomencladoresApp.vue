@@ -637,10 +637,13 @@ const actualizar_datos = () => {
 
 onMounted(async () => {
   if (localStorage.getItem('userName')) {
-    listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
-    obtenerListadoLimpio();
-    listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
-    listadoSucursales = obtenerListadoLimpioSucursales();
+    if (localStorage.getItem('Carg_dat') != '0') {
+      listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
+      obtenerListadoLimpio();
+      listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
+      listadoSucursales = obtenerListadoLimpioSucursales();
+    }
+
   } else {
     router.push('/login');
   }

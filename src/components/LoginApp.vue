@@ -30,7 +30,7 @@
                         electrónico:</label>
                       <input type="text" class="form-control form-control-user" id="correo"
                         aria-describedby="emailHelp" v-model="form.nombre"
-                        placeholder="Correo electrónico" @change="ValidacionEmail()" @keyup="ValidacionEmail()">
+                        placeholder="Correo electrónico" @change="ValidacionEmail()" @keyup="ValidacionEmail()" style="text-transform:lowercase;">
                       <div class="text-center"><label v-if="emailError" :style="'color: ' + color">{{ emailError
                           }}</label></div>
 
@@ -92,7 +92,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 // import ModalApp from './ModalApp.vue';
 
-const ipPublica = ref('127.0.0.1');
+const ipPublica = ref('192.168.121.123');
 
 let listado = ref([]);
 
@@ -247,6 +247,7 @@ const autenticate = async () => {
     if (form.nombre == 'admin@admin.co' && form.passw == '123') {
       localStorage.setItem("userName", form.nombre);
       localStorage.setItem("Carg_dat", '0');
+      localStorage.setItem("Wait", '1');
       // const start = new Date();
       // esperando.value = true;
       // console.log(esperando.value)

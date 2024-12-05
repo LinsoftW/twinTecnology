@@ -12,9 +12,10 @@
             <!-- </router-link> -->
             <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" v-b-tooltip.hover
               title="Generar resumen diario"><i class="fas fa-download fa-sm "></i> Excel</a> -->
-            <a @click="ExportExcel()" href="#" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm m-2"
-                    v-b-tooltip.hover title="Agregar productos según archivo"><i class="fas fa-upload fa-sm "></i> Carga masiva</a>
-              <a @click="ImprimirDoc()" href="#" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm"
+            <a @click="CargaMasiva()" href="#" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm m-2"
+              v-b-tooltip.hover title="Agregar productos según archivo"><i class="fas fa-upload fa-sm "></i> Carga
+              masiva</a>
+            <a @click="ImprimirDoc()" href="#" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm"
               v-b-tooltip.hover title="Imprimir"><i class="fas fa-print fa-sm "></i> Imprimir</a>
           </div>
         </div>
@@ -161,6 +162,10 @@
                 <a class="dropdown-item" href="#">Otros</a>
               </div>
             </div> -->
+            <!-- <a class="dropdown-item" href="#" data-toggle="modal" data-target="#filasColumnas"
+                  >
+                  <span class="fa fa-bars"></span> Agregar o quitar columnas
+                </a> -->
           </div>
           <!-- Card Body -->
           <div class="card-body">
@@ -187,7 +192,8 @@
               </div>
               <div class="col-md-3 col-xl-3 col-lg-3">
                 <span class="text-info">Buscar: </span>
-                <input class="form-control form-control-user" type="text" v-model="searchValue" placeholder="" />
+                <input class="form-control form-control-user" type="text" v-model="searchValue"
+                  :placeholder="'Teclee el ' + searchField + ' a buscar ...'" />
               </div>
             </div>
             <br>
@@ -198,8 +204,9 @@
               :rows-per-page="5">
               <template #item-opciones="item">
                 <div class="operation-wrapper">
-                  <button class="btn btn-primary btn-sm btn-circle" @click="editarU(item.id)" v-b-tooltip.hover
-                    title="Modificar"><span class="fas fa-pencil-alt"></span></button>
+                  <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal" data-target="#EditarProducto"
+                    @click="seleccionaProducto(item)" v-b-tooltip.hover title="Modificar"><span
+                      class="fas fa-edit"></span></button>
                   <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
                     title="Aumentar"><span class="fas fa-plus"></span></button>
                   <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
@@ -207,11 +214,12 @@
                   <button class="btn btn-danger btn-sm btn-circle ml-1"
                     @click="borrarU(item.id, item.attributes.codigo)" v-b-tooltip.hover title="Eliminar"><span
                       class="fas fas fa-trash-alt"></span></button>
-                  <button class="btn btn-info btn-sm btn-circle ml-1" @click="generarCodeBar(item.attributes.codigo)"
-                    v-b-tooltip.hover title="Código de barra"><span class="fas fas fa-barcode"></span></button>
-                  <!-- <a class="dropdown-item" href="#" data-toggle="modal" data-target="#BarCode"
-                    @click="abrirModalBarCode()">
-                    <span class="fa fa-bars"></span> Agregar o quitar columnas
+                  <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode"
+                    @click="generarCodeBar(item.attributes.codigo)" v-b-tooltip.hover title="Código de barra"><span
+                      class="fas fas fa-barcode"></span></button>
+                  <!-- <a class="dropdown-item btn btn-info btn-sm btn-circle ml-1" href="#" @click="generarCodeBar(item.attributes.codigo)" data-toggle="modal" data-target="#BarCode"
+                    >
+                    <span class="fas fa-barcode"></span>
                   </a> -->
                 </div>
               </template>
@@ -333,9 +341,9 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Codigo de barra</h5>
-            <button class="close" type="button" data-dismiss="modal" aria-label="Close" @click="abrirModalBarCode()">
-              <span aria-hidden="true">×</span>
+            <h5 class="modal-title text-info" id="exampleModalLabel">Código de barra</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true" class="text-info">×</span>
             </button>
           </div>
           <div class="modal-body text-center">
@@ -344,8 +352,73 @@
           </div>
           <div class="modal-footer">
             <!-- <a class="btn btn-info" @click="AColumnas">Aceptar</a> -->
-            <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal"
-              @click="abrirModalBarCode()">Cerrar</button>
+            <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Editar producto Modal-->
+    <div :class="'modal fade ' + showModal2" id="EditarProducto" tabindex="-1" role="dialog"
+      aria-labelledby="exampleModalLabel" :aria-hidden="activaHide2" :arial-modal="activaModal2" :style="displayModal2">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-info" id="exampleModalLabel">Datos del producto {{
+              formProductos.data.attributes.codigo }}
+            </h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true" class="text-info">×</span>
+            </button>
+          </div>
+          <div class="modal-body text-center">
+            <!-- <vue-barcode :value="cod" tag="svg"></vue-barcode> -->
+            <div class="col-lg-12">
+              <div class="">
+                <div class="text-center">
+                  <h1 class="h6 text-gray-900 mb-4">CAMPOS OBLIGATORIOS (<label style="color: red;">*</label>)</h1>
+                </div>
+                <form class="user">
+
+                  <!-- <div class="row"> -->
+                  <!-- <FormKit label="Username" type="text" help="Pick a new username"
+                        validation="required|matches:/^@[a-zA-Z]+$/|length:5" value="@FormKit" /> -->
+                  <div class="form-group col-lg-12">
+                    <label class="text-info">Código: <label style="color: red;">*</label></label>
+                    <input type="text" class="form-control" id="codigo" aria-describedby="emailHelp"
+                      v-model="formProductos.data.attributes.codigo" placeholder="Código" required>
+                  </div>
+                  <div class="form-group col-lg-12">
+                    <label class="text-info">Descripción: <label style="color: red;">*</label></label>
+                    <input type="text" class="form-control" id="descripcion" aria-describedby="emailHelp"
+                      v-model="formProductos.data.attributes.descripcion" placeholder="Descripción del producto">
+                  </div>
+                  <div class="form-group col-lg-12">
+                    <label class="text-info">Observaciones: <label style="color: red;">*</label></label>
+                    <input type="text" class="form-control" id="descripcion" aria-describedby="emailHelp"
+                      v-model="formProductos.data.attributes.observacion" placeholder="Observaciones del producto">
+                  </div>
+                  <div class="form-group col-lg-12">
+                    <label class="text-info">Unidad de medida:</label>
+                    <select class="form-group form-control">
+                      <option value="">Und(s)</option>
+                      <option value="">Kg(s)</option>
+                      <option value="">Lts(s)</option>
+                    </select>
+                  </div>
+                  <!-- </div> -->
+                  <!-- <div class="form-group">
+                      <label class="text-info">Imagen:</label>
+                      <input type="file" class="form-control" id="foto"> Seleccione una foto para el producto...
+                    </div> -->
+                </form>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-info btn-sm" @click="editarU()">Modificar</a>
+            <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cerrar</button>
           </div>
         </div>
       </div>
@@ -359,6 +432,7 @@
   </template> -->
 
   <div :class="showModBack" @click="abrirModal()"></div>
+  <!-- <div :class="showModBack2" @click="cerrarModal()"></div> -->
 </template>
 <script setup>
 import { ref, reactive, onMounted, watch, computed } from 'vue';
@@ -384,6 +458,10 @@ function ImprimirDoc() {
   emit('consultar', 3);
 }
 
+function CargaMasiva() {
+  emit('consultar', 4);
+}
+
 const date = ref();
 
 const date2 = ref();
@@ -398,12 +476,59 @@ const abrirModalAddProd = () => {
   if (popup.value == false) {
     // console.log('Actualiza');
     localStorage.removeItem('Carg_dat');
-    localStorage.setItem('Carg_dat', '0');
-    emit('consultar', 1);
-    listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
-    obtenerListadoLimpio();
+    if (localStorage.getItem('Carg_dat') != '0') {
+      // localStorage.setItem('Carg_dat', '0');
+      emit('consultar', 1);
+      listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
+      obtenerListadoLimpio();
+    }
+
   }
 
+}
+
+const editarU = () => {
+  esperando.value = true;
+  axios.put(`http://${ipPublica.value}/fullstack/public/productos/${id.value}`, formProductos)
+    .then((response) => {
+      // console.log(response)
+      esperando.value = false;
+      // cerrarAlert();
+      consultar();
+      editar.value = false;
+      formProductos.data.attributes.descripcion = ''
+      formProductos.data.attributes.observacion = '';
+      formProductos.data.attributes.codigo = '';
+      successFull("Producto editado satisfactoriamente.", "top-end")
+      // showModal2.value = '';
+      // activaModal2.value = false;
+      // show2.value = '';
+      // activaShow2.value = false;
+      // activaHide2.value = true;
+      // displayModal2.value = 'display: none;';
+      // showModBack.value = '';
+      // cerrarModal()
+
+      // Swal.fire({
+      //   icon: "success",
+      //   title: "Editado satisfactoriamente."
+      // })
+      // editar.value = false;
+      // localStorage.setItem("editar", editar.value);
+    })
+    .catch((error) => {
+      console.log(error)
+      if (error.status === 400) {
+        errors.value = error.response.data;
+      }
+      esperando.value = false;
+      ErrorFull(error.response.data.message, "top-start")
+      // cerrarAlert();
+      // Swal.fire({
+      //   icon: "danger",
+      //   title: "Error realizando operación."
+      // })
+    })
 }
 
 const showRow = () => {
@@ -463,8 +588,22 @@ const cerrarAlert = () => {
 
 const cod = ref();
 
+const codProd = ref();
+
+const descProd = ref();
+
+const obsProd = ref();
+
+const seleccionaProducto = (prod) => {
+  id.value = prod.id;
+  formProductos.data.attributes.codigo = prod.attributes.codigo;
+  formProductos.data.attributes.descripcion = prod.attributes.descripcion;
+  formProductos.data.attributes.observacion = prod.attributes.observacion;
+}
+
 const generarCodeBar = (codig) => {
-  abrirModalBarCode(codig);
+  cod.value = codig;
+  // abrirModalBarCode(codig);
   //   Swal.fire({
   //   title: "<strong>HTML <u>example</u></strong>",
   //   icon: "info",
@@ -521,6 +660,26 @@ const abrirModal = () => {
   }
 }
 
+const cerrarModal = () => {
+  // if (showModal2.value == '') {
+  //   showModal2.value = 'show';
+  //   activaModal2.value = true;
+  //   // show2.value = '';
+  //   // activaShow.value = false;
+  //   // activaHide.value = false;
+  //   // displayModal.value = 'display: block; padding-right: 17px;';
+  //   // showModBack.value = 'modal-backdrop fade show';
+  // } else {
+  showModal2.value = '';
+  activaModal2.value = false;
+  // show2.value = '';
+  activaShow2.value = false;
+  activaHide2.value = true;
+  displayModal2.value = 'display: none;';
+  showModBack2.value = '';
+  // }
+}
+
 const show1 = ref('');
 
 const showModal1 = ref('');
@@ -536,6 +695,22 @@ const displayModal1 = ref(''); //display: block; padding-right: 17px;
 const rolModal1 = ref(''); // dialog
 
 const showModBack1 = ref(''); //modal-backdrop fade show
+
+const show2 = ref('');
+
+const showModal2 = ref('');
+
+const activaHide2 = ref(true);
+
+const activaShow2 = ref(false);
+
+const activaModal2 = ref(false);
+
+const displayModal2 = ref(''); //display: block; padding-right: 17px;
+
+const rolModal2 = ref(''); // dialog
+
+const showModBack2 = ref(''); //modal-backdrop fade show
 
 const abrirModalBarCode = (codig) => {
   if (showModal1.value == '') {
@@ -658,7 +833,7 @@ let disableS = ref('');
 
 let setTiempoBusca = '';
 
-const ipPublica = ref('127.0.0.1');
+const ipPublica = ref('192.168.121.123');
 
 const formProductos = reactive({
   data: {
@@ -782,6 +957,36 @@ const cancelarU = () => {
   formProductos.data.attributes.observacion = '';
 }
 
+const successFull = (mensaje, posicion) => {
+
+  const toast = Swal.mixin({
+    toast: true,
+    position: posicion,
+    showConfirmButton: false,
+    timer: 1500,
+    //timerProgressBar: true,
+  })
+  toast.fire({
+    icon: "success",
+    title: mensaje
+  })
+}
+
+const ErrorFull = (mensaje, posicion) => {
+
+  const toast = Swal.mixin({
+    toast: true,
+    position: posicion,
+    showConfirmButton: false,
+    timer: 1500,
+    //timerProgressBar: true,
+  })
+  toast.fire({
+    icon: "error",
+    title: mensaje
+  })
+}
+
 const borrarU = (id, correo) => {
   Swal.fire({
     title: "Confirmación",
@@ -800,23 +1005,25 @@ const borrarU = (id, correo) => {
         .then(() => {
           esperando.value = false;
           consultar();
-          cerrarAlert();
+          // cerrarAlert();
           cancelarU();
-          Swal.fire({
-            title: "Eliminado",
-            text: "Producto eliminado satisfactoriamente.",
-            icon: "success"
-          });
+          successFull("Producto eliminado satisfactoriamente.", "top-start")
+          // Swal.fire({
+          //   title: "Eliminado",
+          //   text: "Producto eliminado satisfactoriamente.",
+          //   icon: "success"
+          // });
           // cargado.value = false;
         })
     }
   }).catch((error) => {
     esperando.value = false;
-    cerrarAlert();
-    Swal.fire({
-      icon: "error",
-      title: error.response.data.message
-    })
+    ErrorFull(error.response.data.message, "top-start")
+    // cerrarAlert();
+    // Swal.fire({
+    //   icon: "error",
+    //   title: error.response.data.message
+    // })
   });
 }
 
@@ -846,13 +1053,20 @@ const cambiarLimite = () => {
 
 onMounted(() => {
   if (localStorage.getItem('userName')) {
-    listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
-    obtenerListadoLimpio();
-    // console.log(itemsSelected.value);
-    // listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
-    // listadoSucursales = obtenerListadoLimpioSucursales();
-    cargado.value = true;
-    // console.log(props.key)
+    if (localStorage.getItem('Carg_dat') != '0') {
+      console.log("Inventario")
+      listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
+      obtenerListadoLimpio();
+      // console.log(itemsSelected.value);
+      // listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
+      // listadoSucursales = obtenerListadoLimpioSucursales();
+      // cargado.value = true;
+      // console.log(props.key)
+    }
+    // else{
+    //   console.log("Aun sin conexion")
+    // }
+
   } else {
     router.push('/login');
   }

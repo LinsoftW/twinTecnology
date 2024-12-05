@@ -40,8 +40,10 @@
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
-        <a :class="'nav-link ' + collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-          :aria-expanded="activa" aria-controls="collapseTwo" @click="Exp_Consultar()">
+        <!-- <a :class="'nav-link ' + collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+          :aria-expanded="activa" aria-controls="collapseTwo" @click="Exp_Consultar()"> -->
+          <a :class="'nav-link ' + collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+          :aria-expanded="activa" aria-controls="collapseTwo">
           <i class="fas fa-shopping-bag"></i>
           <span>Inventario
           </span>
@@ -106,8 +108,10 @@
       </li>
       <li class="nav-item">
 
-        <a :class="'nav-link ' + collapsed2" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-          :aria-expanded="activa2" aria-controls="collapseUtilities" @click="Exp_Nomenc()">
+        <!-- <a :class="'nav-link ' + collapsed2" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+          :aria-expanded="activa2" aria-controls="collapseUtilities" @click="Exp_Nomenc()"> -->
+          <a :class="'nav-link ' + collapsed2" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+          :aria-expanded="activa2" aria-controls="collapseUtilities">
           <i class="fas fa-fw fa-cog"></i>
           <span>Configuración</span>
         </a>
@@ -388,7 +392,8 @@
             <div class="topbar-divider d-none d-sm-block"></div>
 
             <!-- Nav Item - User Information -->
-            <li :class="'nav-item dropdown no-arrow ' + showUser" @click="Exp_User">
+            <!-- <li :class="'nav-item dropdown no-arrow ' + showUser" @click="Exp_User"> -->
+               <li :class="'nav-item dropdown no-arrow ' + showUser">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" :aria-expanded="activaUser">
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ userName }}</span>
@@ -601,7 +606,7 @@ const activaNot = ref(false);
 
 const showNot = ref('');
 
-const ipPublica = ref('127.0.0.1');
+const ipPublica = ref('192.168.121.123');
 
 let cargado = ref(false);
 
@@ -821,6 +826,8 @@ const almacenDatosSucursales = (Lista) => {
   localStorage.setItem('ListadoCacheSucursal', parsed);
 }
 
+const errors = ref();
+
 const consultarPrincipal = async () => {
   // if (cargado.value == false) {
   let response = await axios.get(`http://` + ipPublica.value + `/fullstack/public/productos`)
@@ -829,14 +836,45 @@ const consultarPrincipal = async () => {
       almacenDatosProductos(listado.value);
       // obtenerListadoLimpio();
 
-    });
+    }).catch((error) => {
+      if (error.response.status === 500) {
+        errors.value = error.response.status;
+      }
+    })
+
   let response1 = await axios.get(`http://` + ipPublica.value + `/fullstack/public/sucursals`)
     .then((response1) => {
       listadoSucursales.value = response1.data.data;
       almacenDatosSucursales(listadoSucursales.value);
+      esperando.value = false;
+      console.log("Cargado TODOO")
+      localStorage.setItem("Carg_dat", '1');
+      localStorage.setItem("Wait", '0');
+      successFull("Datos cargados.","top-start")
+      Kinicio.value = Kinicio.value + 1;
       // listadoSucursales = obtenerListadoLimpioSucursales();
 
+    }).catch((error) => {
+      if (error.response.status === 500) {
+        // errors.value = error.response.status;
+        ErrorFull("Problemas de conexión, verificaremos en otro momento.", "top-end");
+        // Swal.fire({
+        //   icon: "danger",
+        //   title: "Problemas de conexión, verificaremos en otro momento."
+        // })
+        esperando.value = false;
+        // localStorage.setItem('Wait', '5');
+        localStorage.setItem("Carg_dat", '0');
+      }
+      // console.log(errors.value);
+      // esperando.value = false;
+      // cerrarAlert();
+      // Swal.fire({
+      //   icon: "danger",
+      //   title: error.message
+      // })
     });
+
   // } else {
   //   almacenDatosProductos(listado.value);
   //   // obtenerListadoLimpio();
@@ -864,6 +902,10 @@ const consultar = async (n) => {
   }
   if (n == 3) {
     console.log("Imprimir")
+  }
+
+  if (n == 4) {
+    console.log("Carga masiva")
   }
 
 
@@ -962,52 +1004,42 @@ const consultarSucursales = async () => {
 
 }
 
-watch(localStorage.getItem('Carg_dat'), async (x, y) => {
-  console.log("Nuevo valor de Carg_dat" + x)
-  if (x == '0') {
-    console.log("Cargando porq actualizaron")
-    let dato = await consultarPrincipal()
-      .then((dato) => {
-        esperando.value = false;
-        console.log("Cargado TODOO")
-        localStorage.setItem("Carg_dat", '1');
-        Kinicio.value = Kinicio.value + 1;
-        // console.log(Kinventario.value)
-      });
-  }
-})
+// watch(localStorage.getItem('Carg_dat'), async (x, y) => {
+//   console.log("Nuevo valor de Carg_dat" + x)
+//   if (x == '0') {
+//     console.log("Cargando porq actualizaron")
+//     let dato = await consultarPrincipal()
+//       .then((dato) => {
+//         esperando.value = false;
+//         console.log("Cargado TODOO")
+//         localStorage.setItem("Carg_dat", '1');
+//         Kinicio.value = Kinicio.value + 1;
+//         // console.log(Kinventario.value)
+//       });
+//   }
+// })
 
 onMounted(async () => {
   if (localStorage.getItem('userName')) {
+    // if (localStorage.getItem('Wait') == '0') {
     if (localStorage.getItem('Carg_dat') == '0') {
       Ctoggled.value = 'toggled';
       esperando.value = true;
-      // console.log(Kinventario.value)
-      // EsperarTiempo()
-      // cargado.value = false;
       console.log("Cargando datos...")
       let dato = await consultarPrincipal()
-        .then((dato) => {
-          esperando.value = false;
-          console.log("Cargado TODOO")
-          localStorage.setItem("Carg_dat", '1');
-          Kinicio.value = Kinicio.value + 1;
-          // console.log(Kinventario.value)
-        });
-
-    }else
-    {
-      Ctoggled.value = 'toggled';
+    } else if(localStorage.getItem('Wait') != '0') {
+      localStorage.removeItem('Carg_dat');
+      localStorage.setItem('Carg_dat', '0');
+      console.log('Repitiendo las consultas')
+      onMounted();
     }
-    // await consultarSucursales();
-    // await consultarSucursales();
-    // listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
-    // obtenerListadoLimpio();
-    // listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
-    // listadoSucursales = obtenerListadoLimpioSucursales();
-  } else {
-    router.push('/login');
-  }
+  // } else {
+
+  // }
+  Ctoggled.value = 'toggled';
+} else {
+  router.push('/login');
+}
   // consultar();
 })
 
@@ -1054,6 +1086,21 @@ const successFull = (mensaje, posicion) => {
   })
   toast.fire({
     icon: "success",
+    title: mensaje
+  })
+}
+
+const ErrorFull = (mensaje, posicion) => {
+
+  const toast = Swal.mixin({
+    toast: true,
+    position: posicion,
+    showConfirmButton: false,
+    timer: 1500,
+    //timerProgressBar: true,
+  })
+  toast.fire({
+    icon: "error",
     title: mensaje
   })
 }

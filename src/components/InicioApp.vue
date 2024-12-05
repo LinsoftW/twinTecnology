@@ -477,15 +477,17 @@ const obtenerListadoLimpioSucursales = () => {
 
 onMounted(async () => {
   if (localStorage.getItem('userName')) {
+    // if (localStorage.getItem('Carg_dat') == '0') {
+      if (localStorage.getItem('Wait') == '0') {
+        console.log("Cargar ahora")
+        bodyLogin.classList.remove('bg-gradient-info');
+        listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
+        obtenerListadoLimpio();
+      }
 
-    if (localStorage.getItem('Carg_dat') == '1') {
-      console.log("Cargar ahora")
-      bodyLogin.classList.remove('bg-gradient-info');
-      listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
-      obtenerListadoLimpio();
-    }else{
-      console.log("Sigo esperando")
-    }
+    // } else {
+    //   console.log("Sigo esperando")
+    // }
     // esperando.value = true;
     // EsperarTiempo()
     // cargado.value = false;
@@ -554,7 +556,7 @@ let setTiempoBusca = '';
 
 let cargado = ref(false);
 
-const ipPublica = ref('127.0.0.1');
+const ipPublica = ref('192.168.121.123');
 
 const formProductos = reactive({
   codigo: "",

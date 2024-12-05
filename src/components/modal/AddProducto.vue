@@ -68,16 +68,6 @@
                     <input type="text" class="form-control" id="descripcion" aria-describedby="emailHelp"
                       v-model="formProductos.data.attributes.descripcion" placeholder="Descripción del producto">
                   </div>
-
-                </div>
-                <div class="form-group ">
-                  <label class="text-info">Observaciones:</label>
-                  <textarea class="form-control" id="observaciones" v-model="formProductos.data.attributes.observacion"
-                    placeholder="Observaciones acerca del producto"></textarea>
-                  <!-- <input type="text" class="form-control" id="observaciones"
-                        aria-describedby="emailHelp" v-model="form.apellido1" placeholder="Observaciones acerca del producto"> -->
-                </div>
-                <div class="row">
                   <div class="form-group col-lg-4">
                     <label class="text-info">Sucursal: <label style="color: red;">*</label></label>
                     <select name="rol" id="rol" style="width: 100%; text-align:center" placeholder="Sucursal"
@@ -94,6 +84,17 @@
                         dato.attributes.nombre }}</option>
                     </select>
                   </div>
+
+                </div>
+                <div class="form-group ">
+                  <label class="text-info">Observaciones:</label>
+                  <textarea class="form-control" id="observaciones" v-model="formProductos.data.attributes.observacion"
+                    placeholder="Observaciones acerca del producto"></textarea>
+                  <!-- <input type="text" class="form-control" id="observaciones"
+                        aria-describedby="emailHelp" v-model="form.apellido1" placeholder="Observaciones acerca del producto"> -->
+                </div>
+                <div class="row">
+
                 </div>
                 <!-- <div class="form-group">
                       <label class="text-info">Imagen:</label>
@@ -112,12 +113,12 @@
           <div class="row m-1">
             <!-- <div v-if="editar == false" class="col-lg-1"></div> -->
             <div class=" col-xs-4">
-              <a @click="agregarU" class="btn btn-primary btn-user btn-block">
+              <a @click="agregarU()" class="btn btn-primary btn-user btn-block">
                 Archivar y continuar
               </a>
             </div>
             <div class="col-xs-4 ml-2">
-              <a @click="agregarU" class="btn btn-info btn-user btn-block">
+              <a @click="agregarU()" class="btn btn-info btn-user btn-block">
                 Guardar datos
               </a>
             </div>
@@ -360,6 +361,36 @@ const cerrarAlert = () => {
   Swal.close();
 }
 
+const successFull = (mensaje, posicion) => {
+
+  const toast = Swal.mixin({
+    toast: true,
+    position: posicion,
+    showConfirmButton: false,
+    timer: 1500,
+    //timerProgressBar: true,
+  })
+  toast.fire({
+    icon: "success",
+    title: mensaje
+  })
+}
+
+const ErrorFull = (mensaje, posicion) => {
+
+  const toast = Swal.mixin({
+    toast: true,
+    position: posicion,
+    showConfirmButton: false,
+    timer: 2500,
+    //timerProgressBar: true,
+  })
+  toast.fire({
+    icon: "error",
+    title: mensaje
+  })
+}
+
 const agregarU = () => {
   esperando.value = true;
   axios.post(`http://` + ipPublica.value + `/fullstack/public/productos`, formProductos)
@@ -373,10 +404,11 @@ const agregarU = () => {
       formProductos.data.attributes.descripcion = '';
       formProductos.data.attributes.codigo = '';
       // actualizar_datos();
-      Swal.fire({
-        icon: "success",
-        title: "Producto agregado satisfactoriamente."
-      })
+      successFull("Producto agregado satisfactoriamente.","top-center")
+      // Swal.fire({
+      //   icon: "success",
+      //   title: "Producto agregado satisfactoriamente."
+      // })
       // localStorage.removeItem('Carg_dat');
       // localStorage.setItem('Carg_dat', '3');
       closeVentana();
@@ -386,11 +418,13 @@ const agregarU = () => {
         errors.value = error.response.data.message;
       }
       esperando.value = false;
-      cerrarAlert();
-      Swal.fire({
-        icon: "error",
-        title: error.response.data.message
-      })
+      ErrorFull(error.response.data.message ,"top-start")
+      closeVentana();
+      // cerrarAlert();
+      // Swal.fire({
+      //   icon: "error",
+      //   title: error.response.data.message
+      // })
     })
   // console.log(datos_archivados.value);
 
@@ -487,12 +521,15 @@ const consultar = async () => {
 onMounted(async () => {
   // localStorage.setItem("userName", form.nombre);
   if (localStorage.getItem('userName')) {
-    generarBArCode()
-    listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
-    obtenerListadoLimpio();
-    listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
-    listadoSucursales = obtenerListadoLimpioSucursales();
-    cargado.value = true;
+    if (localStorage.getItem('Carg_dat') != '0') {
+      generarBArCode()
+      listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
+      obtenerListadoLimpio();
+      listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
+      listadoSucursales = obtenerListadoLimpioSucursales();
+      cargado.value = true;
+    }
+
   } else {
     router.push('/login');
   }
