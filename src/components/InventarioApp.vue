@@ -417,7 +417,7 @@
 
           </div>
           <div class="modal-footer">
-            <a class="btn btn-info btn-sm" @click="editarU()">Modificar</a>
+            <a class="btn btn-info btn-sm" @click="editarU()" data-dismiss="modal">Modificar</a>
             <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cerrar</button>
           </div>
         </div>

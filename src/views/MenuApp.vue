@@ -42,7 +42,7 @@
       <li class="nav-item">
         <!-- <a :class="'nav-link ' + collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
           :aria-expanded="activa" aria-controls="collapseTwo" @click="Exp_Consultar()"> -->
-          <a :class="'nav-link ' + collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+        <a :class="'nav-link ' + collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
           :aria-expanded="activa" aria-controls="collapseTwo">
           <i class="fas fa-shopping-bag"></i>
           <span>Inventario
@@ -110,7 +110,7 @@
 
         <!-- <a :class="'nav-link ' + collapsed2" href="#" data-toggle="collapse" data-target="#collapseUtilities"
           :aria-expanded="activa2" aria-controls="collapseUtilities" @click="Exp_Nomenc()"> -->
-          <a :class="'nav-link ' + collapsed2" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+        <a :class="'nav-link ' + collapsed2" href="#" data-toggle="collapse" data-target="#collapseUtilities"
           :aria-expanded="activa2" aria-controls="collapseUtilities">
           <i class="fas fa-fw fa-cog"></i>
           <span>Configuración</span>
@@ -393,7 +393,7 @@
 
             <!-- Nav Item - User Information -->
             <!-- <li :class="'nav-item dropdown no-arrow ' + showUser" @click="Exp_User"> -->
-               <li :class="'nav-item dropdown no-arrow ' + showUser">
+            <li :class="'nav-item dropdown no-arrow ' + showUser">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" :aria-expanded="activaUser">
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ userName }}</span>
@@ -410,6 +410,10 @@
                 <a class="dropdown-item" href="#" @click="cargarImagen">
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Cambiar imagen de perfil
+                </a>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#sendEmail">
+                  <i class="fa fa-envelope fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Enviar correo electrónico
                 </a>
                 <!-- <a class="dropdown-item" href="#" @click="Cambia_Color">
                   <i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -523,6 +527,126 @@
     </div>
   </div>
 
+  <!-- Logout Modal-->
+  <div :class="'modal fade ' + showModal1" id="sendEmail" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-info" id="exampleModalLabel">Enviar email</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="text-info">×</span>
+          </button>
+        </div>
+        <div class="modal-body text-center">
+
+          <form id="form">
+            <!-- <div class="field">
+              <label for="to_name">Para</label>
+              <input type="text" name="to_name" id="to_name">
+            </div>
+            <div class="field">
+              <label for="from_name">De</label>
+              <input type="text" name="from_name" id="from_name">
+            </div>
+            <div class="field">
+              <label for="Mensaje">Mensaje</label>
+              <input type="text" name="Mensaje" id="Mensaje">
+            </div>
+            <div class="field">
+              <label for="Dilo_ConGLOBOS">MyInventory</label>
+              <input type="text" name="Dilo_ConGLOBOS" id="Dilo_ConGLOBOS">
+            </div>
+            <div class="field">
+              <label for="reply_to">reply_to</label>
+              <input type="text" name="reply_to" id="reply_to">
+            </div>
+            <div class="field">
+              <label for="to_email">to_email</label>
+              <input type="text" name="to_email" id="to_email">
+            </div>
+
+            <input type="submit" id="button" value="Send Email"> -->
+            <div class="row">
+              <div class="col-lg-12">
+                <label for="para" class="text-info"> Dirección de correo electrónico destino: </label>
+                <input type="text" class="form-control" name="to_name" id="to_name"
+                  placeholder="Dirección de correo electrónico destino:">
+              </div><br>
+              <div class="col-lg-12">
+                <label for="para" class="text-info">De: </label>
+                <input type="text" class="form-control" name="from_name" id="from_name" placeholder="Asunto:">
+              </div>
+              <div class="col-lg-12">
+                <label for="para" class="text-info">Asunto: </label>
+                <input type="text" class="form-control" name="Dilo_ConGLOBOS" id="Dilo_ConGLOBOS" placeholder="Asunto:">
+              </div>
+              <!-- name="from_name" -->
+              <hr>
+              <div class="col-lg-12">
+                <label for="para" class="text-info">Mensaje: </label>
+                <textarea class="form-control" name="Mensaje" id="Mensaje" placeholder="Mensaje:"></textarea>
+              </div>
+              <div class="col-lg-12">
+                <label for="reply_to">Reenviar a:</label>
+                <input type="text" class="form-control" name="reply_to" id="reply_to">
+              </div>
+              <div class="col-lg-12">
+                <label for="to_email">Para email</label>
+                <input type="text" class="form-control" name="to_email" id="to_email">
+              </div>
+            </div>
+          </form>
+          <!-- <div class="row">
+            <div class="col-lg-12">
+              <label for="para" class="text-info"> Dirección de correo electrónico destino: </label>
+              <input type="text" class="form-control" placeholder="Dirección de correo electrónico destino:">
+            </div><br>
+            <div class="col-lg-12">
+              <label for="para" class="text-info">Asunto: </label>
+              <input type="text" class="form-control" placeholder="Asunto:">
+            </div>
+            <hr>
+            <div class="col-lg-12">
+              <label for="para" class="text-info">Mensaje: </label>
+              <textarea name="" id="" class="form-control" placeholder="Mensaje:"></textarea>
+            </div>
+          </div> -->
+
+          <!-- <div>
+            <card class="card-section" style="width: 450px; margin: auto">
+              <h1>Contact Form</h1>
+              <form ref="values" @submit.prevent="sendEmail">
+                <div class="form-group">
+                  <KInput class="form-input" :style="{ width: '290px' }" name="name" v-model="user_name"
+                    placeholder="Name"></KInput>
+                </div>
+                <div class="form-group">
+                  <KInput class="form-input" :style="{ width: '290px' }" name="email" v-model="user_email"
+                    placeholder="email address"></KInput>
+                </div>
+                <div class="form-group">
+                  <kTextarea class="form-input" :style="{ width: '290px' }" name="message" v-model="user_message"
+                    placeholder="Message" :rows="4" />
+                </div>
+                <div class="example-col">
+                  <kButton :style="{ width: '100px' }" id="submit-btn">Submit form</kButton>
+                </div>
+              </form>
+            </card>
+          </div> -->
+          <!-- <vue-barcode :value="cod" tag="svg"></vue-barcode> -->
+
+        </div>
+        <div class="modal-footer" style="text-align: center;">
+          <!-- <a class="btn btn-info" @click="AColumnas">Aceptar</a> -->
+          <button class="btn btn-secondary btn-sm" type="button" id="button" @click="enviarEmail()"
+            data-dismiss="modal">Enviar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- </body> -->
 </template>
 
@@ -545,6 +669,9 @@ import GestPedidoApp from '@/components/GestPedidoApp.vue';
 import GestNomencladoresApp from '@/components/GestNomencladoresApp.vue';
 import CargaMasivaApp from '@/components/CargaMasivaApp.vue';
 import CategoriasApp from '@/components/CategoriasApp.vue';
+import emailjs from 'emailjs-com';
+// import { Input, TextArea } from "@progress/kendo-vue-inputs";
+// import { Button } from "@progress/kendo-vue-buttons";
 
 const Kinicio = ref(0);
 const Kpedidos = ref(0);
@@ -566,15 +693,50 @@ const Cosc_Clar = ref('info');
 
 const Ctoggled = ref('');
 
-const bodyLogin = document.getElementById('page-top');
+const enviarEmail = () => {
+  // const btn = document.getElementById('button');
+  // const serviceID = 'default_service';
+  // const templateID = 'template_4dn9ixp';
+  // emailjs.init('0F57mxueQF0of_Jav');
+  // emailjs.sendForm(serviceID, templateID, this)
+  //   .then(() => {
+  //     btn.value = 'Send Email';
+  //     alert('Sent!');
+  //   }, (err) => {
+  //     btn.value = 'Send Email';
+  //     alert(JSON.stringify(err));
+  //   });
 
-const ulBody = document.getElementById('accordionSidebar');
+  // emailjs.init('0F57mxueQF0of_Jav');
+  document.getElementById('form')
+    .addEventListener('submit', function (event) {
+      event.preventDefault();
 
-const datosPrueba = ref([]);
+      btn.value = 'Sending...';
+
+      const serviceID = 'default_service';
+      const templateID = 'template_4dn9ixp';
+
+      emailjs.sendForm(serviceID, templateID, this)
+        .then(() => {
+          btn.value = 'Send Email';
+          alert('Sent!');
+        }, (err) => {
+          btn.value = 'Send Email';
+          alert(JSON.stringify(err));
+        });
+    });
+}
+
+// const bodyLogin = document.getElementById('page-top');
+
+// const ulBody = document.getElementById('accordionSidebar');
+
+// const datosPrueba = ref([]);
 
 const listado = ref([]);
 
-const listadoSucursales = ref([]);
+let listadoSucursales = ref([]);
 
 const newListado = ref([])
 
@@ -667,10 +829,6 @@ const MueveMenu = () => {
   } else {
     Ctoggled.value = '';
   }
-  // router.go()
-  // console.log("OKK")
-  // bodyLogin.classList.add('sidebar-toggled');
-  // ulBody.classList.add('toggled');
 }
 
 const obtenerListadoLimpioSucursales = () => {
@@ -850,7 +1008,7 @@ const consultarPrincipal = async () => {
       console.log("Cargado TODOO")
       localStorage.setItem("Carg_dat", '1');
       localStorage.setItem("Wait", '0');
-      successFull("Datos cargados.","top-start")
+      successFull("Datos cargados.", "top-start")
       Kinicio.value = Kinicio.value + 1;
       // listadoSucursales = obtenerListadoLimpioSucursales();
 
@@ -1027,19 +1185,19 @@ onMounted(async () => {
       esperando.value = true;
       console.log("Cargando datos...")
       let dato = await consultarPrincipal()
-    } else if(localStorage.getItem('Wait') != '0') {
+    } else if (localStorage.getItem('Wait') != '0') {
       localStorage.removeItem('Carg_dat');
       localStorage.setItem('Carg_dat', '0');
       console.log('Repitiendo las consultas')
       onMounted();
     }
-  // } else {
+    // } else {
 
-  // }
-  Ctoggled.value = 'toggled';
-} else {
-  router.push('/login');
-}
+    // }
+    Ctoggled.value = 'toggled';
+  } else {
+    router.push('/login');
+  }
   // consultar();
 })
 
