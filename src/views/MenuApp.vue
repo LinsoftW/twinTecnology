@@ -569,13 +569,17 @@
             <input type="submit" id="button" value="Send Email"> -->
             <div class="row">
               <div class="col-lg-12">
-                <label for="para" class="text-info"> Dirección de correo electrónico destino: </label>
+                <label for="para" class="text-info"> Para: </label>
                 <input type="text" class="form-control" name="to_name" id="to_name"
-                  placeholder="Dirección de correo electrónico destino:">
+                  placeholder="Nombre del cliente:">
               </div><br>
               <div class="col-lg-12">
-                <label for="para" class="text-info">De: </label>
-                <input type="text" class="form-control" name="from_name" id="from_name" placeholder="Asunto:">
+                <label for="to_email" class="text-info">Dirección de correo electrónico destino:</label>
+                <input type="text" class="form-control" name="to_email" id="to_email" placeholder="Dirección de correo electrónico destino:">
+              </div>
+              <div class="col-lg-12">
+                <label for="para" class="text-info" v-show="false">De: </label>
+                <input type="text" class="form-control" name="from_name" id="from_name" placeholder="Dirección de correo electrónico del remitente:" value="TwinTecnology" v-show="false">
               </div>
               <div class="col-lg-12">
                 <label for="para" class="text-info">Asunto: </label>
@@ -588,30 +592,16 @@
                 <textarea class="form-control" name="Mensaje" id="Mensaje" placeholder="Mensaje:"></textarea>
               </div>
               <div class="col-lg-12">
-                <label for="reply_to">Reenviar a:</label>
-                <input type="text" class="form-control" name="reply_to" id="reply_to">
+                <label for="reply_to" v-show="false">Reenviar a:</label>
+                <input type="text" class="form-control" name="reply_to" id="reply_to" value="no-reply@gmail.com" v-show="false">
               </div>
-              <div class="col-lg-12">
-                <label for="to_email">Para email</label>
-                <input type="text" class="form-control" name="to_email" id="to_email">
-              </div>
+
+            </div>
+            <div class="modal-footer" style="text-align: center;">
+              <!-- <a class="btn btn-info" @click="AColumnas">Aceptar</a> -->
+              <button class="btn btn-secondary btn-sm" type="submit" id="button" @click="enviarEmail()">Enviar</button>
             </div>
           </form>
-          <!-- <div class="row">
-            <div class="col-lg-12">
-              <label for="para" class="text-info"> Dirección de correo electrónico destino: </label>
-              <input type="text" class="form-control" placeholder="Dirección de correo electrónico destino:">
-            </div><br>
-            <div class="col-lg-12">
-              <label for="para" class="text-info">Asunto: </label>
-              <input type="text" class="form-control" placeholder="Asunto:">
-            </div>
-            <hr>
-            <div class="col-lg-12">
-              <label for="para" class="text-info">Mensaje: </label>
-              <textarea name="" id="" class="form-control" placeholder="Mensaje:"></textarea>
-            </div>
-          </div> -->
 
           <!-- <div>
             <card class="card-section" style="width: 450px; margin: auto">
@@ -636,13 +626,8 @@
             </card>
           </div> -->
           <!-- <vue-barcode :value="cod" tag="svg"></vue-barcode> -->
+        </div>
 
-        </div>
-        <div class="modal-footer" style="text-align: center;">
-          <!-- <a class="btn btn-info" @click="AColumnas">Aceptar</a> -->
-          <button class="btn btn-secondary btn-sm" type="button" id="button" @click="enviarEmail()"
-            data-dismiss="modal">Enviar</button>
-        </div>
       </div>
     </div>
   </div>
@@ -693,21 +678,10 @@ const Cosc_Clar = ref('info');
 
 const Ctoggled = ref('');
 
-const enviarEmail = () => {
-  // const btn = document.getElementById('button');
-  // const serviceID = 'default_service';
-  // const templateID = 'template_4dn9ixp';
-  // emailjs.init('0F57mxueQF0of_Jav');
-  // emailjs.sendForm(serviceID, templateID, this)
-  //   .then(() => {
-  //     btn.value = 'Send Email';
-  //     alert('Sent!');
-  //   }, (err) => {
-  //     btn.value = 'Send Email';
-  //     alert(JSON.stringify(err));
-  //   });
+const enviarEmail = async () => {
+  const btn = document.getElementById('button');
 
-  // emailjs.init('0F57mxueQF0of_Jav');
+  emailjs.init('0F57mxueQF0of_Jav');
   document.getElementById('form')
     .addEventListener('submit', function (event) {
       event.preventDefault();
@@ -719,11 +693,12 @@ const enviarEmail = () => {
 
       emailjs.sendForm(serviceID, templateID, this)
         .then(() => {
-          btn.value = 'Send Email';
-          alert('Sent!');
+          successFull("Correo enviado.", "top-end")
+          // alert('Sent!');
         }, (err) => {
           btn.value = 'Send Email';
-          alert(JSON.stringify(err));
+          ErrorFull(err, "top-start")
+          // alert(JSON.stringify(err));
         });
     });
 }
