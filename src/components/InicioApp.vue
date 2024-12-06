@@ -153,7 +153,7 @@
 
     <div class="row">
 
-      <div class="col-xl-12 col-lg-7">
+      <div class="col-xl-12 col-lg-12">
 
         <!-- Area Chart -->
         <div class="card shadow mb-4">
@@ -315,14 +315,12 @@
 
 
     </div>
-
-    <!-- <template v-if="esperando">
-      <div v-on="loading('Creando archivo PDF...')">
-
-      </div>
-    </template> -->
-
   </div>
+  <template v-if="esperando">
+    <div v-on="loading('Creando archivo PDF...')">
+
+    </div>
+  </template>
 </template>
 
 <script setup>
@@ -478,12 +476,12 @@ const obtenerListadoLimpioSucursales = () => {
 onMounted(async () => {
   if (localStorage.getItem('userName')) {
     // if (localStorage.getItem('Carg_dat') == '0') {
-      if (localStorage.getItem('Wait') == '0') {
-        console.log("Cargar ahora")
-        bodyLogin.classList.remove('bg-gradient-info');
-        listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
-        obtenerListadoLimpio();
-      }
+    if (localStorage.getItem('Wait') == '0') {
+      // console.log("Cargar ahora")
+      bodyLogin.classList.remove('bg-gradient-info');
+      listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
+      obtenerListadoLimpio();
+    }
 
     // } else {
     //   console.log("Sigo esperando")
@@ -805,7 +803,7 @@ import autoTable from 'jspdf-autotable';
 
 const generar_pdf = async () => {
 
-  esperando.value = true;
+  // esperando.value = true;
 
   let response = await axios.get(`http://` + ipPublica.value + `/fullstack/public/productos`)
     .then((response) => {
@@ -818,8 +816,7 @@ const generar_pdf = async () => {
     nuevoArreglo.value.push({ id: listado.value[index].id, codigo: listado.value[index].attributes.codigo, type: listado.value[index].type, descripcion: listado.value[index].attributes.descripcion, observacion: listado.value[index].attributes.observacion })
   }
 
-  // console.log(nuevoArreglo.value)
-  // console.log(listado.value)
+  // esperando.value = false;
   const doc = new jsPDF('p', 'pt');
 
   let columnas = [
@@ -841,11 +838,9 @@ const generar_pdf = async () => {
   doc.save("Resumen.pdf");
 
   // cerrarAlert();
-  esperando.value = false;
+
 
 }
-
-
 </script>
 
 <style lang="scss" scoped></style>

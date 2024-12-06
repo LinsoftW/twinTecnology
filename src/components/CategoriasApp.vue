@@ -44,7 +44,9 @@
                     <div class="form-group col-lg-12">
                       <label class="text-info">Descripción: <label style="color: red;">*</label></label>
                       <input type="text" class="form-control" id="descripcion" aria-describedby="emailHelp"
-                        v-model="formProductos.data.attributes.descripcion" placeholder="Descripción del producto">
+                        v-model="formProductos.data.attributes.descripcion" placeholder="Descripción del producto"
+                        required>
+                        <label v-if="errores"> {{ errores.value }}</label>
                     </div>
                     <div class="form-group col-lg-12">
                       <label class="text-info">Unidad de medida:</label>
@@ -159,11 +161,11 @@
     </div>
 
   </div>
-  <!-- <template v-if="esperando">
+  <template v-if="esperando">
     <div v-on="loading('Actualizando datos...')">
 
     </div>
-  </template> -->
+  </template>
 </template>
 <script setup>
 
@@ -256,7 +258,7 @@ let setTiempoBusca = '';
 
 const datos_archivados = ref([]);
 
-const ipPublica = ref('127.0.0.1');
+const ipPublica = ref('192.168.121.123');
 
 const formProductos = reactive({
   data: {
@@ -270,36 +272,43 @@ const formProductos = reactive({
 })
 
 const agregarU = () => {
-  // console.log(formProductos.object)
-  esperando.value = true;
-  // datos_archivados.value.push(formProductos);
-  axios.post(`http://` + ipPublica.value + `/fullstack/public/productos`, formProductos)
-    .then((response) => {
-      cargado.value = false;
-      esperando.value = false;
-      cerrarAlert();
-      consultar();
-      formProductos.data.attributes.observacion = ''
-      formProductos.data.attributes.descripcion = '';
-      formProductos.data.attributes.codigo = '';
-      actualizar_datos();
-      Swal.fire({
-        icon: "success",
-        title: "Producto agregado satisfactoriamente."
+  if (formProductos.data.attributes.descripcion != '' || formProductos.data.attributes.codigo != '') {
+    // console.log(formProductos.object)
+    esperando.value = true;
+    // datos_archivados.value.push(formProductos);
+    axios.post(`http://` + ipPublica.value + `/fullstack/public/productos`, formProductos)
+      .then((response) => {
+        cargado.value = false;
+        esperando.value = false;
+        cerrarAlert();
+        consultar();
+        formProductos.data.attributes.observacion = ''
+        formProductos.data.attributes.descripcion = '';
+        formProductos.data.attributes.codigo = '';
+        // actualizar_datos();
+        successFull("Producto agregado satisfactoriamente.", "top-end")
+        // Swal.fire({
+        //   icon: "success",
+        //   title: "Producto agregado satisfactoriamente."
+        // })
       })
-    })
-    .catch((error) => {
-      if (error.response.status === 400) {
-        errors.value = error.response.data.message;
-      }
-      esperando.value = false;
-      cerrarAlert();
-      Swal.fire({
-        icon: "error",
-        title: error.response.data.message
+      .catch((error) => {
+        if (error.response.status === 400) {
+          errors.value = error.response.data.message;
+        }
+        esperando.value = false;
+        cerrarAlert();
+        Swal.fire({
+          icon: "error",
+          title: error.response.data.message
+        })
       })
-    })
-  // console.log(datos_archivados.value);
+    // console.log(datos_archivados.value);
+  }else{
+    let errores = ref({cod: "Campo requerido" , descripcion: "Campo requerido"})
+    console.log(errores.value.cod)
+  }
+
 
 }
 
@@ -511,35 +520,68 @@ const buscandoElemento = () => {
   setTiempoBusca = setTimeout(consultar, 360);
 }
 
+const successFull = (mensaje, posicion) => {
+
+  const toast = Swal.mixin({
+    toast: true,
+    position: posicion,
+    showConfirmButton: false,
+    timer: 1500,
+    //timerProgressBar: true,
+  })
+  toast.fire({
+    icon: "success",
+    title: mensaje
+  })
+}
+
+const ErrorFull = (mensaje, posicion) => {
+
+  const toast = Swal.mixin({
+    toast: true,
+    position: posicion,
+    showConfirmButton: false,
+    timer: 2800,
+    //timerProgressBar: true,
+  })
+  toast.fire({
+    icon: "error",
+    title: mensaje
+  })
+}
+
 const editarU = () => {
   esperando.value = true;
   axios.put(`http://${ipPublica.value}/fullstack/public/productos/${id.value}`, formProductos)
     .then((response) => {
       // console.log(response)
       esperando.value = false;
+      cargado.value = false;
       cerrarAlert();
       consultar();
       editar.value = false;
       formProductos.data.attributes.descripcion = ''
       formProductos.data.attributes.observacion = '';
       formProductos.data.attributes.codigo = '';
-      Swal.fire({
-        icon: "success",
-        title: "Editado satisfactoriamente."
-      })
+      successFull("Categoría modificada satisfactoriamente.", "top-end")
+      // Swal.fire({
+      //   icon: "success",
+      //   title: "Editado satisfactoriamente."
+      // })
       // editar.value = false;
       // localStorage.setItem("editar", editar.value);
     })
     .catch((error) => {
-      if (error.status === 400) {
+      if (error.response.status === 500) {
         errors.value = error.response.data;
       }
       esperando.value = false;
-      cerrarAlert();
-      Swal.fire({
-        icon: "danger",
-        title: "Error realizando operación."
-      })
+      ErrorFull("Error realizando operación.", "top-start")
+      // cerrarAlert();
+      // Swal.fire({
+      //   icon: "danger",
+      //   title: "Error realizando operación."
+      // })
     })
 }
 
@@ -562,20 +604,26 @@ const borrarU = (id, correo) => {
           consultar();
           // cancelarU();
           cerrarAlert();
-          Swal.fire({
-            title: "Eliminado",
-            text: "Producto eliminado satisfactoriamente.",
-            icon: "success"
-          });
+          successFull("Categoría eliminada satisfactoriamente.", "top-end")
+          // Swal.fire({
+          //   title: "Eliminado",
+          //   text: "Producto eliminado satisfactoriamente.",
+          //   icon: "success"
+          // });
           cargado.value = false;
         })
     }
   }).catch((error) => {
-    if (error.response.status === 400) {
+    if (error.response.status === 500) {
       errors.value = error.response.data;
     }
     esperando.value = false;
     cerrarAlert();
+    ErrorFull("Error realizando operación.", "top-start")
+    // Swal.fire({
+    //   icon: "danger",
+    //   title: "Error realizando operación."
+    // })
   });
 }
 // Fin CRUD

@@ -665,7 +665,7 @@ const Kproductos = ref(0);
 const Ksucursales = ref(0);
 
 const tiempoEspera = async (n) => {
-  console.log(n)
+  // console.log(n)
 }
 
 const esperando = ref(false);
@@ -980,7 +980,7 @@ const consultarPrincipal = async () => {
       listadoSucursales.value = response1.data.data;
       almacenDatosSucursales(listadoSucursales.value);
       esperando.value = false;
-      console.log("Cargado TODOO")
+      // console.log("Cargado TODOO")
       localStorage.setItem("Carg_dat", '1');
       localStorage.setItem("Wait", '0');
       successFull("Datos cargados.", "top-start")
@@ -999,22 +999,7 @@ const consultarPrincipal = async () => {
         // localStorage.setItem('Wait', '5');
         localStorage.setItem("Carg_dat", '0');
       }
-      // console.log(errors.value);
-      // esperando.value = false;
-      // cerrarAlert();
-      // Swal.fire({
-      //   icon: "danger",
-      //   title: error.message
-      // })
     });
-
-  // } else {
-  //   almacenDatosProductos(listado.value);
-  //   // obtenerListadoLimpio();
-  // }
-  // Kinventario.value = Kinventario.value + 1;
-  // cargado.value = true;
-  // esperando.value = false;
 
 }
 
@@ -1030,15 +1015,15 @@ const consultar = async (n) => {
 
   }
   if (n == 2) {
-    console.log("Excel")
+    // console.log("Excel")
     // Kinventario.value = Kinventario.value + 1;
   }
   if (n == 3) {
-    console.log("Imprimir")
+    // console.log("Imprimir")
   }
 
   if (n == 4) {
-    console.log("Carga masiva")
+    // console.log("Carga masiva")
   }
 
 
@@ -1158,12 +1143,12 @@ onMounted(async () => {
     if (localStorage.getItem('Carg_dat') == '0') {
       Ctoggled.value = 'toggled';
       esperando.value = true;
-      console.log("Cargando datos...")
+      // console.log("Cargando datos...")
       let dato = await consultarPrincipal()
     } else if (localStorage.getItem('Wait') != '0') {
       localStorage.removeItem('Carg_dat');
       localStorage.setItem('Carg_dat', '0');
-      console.log('Repitiendo las consultas')
+      // console.log('Repitiendo las consultas')
       onMounted();
     }
     // } else {
@@ -1279,6 +1264,7 @@ const cargarImagen = async () => {
       //   imageAlt: "The uploaded picture",
       // });
       imgPerfil.value = e.target.result;
+      console.log(e)
     };
     reader.readAsDataURL(file);
     successFull("Imagen cambiada satisfactoriamente.", "top-start");

@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="container-fluid">
+      <!-- <ImageBarcodeReader @decode="onDecode" @error="onError" /> -->
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-2 text-gray-800">INVENTARIO</h1>
         <!-- <img src="/cargando2.gif" style="width: 40px; height:40px" v-if="esperando" > -->
@@ -17,6 +18,9 @@
               masiva</a>
             <a @click="ImprimirDoc()" href="#" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm"
               v-b-tooltip.hover title="Imprimir"><i class="fas fa-print fa-sm "></i> Imprimir</a>
+            <a @click="escanea = true" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
+              v-b-tooltip.hover data-toggle="modal" data-target="#escanearCode" title="Escanear código de barras"><i
+                class="fa fa-barcode fa-sm "></i> Escanear</a>
           </div>
         </div>
 
@@ -138,7 +142,7 @@
       </div>
 
       <!--Listado de productos -->
-      <div class="col-xl-12 col-lg-7">
+      <div class="col-xl-12 col-lg-12">
         <div class="card shadow mb-4">
           <!-- Card Header - Dropdown -->
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -423,13 +427,45 @@
         </div>
       </div>
     </div>
+
+    <!-- Editar producto Modal-->
+    <div :class="'modal fade ' + showModal2" id="escanearCode" tabindex="-1" role="dialog"
+      aria-labelledby="exampleModalLabel" :aria-hidden="activaHide2" :arial-modal="activaModal2" :style="displayModal2">
+      <div class="modal-dialog" role="document">
+        <!-- <div class="modal-content"> -->
+        <!-- <div class="modal-header">
+            <h5 class="modal-title text-info" id="exampleModalLabel">Apunte la cámara hacia el código de barra
+            </h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true" class="text-info">×</span>
+            </button>
+          </div> -->
+        <!-- <div class="modal-body text-center"> -->
+        <!-- <vue-barcode :value="cod" tag="svg"></vue-barcode> -->
+        <div class="row col-lg-12 text-center">
+          <StreamBarcodeReader v-if="escanea" torch no-front-cameras @decode="onDecode" @loaded="onLoaded"
+            style="width: 100%; height:100%" />
+          <h2 v-if="escanea" style="color:white">Código: {{ decodedText }}</h2>
+          <!-- </div> -->
+          <!-- <ImageBarcodeReader @decode="onDecode" @error="onError" /> -->
+
+        </div>
+
+        <!-- </div> -->
+        <!-- <div class="modal-footer">
+          <a class="btn btn-info btn-sm" @click="escanea = false" data-dismiss="modal">Cerrar</a>
+
+        </div> -->
+      </div>
+
+    </div>
     <AddProducto v-show="popup" @cerrar="abrirModalAddProd()" />
   </div>
-  <!-- <template v-if="esperando">
+  <template v-if="esperando">
     <div v-on="loading('Actualizando datos...')">
 
     </div>
-  </template> -->
+  </template>
 
   <div :class="showModBack" @click="abrirModal()"></div>
   <!-- <div :class="showModBack2" @click="cerrarModal()"></div> -->
@@ -441,6 +477,20 @@ import axios from 'axios';
 import AddProducto from './modal/AddProducto.vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
+
+import { StreamBarcodeReader, ImageBarcodeReader } from '@teckel/vue-barcode-reader'
+
+const escanea = ref(false);
+
+const decodedText = ref('')
+
+const onDecode = (result) => {
+  decodedText = result
+}
+
+const onLoaded = () => {
+  console.log('loaded')
+}
 
 const emit = defineEmits(['consultar'])
 
@@ -491,9 +541,10 @@ const editarU = () => {
   esperando.value = true;
   axios.put(`http://${ipPublica.value}/fullstack/public/productos/${id.value}`, formProductos)
     .then((response) => {
-      // console.log(response)
+      console.log(response)
       esperando.value = false;
-      // cerrarAlert();
+      cerrarAlert();
+      cargado.value = false;
       consultar();
       editar.value = false;
       formProductos.data.attributes.descripcion = ''
@@ -517,8 +568,8 @@ const editarU = () => {
       // localStorage.setItem("editar", editar.value);
     })
     .catch((error) => {
-      console.log(error)
-      if (error.status === 400) {
+      // console.log(error)
+      if (error.response.status === 500) {
         errors.value = error.response.data;
       }
       esperando.value = false;
@@ -978,7 +1029,7 @@ const ErrorFull = (mensaje, posicion) => {
     toast: true,
     position: posicion,
     showConfirmButton: false,
-    timer: 1500,
+    timer: 2800,
     //timerProgressBar: true,
   })
   toast.fire({
@@ -1054,7 +1105,7 @@ const cambiarLimite = () => {
 onMounted(() => {
   if (localStorage.getItem('userName')) {
     if (localStorage.getItem('Carg_dat') != '0') {
-      console.log("Inventario")
+      // console.log("Inventario")
       listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
       obtenerListadoLimpio();
       // console.log(itemsSelected.value);
