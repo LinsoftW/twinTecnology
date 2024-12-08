@@ -106,6 +106,10 @@
         </router-link>
 
       </li>
+      <hr class="sidebar-divider">
+      <div class="sidebar-heading">
+        ADMON
+      </div>
       <li class="nav-item">
 
         <!-- <a :class="'nav-link ' + collapsed2" href="#" data-toggle="collapse" data-target="#collapseUtilities"
@@ -130,7 +134,7 @@
             </router-link>
             <router-link class="button" to="/gest_nomencladores">
               <a class="collapse-item" v-bind:class="ActivaLink(9)" :key="9" @click="obtenerLinkA(9)"> <i
-                  class="fas fa-fw fa-cogs"></i> Datos provedores</a>
+                  class="fas fa-fw fa-cogs"></i> Nomencladores</a>
             </router-link>
             <!-- <router-link class="button" to="/gest_inventario">
               <a class="collapse-item" v-bind:class="ActivaLink(6)" :key="6" @click="obtenerLinkA(6)"> <i
@@ -415,14 +419,19 @@
                   <i class="fa fa-envelope fa-sm fa-fw mr-2 text-gray-400"></i>
                   Enviar correo electrónico
                 </a>
+                <router-link to="/cmasiva"><a class="dropdown-item" href="#">
+                  <i class="fa fa-upload fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Carga masiva de datos
+                </a></router-link>
+
                 <!-- <a class="dropdown-item" href="#" @click="Cambia_Color">
                   <i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-400"></i>
                   Oscuro / Default
                 </a> -->
-                <a class="dropdown-item" href="#">
+                <!-- <a class="dropdown-item" href="#">
                   <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                   Configuración
-                </a>
+                </a> -->
                 <!-- <a class="dropdown-item" href="#">
                                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Activity Log
@@ -1264,10 +1273,11 @@ const cargarImagen = async () => {
       //   imageAlt: "The uploaded picture",
       // });
       imgPerfil.value = e.target.result;
-      console.log(e)
+      successFull("Imagen cambiada satisfactoriamente.", "top-end");
+      // console.log(e)
     };
     reader.readAsDataURL(file);
-    successFull("Imagen cambiada satisfactoriamente.", "top-start");
+    // successFull("Imagen cambiada satisfactoriamente.", "top-start");
   }
 }
 
