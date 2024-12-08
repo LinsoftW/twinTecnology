@@ -16,6 +16,8 @@ import {
   GcWorksheet,
   GcColumn,
 } from "@mescius/spread-sheets-vue";
+import {Tabs, Tab} from 'vue3-tabs-component';
+// import 'vue3-tabs-component/dist/style.css';
 
 import App from './App.vue'
 
@@ -24,16 +26,11 @@ import router from './router'
 
 const app = createApp(App);
 
-app.component('EasyDataTable', Vue3EasyDataTable);
-
-app.component('VueDatePicker', VueDatePicker);
-
-app.component(VueBarcode.name, VueBarcode);
-
-app.component("gc-spread-sheets", GcSpreadSheets);
-
-app.component("gc-worksheet", GcWorksheet);
-
-app.component("gc-column", GcColumn);
+app.component('EasyDataTable', Vue3EasyDataTable)
+.component('VueDatePicker', VueDatePicker)
+.component(VueBarcode.name, VueBarcode)
+.component("gc-spread-sheets", GcSpreadSheets)
+.component("gc-worksheet", GcWorksheet)
+.component("gc-column", GcColumn);
 
 app.use(router, plugin, defaultConfig, DoughnutChart).mount('#app')

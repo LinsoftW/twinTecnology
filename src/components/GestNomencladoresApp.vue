@@ -13,21 +13,307 @@
       <div class="row">
 
         <!--Listado de productos -->
-        <div class="col-xl-8 col-lg-7">
+        <div class="col-xl-12 col-lg-12">
           <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-              <h6 class="m-0 font-weight-bold text-info">PRODUCTOS EN STOCK</h6>
+              <h6 class="m-0 font-weight-bold text-info">NOMENCLADORES</h6>
             </div>
             <!-- Card Body -->
             <div class="card-body">
 
-              <div class="table-responsive">
+              <ul role="tablist" class="tabs-component-tabs">
+                <li :class="'tabs-component-tab ' + isactive" role="presentation"><a role="tab"
+                    :class="'tabs-component-tab-a ' + isactive" aria-controls="first-tab-pane" :aria-selected="selec"
+                    href="#first-tab" tabindex="0" @click="Tab1">Tabla 1</a></li>
+                <li :class="'tabs-component-tab ' + isactive2" role="presentation"><a role="tab"
+                    :class="'tabs-component-tab-a '+ isactive2" aria-controls="second-tab-pane" :aria-selected="selec2"
+                    href="#second-tab" tabindex="0" @click="Tab2">Tabla 2</a></li>
+                <li class="tabs-component-tab is-disabled" role="presentation"><a role="tab"
+                    class="tabs-component-tab-a is-disabled" aria-controls="disabled-tab-pane" aria-selected="false"
+                    href="#" tabindex="0">Tabla 3</a></li>
+                <li class="tabs-component-tab is-inactive" role="presentation"><a role="tab"
+                    class="tabs-component-tab-a is-inactive" aria-controls="oh-hi-mark-pane" aria-selected="false"
+                    href="#oh-hi-mark" tabindex="0">Tabla 4</a></li>
+                <li class="tabs-component-tab is-inactive" role="presentation"><a role="tab"
+                    class="tabs-component-tab-a is-inactive" aria-controls="prefix-and-suffix-pane"
+                    aria-selected="false" href="#prefix-and-suffix" tabindex="0"><span class="prefix">→</span>Tabla
+                    5</a></li>
+                <li class="tabs-component-tab--custom is-inactive" role="presentation"><a role="tab"
+                    class="tabs-component-tab-a--custom is-inactive" aria-controls="custom-navigation-item-classes-pane"
+                    aria-selected="false" href="#custom-navigation-item-classes" tabindex="0">Custom navigation item
+                    classes</a></li>
+              </ul>
+              <div class="tabs-component-panels">
+                <section id="first-tab-pane" data-tab-id="first-tab" :aria-hidden="false" class="tabs-component-panel"
+                  role="tabpanel" tabindex="-1" style="">
+                  <div class="row">
+                    <div class="col-xl-8">
+                      <div class="row">
+                        <div class="col-md-6 col-xl-6 col-lg-6">
+                          <h3>TABLA 1</h3>
+                        </div>
+                        <div class="col-md-3 col-xl-3 col-lg-3">
+                          <span class="text-info">Filtrar por columna: </span>
+                          <select v-model="searchField" class="form-control form-control-user">
+                            <option>type</option>
+                            <option>attributes.codigo</option>
+                          </select>
+                        </div>
+                        <div class="col-md-3 col-xl-3 col-lg-3">
+                          <span class="text-info">Buscar: </span>
+                          <input class="form-control form-control-user" type="text" v-model="searchValue"
+                            :placeholder="'Teclee el ' + searchField + ' a buscar ...'" />
+                        </div>
+                      </div><br>
+
+                      <!-- </div> -->
+                      <EasyDataTable table-class-name="customize-table" :headers="headers" :items="items"
+                        buttons-pagination border-cell v-model:items-selected="itemsSelected"
+                        header-text-direction="center" body-text-direction="center" :search-field="searchField"
+                        :search-value="searchValue" @click-row="showRow" :rows-per-page="5">
+                        <template #item-opciones="item">
+                          <div class="operation-wrapper">
+                            <!-- <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal"
+                              data-target="#EditarProducto" @click="seleccionaProducto(item)" v-b-tooltip.hover
+                              title="Modificar"><span class="fas fa-edit"></span></button> -->
+                            <button class="btn btn-success btn-sm btn-circle" @click="clickEditar(item.id)"
+                              v-b-tooltip.hover title="Editar"><span class="fas fa-edit"></span></button>
+                            <!-- <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
+                    title="Aumentar"><span class="fas fa-plus"></span></button>
+                  <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
+                    title="Restar"><span class="fas fa-minus"></span></button> -->
+                            <button class="btn btn-danger btn-sm btn-circle ml-1"
+                              @click="borrarU(item.id, item.attributes.codigo)" v-b-tooltip.hover title="Eliminar"><span
+                                class="fas fas fa-trash-alt"></span></button>
+                            <!-- <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode"
+                    @click="generarCodeBar(item.attributes.codigo)" v-b-tooltip.hover title="Código de barra"><span
+                      class="fas fas fa-barcode"></span></button> -->
+                            <!-- <a class="dropdown-item btn btn-info btn-sm btn-circle ml-1" href="#" @click="generarCodeBar(item.attributes.codigo)" data-toggle="modal" data-target="#BarCode"
+                    >
+                    <span class="fas fa-barcode"></span>
+                  </a> -->
+                          </div>
+                        </template>
+                        <!-- <template #loading>
+                <img src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
+                  style="width: 100px; height: 80px;" />
+              </template> -->
+                      </EasyDataTable>
+
+                      <!-- <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                          <thead>
+                            <tr style="text-align: center;">
+                              <th>No</th>
+
+                              <th>CÓDIGO</th>
+                              <th>SUCURSAL</th>
+                              <th>DESCRIPCION</th>
+                              <th>OBSERVACIONES</th>
+                              <th>ACCIONES</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr v-for="datos in datosPaginados" :key="datos.id">
+                              <td v-if="datos.attributes.deleted_at == null">{{ datos.id }}</td>
+
+                              <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.codigo }}</td>
+                              <td v-if="datos.attributes.deleted_at == null">Sucursal</td>
+                              <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.descripcion }}</td>
+                              <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.observacion }}</td>
+                              <td v-if="datos.attributes.deleted_at == null" style="text-align: center;">
+                                <button class="btn btn-success btn-sm btn-circle" @click="clickEditar(datos.id)"
+                                  v-b-tooltip.hover title="Editar"><span class="fas fa-edit"></span></button>&nbsp;
+
+                                <button class="btn btn-danger btn-sm btn-circle"
+                                  @click="borrarU(datos.id, datos.attributes.codigo)" v-b-tooltip.hover
+                                  title="Eliminar"><span class="fas fa-trash"></span></button>
+                              </td>
+                            </tr>
+
+
+                          </tbody>
+                        </table>
+                        <div class="text-center">
+                          <nav aria-label="Page navigation example" style="text-align: center;">
+                            <label>Mostrando &nbsp;</label>
+                            <select style="width: 60px" @change="cambiarLimite()" v-model="elementPagina">
+                              <option value="5">5</option>
+                              <option value="10">10</option>
+                              <option value="20">20</option>
+                              <option value="50">50</option>
+                              <option value="100">100</option>
+                            </select>
+
+                            <label>&nbsp;registros </label>
+                            <ul class="pagination Mestilo btn-sm">
+
+                              <li class="page-item" :class="`${disableA}`" @click="obtenerAnterior"><a class="page-link"
+                                  href="#">Anterior</a></li>
+                              <li v-for="pagina in cantidad" class="page-item" v-bind:class="isActivo(pagina)"
+                                :key="pagina" @click="obtenerPagina(pagina)"><a class="page-link" href="#">{{ pagina
+                                  }}</a></li>
+                              <li class="page-item" :class="`${disableS}`" @click="obtenerSiguiente"><a
+                                  class="page-link" href="#">Siguiente</a></li>
+                            </ul>
+                          </nav>
+                        </div>
+                      </div> -->
+                    </div>
+                    <div class="col-xl-4">
+                      <div class="">
+                        <div class="card shadow mb-4">
+                          <!-- Card Header - Dropdown -->
+                          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                            style="text-align: center;">
+                            <h6 class="m-0 font-weight-bold text-info" v-if="editar == false"><span
+                                class="fa fa-plus"></span> AGREGAR
+                              NUEVO PRODUCTO </h6>
+                            <h6 class="m-0 font-weight-bold text-info" v-if="editar == true"><span
+                                class="fa fa-edit"></span>
+                              MODIFICAR LOS DATOS DEL PRODUCTO <br>(<label style="color: red;">{{
+                                formProductos.data.attributes.codigo
+                                }}</label>)</h6>
+                          </div>
+                          <!-- Card Body -->
+                          <div class="card-body">
+
+                            <!-- Personas -->
+                            <div class="col-lg-12">
+                              <div class="">
+                                <div class="text-center">
+                                  <h1 class="h6 text-gray-900 mb-4">CAMPOS OBLIGATORIOS (<label
+                                      style="color: red;">*</label>)</h1>
+                                </div>
+                                <form class="user">
+
+                                  <div class="row">
+                                    <div class="form-group col-lg-4">
+                                      <label class="text-info">Código: <label style="color: red;">*</label></label>
+                                      <input type="text" class="form-control" id="codigo" aria-describedby="emailHelp"
+                                        v-model="formProductos.data.attributes.codigo" placeholder="Código" required>
+                                    </div>
+                                    <div class="form-group col-lg-8">
+                                      <label class="text-info">Descripción: <label style="color: red;">*</label></label>
+                                      <input type="text" class="form-control" id="descripcion"
+                                        aria-describedby="emailHelp" v-model="formProductos.data.attributes.descripcion"
+                                        placeholder="Descripción del producto">
+                                    </div>
+
+                                  </div>
+                                  <div class="form-group ">
+                                    <label class="text-info">Observaciones:</label>
+                                    <textarea class="form-control" id="observaciones"
+                                      v-model="formProductos.data.attributes.observacion"
+                                      placeholder="Observaciones acerca del producto"></textarea>
+
+                                  </div>
+                                  <div class="row">
+                                    <div class="form-group col-lg-12">
+                                      <label class="text-info">Sucursal: <label style="color: red;">*</label></label>
+                                      <select name="rol" id="rol" style="width: 100%; text-align:center"
+                                        placeholder="Sucursal" class="text-gray-900 form-control">
+                                        <option v-for="dato in listadoSucursales" :key="dato.id"
+                                          :value="dato.attributes.nombre">{{
+                                            dato.attributes.nombre }}</option>
+                                        <!-- <option value="Matanzas">Matanzas</option> -->
+                                        <!-- <option value="Mensajero">Mensajero</option> -->
+                                      </select>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <!-- <div v-if="editar == false" class="col-lg-1"></div> -->
+                                    <!-- <div v-if="editar == false" class="form-group h4 col-lg-6">
+                                      <a @click="agregarU" class="btn btn-primary btn-user btn-block">
+                                        Archivar y continuar agregando
+                                      </a>
+                                    </div> -->
+                                    <div v-if="editar == false" class="form-group h4 col-lg-3">
+
+                                    </div>
+                                    <div v-if="editar == false" class="form-group h4 col-lg-6">
+                                      <a @click="agregarU" class="btn btn-info btn-block">
+                                        Guardar datos
+                                      </a>
+                                    </div>
+                                    <div v-if="editar" class="form-group h4 col-lg-6">
+                                      <a @click="editarU" class="btn btn-info btn-block">
+                                        Modificar
+                                      </a>
+                                    </div>
+                                    <div v-if="editar" class="form-group h4 col-lg-6">
+                                      <a @click="cancelarU" class="btn btn-danger btn-block">
+                                        Cancelar
+                                      </a>
+                                    </div>
+                                  </div>
+
+
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+
+                </section>
+                <section id="second-tab-pane" data-tab-id="second-tab" aria-hidden="true" class="tabs-component-panel"
+                  role="tabpanel" tabindex="-1" style="display: none;">
+                  <h2 class="page-subtitle">Second tab</h2> This is the content of the second tab.
+                </section>
+                <section id="disabled-tab-pane" data-tab-id="disabled-tab" aria-hidden="true"
+                  class="tabs-component-panel" role="tabpanel" tabindex="-1" style="display: none;">
+                  <h2 class="page-subtitle">Disabled tab</h2> This content will be unavailable while :is-disabled prop
+                  set to true
+                </section>
+                <section id="oh-hi-mark-pane" data-tab-id="oh-hi-mark" aria-hidden="true" class="tabs-component-panel"
+                  role="tabpanel" tabindex="-1" style="display: none;">
+                  <h2 class="page-subtitle">Custom fragment</h2> The hash that is appended to the url can be customized.
+                </section>
+                <section id="prefix-and-suffix-pane" data-tab-id="prefix-and-suffix" aria-hidden="true"
+                  class="tabs-component-panel" role="tabpanel" tabindex="-1" style="display: none;">
+                  <h2 class="page-subtitle">Prefix and suffix</h2> A prefix and a suffix can be added — HTML allowed.
+                </section>
+                <section id="custom-navigation-item-classes-pane" data-tab-id="custom-navigation-item-classes"
+                  aria-hidden="true" class="tabs-component-panel" role="tabpanel" tabindex="-1" style="display: none;">
+                  <h2 class="page-subtitle">Custom navigation item classes</h2> A custom nav-item-class &amp;
+                  nav-item-link-class can be added to a tab's navigation item.
+                </section>
+              </div>
+              <!-- <div class="">
+                <ul class="tabs-component-tabs">
+                  <li class="tabs-component-tab is-active">
+                    <a class="tabs-component-tab-a is-active">
+                      Articulos
+                    </a>
+                  </li>
+                  <li class="tabs-component-tab is-inactive">
+                    <a class="tabs-component-tab-a is-inactive">2</a>
+                  </li>
+                  <li class="tabs-component-tab is-inactive">
+                    <a class="tabs-component-tab-a is-inactive">3</a>
+
+                  </li>
+                </ul>
+                <div class="tabs-component-panels">
+                  <section class="tabs-component-panel">
+                    1.1
+                  </section>
+                </div>
+
+              </div> -->
+
+              <!-- <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr style="text-align: center;">
                       <th>No</th>
-                      <!-- <th>FOTO</th> -->
+
                       <th>CÓDIGO</th>
                       <th>SUCURSAL</th>
                       <th>DESCRIPCION</th>
@@ -38,8 +324,7 @@
                   <tbody>
                     <tr v-for="datos in datosPaginados" :key="datos.id">
                       <td v-if="datos.attributes.deleted_at == null">{{ datos.id }}</td>
-                      <!-- <td style="text-align: end;"><img class="img-profile rounded-circle img-thumbnail"
-                          src="../assets/new/img/undraw_profile_1.svg"> <i class="fas fa-circle text-primary"></i></td> -->
+
                       <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.codigo }}</td>
                       <td v-if="datos.attributes.deleted_at == null">Sucursal</td>
                       <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.descripcion }}</td>
@@ -47,8 +332,7 @@
                       <td v-if="datos.attributes.deleted_at == null" style="text-align: center;">
                         <button class="btn btn-success btn-sm btn-circle" @click="clickEditar(datos.id)"
                           v-b-tooltip.hover title="Editar"><span class="fas fa-edit"></span></button>&nbsp;
-                        <!-- <button class="btn btn-success btn-sm btn-circle" @click="editarUModel"
-                          v-b-tooltip.hover title="Editar"><span class="fas fa-edit"></span></button>&nbsp; -->
+
                         <button class="btn btn-danger btn-sm btn-circle"
                           @click="borrarU(datos.id, datos.attributes.codigo)" v-b-tooltip.hover title="Eliminar"><span
                             class="fas fa-trash"></span></button>
@@ -83,105 +367,14 @@
                     </ul>
                   </nav>
                 </div>
-              </div>
+              </div> -->
 
             </div>
           </div>
         </div>
         <!-- FIN -->
 
-        <div class="col-xl-4 col-lg-5">
-          <div class="card shadow mb-4">
-            <!-- Card Header - Dropdown -->
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
-              style="text-align: center;">
-              <h6 class="m-0 font-weight-bold text-info" v-if="editar == false"><span class="fa fa-plus"></span> AGREGAR
-                NUEVO PRODUCTO </h6>
-              <h6 class="m-0 font-weight-bold text-info" v-if="editar == true"><span class="fa fa-edit"></span>
-                MODIFICAR LOS DATOS DEL PRODUCTO <br>(<label style="color: red;">{{ formProductos.data.attributes.codigo
-                  }}</label>)</h6>
-            </div>
-            <!-- Card Body -->
-            <div class="card-body">
 
-              <!-- Personas -->
-              <div class="col-lg-12">
-                <div class="">
-                  <div class="text-center">
-                    <h1 class="h6 text-gray-900 mb-4">CAMPOS OBLIGATORIOS (<label style="color: red;">*</label>)</h1>
-                  </div>
-                  <form class="user">
-
-                    <div class="row">
-                      <div class="form-group col-lg-4">
-                        <label class="text-info">Código: <label style="color: red;">*</label></label>
-                        <input type="text" class="form-control" id="codigo" aria-describedby="emailHelp"
-                          v-model="formProductos.data.attributes.codigo" placeholder="Código" required>
-                      </div>
-                      <div class="form-group col-lg-8">
-                        <label class="text-info">Descripción: <label style="color: red;">*</label></label>
-                        <input type="text" class="form-control" id="descripcion" aria-describedby="emailHelp"
-                          v-model="formProductos.data.attributes.descripcion" placeholder="Descripción del producto">
-                      </div>
-
-                    </div>
-                    <div class="form-group ">
-                      <label class="text-info">Observaciones:</label>
-                      <textarea class="form-control" id="observaciones"
-                        v-model="formProductos.data.attributes.observacion"
-                        placeholder="Observaciones acerca del producto"></textarea>
-                      <!-- <input type="text" class="form-control" id="observaciones"
-                        aria-describedby="emailHelp" v-model="form.apellido1" placeholder="Observaciones acerca del producto"> -->
-                    </div>
-                    <div class="row">
-                      <div class="form-group col-lg-12">
-                        <label class="text-info">Sucursal: <label style="color: red;">*</label></label>
-                        <select name="rol" id="rol" style="width: 100%; text-align:center" placeholder="Sucursal"
-                          class="text-gray-900 form-control">
-                          <option v-for="dato in listadoSucursales" :key="dato.id" :value="dato.attributes.nombre">{{
-                            dato.attributes.nombre }}</option>
-                          <!-- <option value="Matanzas">Matanzas</option> -->
-                          <!-- <option value="Mensajero">Mensajero</option> -->
-                        </select>
-                      </div>
-                    </div>
-                    <!-- <div class="form-group">
-                      <label class="text-info">Imagen:</label>
-                      <input type="file" class="form-control" id="foto"> Seleccione una foto para el producto...
-                    </div> -->
-
-
-                    <div class="row">
-                      <!-- <div v-if="editar == false" class="col-lg-1"></div> -->
-                      <div v-if="editar == false" class="form-group h4 col-lg-6">
-                        <a @click="agregarU" class="btn btn-primary btn-user btn-block">
-                          Archivar y continuar agregando
-                        </a>
-                      </div>
-                      <div v-if="editar == false" class="form-group h4 col-lg-6">
-                        <a @click="agregarU" class="btn btn-info btn-user btn-block">
-                          Guardar datos
-                        </a>
-                      </div>
-                      <div v-if="editar" class="form-group h4 col-lg-6">
-                        <a @click="editarU" class="btn btn-info btn-user btn-block">
-                          Modificar producto
-                        </a>
-                      </div>
-                      <div v-if="editar" class="form-group h4 col-lg-6">
-                        <a @click="cancelarU" class="btn btn-danger btn-user btn-block">
-                          Cancelar
-                        </a>
-                      </div>
-                    </div>
-
-
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       <!-- TABLA INVENTARIOS -->
@@ -240,7 +433,33 @@ const cerrarAlert = () => {
 
 // CRUD completo
 
+const isactive = ref('is-active')
+
+const isactive2 = ref('is-inactive')
+
+const isactive3 = ref('is-inactive')
+
+const Tab1 = () => {
+  isactive.value = 'is-active'
+  isactive2.value = 'is-inactive'
+  isactive3.value = 'is-inactive'
+  selec.value = true;
+  selec2.value = false
+}
+
+const Tab2 = () => {
+  isactive.value = 'is-inactive'
+  isactive2.value = 'is-active'
+  isactive3.value = 'is-inactive'
+  selec.value = false;
+  selec2.value = true
+}
+
 let errors = ref([]);
+
+const searchField = ref("attributes.codigo");
+
+const searchValue = ref("");
 
 let listado = ref([]);
 
@@ -398,7 +617,7 @@ const cambiarLimite = () => {
   obtenerPagina(1);
 }
 
-const obtenerListadoLimpio = () => {
+const obtenerListadoLimpio = async () => {
   let i = 0;
   if (cargado.value = false) {
     newListado.value = [];
@@ -426,6 +645,15 @@ const obtenerListadoLimpio = () => {
     cantidad.value = Math.ceil(newListado.value.length / elementPagina.value);
     obtenerPagina(1);
   }
+
+  items.value = [];
+  // cargar datos en tabla-vue
+  // console.log('Actualizando 1...')
+  for (let index = 0; index < listado.value.length; index++) {
+    items.value.push(listado.value[index])
+  }
+
+  return await items;
 
 }
 
@@ -654,5 +882,145 @@ onMounted(async () => {
   // }
 
 })
+
+const headers = [
+  { text: "NO", value: "id", width: 50, sortable: true },
+  { text: "CODIGO", value: "attributes.codigo", sortable: true },
+  { text: "CATEGORIA", value: "type" },
+  { text: "P.COMPRA", value: "precioC", sortable: true },
+  { text: "P.VENTA", value: "precioV", sortable: true },
+  { text: "UNIDAD", value: "unidad" },
+  { text: "STOCK", value: "stock", sortable: true },
+  { text: "VENTAS", value: "cantV", sortable: true },
+  { text: "OPCIONES", value: "opciones" }
+];
+
+const items = ref([]);
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.tabs-component {
+  margin: 4em 0;
+}
+
+.tabs-component-tabs {
+  border: solid 1px #ddd;
+  border-radius: 6px;
+  margin-bottom: 5px;
+}
+
+@media (min-width: 700px) {
+  .tabs-component-tabs {
+    border: 0;
+    align-items: stretch;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: -1px;
+  }
+}
+
+.tabs-component-tab,
+.tabs-component-tab--custom {
+  color: #999;
+  font-size: 14px;
+  font-weight: 600;
+  margin-right: 0;
+  list-style: none;
+}
+
+.tabs-component-tab:not(:last-child) {
+  border-bottom: dotted 1px #ddd;
+}
+
+.tabs-component-tab:hover {
+  color: #666;
+}
+
+.tabs-component-tab.is-active {
+  color: #000;
+}
+
+.tabs-component-tab.is-disabled *,
+.tabs-component-tab--custom.is-disabled * {
+  color: #cdcdcd;
+  cursor: not-allowed !important;
+}
+
+@media (min-width: 700px) {
+
+  .tabs-component-tab,
+  .tabs-component-tab--custom {
+    background-color: #fff;
+    border: solid 1px #ddd;
+    border-radius: 3px 3px 0 0;
+    margin-right: .5em;
+    transform: translateY(2px);
+    transition: transform .3s ease;
+  }
+
+  .tabs-component-tab.is-active,
+  .tabs-component-tab--custom.is-active {
+    border-bottom: solid 1px #fff;
+    z-index: 2;
+    transform: translateY(0);
+  }
+}
+
+.tabs-component-tab-a,
+.tabs-component-tab-a--custom {
+  align-items: center;
+  color: inherit;
+  display: flex;
+  padding: .75em 1em;
+  text-decoration: none;
+}
+
+.tabs-component-panels {
+  padding: 4em 0;
+}
+
+@media (min-width: 700px) {
+  .tabs-component-panels {
+    background-color: #fff;
+    border: solid 1px #ddd;
+    border-radius: 0 6px 6px 6px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .05);
+    padding: 4em 2em;
+  }
+}
+
+.tabs-component-btn {
+  cursor: pointer;
+  background: #e1ecf4;
+  border-radius: 3px;
+  border: 1px solid #7aa7c7;
+  padding: 4px 8px;
+  color: #39739d;
+}
+
+.tabs-component-btn:hover {
+  background-color: #b3d3ea;
+  color: #2c5777;
+}
+
+.tabs-component-btn:active {
+  background-color: #a0c7e4;
+  box-shadow: none;
+  color: #2c5777;
+}
+
+.tabs-component-tab--custom {
+  border-color: #e1ecf4;
+  color: #68838d;
+}
+
+.tabs-component-tab--custom:hover {
+  border-color: #e1ecf4;
+  color: #39739d;
+}
+
+.tabs-component-tab--custom.is-active {
+  color: #39739d;
+  border-color: #7aa7c7;
+  border-bottom: solid 1px #fff;
+}
+</style>
