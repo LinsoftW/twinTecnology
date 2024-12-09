@@ -23,13 +23,13 @@
             <div class="card-body">
 
               <ul role="tablist" class="tabs-component-tabs">
-                <li :class="'tabs-component-tab ' + isactive" role="presentation"><a role="tab"
-                    :class="'tabs-component-tab-a ' + isactive" aria-controls="first-tab-pane" :aria-selected="selec"
-                    href="#first-tab" tabindex="0" @click="Tab1">Tabla 1</a></li>
-                <li :class="'tabs-component-tab ' + isactive2" role="presentation"><a role="tab"
-                    :class="'tabs-component-tab-a '+ isactive2" aria-controls="second-tab-pane" :aria-selected="selec2"
-                    href="#second-tab" tabindex="0" @click="Tab2">Tabla 2</a></li>
-                <li class="tabs-component-tab is-disabled" role="presentation"><a role="tab"
+                <li :class="'tabs-component-tab--custom ' + isactive" role="presentation"><a role="tab"
+                    :class="'tabs-component-tab-a--custom ' + isactive" aria-controls="first-tab-pane" :aria-selected="selec"
+                    href="#first-tab" tabindex="0" @click="Tab1()">Tabla 1</a></li>
+                <li :class="'tabs-component-tab--custom ' + isactive2" role="presentation"><a role="tab"
+                    :class="'tabs-component-tab-a--custom '+ isactive2" aria-controls="second-tab-pane" :aria-selected="selec2"
+                    href="#second-tab" tabindex="0" @click="Tab2()">Tabla 2</a></li>
+                <!-- <li class="tabs-component-tab is-disabled" role="presentation"><a role="tab"
                     class="tabs-component-tab-a is-disabled" aria-controls="disabled-tab-pane" aria-selected="false"
                     href="#" tabindex="0">Tabla 3</a></li>
                 <li class="tabs-component-tab is-inactive" role="presentation"><a role="tab"
@@ -42,11 +42,11 @@
                 <li class="tabs-component-tab--custom is-inactive" role="presentation"><a role="tab"
                     class="tabs-component-tab-a--custom is-inactive" aria-controls="custom-navigation-item-classes-pane"
                     aria-selected="false" href="#custom-navigation-item-classes" tabindex="0">Custom navigation item
-                    classes</a></li>
+                    classes</a></li> -->
               </ul>
               <div class="tabs-component-panels">
-                <section id="first-tab-pane" data-tab-id="first-tab" :aria-hidden="false" class="tabs-component-panel"
-                  role="tabpanel" tabindex="-1" style="">
+                <section id="first-tab-pane" data-tab-id="first-tab" :aria-hidden="vis" class="tabs-component-panel"
+                  role="tabpanel" tabindex="-1" :style="display1">
                   <div class="row">
                     <div class="col-xl-8">
                       <div class="row">
@@ -259,12 +259,220 @@
                     </div>
                   </div>
 
-
-
                 </section>
-                <section id="second-tab-pane" data-tab-id="second-tab" aria-hidden="true" class="tabs-component-panel"
-                  role="tabpanel" tabindex="-1" style="display: none;">
-                  <h2 class="page-subtitle">Second tab</h2> This is the content of the second tab.
+                <section id="second-tab-pane" data-tab-id="second-tab" :aria-hidden="vis2" class="tabs-component-panel"
+                  role="tabpanel" tabindex="-1" :style="display2">
+                  <div class="row">
+                    <div class="col-xl-8">
+                      <div class="row">
+                        <div class="col-md-6 col-xl-6 col-lg-6">
+                          <h3>TABLA 2</h3>
+                        </div>
+                        <div class="col-md-3 col-xl-3 col-lg-3">
+                          <span class="text-info">Filtrar por columna: </span>
+                          <select v-model="searchField" class="form-control form-control-user">
+                            <option>type</option>
+                            <option>attributes.codigo</option>
+                          </select>
+                        </div>
+                        <div class="col-md-3 col-xl-3 col-lg-3">
+                          <span class="text-info">Buscar: </span>
+                          <input class="form-control form-control-user" type="text" v-model="searchValue"
+                            :placeholder="'Teclee el ' + searchField + ' a buscar ...'" />
+                        </div>
+                      </div><br>
+
+                      <!-- </div> -->
+                      <EasyDataTable table-class-name="customize-table" :headers="headers" :items="items"
+                        buttons-pagination border-cell v-model:items-selected="itemsSelected"
+                        header-text-direction="center" body-text-direction="center" :search-field="searchField"
+                        :search-value="searchValue" @click-row="showRow" :rows-per-page="5">
+                        <template #item-opciones="item">
+                          <div class="operation-wrapper">
+                            <!-- <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal"
+                              data-target="#EditarProducto" @click="seleccionaProducto(item)" v-b-tooltip.hover
+                              title="Modificar"><span class="fas fa-edit"></span></button> -->
+                            <button class="btn btn-success btn-sm btn-circle" @click="clickEditar(item.id)"
+                              v-b-tooltip.hover title="Editar"><span class="fas fa-edit"></span></button>
+                            <!-- <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
+                    title="Aumentar"><span class="fas fa-plus"></span></button>
+                  <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
+                    title="Restar"><span class="fas fa-minus"></span></button> -->
+                            <button class="btn btn-danger btn-sm btn-circle ml-1"
+                              @click="borrarU(item.id, item.attributes.codigo)" v-b-tooltip.hover title="Eliminar"><span
+                                class="fas fas fa-trash-alt"></span></button>
+                            <!-- <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode"
+                    @click="generarCodeBar(item.attributes.codigo)" v-b-tooltip.hover title="Código de barra"><span
+                      class="fas fas fa-barcode"></span></button> -->
+                            <!-- <a class="dropdown-item btn btn-info btn-sm btn-circle ml-1" href="#" @click="generarCodeBar(item.attributes.codigo)" data-toggle="modal" data-target="#BarCode"
+                    >
+                    <span class="fas fa-barcode"></span>
+                  </a> -->
+                          </div>
+                        </template>
+                        <!-- <template #loading>
+                <img src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
+                  style="width: 100px; height: 80px;" />
+              </template> -->
+                      </EasyDataTable>
+
+                      <!-- <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                          <thead>
+                            <tr style="text-align: center;">
+                              <th>No</th>
+
+                              <th>CÓDIGO</th>
+                              <th>SUCURSAL</th>
+                              <th>DESCRIPCION</th>
+                              <th>OBSERVACIONES</th>
+                              <th>ACCIONES</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr v-for="datos in datosPaginados" :key="datos.id">
+                              <td v-if="datos.attributes.deleted_at == null">{{ datos.id }}</td>
+
+                              <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.codigo }}</td>
+                              <td v-if="datos.attributes.deleted_at == null">Sucursal</td>
+                              <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.descripcion }}</td>
+                              <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.observacion }}</td>
+                              <td v-if="datos.attributes.deleted_at == null" style="text-align: center;">
+                                <button class="btn btn-success btn-sm btn-circle" @click="clickEditar(datos.id)"
+                                  v-b-tooltip.hover title="Editar"><span class="fas fa-edit"></span></button>&nbsp;
+
+                                <button class="btn btn-danger btn-sm btn-circle"
+                                  @click="borrarU(datos.id, datos.attributes.codigo)" v-b-tooltip.hover
+                                  title="Eliminar"><span class="fas fa-trash"></span></button>
+                              </td>
+                            </tr>
+
+
+                          </tbody>
+                        </table>
+                        <div class="text-center">
+                          <nav aria-label="Page navigation example" style="text-align: center;">
+                            <label>Mostrando &nbsp;</label>
+                            <select style="width: 60px" @change="cambiarLimite()" v-model="elementPagina">
+                              <option value="5">5</option>
+                              <option value="10">10</option>
+                              <option value="20">20</option>
+                              <option value="50">50</option>
+                              <option value="100">100</option>
+                            </select>
+
+                            <label>&nbsp;registros </label>
+                            <ul class="pagination Mestilo btn-sm">
+
+                              <li class="page-item" :class="`${disableA}`" @click="obtenerAnterior"><a class="page-link"
+                                  href="#">Anterior</a></li>
+                              <li v-for="pagina in cantidad" class="page-item" v-bind:class="isActivo(pagina)"
+                                :key="pagina" @click="obtenerPagina(pagina)"><a class="page-link" href="#">{{ pagina
+                                  }}</a></li>
+                              <li class="page-item" :class="`${disableS}`" @click="obtenerSiguiente"><a
+                                  class="page-link" href="#">Siguiente</a></li>
+                            </ul>
+                          </nav>
+                        </div>
+                      </div> -->
+                    </div>
+                    <div class="col-xl-4">
+                      <div class="">
+                        <div class="card shadow mb-4">
+                          <!-- Card Header - Dropdown -->
+                          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                            style="text-align: center;">
+                            <h6 class="m-0 font-weight-bold text-info" v-if="editar == false"><span
+                                class="fa fa-plus"></span> AGREGAR
+                              NUEVO PRODUCTO </h6>
+                            <h6 class="m-0 font-weight-bold text-info" v-if="editar == true"><span
+                                class="fa fa-edit"></span>
+                              MODIFICAR LOS DATOS DEL PRODUCTO <br>(<label style="color: red;">{{
+                                formProductos.data.attributes.codigo
+                                }}</label>)</h6>
+                          </div>
+                          <!-- Card Body -->
+                          <div class="card-body">
+
+                            <!-- Personas -->
+                            <div class="col-lg-12">
+                              <div class="">
+                                <div class="text-center">
+                                  <h1 class="h6 text-gray-900 mb-4">CAMPOS OBLIGATORIOS (<label
+                                      style="color: red;">*</label>)</h1>
+                                </div>
+                                <form class="user">
+
+                                  <div class="row">
+                                    <div class="form-group col-lg-4">
+                                      <label class="text-info">Código: <label style="color: red;">*</label></label>
+                                      <input type="text" class="form-control" id="codigo" aria-describedby="emailHelp"
+                                        v-model="formProductos.data.attributes.codigo" placeholder="Código" required>
+                                    </div>
+                                    <div class="form-group col-lg-8">
+                                      <label class="text-info">Descripción: <label style="color: red;">*</label></label>
+                                      <input type="text" class="form-control" id="descripcion"
+                                        aria-describedby="emailHelp" v-model="formProductos.data.attributes.descripcion"
+                                        placeholder="Descripción del producto">
+                                    </div>
+
+                                  </div>
+                                  <div class="form-group ">
+                                    <label class="text-info">Observaciones:</label>
+                                    <textarea class="form-control" id="observaciones"
+                                      v-model="formProductos.data.attributes.observacion"
+                                      placeholder="Observaciones acerca del producto"></textarea>
+
+                                  </div>
+                                  <div class="row">
+                                    <div class="form-group col-lg-12">
+                                      <label class="text-info">Sucursal: <label style="color: red;">*</label></label>
+                                      <select name="rol" id="rol" style="width: 100%; text-align:center"
+                                        placeholder="Sucursal" class="text-gray-900 form-control">
+                                        <option v-for="dato in listadoSucursales" :key="dato.id"
+                                          :value="dato.attributes.nombre">{{
+                                            dato.attributes.nombre }}</option>
+                                        <!-- <option value="Matanzas">Matanzas</option> -->
+                                        <!-- <option value="Mensajero">Mensajero</option> -->
+                                      </select>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <!-- <div v-if="editar == false" class="col-lg-1"></div> -->
+                                    <!-- <div v-if="editar == false" class="form-group h4 col-lg-6">
+                                      <a @click="agregarU" class="btn btn-primary btn-user btn-block">
+                                        Archivar y continuar agregando
+                                      </a>
+                                    </div> -->
+                                    <div v-if="editar == false" class="form-group h4 col-lg-3">
+
+                                    </div>
+                                    <div v-if="editar == false" class="form-group h4 col-lg-6">
+                                      <a @click="agregarU" class="btn btn-info btn-block">
+                                        Guardar datos
+                                      </a>
+                                    </div>
+                                    <div v-if="editar" class="form-group h4 col-lg-6">
+                                      <a @click="editarU" class="btn btn-info btn-block">
+                                        Modificar
+                                      </a>
+                                    </div>
+                                    <div v-if="editar" class="form-group h4 col-lg-6">
+                                      <a @click="cancelarU" class="btn btn-danger btn-block">
+                                        Cancelar
+                                      </a>
+                                    </div>
+                                  </div>
+
+
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </section>
                 <section id="disabled-tab-pane" data-tab-id="disabled-tab" aria-hidden="true"
                   class="tabs-component-panel" role="tabpanel" tabindex="-1" style="display: none;">
@@ -439,12 +647,28 @@ const isactive2 = ref('is-inactive')
 
 const isactive3 = ref('is-inactive')
 
+const display1 = ref('')
+
+const display2 = ref('display: none')
+
+const vis = ref(false)
+
+const vis2 = ref(true)
+
+const selec = ref(true)
+
+const selec2 = ref(false)
+
 const Tab1 = () => {
   isactive.value = 'is-active'
   isactive2.value = 'is-inactive'
   isactive3.value = 'is-inactive'
   selec.value = true;
   selec2.value = false
+  display1.value = ''
+  display2.value = 'display: none'
+  vis.value = false;
+  vis2.value = true
 }
 
 const Tab2 = () => {
@@ -453,6 +677,10 @@ const Tab2 = () => {
   isactive3.value = 'is-inactive'
   selec.value = false;
   selec2.value = true
+  display1.value = 'display: none'
+  display2.value = ''
+  vis2.value = false;
+  vis.value = true
 }
 
 let errors = ref([]);

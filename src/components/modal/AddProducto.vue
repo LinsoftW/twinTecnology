@@ -20,9 +20,19 @@
           <div class="col-lg-12">
             <div class="">
               <div class="text-center">
-                <h3 class="h6 text-gray-900 mb-4">CAMPOS OBLIGATORIOS (<label style="color: red;">*</label>)</h3>
+                <h4 class="h6 text-gray-900 mb-4">CAMPOS OBLIGATORIOS (<label style="color: red;">*</label>)</h4>
               </div>
               <form class="user">
+                <!-- <div class="row"> -->
+                <div class="text-center">
+                  <img v-if="image == ''" src="/inventario.jpg" class="img img-thumbnail"
+                    style="width: 160px; height:160px" alt="No image">
+                  <img v-if="image != ''" :src="image" class="img img-thumbnail" style="width: 160px; height:160px"
+                    alt="No image">
+                  <!-- <input type="file" accept="image/*" @onchange="previewImage(event, '#imgPreview')"> -->
+                  <br><br>
+                  <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg" @change="selecImagen()" />
+                </div><br>
 
                 <div class="row">
                   <div class="form-group col-lg-4">
@@ -86,10 +96,17 @@
                   </div>
 
                 </div>
-                <div class="form-group ">
-                  <label class="text-info">Observaciones:</label>
-                  <textarea class="form-control" id="observaciones" v-model="formProductos.data.attributes.observacion"
-                    placeholder="Observaciones acerca del producto"></textarea>
+                <div class="form-group">
+                  <div class="row">
+
+                    <div class="col-xl-12">
+                      <label class="text-info">Observaciones:</label>
+                      <textarea class="form-control" id="observaciones"
+                        v-model="formProductos.data.attributes.observacion"
+                        placeholder="Observaciones acerca del producto"></textarea>
+                    </div>
+                  </div>
+
                   <!-- <input type="text" class="form-control" id="observaciones"
                         aria-describedby="emailHelp" v-model="form.apellido1" placeholder="Observaciones acerca del producto"> -->
                 </div>
@@ -151,6 +168,38 @@
 import { onActivated, onMounted, reactive, ref } from 'vue';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+
+const image = ref('')
+
+const selecImagen = () => {
+  let imagen = document.getElementById('avatar');
+  //Recuperamos el archivo subido
+  let file = imagen.files[0];
+  //Creamos la url
+  let objectURL = URL.createObjectURL(file);
+  image.value = objectURL
+  // console.log(image.value)
+}
+
+const previewImage = (event, querySelector) => {
+  //Recuperamos el input que desencadeno la acción
+  const input = event.target;
+
+  //Recuperamos la etiqueta img donde cargaremos la imagen
+  $imgPreview = document.querySelector(querySelector);
+
+  // Verificamos si existe una imagen seleccionada
+  if (!input.files.length) return
+
+  //Recuperamos el archivo subido
+  file = input.files[0];
+
+  //Creamos la url
+  objectURL = URL.createObjectURL(file);
+
+  //Modificamos el atributo src de la etiqueta img
+  $imgPreview.src = objectURL;
+}
 
 const emit = defineEmits(['cerrar'])
 
@@ -392,41 +441,27 @@ const ErrorFull = (mensaje, posicion) => {
 }
 
 const agregarU = () => {
-  esperando.value = true;
-  axios.post(`http://` + ipPublica.value + `/fullstack/public/productos`, formProductos)
-    .then((response) => {
-      // cargado.value = false;
-      // esperando.value = false;
-      // console.log(response.data.data)
-      // cerrarAlert();
-      // consultar();
-      formProductos.data.attributes.observacion = ''
-      formProductos.data.attributes.descripcion = '';
-      formProductos.data.attributes.codigo = '';
-      // actualizar_datos();
-      successFull("Producto agregado satisfactoriamente.","top-center")
-      // Swal.fire({
-      //   icon: "success",
-      //   title: "Producto agregado satisfactoriamente."
-      // })
-      // localStorage.removeItem('Carg_dat');
-      // localStorage.setItem('Carg_dat', '3');
-      closeVentana();
-    })
-    .catch((error) => {
-      if (error.response.status === 400) {
-        errors.value = error.response.data.message;
-      }
-      esperando.value = false;
-      ErrorFull(error.response.data.message ,"top-start")
-      closeVentana();
-      // cerrarAlert();
-      // Swal.fire({
-      //   icon: "error",
-      //   title: error.response.data.message
-      // })
-    })
-  // console.log(datos_archivados.value);
+  if (formProductos.is_valid) {
+    esperando.value = true;
+    axios.post(`http://` + ipPublica.value + `/fullstack/public/productos`, formProductos)
+      .then((response) => {
+        formProductos.data.attributes.observacion = ''
+        formProductos.data.attributes.descripcion = '';
+        formProductos.data.attributes.codigo = '';
+        successFull("Producto agregado satisfactoriamente.", "top-center")
+        closeVentana();
+      })
+      .catch((error) => {
+        if (error.response.status === 400) {
+          errors.value = error.response.data.message;
+        }
+        esperando.value = false;
+        ErrorFull(error.response.data.message, "top-start")
+        closeVentana();
+      })
+  } else {
+    ErrorFull("Debe llenar todos los campos obligatorios", "top-start")
+  }
 
 }
 

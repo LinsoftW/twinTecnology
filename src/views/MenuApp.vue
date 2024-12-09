@@ -77,7 +77,7 @@
 
       <li class="nav-item" v-bind:class="ActivaLink(4)" :key="4" @click="obtenerLinkA(4)">
 
-        <router-link class="button" to="/inicio">
+        <router-link class="button" to="#">
           <a class="nav-link">
             <i class="fas fa-fw fa-shopping-cart"></i>
             <span>Ventas</span></a>
@@ -88,7 +88,7 @@
 
       <li class="nav-item" v-bind:class="ActivaLink(5)" :key="5" @click="obtenerLinkA(5)">
 
-        <router-link class="button" to="/inicio">
+        <router-link class="button" to="#">
           <a class="nav-link">
             <i class="fas fa-cart-plus"></i>
             <span>Compras</span></a>
@@ -98,7 +98,7 @@
       </li>
       <li class="nav-item" v-bind:class="ActivaLink(6)" :key="6" @click="obtenerLinkA(6)">
 
-        <router-link class="button" to="/inicio">
+        <router-link class="button" to="#">
           <a class="nav-link">
             <i class="fas fa-chart-line"></i>
             <span>Reportes</span></a>

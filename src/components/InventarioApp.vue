@@ -189,23 +189,27 @@
               </div>
               <div class="col-md-3 col-xl-3 col-lg-3">
                 <span class="text-info">Filtrar por columna: </span>
-                <select v-model="searchField" class="form-control form-control-user">
-                  <option>type</option>
-                  <option>attributes.codigo</option>
+                <select v-model="searchField" @change="cuandoCambie()" class="form-control form-control-user">
+                  <option>Tipo</option>
+                  <option>Código</option>
                 </select>
               </div>
               <div class="col-md-3 col-xl-3 col-lg-3">
                 <span class="text-info">Buscar: </span>
                 <input class="form-control form-control-user" type="text" v-model="searchValue"
-                  :placeholder="'Teclee el ' + searchField + ' a buscar ...'" />
+                  :placeholder="'Teclee el ' + searchField1 + ' a buscar ...'" />
               </div>
             </div>
             <br>
 
             <EasyDataTable table-class-name="customize-table" :headers="headers" :items="items" buttons-pagination
               border-cell v-model:items-selected="itemsSelected" header-text-direction="center"
-              body-text-direction="center" :search-field="searchField" :search-value="searchValue" @click-row="showRow"
+              body-text-direction="center" :search-field="searchField1" :search-value="searchValue" @click-row="showRow"
               :rows-per-page="5">
+              <template #item-image="item">
+                <img src="/inventario.jpg" alt="No image" class="img img-thumbnail"
+                  style="width: 70px; height: 70px;" />
+              </template>
               <template #item-opciones="item">
                 <div class="operation-wrapper">
                   <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal" data-target="#EditarProducto"
@@ -368,8 +372,8 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title text-info" id="exampleModalLabel">Datos del producto {{
-              formProductos.data.attributes.codigo }}
+            <h5 class="modal-title text-info" id="exampleModalLabel">Datos del producto: " <i>{{
+              formProductos.data.attributes.descripcion }}</i> "
             </h5>
             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true" class="text-info">×</span>
@@ -384,6 +388,17 @@
                 </div>
                 <form class="user">
 
+                  <div class="">
+                    <div class="text-center">
+                      <img v-if="image1 == ''" src="/inventario.jpg" style="width: 160px; height:160px"
+                        class="img img-thumbnail" alt="No image">
+                      <img v-if="image1 != ''" :src="image1" class="img img-thumbnail"
+                        style="width: 160px; height:160px" alt="No image">
+                      <br><br>
+                      <input type="file" id="avatar1" name="avatar1" accept="image/png, image/jpeg"
+                        @change="selecImagenO()" />
+                    </div>
+                  </div><br>
                   <!-- <div class="row"> -->
                   <!-- <FormKit label="Username" type="text" help="Pick a new username"
                         validation="required|matches:/^@[a-zA-Z]+$/|length:5" value="@FormKit" /> -->
@@ -480,6 +495,18 @@ import '@vuepic/vue-datepicker/dist/main.css';
 
 import { StreamBarcodeReader, ImageBarcodeReader } from '@teckel/vue-barcode-reader'
 
+const image1 = ref('')
+
+const selecImagenO = () => {
+  let imagen = document.getElementById('avatar1');
+  //Recuperamos el archivo subido
+  let file = imagen.files[0];
+  //Creamos la url
+  let objectURL = URL.createObjectURL(file);
+  image1.value = objectURL
+  // console.log(image.value)
+}
+
 const escanea = ref(false);
 
 const decodedText = ref('')
@@ -541,7 +568,7 @@ const editarU = () => {
   esperando.value = true;
   axios.put(`http://${ipPublica.value}/fullstack/public/productos/${id.value}`, formProductos)
     .then((response) => {
-      console.log(response)
+      // console.log(response)
       esperando.value = false;
       cerrarAlert();
       cargado.value = false;
@@ -603,10 +630,22 @@ const almacenDatosSucursales = (Lista) => {
 
 const searchField = ref("attributes.codigo");
 
+const searchField1 = ref('')
+
 const searchValue = ref("");
+
+const cuandoCambie = () => {
+  if (searchField.value == 'Código') {
+    searchField1.value = "attributes.codigo";
+  }
+  if (searchField.value == 'Tipo') {
+    searchField1.value = "type";
+  }
+}
 
 const headers = [
   { text: "NO", value: "id", width: 50, sortable: true },
+  { text: "IMAGEN", value: "image" },
   { text: "CODIGO", value: "attributes.codigo", sortable: true },
   { text: "CATEGORIA", value: "type" },
   { text: "P.COMPRA", value: "precioC", sortable: true },
