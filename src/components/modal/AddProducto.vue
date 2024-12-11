@@ -54,7 +54,7 @@
                       class="fas fa-barcode"></i>
                     <!-- <a class="btn btn-secondary btn-xs" @click="generarBArCode()"><i
                         class="fas fa-sync"></i></a> -->
-                    <select id="categH" class="form-control" v-model="selected" @change="ObtenCodigoHijo(selected)">
+                    <select id="categH" class="form-control" v-model="selected1" @change="ObtenCodigoHijo(selected1)">
                       <option v-for="categ in categoriasH" :value="categ.cod"> {{ categ.valor }} </option>
                     </select>
 
@@ -165,7 +165,7 @@
 </template>
 
 <script setup>
-import { onActivated, onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
@@ -177,28 +177,9 @@ const selecImagen = () => {
   let file = imagen.files[0];
   //Creamos la url
   let objectURL = URL.createObjectURL(file);
+  // console.log(objectURL)
   image.value = objectURL
   // console.log(image.value)
-}
-
-const previewImage = (event, querySelector) => {
-  //Recuperamos el input que desencadeno la acción
-  const input = event.target;
-
-  //Recuperamos la etiqueta img donde cargaremos la imagen
-  $imgPreview = document.querySelector(querySelector);
-
-  // Verificamos si existe una imagen seleccionada
-  if (!input.files.length) return
-
-  //Recuperamos el archivo subido
-  file = input.files[0];
-
-  //Creamos la url
-  objectURL = URL.createObjectURL(file);
-
-  //Modificamos el atributo src de la etiqueta img
-  $imgPreview.src = objectURL;
 }
 
 const emit = defineEmits(['cerrar'])
@@ -237,6 +218,55 @@ const cat_hogares_muebles = [
   { cod: '0002 ', valor: 'Electrodomésticos pequeños' },
   { cod: '0003 ', valor: 'Artículos para el baño' },
   { cod: '0004 ', valor: 'Cocina y utensilios' },
+]
+
+const cat_salud_belleza = [
+  { cod: '0001 ', valor: 'Cosméticos' },
+  { cod: '0002 ', valor: 'Cuidado personal' },
+  { cod: '0003 ', valor: 'Productos para el cabello' },
+  { cod: '0004 ', valor: 'Perfumes y fragancias' },
+  { cod: '0005 ', valor: 'Equipos médicos y de cuidado personal' },
+  { cod: '0006 ', valor: 'Deportes y Ocio' },
+]
+
+const cat_ropa_deportiva = [
+  { cod: '0001 ', valor: 'Accesorios para fitness' },
+  { cod: '0002 ', valor: 'Camping y actividades al aire libre' },
+  { cod: '0003 ', valor: 'Juguetes y juegos' },
+  { cod: '0004 ', valor: 'Material de ciclismo' },
+]
+
+const cat_juguetes_ninos = [
+  { cod: '0001 ', valor: 'Juguetes para bebés' },
+  { cod: '0002 ', valor: 'Juguetes educativos' },
+  { cod: '0003 ', valor: 'Ropa infantil' },
+  { cod: '0004 ', valor: 'Mobiliario para niños' },
+  { cod: '0005 ', valor: 'Accesorios y productos de cuidado infantil' },
+]
+
+const cat_maletas_equipaje = [
+  { cod: '0001 ', valor: 'Accesorios de viaje' },
+  { cod: '0002 ', valor: 'Ropa de viaje y outdoor' },
+  { cod: '0003 ', valor: 'Artículos para camping' },
+]
+
+const cat_pinturas_lienzos = [
+  { cod: '0001 ', valor: 'Material para dibujo' },
+  { cod: '0002 ', valor: 'Herramientas para manualidades' },
+  { cod: '0003 ', valor: 'Kits de DIY(hazlo tú mismo)' },
+]
+
+const cat_bebes_maternidad = [
+  { cod: '0001 ', valor: 'Ropa para bebés' },
+  { cod: '0002 ', valor: 'Artículos de cuidado infantil(pañales, biberones)' },
+  { cod: '0003 ', valor: 'Juguetes para bebés' },
+]
+
+const cat_productos_temporada = [
+  { cod: '0001 ', valor: 'Artículos de Navidad' },
+  { cod: '0002 ', valor: 'Artículos de Halloween' },
+  { cod: '0003 ', valor: 'Artículos de verano(sombrillas, toallas)' },
+  { cod: '0004 ', valor: 'Artículos de invierno(ropa, guantes, bufandas)' },
 ]
 
 const categoriasH = ref([]);
@@ -279,6 +309,45 @@ const categoriasM = [
 
 const codig_final = ref();
 
+const ObtenCategHijaF = (valor) => {
+  formProductos.data.attributes.codigo = valor;
+  codig_final.value = valor;
+  switch (valor) {
+  case 10:
+    categoriasH.value = cat_Electronica
+    break;
+  case 11:
+    categoriasH.value = cat_ropa_moda
+    break;
+  case 12:
+    categoriasH.value = cat_hogares_muebles
+    break;
+  case 13:
+    categoriasH.value = cat_salud_belleza
+    break;
+  case 14:
+    categoriasH.value = cat_ropa_deportiva
+    break;
+  case 15:
+    categoriasH.value = cat_juguetes_ninos
+    break;
+  case 16:
+    categoriasH.value = cat_maletas_equipaje
+    break;
+  case 17:
+    categoriasH.value = cat_pinturas_lienzos
+    break;
+  case 18:
+    categoriasH.value = cat_bebes_maternidad
+    break;
+  case 19:
+    categoriasH.value = cat_productos_temporada
+    break;
+  default:
+    console.log("Lo lamentamos, por el momento no disponemos de " + valor + ".");
+}
+}
+
 const ObtenCategHija = (valor) => {
   formProductos.data.attributes.codigo = valor;
   codig_final.value = valor;
@@ -290,6 +359,27 @@ const ObtenCategHija = (valor) => {
   }
   if (valor == 12) {
     categoriasH.value = cat_hogares_muebles
+  }
+  if (valor == 13) {
+    categoriasH.value = cat_salud_belleza
+  }
+  if (valor == 14) {
+    categoriasH.value = cat_ropa_deportiva
+  }
+  if (valor == 15) {
+    categoriasH.value = cat_juguetes_ninos
+  }
+  if (valor == 16) {
+    categoriasH.value = cat_maletas_equipaje
+  }
+  if (valor == 17) {
+    categoriasH.value = cat_pinturas_lienzos
+  }
+  if (valor == 18) {
+    categoriasH.value = cat_bebes_maternidad
+  }
+  if (valor == 19) {
+    categoriasH.value = cat_productos_temporada
   }
 }
 

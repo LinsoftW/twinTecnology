@@ -11,87 +11,7 @@
 
       <!-- Datos del producto a agregar -->
       <div class="row">
-        <div class="col-xl-3 col-lg-5">
-          <div class="card shadow mb-4">
-            <!-- Card Header - Dropdown -->
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
-              style="text-align: center;">
-              <h6 class="m-0 font-weight-bold text-info" v-if="editar == false"><span class="fa fa-plus"></span> AGREGAR
-                NUEVA CATEGORÍA </h6>
-              <h6 class="m-0 font-weight-bold text-info" v-if="editar == true"><span class="fa fa-edit"></span>
-                MODIFICAR CATEGORÍA (<label style="color: red;">{{ formProductos.data.attributes.codigo
-                  }}</label>)</h6>
-            </div>
-            <!-- Card Body -->
-            <div class="card-body">
 
-              <!-- Personas -->
-              <div class="col-lg-12">
-                <div class="">
-                  <div class="text-center">
-                    <h1 class="h6 text-gray-900 mb-4">CAMPOS OBLIGATORIOS (<label style="color: red;">*</label>)</h1>
-                  </div>
-                  <form class="user">
-
-                    <!-- <div class="row"> -->
-                    <!-- <FormKit label="Username" type="text" help="Pick a new username"
-                        validation="required|matches:/^@[a-zA-Z]+$/|length:5" value="@FormKit" /> -->
-                    <div class="form-group col-lg-12">
-                      <label class="text-info">Categoría: <label style="color: red;">*</label></label>
-                      <input type="text" class="form-control" id="codigo" aria-describedby="emailHelp"
-                        v-model="formProductos.data.attributes.codigo" placeholder="Código" required>
-                    </div>
-                    <div class="form-group col-lg-12">
-                      <label class="text-info">Descripción: <label style="color: red;">*</label></label>
-                      <input type="text" class="form-control" id="descripcion" aria-describedby="emailHelp"
-                        v-model="formProductos.data.attributes.descripcion" placeholder="Descripción del producto"
-                        required>
-                        <label v-if="errores"> {{ errores.value }}</label>
-                    </div>
-                    <div class="form-group col-lg-12">
-                      <label class="text-info">Unidad de medida:</label>
-                      <select class="form-group form-control">
-                        <option value="">Und(s)</option>
-                        <option value="">Kg(s)</option>
-                        <option value="">Lts(s)</option>
-                      </select>
-                    </div>
-                    <!-- </div> -->
-                    <!-- <div class="form-group">
-                      <label class="text-info">Imagen:</label>
-                      <input type="file" class="form-control" id="foto"> Seleccione una foto para el producto...
-                    </div> -->
-                    <div class="row">
-                      <div v-if="editar == false" class="col-lg-3"></div>
-                      <!-- <div v-if="editar == false" class="form-group h4 col-lg-6">
-                        <a @click="agregarU" class="btn btn-primary btn-user btn-block">
-                          Archivar y continuar agregando
-                        </a>
-                      </div> -->
-                      <div v-if="editar == false" class="form-group h4 col-lg-6">
-                        <a @click="agregarU" class="btn btn-info btn-block">
-                          Agregar
-                        </a>
-                      </div>
-                      <div v-if="editar" class="form-group h4 col-lg-6">
-                        <a @click="editarU" class="btn btn-info btn-block">
-                          Modificar
-                        </a>
-                      </div>
-                      <div v-if="editar" class="form-group h4 col-lg-6">
-                        <a @click="cancelarU" class="btn btn-danger btn-block">
-                          Cancelar
-                        </a>
-                      </div>
-                    </div>
-
-
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
         <!--Listado de productos -->
         <div class="col-xl-9 col-lg-7">
           <div class="card shadow mb-4">
@@ -146,7 +66,87 @@
           </div>
         </div>
         <!-- FIN -->
+        <div class="col-xl-3 col-lg-5">
+          <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+              style="text-align: center;">
+              <h6 class="m-0 font-weight-bold text-info" v-if="editar == false"><span class="fa fa-plus"></span> AGREGAR
+                NUEVA CATEGORÍA </h6>
+              <h6 class="m-0 font-weight-bold text-info" v-if="editar == true"><span class="fa fa-edit"></span>
+                MODIFICAR CATEGORÍA (<label style="color: red;">{{ formProductos.data.attributes.codigo
+                  }}</label>)</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
 
+              <!-- Personas -->
+              <div class="col-lg-12">
+                <div class="">
+                  <div class="text-center">
+                    <h1 class="h6 text-gray-900 mb-4">CAMPOS OBLIGATORIOS (<label style="color: red;">*</label>)</h1>
+                  </div>
+                  <form class="user">
+
+                    <!-- <div class="row"> -->
+                    <!-- <FormKit label="Username" type="text" help="Pick a new username"
+                        validation="required|matches:/^@[a-zA-Z]+$/|length:5" value="@FormKit" /> -->
+                    <div class="form-group col-lg-12">
+                      <label class="text-info">Categoría: <label style="color: red;">*</label></label>
+                      <input type="text" class="form-control" id="codigo" aria-describedby="emailHelp"
+                        v-model="formProductos.data.attributes.codigo" placeholder="Código" required>
+                    </div>
+                    <div class="form-group col-lg-12">
+                      <label class="text-info">Descripción: <label style="color: red;">*</label></label>
+                      <input type="text" class="form-control" id="descripcion" aria-describedby="emailHelp"
+                        v-model="formProductos.data.attributes.descripcion" placeholder="Descripción del producto"
+                        required>
+                      <label v-if="errores"> {{ errores.value }}</label>
+                    </div>
+                    <div class="form-group col-lg-12">
+                      <label class="text-info">Unidad de medida:</label>
+                      <select class="form-group form-control">
+                        <option value="">Und(s)</option>
+                        <option value="">Kg(s)</option>
+                        <option value="">Lts(s)</option>
+                      </select>
+                    </div>
+                    <!-- </div> -->
+                    <!-- <div class="form-group">
+                      <label class="text-info">Imagen:</label>
+                      <input type="file" class="form-control" id="foto"> Seleccione una foto para el producto...
+                    </div> -->
+                    <div class="row">
+                      <div v-if="editar == false" class="col-lg-3"></div>
+                      <!-- <div v-if="editar == false" class="form-group h4 col-lg-6">
+                        <a @click="agregarU" class="btn btn-primary btn-user btn-block">
+                          Archivar y continuar agregando
+                        </a>
+                      </div> -->
+                      <div v-if="editar == false" class="form-group h4 col-lg-6">
+                        <a @click="agregarU" class="btn btn-info btn-block">
+                          Agregar
+                        </a>
+                      </div>
+                      <div v-if="editar" class="form-group h4 col-lg-6">
+                        <a @click="editarU" class="btn btn-info btn-block">
+                          Modificar
+                        </a>
+                      </div>
+                      <div v-if="editar" class="form-group h4 col-lg-6">
+                        <a @click="cancelarU" class="btn btn-danger btn-block">
+                          Cancelar
+                        </a>
+                      </div>
+                    </div>
+
+
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- TABLA INVENTARIOS -->
@@ -304,8 +304,8 @@ const agregarU = () => {
         })
       })
     // console.log(datos_archivados.value);
-  }else{
-    let errores = ref({cod: "Campo requerido" , descripcion: "Campo requerido"})
+  } else {
+    let errores = ref({ cod: "Campo requerido", descripcion: "Campo requerido" })
     console.log(errores.value.cod)
   }
 

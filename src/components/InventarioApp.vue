@@ -181,6 +181,9 @@
                   <!-- <router-link class="button" to="/gest_inventario"> -->
                   <a @click="abrirModalAddProd()" href="#" class="d-sm-inline-block btn btn-sm btn-info shadow-sm"
                     v-b-tooltip.hover title="Agregar producto"><i class="fas fa-plus fa-sm "></i> Agregar productos </a>
+                  <!-- <a @click="EliminarSelecc()" href="#" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm m-2"
+                    v-b-tooltip.hover title="Eliminar seleccionados"><i class="fas fa-trash fa-sm "></i> Eliminar
+                    seleccionados </a> -->
                   <!-- </router-link> -->
                   <a @click="ExportExcel()" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
                     v-b-tooltip.hover title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a>
@@ -220,7 +223,7 @@
                   <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
                     title="Restar"><span class="fas fa-minus"></span></button>
                   <button class="btn btn-danger btn-sm btn-circle ml-1"
-                    @click="borrarU(item.id, item.attributes.codigo)" v-b-tooltip.hover title="Eliminar"><span
+                    @click="borrarU(item.id, item.attributes.codigo, 1)" v-b-tooltip.hover title="Eliminar"><span
                       class="fas fas fa-trash-alt"></span></button>
                   <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode"
                     @click="generarCodeBar(item.attributes.codigo)" v-b-tooltip.hover title="Código de barra"><span
@@ -610,8 +613,17 @@ const editarU = () => {
 }
 
 const showRow = () => {
-  if (itemsSelected.value.length > 1) {
-    console.log("Selecciono " + itemsSelected.value.length)
+  // if (itemsSelected.value.length > 1) {
+  //   console.log("Selecciono " + itemsSelected.value.length)
+  //   console.log(itemsSelected.value)
+  // }
+
+}
+
+const EliminarSelecc = () => {
+  for (let index = 0; index < itemsSelected.value.length; index++) {
+    // console.log(itemsSelected.value[index])
+    borrarU(itemsSelected.value[index].id, itemsSelected.value[index].attributes.codigo, 2)
   }
 
 }
@@ -1077,44 +1089,77 @@ const ErrorFull = (mensaje, posicion) => {
   })
 }
 
-const borrarU = (id, correo) => {
-  Swal.fire({
-    title: "Confirmación",
-    text: `Está a punto de eliminar el producto: ${correo}`,
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Sí, eliminar"
-  }).then((result) => {
-    if (result.isConfirmed) {
-      esperando.value = true;
-      cargado.value = false;
-      // Eliminar //
-      axios.delete(`http://${ipPublica.value}/fullstack/public/productos/${id}`)
-        .then(() => {
+const borrarU = async (id, correo, caso) => {
+  let correcto = true;
+  if (caso == 1) {
+    Swal.fire({
+      title: "Confirmación",
+      text: `Está a punto de eliminar el producto: ${correo}`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, eliminar"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        esperando.value = true;
+        cargado.value = false;
+        // Eliminar //
+        axios.delete(`http://${ipPublica.value}/fullstack/public/productos/${id}`)
+          .then(() => {
+            esperando.value = false;
+            consultar();
+            // cerrarAlert();
+            cancelarU();
+            successFull("Producto eliminado satisfactoriamente.", "top-start")
+          }).catch((error) => {
+            esperando.value = false;
+            ErrorFull(error.response.data.message, "top-start")
+          });
+      }
+    })
+  } else {
+    Swal.fire({
+      title: "Confirmación",
+      text: `Está a punto de eliminar ${itemsSelected.value.length} productos: `,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, eliminar"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        esperando.value = true;
+        cargado.value = false;
+        // Eliminar //
+        for (let index = 0; index < itemsSelected.value.length; index++) {
+          // console.log(itemsSelected.value[index])
+          // borrarU(itemsSelected.value[index].id, itemsSelected.value[index].attributes.codigo, 2)
+          axios.delete(`http://${ipPublica.value}/fullstack/public/productos/${itemsSelected.value[index].id}`)
+            .then(() => {
+              // esperando.value = false;
+              consultar();
+              // cerrarAlert();
+              cancelarU();
+              console.log("Eliminado" + itemsSelected.value[index].id)
+              // successFull("Producto eliminado satisfactoriamente.", "top-start")
+            }).catch((error) => {
+              // esperando.value = false;
+              console.log("error " + itemsSelected.value[index].id)
+              correcto = false;
+              // ErrorFull(error.response.data.message, "top-start")
+            });
+        }
+        if (correcto == true) {
           esperando.value = false;
-          consultar();
-          // cerrarAlert();
-          cancelarU();
-          successFull("Producto eliminado satisfactoriamente.", "top-start")
-          // Swal.fire({
-          //   title: "Eliminado",
-          //   text: "Producto eliminado satisfactoriamente.",
-          //   icon: "success"
-          // });
-          // cargado.value = false;
-        })
-    }
-  }).catch((error) => {
-    esperando.value = false;
-    ErrorFull(error.response.data.message, "top-start")
-    // cerrarAlert();
-    // Swal.fire({
-    //   icon: "error",
-    //   title: error.response.data.message
-    // })
-  });
+          successFull("Productos eliminados satisfactoriamente.", "top-start")
+        } else {
+          ErrorFull(error.response.data.message, "top-start")
+        }
+      }
+    })
+  }
+
 }
 
 const cambiarLimite = () => {
