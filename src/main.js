@@ -16,7 +16,7 @@ import {
   GcWorksheet,
   GcColumn,
 } from "@mescius/spread-sheets-vue";
-import {Tabs, Tab} from 'vue3-tabs-component';
+// import {Tabs, Tab} from 'vue3-tabs-component';
 // import 'vue3-tabs-component/dist/style.css';
 
 import App from './App.vue'

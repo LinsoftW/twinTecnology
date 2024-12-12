@@ -213,17 +213,17 @@ import { onMounted, reactive, ref } from 'vue';
 
 const esperando = ref(false);
 
-const loading = (texto) => {
-  Swal.fire({
-    // title: "Sweet!",
-    text: texto,
-    imageUrl: "/cargando2.gif",
-    imageWidth: 100,
-    imageHeight: 100,
-    imageAlt: "Custom image",
-    showConfirmButton: false
-  });
-}
+// const loading = (texto) => {
+//   Swal.fire({
+//     // title: "Sweet!",
+//     text: texto,
+//     imageUrl: "/cargando2.gif",
+//     imageWidth: 100,
+//     imageHeight: 100,
+//     imageAlt: "Custom image",
+//     showConfirmButton: false
+//   });
+// }
 
 const cerrarAlert = () => {
   Swal.close();
@@ -252,7 +252,7 @@ let datosPaginados = ref([]);
 
 let datosSinPaginar = ref([]);
 
-let buscando = ref('');
+// let buscando = ref('');
 
 let editar = ref(false);
 
@@ -273,9 +273,9 @@ let paginaActual = ref(1);
 let disableA = ref('');
 let disableS = ref('');
 
-let setTiempoBusca = '';
+// let setTiempoBusca = '';
 
-const datos_archivados = ref([]);
+// const datos_archivados = ref([]);
 
 const ipPublica = ref('127.0.0.1');
 
@@ -295,7 +295,7 @@ const agregarU = () => {
   esperando.value = true;
   // datos_archivados.value.push(formProductos);
   axios.post(`http://` + ipPublica.value + `/fullstack/public/productos`, formProductos)
-    .then((response) => {
+    .then(() => {
       cargado.value = false;
       esperando.value = false;
       cerrarAlert();
@@ -327,8 +327,8 @@ const agregarU = () => {
 // Paginado
 const obtenerPagina = (nopage) => {
   paginaActual.value = nopage;
-  inicio = (nopage * elementPagina.value) - elementPagina.value;
-  fin = (nopage * elementPagina.value);
+  inicio.value = (nopage * elementPagina.value) - elementPagina.value;
+  fin.value = (nopage * elementPagina.value);
   datosPaginados.value = [];
   datosPaginados.value = datosSinPaginar.value.slice(inicio, fin);
 
@@ -487,50 +487,50 @@ const consultar = async () => {
 
 }
 
-const editarUModel = async () => {
-  await Swal.fire({
+// const editarUModel = async () => {
+//   await Swal.fire({
 
-    input: "textarea",
-    inputLabel: `Modificar datos del producto: ` + `${formProductos.data.attributes.codigo}`,
-    inputPlaceholder: "Observaciones del producto",
-    inputAttributes: {
-      "aria-label": "Observaciones del producto"
-    },
-    showCancelButton: true,
-    confirmButtonText: "Modificar"
-  });
-  if (text) {
-    Swal.fire(text);
-  }
-}
+//     input: "textarea",
+//     inputLabel: `Modificar datos del producto: ` + `${formProductos.data.attributes.codigo}`,
+//     inputPlaceholder: "Observaciones del producto",
+//     inputAttributes: {
+//       "aria-label": "Observaciones del producto"
+//     },
+//     showCancelButton: true,
+//     confirmButtonText: "Modificar"
+//   });
+//   if (text) {
+//     Swal.fire(text);
+//   }
+// }
 
-const consultarSucursales = async () => {
-  // if (cargado.value == false) {
-  let response = await axios.get(`http://` + ipPublica.value + `/fullstack/public/sucursals`)
-    .then((response) => {
-      listadoSucursales.value = response.data.data;
-      // console.log(response.data)
-      // datosSinPaginar.value = response.data.data;
-      // cantidad.value = Math.ceil(response.data.data.length / elementPagina.value);
-      // obtenerPagina(1);
-      // cargado.value = true;
-      // router.go();
-      listadoSucursales = obtenerListadoLimpioSucursales();
-    });
+// const consultarSucursales = async () => {
+//   // if (cargado.value == false) {
+//   let response = await axios.get(`http://` + ipPublica.value + `/fullstack/public/sucursals`)
+//     .then((response) => {
+//       listadoSucursales.value = response.data.data;
+//       // console.log(response.data)
+//       // datosSinPaginar.value = response.data.data;
+//       // cantidad.value = Math.ceil(response.data.data.length / elementPagina.value);
+//       // obtenerPagina(1);
+//       // cargado.value = true;
+//       // router.go();
+//       listadoSucursales.value = obtenerListadoLimpioSucursales();
+//     });
 
-  // }
+//   // }
 
-}
+// }
 
-const buscandoElemento = () => {
-  clearTimeout(setTiempoBusca);
-  setTiempoBusca = setTimeout(consultar, 360);
-}
+// const buscandoElemento = () => {
+//   clearTimeout(setTiempoBusca);
+//   setTiempoBusca = setTimeout(consultar, 360);
+// }
 
 const editarU = () => {
   esperando.value = true;
   axios.put(`http://${ipPublica.value}/fullstack/public/productos/${id.value}`, formProductos)
-    .then((response) => {
+    .then(() => {
       // console.log(response)
       esperando.value = false;
       cerrarAlert();
@@ -643,7 +643,7 @@ onMounted(async () => {
     listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
     obtenerListadoLimpio();
     listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
-    listadoSucursales = obtenerListadoLimpioSucursales();
+    listadoSucursales.value = obtenerListadoLimpioSucursales();
   } else {
     router.push('/login');
   }

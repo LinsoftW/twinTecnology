@@ -485,8 +485,8 @@ const agregarU = () => {
 // Paginado
 const obtenerPagina = (nopage) => {
   paginaActual.value = nopage;
-  inicio = (nopage * elementPagina.value) - elementPagina.value;
-  fin = (nopage * elementPagina.value);
+  inicio.value = (nopage * elementPagina.value) - elementPagina.value;
+  fin.value = (nopage * elementPagina.value);
   datosPaginados.value = [];
   datosPaginados.value = datosSinPaginar.value.slice(inicio, fin);
 

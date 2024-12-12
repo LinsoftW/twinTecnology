@@ -217,7 +217,7 @@
               </div>
               <div class="col-md-6 col-xl-6 col-lg-12">
                 <span class="text-info">Buscar: </span>
-                <input class="" type="text" v-model="searchValue" placeholder="" />
+                <input class="form-control" type="text" v-model="searchValue" placeholder="" />
               </div>
             </div>
             <br>
@@ -281,7 +281,7 @@
               </div>
               <div class="col-md-6 col-xl-6 col-lg-12">
                 <span class="text-info">Buscar: </span>
-                <input class="" type="text" v-model="searchValue1" placeholder="" />
+                <input class="form-control" type="text" v-model="searchValue1" placeholder="" />
               </div>
             </div>
             <br>
@@ -325,8 +325,8 @@
 
 <script setup>
 
-import { computed, onMounted, reactive, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { onMounted, reactive, ref } from 'vue';
+// import { useRoute } from 'vue-router';
 import axios from 'axios';
 import router from '@/router';
 import Swal from 'sweetalert2';
@@ -337,7 +337,7 @@ const emit = defineEmits(['esperar'])
 
 Chart.register(...registerables);
 
-const data = ref([30, 40, 60, 70, 5]);
+// const data = ref([30, 40, 60, 70, 5]);
 
 const doughnutRef = ref();
 
@@ -364,7 +364,7 @@ const options = ref({
   },
 });
 
-const itemsSelected = ref([]);
+// const itemsSelected = ref([]);
 
 const searchField = ref("attributes.codigo");
 
@@ -410,40 +410,40 @@ const loading = (texto) => {
   });
 }
 
-function EsperarTiempo() {
-  emit('esperar', 1);
-}
+// function EsperarTiempo() {
+//   emit('esperar', 1);
+// }
 
 // let recarga = ref(false);
 
 // const Cosc_Clar = ref('info');
 
-const route = useRoute();
+// const route = useRoute();
 const bodyLogin = document.getElementById('page-top');
 
-const consultarSucursales = async () => {
-  // if (cargado.value == false) {
-  let response = await axios.get(`http://` + ipPublica.value + `/fullstack/public/sucursals`)
-    .then((response) => {
-      listadoSucursales.value = response.data.data;
-      // console.log(response.data)
-      // datosSinPaginar.value = response.data.data;
-      // cantidad.value = Math.ceil(response.data.data.length / elementPagina.value);
-      // obtenerPagina(1);
-      // cargado.value = true;
-      // router.go();
-      almacenDatosSucursales(listadoSucursales.value);
-      listadoSucursales = obtenerListadoLimpioSucursales();
+// const consultarSucursales = async () => {
+//   // if (cargado.value == false) {
+//   let response = await axios.get(`http://` + ipPublica.value + `/fullstack/public/sucursals`)
+//     .then((response) => {
+//       listadoSucursales.value = response.data.data;
+//       // console.log(response.data)
+//       // datosSinPaginar.value = response.data.data;
+//       // cantidad.value = Math.ceil(response.data.data.length / elementPagina.value);
+//       // obtenerPagina(1);
+//       // cargado.value = true;
+//       // router.go();
+//       almacenDatosSucursales(listadoSucursales.value);
+//       listadoSucursales.value = obtenerListadoLimpioSucursales();
 
-    });
+//     });
 
-  esperando.value = false;
+//   esperando.value = false;
 
 
-  // }
-  // EsperarTiempo();
+//   // }
+//   // EsperarTiempo();
 
-}
+// }
 
 const almacenDatosSucursales = (Lista) => {
   if (localStorage.getItem('ListadoCacheSucursal')) {
@@ -457,21 +457,21 @@ const almacenDatosSucursales = (Lista) => {
   }
 }
 
-const obtenerListadoLimpioSucursales = () => {
-  let i = 0;
-  // if (cargado.value = false) {
-  newListadoSucursal.value = [];
-  for (let index = 0; index < listadoSucursales.value.length; index++) {
-    const element = listadoSucursales.value[index];
-    if (element.attributes.deleted_at == null) {
-      newListadoSucursal.value[i] = element;
-      i++;
-    }
-  }
-  return newListadoSucursal;
-  // }
+// const obtenerListadoLimpioSucursales = () => {
+//   let i = 0;
+//   // if (cargado.value = false) {
+//   newListadoSucursal.value = [];
+//   for (let index = 0; index < listadoSucursales.value.length; index++) {
+//     const element = listadoSucursales.value[index];
+//     if (element.attributes.deleted_at == null) {
+//       newListadoSucursal.value[i] = element;
+//       i++;
+//     }
+//   }
+//   return newListadoSucursal;
+//   // }
 
-}
+// }
 
 onMounted(async () => {
   if (localStorage.getItem('userName')) {
@@ -504,20 +504,20 @@ onMounted(async () => {
 
 })
 
-const cambiarLimite = () => {
-  let i = 0;
-  newListado.value = [];
-  for (let index = 0; index < listado.value.length; index++) {
-    const element = listado.value[index];
-    if (element.attributes.deleted_at == null) {
-      newListado.value[i] = element;
-      i++;
-    }
-  }
-  datosSinPaginar.value = newListado.value;
-  cantidad.value = Math.ceil(newListado.value.length / elementPagina.value);
-  obtenerPagina(1);
-}
+// const cambiarLimite = () => {
+//   let i = 0;
+//   newListado.value = [];
+//   for (let index = 0; index < listado.value.length; index++) {
+//     const element = listado.value[index];
+//     if (element.attributes.deleted_at == null) {
+//       newListado.value[i] = element;
+//       i++;
+//     }
+//   }
+//   datosSinPaginar.value = newListado.value;
+//   cantidad.value = Math.ceil(newListado.value.length / elementPagina.value);
+//   obtenerPagina(1);
+// }
 
 // CRUD completo
 
@@ -525,13 +525,13 @@ let errors = ref([]);
 
 let listado = ref([]);
 
-let listadoSucursales = ref([]);
+// let listadoSucursales = ref([]);
 
 let datosPaginados = ref([]);
 
 let datosSinPaginar = ref([]);
 
-let buscando = ref('');
+// let buscando = ref('');
 
 let editar = ref(false);
 
@@ -547,10 +547,10 @@ let fin = ref(0);
 
 let paginaActual = ref(1);
 
-let disableA = ref('');
-let disableS = ref('');
+// let disableA = ref('');
+// let disableS = ref('');
 
-let setTiempoBusca = '';
+// let setTiempoBusca = '';
 
 let cargado = ref(false);
 
@@ -562,57 +562,57 @@ const formProductos = reactive({
   observacion: "",
 })
 
-const clickEditar = async (idSelect) => {
-  editar.value = true;
-  localStorage.setItem("editar", editar.value);
-  id.value = idSelect;
+// const clickEditar = async (idSelect) => {
+//   editar.value = true;
+//   localStorage.setItem("editar", editar.value);
+//   id.value = idSelect;
 
-  let response = await axios.get(`http://localhost:8000/public/api/nom/productos/${id.value}`)
-    .then((response) => {
-      formProductos.descripcion = response.data.descripcion;
-      formProductos.codigo = response.data.codigo;
-      formProductos.observacion = response.data.observacion;
-    })
-}
+//   let response = await axios.get(`http://localhost:8000/public/api/nom/productos/${id.value}`)
+//     .then((response) => {
+//       formProductos.descripcion = response.data.descripcion;
+//       formProductos.codigo = response.data.codigo;
+//       formProductos.observacion = response.data.observacion;
+//     })
+// }
 
-const cancelarU = () => {
-  editar.value = false;
-  formProductos.descripcion = '';
-  formProductos.codigo = '';
-  formProductos.observacion = '';
-}
+// const cancelarU = () => {
+//   editar.value = false;
+//   formProductos.descripcion = '';
+//   formProductos.codigo = '';
+//   formProductos.observacion = '';
+// }
 
-const agregarU = () => {
-  axios.post('http://localhost:8000/public/api/nom/productos', formProductos)
-    .then((response) => {
-      // console.log(response)
-      consultar();
-      formProductos.observacion = ''
-      formProductos.descripcion = '';
-      formProductos.codigo = '';
-      toast.fire({
-        icon: "success",
-        title: "Agregado satisfactoriamente."
-      })
-      editar.value = false;
-      localStorage.setItem("editar", editar.value);
-    })
-    .catch((error) => {
-      if (error.response.status === 400) {
-        errors.value = error.response.data;
-      }
-    })
-}
+// const agregarU = () => {
+//   axios.post('http://localhost:8000/public/api/nom/productos', formProductos)
+//     .then((response) => {
+//       // console.log(response)
+//       consultar();
+//       formProductos.observacion = ''
+//       formProductos.descripcion = '';
+//       formProductos.codigo = '';
+//       toast.fire({
+//         icon: "success",
+//         title: "Agregado satisfactoriamente."
+//       })
+//       editar.value = false;
+//       localStorage.setItem("editar", editar.value);
+//     })
+//     .catch((error) => {
+//       if (error.response.status === 400) {
+//         errors.value = error.response.data;
+//       }
+//     })
+// }
 
 const editarU = () => {
   axios.put(`http://localhost:8000/public/api/nom/productos/${id.value}`, formProductos)
-    .then((response) => {
+    .then(() => {
       // console.log(response)
       consultar();
       formProductos.descripcion = ''
       formProductos.observacion = '';
       formProductos.codigo = '';
-      toast.fire({
+      Swal.fire({
         icon: "success",
         title: "Editado satisfactoriamente."
       })
@@ -626,106 +626,106 @@ const editarU = () => {
     })
 }
 
-const borrarU = (id, correo) => {
-  Swal.fire({
-    title: "Confirmación",
-    text: `Está a punto de eliminar el producto: ${correo}`,
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Sí, eliminar"
-  }).then((result) => {
-    if (result.isConfirmed) {
-      // Eliminar //
-      axios.delete(`http://${ipPublica.value}/fullstack/public/productos/${id}`)
-        .then(() => {
-          esperando.value = false;
-          consultar();
-          cancelarU();
-          cerrarAlert();
-          Swal.fire({
-            title: "Eliminado",
-            text: "Producto eliminado satisfactoriamente.",
-            icon: "success"
-          });
-          cargado.value = false;
-        })
+// const borrarU = (id, correo) => {
+//   Swal.fire({
+//     title: "Confirmación",
+//     text: `Está a punto de eliminar el producto: ${correo}`,
+//     icon: "warning",
+//     showCancelButton: true,
+//     confirmButtonColor: "#3085d6",
+//     cancelButtonColor: "#d33",
+//     confirmButtonText: "Sí, eliminar"
+//   }).then((result) => {
+//     if (result.isConfirmed) {
+//       // Eliminar //
+//       axios.delete(`http://${ipPublica.value}/fullstack/public/productos/${id}`)
+//         .then(() => {
+//           esperando.value = false;
+//           consultar();
+//           cancelarU();
+//           cerrarAlert();
+//           Swal.fire({
+//             title: "Eliminado",
+//             text: "Producto eliminado satisfactoriamente.",
+//             icon: "success"
+//           });
+//           cargado.value = false;
+//         })
 
 
-    }
-  });
-}
+//     }
+//   });
+// }
 // Fin CRUD
 
-const cerrarAlert = () => {
-  Swal.close();
-}
+// const cerrarAlert = () => {
+//   Swal.close();
+// }
 
 // Paginado
 const obtenerPagina = (nopage) => {
   paginaActual.value = nopage;
-  inicio = (nopage * elementPagina.value) - elementPagina.value;
-  fin = (nopage * elementPagina.value);
+  inicio.value = (nopage * elementPagina.value) - elementPagina.value;
+  fin.value = (nopage * elementPagina.value);
   datosPaginados.value = [];
   datosPaginados.value = datosSinPaginar.value.slice(inicio, fin);
 
 }
 
-const obtenerAnterior = () => {
-  if (paginaActual.value > 1) {
-    paginaActual.value--;
-    disableA.value = '';
-    disableS.value = '';
-  } else {
-    disableA.value = 'disabled';
-    disableS.value = '';
-  }
-  obtenerPagina(paginaActual.value);
-}
+// const obtenerAnterior = () => {
+//   if (paginaActual.value > 1) {
+//     paginaActual.value--;
+//     disableA.value = '';
+//     disableS.value = '';
+//   } else {
+//     disableA.value = 'disabled';
+//     disableS.value = '';
+//   }
+//   obtenerPagina(paginaActual.value);
+// }
 
-const obtenerSiguiente = () => {
-  if (paginaActual.value < cantidad.value) {
-    paginaActual.value++;
-    disableS.value = '';
-    disableA.value = '';
-  } else {
-    disableS.value = 'disabled';
-    disableA.value = '';
-  }
-  obtenerPagina(paginaActual.value);
-}
+// const obtenerSiguiente = () => {
+//   if (paginaActual.value < cantidad.value) {
+//     paginaActual.value++;
+//     disableS.value = '';
+//     disableA.value = '';
+//   } else {
+//     disableS.value = 'disabled';
+//     disableA.value = '';
+//   }
+//   obtenerPagina(paginaActual.value);
+// }
 
-const isActivo = (nopage) => {
-  if (nopage == paginaActual.value) {
-    if (nopage == 1) {
-      disableA.value = 'disabled';
-      disableS.value = '';
-    } else {
-      if (nopage == cantidad.value) {
-        disableS.value = 'disabled';
-        disableA.value = '';
-      } else {
-        if ((nopage != 1) && (nopage != cantidad.value)) {
-          disableS.value = '';
-          disableA.value = '';
-        }
-      }
-    }
+// const isActivo = (nopage) => {
+//   if (nopage == paginaActual.value) {
+//     if (nopage == 1) {
+//       disableA.value = 'disabled';
+//       disableS.value = '';
+//     } else {
+//       if (nopage == cantidad.value) {
+//         disableS.value = 'disabled';
+//         disableA.value = '';
+//       } else {
+//         if ((nopage != 1) && (nopage != cantidad.value)) {
+//           disableS.value = '';
+//           disableA.value = '';
+//         }
+//       }
+//     }
 
-    return 'active';
-  } else {
-    return '';
-  }
-}
+//     return 'active';
+//   } else {
+//     return '';
+//   }
+// }
 
 let newListado = ref([]);
 
-let newListadoSucursal = ref([]);
+// let newListadoSucursal = ref([]);
 
 const obtenerListadoLimpio = () => {
   let i = 0;
-  if (cargado.value = false) {
+  if (cargado.value == false) {
     newListado.value = [];
     for (let index = 0; index < listado.value.length; index++) {
       const element = listado.value[index];
@@ -762,7 +762,7 @@ const obtenerListadoLimpio = () => {
 
 const consultar = async () => {
   if (cargado.value == false) {
-    let response = await axios.get(`http://` + ipPublica.value + `/fullstack/public/productos`)
+    await axios.get(`http://` + ipPublica.value + `/fullstack/public/productos`)
       .then((response) => {
         listado.value = response.data.data;
         almacenDatosProductos(listado.value);
@@ -789,10 +789,10 @@ const almacenDatosProductos = (Lista) => {
   }
 }
 
-const buscandoElemento = () => {
-  clearTimeout(setTiempoBusca);
-  setTiempoBusca = setTimeout(consultar, 360);
-}
+// const buscandoElemento = () => {
+//   clearTimeout(setTiempoBusca);
+//   setTiempoBusca = setTimeout(consultar, 360);
+// }
 
 // Fin paginado
 
@@ -805,7 +805,7 @@ const generar_pdf = async () => {
 
   // esperando.value = true;
 
-  let response = await axios.get(`http://` + ipPublica.value + `/fullstack/public/productos`)
+  await axios.get(`http://` + ipPublica.value + `/fullstack/public/productos`)
     .then((response) => {
       listado.value = response.data.data;
     })

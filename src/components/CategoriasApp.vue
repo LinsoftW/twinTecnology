@@ -33,9 +33,9 @@
                       v-b-tooltip.hover title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a>
                   </div>
                 </div>
-                <div class="col-md-6 col-xl-6 col-lg-12">
+                <div class="col-md-6 col-xl-6 col-lg-12 ">
                   <span class="text-info">Buscar: </span>
-                  <input class="" type="text" v-model="searchValue" placeholder="" />
+                  <input class="form-control" type="text" v-model="searchValue" placeholder="" />
                 </div>
               </div>
               <br>
@@ -315,8 +315,8 @@ const agregarU = () => {
 // Paginado
 const obtenerPagina = (nopage) => {
   paginaActual.value = nopage;
-  inicio = (nopage * elementPagina.value) - elementPagina.value;
-  fin = (nopage * elementPagina.value);
+  inicio.value = (nopage * elementPagina.value) - elementPagina.value;
+  fin.value = (nopage * elementPagina.value);
   datosPaginados.value = [];
   datosPaginados.value = datosSinPaginar.value.slice(inicio, fin);
 
@@ -508,7 +508,7 @@ const consultarSucursales = async () => {
       // obtenerPagina(1);
       // cargado.value = true;
       // router.go();
-      listadoSucursales = obtenerListadoLimpioSucursales();
+      listadoSucursales.value = obtenerListadoLimpioSucursales();
     });
 
   // }
@@ -676,7 +676,7 @@ onMounted(async () => {
       listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
       obtenerListadoLimpio();
       listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
-      listadoSucursales = obtenerListadoLimpioSucursales();
+      listadoSucursales.value = obtenerListadoLimpioSucursales();
     }
 
   } else {

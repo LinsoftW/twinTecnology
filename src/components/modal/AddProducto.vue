@@ -55,7 +55,7 @@
                     <!-- <a class="btn btn-secondary btn-xs" @click="generarBArCode()"><i
                         class="fas fa-sync"></i></a> -->
                     <select id="categH" class="form-control" v-model="selected1" @change="ObtenCodigoHijo(selected1)">
-                      <option v-for="categ in categoriasH" :value="categ.cod"> {{ categ.valor }} </option>
+                      <option v-for="categ in categoriasH" :value="categ.cod" :key="categ.cod"> {{ categ.valor }} </option>
                     </select>
 
                   </div>
@@ -78,22 +78,22 @@
                     <input type="text" class="form-control" id="descripcion" aria-describedby="emailHelp"
                       v-model="formProductos.data.attributes.descripcion" placeholder="Descripción del producto">
                   </div>
-                  <div class="form-group col-lg-4">
+                  <!-- <div class="form-group col-lg-4">
                     <label class="text-info">Sucursal: <label style="color: red;">*</label></label>
                     <select name="rol" id="rol" style="width: 100%; text-align:center" placeholder="Sucursal"
                       class="text-gray-900 form-control">
-                      <option v-for="dato in listadoSucursales" :key="dato.id" :value="dato.attributes.nombre">{{
+                      <option v-for="dato in listadoSucursales" :key="dato.id" :value="dato.attributes.nombre"> {{
                         dato.attributes.nombre }}</option>
                     </select>
-                  </div>
-                  <div class="form-group col-lg-4">
+                  </div> -->
+                  <!-- <div class="form-group col-lg-4">
                     <label class="text-info">Categoría: <label style="color: red;">*</label></label>
                     <select name="rol" id="rol" style="width: 100%; text-align:center" placeholder="Sucursal"
                       class="text-gray-900 form-control">
                       <option v-for="dato in listadoSucursales" :key="dato.id" :value="dato.attributes.nombre">{{
                         dato.attributes.nombre }}</option>
                     </select>
-                  </div>
+                  </div> -->
 
                 </div>
                 <div class="form-group">
@@ -168,6 +168,7 @@
 import { onMounted, reactive, ref } from 'vue';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import router from '@/router'
 
 const image = ref('')
 
@@ -271,7 +272,7 @@ const cat_productos_temporada = [
 
 const categoriasH = ref([]);
 
-const seleccionado = ref();
+// const seleccionado = ref();
 
 const categoriasM = [
   {
@@ -309,44 +310,44 @@ const categoriasM = [
 
 const codig_final = ref();
 
-const ObtenCategHijaF = (valor) => {
-  formProductos.data.attributes.codigo = valor;
-  codig_final.value = valor;
-  switch (valor) {
-  case 10:
-    categoriasH.value = cat_Electronica
-    break;
-  case 11:
-    categoriasH.value = cat_ropa_moda
-    break;
-  case 12:
-    categoriasH.value = cat_hogares_muebles
-    break;
-  case 13:
-    categoriasH.value = cat_salud_belleza
-    break;
-  case 14:
-    categoriasH.value = cat_ropa_deportiva
-    break;
-  case 15:
-    categoriasH.value = cat_juguetes_ninos
-    break;
-  case 16:
-    categoriasH.value = cat_maletas_equipaje
-    break;
-  case 17:
-    categoriasH.value = cat_pinturas_lienzos
-    break;
-  case 18:
-    categoriasH.value = cat_bebes_maternidad
-    break;
-  case 19:
-    categoriasH.value = cat_productos_temporada
-    break;
-  default:
-    console.log("Lo lamentamos, por el momento no disponemos de " + valor + ".");
-}
-}
+// const ObtenCategHijaF = (valor) => {
+//   formProductos.data.attributes.codigo = valor;
+//   codig_final.value = valor;
+//   switch (valor) {
+//   case 10:
+//     categoriasH.value = cat_Electronica
+//     break;
+//   case 11:
+//     categoriasH.value = cat_ropa_moda
+//     break;
+//   case 12:
+//     categoriasH.value = cat_hogares_muebles
+//     break;
+//   case 13:
+//     categoriasH.value = cat_salud_belleza
+//     break;
+//   case 14:
+//     categoriasH.value = cat_ropa_deportiva
+//     break;
+//   case 15:
+//     categoriasH.value = cat_juguetes_ninos
+//     break;
+//   case 16:
+//     categoriasH.value = cat_maletas_equipaje
+//     break;
+//   case 17:
+//     categoriasH.value = cat_pinturas_lienzos
+//     break;
+//   case 18:
+//     categoriasH.value = cat_bebes_maternidad
+//     break;
+//   case 19:
+//     categoriasH.value = cat_productos_temporada
+//     break;
+//   default:
+//     console.log("Lo lamentamos, por el momento no disponemos de " + valor + ".");
+// }
+// }
 
 const ObtenCategHija = (valor) => {
   formProductos.data.attributes.codigo = valor;
@@ -452,13 +453,13 @@ function generarBArCode() {
   // Fin
 
   cod.value = Math.floor(Math.random() * 9999);
-  if (cod.length < 4) {
+  if (cod.value.length < 4) {
     generarBArCode();
   }
-  cod.value = '10-0001'
+  // cod.value = '10-0001'
   formProductos.data.attributes.codigo = cod.value;
 }
-const mostrar = ref(false);
+// const mostrar = ref(false);
 
 let errors = ref([]);
 
@@ -484,21 +485,21 @@ const ipPublica = ref('192.168.121.123');
 
 const esperando = ref(false);
 
-const loading = (texto) => {
-  Swal.fire({
-    // title: "Sweet!",
-    text: texto,
-    imageUrl: "/cargando2.gif",
-    imageWidth: 100,
-    imageHeight: 100,
-    imageAlt: "Custom image",
-    showConfirmButton: false
-  });
-}
+// const loading = (texto) => {
+//   Swal.fire({
+//     // title: "Sweet!",
+//     text: texto,
+//     imageUrl: "/cargando2.gif",
+//     imageWidth: 100,
+//     imageHeight: 100,
+//     imageAlt: "Custom image",
+//     showConfirmButton: false
+//   });
+// }
 
-const cerrarAlert = () => {
-  Swal.close();
-}
+// const cerrarAlert = () => {
+//   Swal.close();
+// }
 
 const successFull = (mensaje, posicion) => {
 
@@ -534,7 +535,7 @@ const agregarU = () => {
   if (formProductos.is_valid) {
     esperando.value = true;
     axios.post(`http://` + ipPublica.value + `/fullstack/public/productos`, formProductos)
-      .then((response) => {
+      .then(() => {
         formProductos.data.attributes.observacion = ''
         formProductos.data.attributes.descripcion = '';
         formProductos.data.attributes.codigo = '';
@@ -563,17 +564,17 @@ const cancelarU = () => {
   closeVentana();
 }
 
-const actualizar_datos = () => {
-  // localStorage.removeItem('ListadoCache');
-  listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
-  obtenerListadoLimpio();
-  // listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
-  // listadoSucursales = obtenerListadoLimpioSucursales();
-}
+// const actualizar_datos = () => {
+//   // localStorage.removeItem('ListadoCache');
+//   listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
+//   obtenerListadoLimpio();
+//   // listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
+//   // listadoSucursales = obtenerListadoLimpioSucursales();
+// }
 
 const obtenerListadoLimpio = () => {
   let i = 0;
-  if (cargado.value = false) {
+  if (cargado.value == false) {
     newListado.value = [];
     for (let index = 0; index < listado.value.length; index++) {
       const element = listado.value[index];
@@ -618,26 +619,26 @@ const obtenerListadoLimpioSucursales = () => {
 
 }
 
-const almacenDatosProductos = (Lista) => {
-  localStorage.removeItem('ListadoCache');
-  const parsed = JSON.stringify(Lista);
-  localStorage.setItem('ListadoCache', parsed);
-}
+// const almacenDatosProductos = (Lista) => {
+//   localStorage.removeItem('ListadoCache');
+//   const parsed = JSON.stringify(Lista);
+//   localStorage.setItem('ListadoCache', parsed);
+// }
 
-const consultar = async () => {
-  if (cargado.value == false) {
-    let response = await axios.get(`http://` + ipPublica.value + `/fullstack/public/productos`)
-      .then((response) => {
-        listado.value = response.data.data;
-        almacenDatosProductos(listado.value);
-        obtenerListadoLimpio();
-        cargado.value = true;
-      });
-  } else {
-    almacenDatosProductos(listado.value);
-  }
+// const consultar = async () => {
+//   if (cargado.value == false) {
+//     let response = await axios.get(`http://` + ipPublica.value + `/fullstack/public/productos`)
+//       .then((response) => {
+//         listado.value = response.data.data;
+//         almacenDatosProductos(listado.value);
+//         obtenerListadoLimpio();
+//         cargado.value = true;
+//       });
+//   } else {
+//     almacenDatosProductos(listado.value);
+//   }
 
-}
+// }
 
 // onActivated(async () => {
 //   generarBArCode()
@@ -651,7 +652,8 @@ onMounted(async () => {
       listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
       obtenerListadoLimpio();
       listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
-      listadoSucursales = obtenerListadoLimpioSucursales();
+      listadoSucursales.value = obtenerListadoLimpioSucursales();
+      // console.log(listadoSucursales)
       cargado.value = true;
     }
 

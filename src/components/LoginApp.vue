@@ -104,47 +104,47 @@ const emailError = ref('');
 
 const passwError = ref('');
 
-let dataCache = ref([]);
+// let dataCache = ref([]);
 
-const almacenDatosProductos = (Lista) => {
-  if (localStorage.getItem('ListadoCache')) {
-    localStorage.removeItem('ListadoCache');
-  } else {
-    const parsed = JSON.stringify(Lista);
-    localStorage.setItem('ListadoCache', parsed);
-    // dataCache.value = JSON.parse(localStorage.getItem('ListadoCache'));
-  }
-}
+// const almacenDatosProductos = (Lista) => {
+//   if (localStorage.getItem('ListadoCache')) {
+//     localStorage.removeItem('ListadoCache');
+//   } else {
+//     const parsed = JSON.stringify(Lista);
+//     localStorage.setItem('ListadoCache', parsed);
+//     // dataCache.value = JSON.parse(localStorage.getItem('ListadoCache'));
+//   }
+// }
 
-const almacenDatosSucursales = (Lista) => {
-  if (localStorage.getItem('ListadoCacheSucursal')) {
-    localStorage.removeItem('ListadoCacheSucursal');
-  } else {
-    const parsed = JSON.stringify(Lista);
-    localStorage.setItem('ListadoCacheSucursal', parsed);
-    // dataCache.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
-  }
-}
+// const almacenDatosSucursales = (Lista) => {
+//   if (localStorage.getItem('ListadoCacheSucursal')) {
+//     localStorage.removeItem('ListadoCacheSucursal');
+//   } else {
+//     const parsed = JSON.stringify(Lista);
+//     localStorage.setItem('ListadoCacheSucursal', parsed);
+//     // dataCache.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
+//   }
+// }
 
-const consultar = async () => {
-  let response = await axios.get(`http://` + ipPublica.value + `/fullstack/public/productos`)
-    .then((response) => {
-      listado.value = response.data.data;
-      almacenDatosProductos(listado.value);
-    })
+// const consultar = async () => {
+//   let response = await axios.get(`http://` + ipPublica.value + `/fullstack/public/productos`)
+//     .then((response) => {
+//       listado.value = response.data.data;
+//       almacenDatosProductos(listado.value);
+//     })
 
-}
+// }
 
-const consultarSucursales = async () => {
-  let response = await axios.get(`http://` + ipPublica.value + `/fullstack/public/sucursals`)
-    .then((response) => {
-      listado.value = response.data.data;
-      almacenDatosSucursales(listado.value);
-      esperando.value = false;
-      cerrarAlert();
-    })
+// const consultarSucursales = async () => {
+//   let response = await axios.get(`http://` + ipPublica.value + `/fullstack/public/sucursals`)
+//     .then((response) => {
+//       listado.value = response.data.data;
+//       almacenDatosSucursales(listado.value);
+//       esperando.value = false;
+//       cerrarAlert();
+//     })
 
-}
+// }
 
 const form = reactive({
   nombre: '',
@@ -294,7 +294,7 @@ const autenticate = async () => {
 
 }
 
-let timerInterval;
+// let timerInterval;
 
 const loading = () => {
   Swal.fire({

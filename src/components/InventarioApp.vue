@@ -489,7 +489,7 @@
   <!-- <div :class="showModBack2" @click="cerrarModal()"></div> -->
 </template>
 <script setup>
-import { ref, reactive, onMounted, watch, computed } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import AddProducto from './modal/AddProducto.vue';
@@ -515,7 +515,7 @@ const escanea = ref(false);
 const decodedText = ref('')
 
 const onDecode = (result) => {
-  decodedText = result
+  decodedText.value = result
 }
 
 const onLoaded = () => {
@@ -570,7 +570,7 @@ const abrirModalAddProd = () => {
 const editarU = () => {
   esperando.value = true;
   axios.put(`http://${ipPublica.value}/fullstack/public/productos/${id.value}`, formProductos)
-    .then((response) => {
+    .then(() => {
       // console.log(response)
       esperando.value = false;
       cerrarAlert();
@@ -620,25 +620,25 @@ const showRow = () => {
 
 }
 
-const EliminarSelecc = () => {
-  for (let index = 0; index < itemsSelected.value.length; index++) {
-    // console.log(itemsSelected.value[index])
-    borrarU(itemsSelected.value[index].id, itemsSelected.value[index].attributes.codigo, 2)
-  }
+// const EliminarSelecc = () => {
+//   for (let index = 0; index < itemsSelected.value.length; index++) {
+//     // console.log(itemsSelected.value[index])
+//     borrarU(itemsSelected.value[index].id, itemsSelected.value[index].attributes.codigo, 2)
+//   }
 
-}
+// }
 
-const almacenDatosSucursales = (Lista) => {
-  if (localStorage.getItem('ListadoCacheSucursal')) {
-    localStorage.removeItem('ListadoCacheSucursal');
-    const parsed = JSON.stringify(Lista);
-    localStorage.setItem('ListadoCacheSucursal', parsed);
-  } else {
-    const parsed = JSON.stringify(Lista);
-    localStorage.setItem('ListadoCacheSucursal', parsed);
-    // dataCache.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
-  }
-}
+// const almacenDatosSucursales = (Lista) => {
+//   if (localStorage.getItem('ListadoCacheSucursal')) {
+//     localStorage.removeItem('ListadoCacheSucursal');
+//     const parsed = JSON.stringify(Lista);
+//     localStorage.setItem('ListadoCacheSucursal', parsed);
+//   } else {
+//     const parsed = JSON.stringify(Lista);
+//     localStorage.setItem('ListadoCacheSucursal', parsed);
+//     // dataCache.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
+//   }
+// }
 
 const searchField = ref("attributes.codigo");
 
@@ -690,11 +690,11 @@ const cerrarAlert = () => {
 
 const cod = ref();
 
-const codProd = ref();
+// const codProd = ref();
 
-const descProd = ref();
+// const descProd = ref();
 
-const obsProd = ref();
+// const obsProd = ref();
 
 const seleccionaProducto = (prod) => {
   id.value = prod.id;
@@ -738,7 +738,7 @@ const activaModal = ref(false);
 
 const displayModal = ref(''); //display: block; padding-right: 17px;
 
-const rolModal = ref(''); // dialog
+// const rolModal = ref(''); // dialog
 
 const showModBack = ref(''); //modal-backdrop fade show
 
@@ -762,43 +762,43 @@ const abrirModal = () => {
   }
 }
 
-const cerrarModal = () => {
-  // if (showModal2.value == '') {
-  //   showModal2.value = 'show';
-  //   activaModal2.value = true;
-  //   // show2.value = '';
-  //   // activaShow.value = false;
-  //   // activaHide.value = false;
-  //   // displayModal.value = 'display: block; padding-right: 17px;';
-  //   // showModBack.value = 'modal-backdrop fade show';
-  // } else {
-  showModal2.value = '';
-  activaModal2.value = false;
-  // show2.value = '';
-  activaShow2.value = false;
-  activaHide2.value = true;
-  displayModal2.value = 'display: none;';
-  showModBack2.value = '';
-  // }
-}
+// const cerrarModal = () => {
+//   // if (showModal2.value == '') {
+//   //   showModal2.value = 'show';
+//   //   activaModal2.value = true;
+//   //   // show2.value = '';
+//   //   // activaShow.value = false;
+//   //   // activaHide.value = false;
+//   //   // displayModal.value = 'display: block; padding-right: 17px;';
+//   //   // showModBack.value = 'modal-backdrop fade show';
+//   // } else {
+//   showModal2.value = '';
+//   activaModal2.value = false;
+//   // show2.value = '';
+//   activaShow2.value = false;
+//   activaHide2.value = true;
+//   displayModal2.value = 'display: none;';
+//   showModBack2.value = '';
+//   // }
+// }
 
-const show1 = ref('');
+// const show1 = ref('');
 
 const showModal1 = ref('');
 
 const activaHide1 = ref(true);
 
-const activaShow1 = ref(false);
+// const activaShow1 = ref(false);
 
 const activaModal1 = ref(false);
 
 const displayModal1 = ref(''); //display: block; padding-right: 17px;
 
-const rolModal1 = ref(''); // dialog
+// const rolModal1 = ref(''); // dialog
 
-const showModBack1 = ref(''); //modal-backdrop fade show
+// const showModBack1 = ref(''); //modal-backdrop fade show
 
-const show2 = ref('');
+// const show2 = ref('');
 
 const showModal2 = ref('');
 
@@ -810,40 +810,40 @@ const activaModal2 = ref(false);
 
 const displayModal2 = ref(''); //display: block; padding-right: 17px;
 
-const rolModal2 = ref(''); // dialog
+// const rolModal2 = ref(''); // dialog
 
 const showModBack2 = ref(''); //modal-backdrop fade show
 
-const abrirModalBarCode = (codig) => {
-  if (showModal1.value == '') {
-    cod.value = codig;
-    showModal1.value = 'show';
-    activaModal1.value = true;
-    show1.value = '';
-    activaShow1.value = false;
-    activaHide1.value = false;
-    displayModal1.value = 'display: block; padding-right: 17px;';
-    showModBack1.value = 'modal-backdrop fade show';
-  } else {
-    showModal1.value = '';
-    activaModal1.value = false;
-    show1.value = '';
-    activaShow1.value = false;
-    activaHide1.value = true;
-    displayModal1.value = 'display: none;';
-    showModBack1.value = '';
-  }
-}
+// const abrirModalBarCode = (codig) => {
+//   if (showModal1.value == '') {
+//     cod.value = codig;
+//     showModal1.value = 'show';
+//     activaModal1.value = true;
+//     show1.value = '';
+//     activaShow1.value = false;
+//     activaHide1.value = false;
+//     displayModal1.value = 'display: block; padding-right: 17px;';
+//     showModBack1.value = 'modal-backdrop fade show';
+//   } else {
+//     showModal1.value = '';
+//     activaModal1.value = false;
+//     show1.value = '';
+//     activaShow1.value = false;
+//     activaHide1.value = true;
+//     displayModal1.value = 'display: none;';
+//     showModBack1.value = '';
+//   }
+// }
 
-const Exp_3Ptos = () => {
-  if (show.value == '') {
-    show.value = 'show';
-    activaShow.value = true;
-  } else {
-    show.value = '';
-    activaShow.value = false;
-  }
-}
+// const Exp_3Ptos = () => {
+//   if (show.value == '') {
+//     show.value = 'show';
+//     activaShow.value = true;
+//   } else {
+//     show.value = '';
+//     activaShow.value = false;
+//   }
+// }
 
 const siFoto = ref(true);
 const sicodigo = ref(true);
@@ -873,17 +873,17 @@ const MostrarTodas = () => {
   siacciones.value = true;
 }
 
-const quitarFoto = () => {
-  siFoto.value = !siFoto.value;
-}
+// const quitarFoto = () => {
+//   siFoto.value = !siFoto.value;
+// }
 
 const quitarSucursal = () => {
   sisucursal.value = !sisucursal.value;
 }
 
-const quitarestado = () => {
-  siestado.value = !siestado.value;
-}
+// const quitarestado = () => {
+//   siestado.value = !siestado.value;
+// }
 
 const quitardescripcion = () => {
   sidescripcion.value = !sidescripcion.value;
@@ -906,34 +906,34 @@ let errors = ref([]);
 
 let listado = ref([]);
 
-let listadoSucursales = ref([]);
+// let listadoSucursales = ref([]);
 
-let datosPaginados = ref([]);
+// let datosPaginados = ref([]);
 
-let datosSinPaginar = ref([]);
+// let datosSinPaginar = ref([]);
 
-let buscando = ref('');
+// let buscando = ref('');
 
 let editar = ref(false);
 
 let id = ref('');
 
-let cantidad = ref(0);
+// let cantidad = ref(0);
 
-let elementPagina = ref(5);
+// let elementPagina = ref(5);
 
 let cargado = ref(false);
 
-let inicio = ref(0);
+// let inicio = ref(0);
 
-let fin = ref(0);
+// let fin = ref(0);
 
-let paginaActual = ref(1);
+// let paginaActual = ref(1);
 
-let disableA = ref('');
-let disableS = ref('');
+// let disableA = ref('');
+// let disableS = ref('');
 
-let setTiempoBusca = '';
+// let setTiempoBusca = '';
 
 const ipPublica = ref('192.168.121.123');
 
@@ -949,65 +949,65 @@ const formProductos = reactive({
 })
 
 // Paginado
-const obtenerPagina = (nopage) => {
-  paginaActual.value = nopage;
-  inicio = (nopage * elementPagina.value) - elementPagina.value;
-  fin = (nopage * elementPagina.value);
-  datosPaginados.value = [];
-  datosPaginados.value = datosSinPaginar.value.slice(inicio, fin);
+// const obtenerPagina = (nopage) => {
+//   paginaActual.value = nopage;
+//   inicio.value = (nopage * elementPagina.value) - elementPagina.value;
+//   fin.value = (nopage * elementPagina.value);
+//   datosPaginados.value = [];
+//   datosPaginados.value = datosSinPaginar.value.slice(inicio, fin);
 
-}
+// }
 
-const obtenerAnterior = () => {
-  if (paginaActual.value > 1) {
-    paginaActual.value--;
-    disableA.value = '';
-    disableS.value = '';
-  } else {
-    disableA.value = 'disabled';
-    disableS.value = '';
-  }
-  obtenerPagina(paginaActual.value);
-}
+// const obtenerAnterior = () => {
+//   if (paginaActual.value > 1) {
+//     paginaActual.value--;
+//     disableA.value = '';
+//     disableS.value = '';
+//   } else {
+//     disableA.value = 'disabled';
+//     disableS.value = '';
+//   }
+//   obtenerPagina(paginaActual.value);
+// }
 
-const obtenerSiguiente = () => {
-  if (paginaActual.value < cantidad.value) {
-    paginaActual.value++;
-    disableS.value = '';
-    disableA.value = '';
-  } else {
-    disableS.value = 'disabled';
-    disableA.value = '';
-  }
-  obtenerPagina(paginaActual.value);
-}
+// const obtenerSiguiente = () => {
+//   if (paginaActual.value < cantidad.value) {
+//     paginaActual.value++;
+//     disableS.value = '';
+//     disableA.value = '';
+//   } else {
+//     disableS.value = 'disabled';
+//     disableA.value = '';
+//   }
+//   obtenerPagina(paginaActual.value);
+// }
 
-const isActivo = (nopage) => {
-  if (nopage == paginaActual.value) {
-    if (nopage == 1) {
-      disableA.value = 'disabled';
-      disableS.value = '';
-    } else {
-      if (nopage == cantidad.value) {
-        disableS.value = 'disabled';
-        disableA.value = '';
-      } else {
-        if ((nopage != 1) && (nopage != cantidad.value)) {
-          disableS.value = '';
-          disableA.value = '';
-        }
-      }
-    }
+// const isActivo = (nopage) => {
+//   if (nopage == paginaActual.value) {
+//     if (nopage == 1) {
+//       disableA.value = 'disabled';
+//       disableS.value = '';
+//     } else {
+//       if (nopage == cantidad.value) {
+//         disableS.value = 'disabled';
+//         disableA.value = '';
+//       } else {
+//         if ((nopage != 1) && (nopage != cantidad.value)) {
+//           disableS.value = '';
+//           disableA.value = '';
+//         }
+//       }
+//     }
 
-    return 'active';
-  } else {
-    return '';
-  }
-}
+//     return 'active';
+//   } else {
+//     return '';
+//   }
+// }
 
-let newListado = ref([]);
+// let newListado = ref([]);
 
-let newListadoSucursal = ref([]);
+// let newListadoSucursal = ref([]);
 
 const obtenerListadoLimpio = async () => {
   items.value = [];
@@ -1162,20 +1162,20 @@ const borrarU = async (id, correo, caso) => {
 
 }
 
-const cambiarLimite = () => {
-  let i = 0;
-  newListado.value = [];
-  for (let index = 0; index < listado.value.length; index++) {
-    const element = listado.value[index];
-    if (element.attributes.deleted_at == null) {
-      newListado.value[i] = element;
-      i++;
-    }
-  }
-  datosSinPaginar.value = newListado.value;
-  cantidad.value = Math.ceil(newListado.value.length / elementPagina.value);
-  obtenerPagina(1);
-}
+// const cambiarLimite = () => {
+//   let i = 0;
+//   newListado.value = [];
+//   for (let index = 0; index < listado.value.length; index++) {
+//     const element = listado.value[index];
+//     if (element.attributes.deleted_at == null) {
+//       newListado.value[i] = element;
+//       i++;
+//     }
+//   }
+//   datosSinPaginar.value = newListado.value;
+//   cantidad.value = Math.ceil(newListado.value.length / elementPagina.value);
+//   obtenerPagina(1);
+// }
 
 // watch(listado, async (newQuestion, oldQuestion) => {
 //   // console.log(`El nuevo listado es ${newQuestion}`)

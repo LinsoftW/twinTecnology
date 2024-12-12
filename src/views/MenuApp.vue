@@ -650,7 +650,7 @@ import axios from 'axios';
 import InventarioApp from '@/components/InventarioApp.vue';
 import PedidosApp from '@/components/PedidosApp.vue';
 import router from '@/router';
-import { onUpdated, reactive, ref, watch } from 'vue';
+import { ref } from 'vue';
 import { useRoute } from 'vue-router'
 import { onMounted } from 'vue';
 import SucursalApp from '@/components/SucursalApp.vue';
@@ -670,16 +670,16 @@ import emailjs from 'emailjs-com';
 const Kinicio = ref(0);
 const Kpedidos = ref(0);
 const Kinventario = ref(0);
-const Kproductos = ref(0);
+// const Kproductos = ref(0);
 const Ksucursales = ref(0);
 
-const tiempoEspera = async (n) => {
+const tiempoEspera = async () => {
   // console.log(n)
 }
 
 const esperando = ref(false);
 
-const activalo = ref('');
+// const activalo = ref('');
 
 const link = ref(0);
 
@@ -722,9 +722,9 @@ const listado = ref([]);
 
 let listadoSucursales = ref([]);
 
-const newListado = ref([])
+// const newListado = ref([])
 
-const newListadoSucursal = ref([])
+// const newListadoSucursal = ref([])
 
 const collapsed = ref('collapsed');
 
@@ -732,11 +732,11 @@ const activa = ref(false);
 
 const show = ref('')
 
-const collapsed1 = ref('collapsed');
+// const collapsed1 = ref('collapsed');
 
-const activa1 = ref(false);
+// const activa1 = ref(false);
 
-const show1 = ref('')
+// const show1 = ref('')
 
 const collapsed2 = ref('collapsed');
 
@@ -754,37 +754,37 @@ const showNot = ref('');
 
 const ipPublica = ref('192.168.121.123');
 
-let cargado = ref(false);
+// let cargado = ref(false);
 
-let datosPaginados = ref([]);
+// let datosPaginados = ref([]);
 
-let datosSinPaginar = ref([]);
+// let datosSinPaginar = ref([]);
 
-let buscando = ref('');
+// let buscando = ref('');
 
-let editar = ref(false);
+// let editar = ref(false);
 
-let id = ref('');
+// let id = ref('');
 
-let cantidad = ref(0);
+// let cantidad = ref(0);
 
-let elementPagina = ref(5);
+// let elementPagina = ref(5);
 
-let inicio = ref(0);
+// let inicio = ref(0);
 
-let fin = ref(0);
+// let fin = ref(0);
 
-let paginaActual = ref(1);
+// let paginaActual = ref(1);
 
-const Exp_User = () => {
-  if (activaUser.value == false) {
-    activaUser.value = true;
-    showUser.value = 'show'
-  } else {
-    activaUser.value = false;
-    showUser.value = ''
-  }
-}
+// const Exp_User = () => {
+//   if (activaUser.value == false) {
+//     activaUser.value = true;
+//     showUser.value = 'show'
+//   } else {
+//     activaUser.value = false;
+//     showUser.value = ''
+//   }
+// }
 
 const Exp_Not = () => {
   if (activaNot.value == false) {
@@ -815,107 +815,107 @@ const MueveMenu = () => {
   }
 }
 
-const obtenerListadoLimpioSucursales = () => {
-  let i = 0;
-  // if (cargado.value = false) {
-  newListadoSucursal.value = [];
-  for (let index = 0; index < listadoSucursales.value.length; index++) {
-    const element = listadoSucursales.value[index];
-    if (element.attributes.deleted_at == null) {
-      newListadoSucursal.value[i] = element;
-      i++;
-    }
-  }
-  return newListadoSucursal;
-  // }
+// const obtenerListadoLimpioSucursales = () => {
+//   let i = 0;
+//   // if (cargado.value = false) {
+//   newListadoSucursal.value = [];
+//   for (let index = 0; index < listadoSucursales.value.length; index++) {
+//     const element = listadoSucursales.value[index];
+//     if (element.attributes.deleted_at == null) {
+//       newListadoSucursal.value[i] = element;
+//       i++;
+//     }
+//   }
+//   return newListadoSucursal;
+//   // }
 
-}
+// }
 
 // Expandir o no las opciones del menu
-const Exp_Consultar = () => {
-  if (collapsed.value == "") {
-    collapsed.value = 'collapsed';
-    activa.value = false;
-    show.value = '';
+// const Exp_Consultar = () => {
+//   if (collapsed.value == "") {
+//     collapsed.value = 'collapsed';
+//     activa.value = false;
+//     show.value = '';
 
-    collapsed1.value = 'collapsed';
-    activa1.value = false;
-    show1.value = '';
+//     collapsed1.value = 'collapsed';
+//     activa1.value = false;
+//     show1.value = '';
 
-    collapsed2.value = 'collapsed';
-    activa2.value = false;
-    show2.value = '';
+//     collapsed2.value = 'collapsed';
+//     activa2.value = false;
+//     show2.value = '';
 
-  } else {
-    collapsed.value = '';
-    activa.value = true;
-    show.value = 'show';
+//   } else {
+//     collapsed.value = '';
+//     activa.value = true;
+//     show.value = 'show';
 
-    collapsed1.value = 'collapsed';
-    activa1.value = false;
-    show1.value = '';
+//     collapsed1.value = 'collapsed';
+//     activa1.value = false;
+//     show1.value = '';
 
-    collapsed2.value = 'collapsed';
-    activa2.value = false;
-    show2.value = '';
-  }
-}
+//     collapsed2.value = 'collapsed';
+//     activa2.value = false;
+//     show2.value = '';
+//   }
+// }
 
-const Exp_Gestion = () => {
-  if (collapsed1.value == '') {
-    collapsed1.value = 'collapsed';
-    activa1.value = false;
-    show1.value = '';
+// const Exp_Gestion = () => {
+//   if (collapsed1.value == '') {
+//     collapsed1.value = 'collapsed';
+//     activa1.value = false;
+//     show1.value = '';
 
-    collapsed.value = 'collapsed';
-    activa.value = false;
-    show.value = '';
+//     collapsed.value = 'collapsed';
+//     activa.value = false;
+//     show.value = '';
 
-    collapsed2.value = 'collapsed';
-    activa2.value = false;
-    show2.value = '';
-  } else {
-    collapsed1.value = '';
-    activa1.value = true;
-    show1.value = 'show';
+//     collapsed2.value = 'collapsed';
+//     activa2.value = false;
+//     show2.value = '';
+//   } else {
+//     collapsed1.value = '';
+//     activa1.value = true;
+//     show1.value = 'show';
 
-    collapsed2.value = 'collapsed';
-    activa2.value = false;
-    show2.value = '';
+//     collapsed2.value = 'collapsed';
+//     activa2.value = false;
+//     show2.value = '';
 
-    collapsed.value = 'collapsed';
-    activa.value = false;
-    show.value = '';
-  }
-}
+//     collapsed.value = 'collapsed';
+//     activa.value = false;
+//     show.value = '';
+//   }
+// }
 
-const Exp_Nomenc = () => {
-  if (collapsed2.value == '') {
-    collapsed2.value = 'collapsed';
-    activa2.value = false;
-    show2.value = '';
+// const Exp_Nomenc = () => {
+//   if (collapsed2.value == '') {
+//     collapsed2.value = 'collapsed';
+//     activa2.value = false;
+//     show2.value = '';
 
-    collapsed1.value = 'collapsed';
-    activa1.value = false;
-    show1.value = '';
+//     collapsed1.value = 'collapsed';
+//     activa1.value = false;
+//     show1.value = '';
 
-    collapsed.value = 'collapsed';
-    activa.value = false;
-    show.value = '';
-  } else {
-    collapsed2.value = '';
-    activa2.value = true;
-    show2.value = 'show';
+//     collapsed.value = 'collapsed';
+//     activa.value = false;
+//     show.value = '';
+//   } else {
+//     collapsed2.value = '';
+//     activa2.value = true;
+//     show2.value = 'show';
 
-    collapsed1.value = 'collapsed';
-    activa1.value = false;
-    show1.value = '';
+//     collapsed1.value = 'collapsed';
+//     activa1.value = false;
+//     show1.value = '';
 
-    collapsed.value = 'collapsed';
-    activa.value = false;
-    show.value = '';
-  }
-}
+//     collapsed.value = 'collapsed';
+//     activa.value = false;
+//     show.value = '';
+//   }
+// }
 
 const ActivaLink = (valor) => {
   // if (valor != 1) {
@@ -972,7 +972,7 @@ const errors = ref();
 
 const consultarPrincipal = async () => {
   // if (cargado.value == false) {
-  let response = await axios.get(`http://` + ipPublica.value + `/fullstack/public/productos`)
+  await axios.get(`http://` + ipPublica.value + `/fullstack/public/productos`)
     .then((response) => {
       listado.value = response.data.data;
       almacenDatosProductos(listado.value);
@@ -984,7 +984,7 @@ const consultarPrincipal = async () => {
       }
     })
 
-  let response1 = await axios.get(`http://` + ipPublica.value + `/fullstack/public/sucursals`)
+  await axios.get(`http://` + ipPublica.value + `/fullstack/public/sucursals`)
     .then((response1) => {
       listadoSucursales.value = response1.data.data;
       almacenDatosSucursales(listadoSucursales.value);
@@ -1014,7 +1014,7 @@ const consultarPrincipal = async () => {
 
 const consultar = async (n) => {
   if (n == 1) {
-    let response = await axios.get(`http://` + ipPublica.value + `/fullstack/public/productos`)
+    await axios.get(`http://` + ipPublica.value + `/fullstack/public/productos`)
       .then((response) => {
         listado.value = response.data.data;
         almacenDatosProductos(listado.value);
@@ -1045,91 +1045,91 @@ const consultar = async (n) => {
 }
 
 // Paginado
-const obtenerPagina = (nopage) => {
-  paginaActual.value = nopage;
-  inicio = (nopage * elementPagina.value) - elementPagina.value;
-  fin = (nopage * elementPagina.value);
-  datosPaginados.value = [];
-  datosPaginados.value = datosSinPaginar.value.slice(inicio, fin);
+// const obtenerPagina = (nopage) => {
+//   paginaActual.value = nopage;
+//   inicio.value = (nopage * elementPagina.value) - elementPagina.value;
+//   fin.value = (nopage * elementPagina.value);
+//   datosPaginados.value = [];
+//   datosPaginados.value = datosSinPaginar.value.slice(inicio, fin);
 
-}
+// }
 
-const obtenerAnterior = () => {
-  if (paginaActual.value > 1) {
-    paginaActual.value--;
-    disableA.value = '';
-    disableS.value = '';
-  } else {
-    disableA.value = 'disabled';
-    disableS.value = '';
-  }
-  obtenerPagina(paginaActual.value);
-}
+// const obtenerAnterior = () => {
+//   if (paginaActual.value > 1) {
+//     paginaActual.value--;
+//     disableA.value = '';
+//     disableS.value = '';
+//   } else {
+//     disableA.value = 'disabled';
+//     disableS.value = '';
+//   }
+//   obtenerPagina(paginaActual.value);
+// }
 
-const obtenerSiguiente = () => {
-  if (paginaActual.value < cantidad.value) {
-    paginaActual.value++;
-    disableS.value = '';
-    disableA.value = '';
-  } else {
-    disableS.value = 'disabled';
-    disableA.value = '';
-  }
-  obtenerPagina(paginaActual.value);
-}
+// const obtenerSiguiente = () => {
+//   if (paginaActual.value < cantidad.value) {
+//     paginaActual.value++;
+//     disableS.value = '';
+//     disableA.value = '';
+//   } else {
+//     disableS.value = 'disabled';
+//     disableA.value = '';
+//   }
+//   obtenerPagina(paginaActual.value);
+// }
 
-const obtenerListadoLimpio = () => {
-  let i = 0;
-  if (cargado.value = false) {
-    newListado.value = [];
-    for (let index = 0; index < listado.value.length; index++) {
-      const element = listado.value[index];
-      if (element.attributes.deleted_at == null) {
-        newListado.value[i] = element;
-        i++;
-      }
-    }
-    datosSinPaginar.value = newListado.value;
-    cantidad.value = Math.ceil(newListado.value.length / elementPagina.value);
-    obtenerPagina(1);
-    cargado.value = true;
-  } else {
-    newListado.value = []
-    for (let index = 0; index < listado.value.length; index++) {
-      const element = listado.value[index];
-      if (element.attributes.deleted_at == null) {
-        newListado.value[i] = element;
-        i++;
-      }
-    }
-    datosSinPaginar.value = newListado.value;
-    cantidad.value = Math.ceil(newListado.value.length / elementPagina.value);
-    obtenerPagina(1);
-  }
+// const obtenerListadoLimpio = () => {
+//   let i = 0;
+//   if (cargado.value = false) {
+//     newListado.value = [];
+//     for (let index = 0; index < listado.value.length; index++) {
+//       const element = listado.value[index];
+//       if (element.attributes.deleted_at == null) {
+//         newListado.value[i] = element;
+//         i++;
+//       }
+//     }
+//     datosSinPaginar.value = newListado.value;
+//     cantidad.value = Math.ceil(newListado.value.length / elementPagina.value);
+//     obtenerPagina(1);
+//     cargado.value = true;
+//   } else {
+//     newListado.value = []
+//     for (let index = 0; index < listado.value.length; index++) {
+//       const element = listado.value[index];
+//       if (element.attributes.deleted_at == null) {
+//         newListado.value[i] = element;
+//         i++;
+//       }
+//     }
+//     datosSinPaginar.value = newListado.value;
+//     cantidad.value = Math.ceil(newListado.value.length / elementPagina.value);
+//     obtenerPagina(1);
+//   }
 
-}
+// }
 
-const consultarSucursales = async () => {
-  // if (cargado.value == false) {
-  let response = await axios.get(`http://` + ipPublica.value + `/fullstack/public/sucursals`)
-    .then((response) => {
-      listadoSucursales.value = response.data.data;
-      // console.log(response.data)
-      // datosSinPaginar.value = response.data.data;
-      // cantidad.value = Math.ceil(response.data.data.length / elementPagina.value);
-      // obtenerPagina(1);
-      // cargado.value = true;
-      // router.go();
-      almacenDatosSucursales(listadoSucursales.value);
-      listadoSucursales = obtenerListadoLimpioSucursales();
+// const consultarSucursales = async () => {
+//   // if (cargado.value == false) {
+//   let response = await axios.get(`http://` + ipPublica.value + `/fullstack/public/sucursals`)
+//     .then((response) => {
+//       listadoSucursales.value = response.data.data;
+//       // console.log(response.data)
+//       // datosSinPaginar.value = response.data.data;
+//       // cantidad.value = Math.ceil(response.data.data.length / elementPagina.value);
+//       // obtenerPagina(1);
+//       // cargado.value = true;
+//       // router.go();
+//       almacenDatosSucursales(listadoSucursales.value);
+//       listadoSucursales = obtenerListadoLimpioSucursales();
 
-    });
+//     });
 
-  esperando.value = false;
-  // }
-  // EsperarTiempo();
+//   esperando.value = false;
+//   // }
+//   // EsperarTiempo();
 
-}
+// }
 
 // watch(localStorage.getItem('Carg_dat'), async (x, y) => {
 //   console.log("Nuevo valor de Carg_dat" + x)
@@ -1153,7 +1153,7 @@ onMounted(async () => {
       Ctoggled.value = 'toggled';
       esperando.value = true;
       // console.log("Cargando datos...")
-      let dato = await consultarPrincipal()
+      await consultarPrincipal()
     } else if (localStorage.getItem('Wait') != '0') {
       localStorage.removeItem('Carg_dat');
       localStorage.setItem('Carg_dat', '0');
@@ -1170,33 +1170,33 @@ onMounted(async () => {
   // consultar();
 })
 
-const Cambia_Color = () => {
-  if (Cosc_Clar.value == 'info') {
-    Cosc_Clar.value = 'dark';
-  } else {
-    Cosc_Clar.value = 'info';
-  }
-}
+// const Cambia_Color = () => {
+//   if (Cosc_Clar.value == 'info') {
+//     Cosc_Clar.value = 'dark';
+//   } else {
+//     Cosc_Clar.value = 'info';
+//   }
+// }
 
-const Vpaginas = ref(false);
+// const Vpaginas = ref(false);
 
-const paginas = () => {
-  if (route.path == "/inicio") {
-    Vpaginas.value = 1;
-  }
-  if (route.path == "/inventario") {
-    Vpaginas.value = 2;
-  }
-  if (route.path == "/pedidos") {
-    Vpaginas.value = 3;
-  }
-  if (route.path == "/sucursales") {
-    Vpaginas.value = 4;
-  }
-  if (route.path == "/productos") {
-    Vpaginas.value = 5;
-  }
-}
+// const paginas = () => {
+//   if (route.path == "/inicio") {
+//     Vpaginas.value = 1;
+//   }
+//   if (route.path == "/inventario") {
+//     Vpaginas.value = 2;
+//   }
+//   if (route.path == "/pedidos") {
+//     Vpaginas.value = 3;
+//   }
+//   if (route.path == "/sucursales") {
+//     Vpaginas.value = 4;
+//   }
+//   if (route.path == "/productos") {
+//     Vpaginas.value = 5;
+//   }
+// }
 
 const route = useRoute();
 

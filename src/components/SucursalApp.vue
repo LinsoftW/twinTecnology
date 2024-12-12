@@ -189,17 +189,17 @@ import { onMounted, reactive, ref } from 'vue';
 
 const esperando = ref(false);
 
-const loading = (texto) => {
-  Swal.fire({
-    // title: "Sweet!",
-    text: texto,
-    imageUrl: "/cargando2.gif",
-    imageWidth: 100,
-    imageHeight: 100,
-    imageAlt: "Custom image",
-    showConfirmButton: false
-  });
-}
+// const loading = (texto) => {
+//   Swal.fire({
+//     // title: "Sweet!",
+//     text: texto,
+//     imageUrl: "/cargando2.gif",
+//     imageWidth: 100,
+//     imageHeight: 100,
+//     imageAlt: "Custom image",
+//     showConfirmButton: false
+//   });
+// }
 
 const cerrarAlert = () => {
   Swal.close();
@@ -207,7 +207,7 @@ const cerrarAlert = () => {
 
 // CRUD completo
 
-let errors = ref([]);
+// let errors = ref([]);
 
 let listado = ref([]);
 
@@ -215,13 +215,13 @@ let datosPaginados = ref([]);
 
 let datosSinPaginar = ref([]);
 
-let buscando = ref('');
+// let buscando = ref('');
 
 let editar = ref(false);
 
 let cargado = ref(false);
 
-let id = ref('');
+// let id = ref('');
 
 let cantidad = ref(0);
 
@@ -236,7 +236,7 @@ let paginaActual = ref(1);
 let disableA = ref('');
 let disableS = ref('');
 
-let setTiempoBusca = '';
+// let setTiempoBusca = '';
 
 const ipPublica = ref('127.0.0.1');
 
@@ -255,8 +255,8 @@ const formSucursal = reactive({
 // Paginado
 const obtenerPagina = (nopage) => {
   paginaActual.value = nopage;
-  inicio = (nopage * elementPagina.value) - elementPagina.value;
-  fin = (nopage * elementPagina.value);
+  inicio.value = (nopage * elementPagina.value) - elementPagina.value;
+  fin.value = (nopage * elementPagina.value);
   datosPaginados.value = [];
   datosPaginados.value = datosSinPaginar.value.slice(inicio, fin);
 
@@ -313,7 +313,7 @@ let newListado = ref([]);
 
 const obtenerListadoLimpio = () => {
   let i = 0;
-  if (cargado.value = false) {
+  if (cargado.value == false) {
     newListado.value = [];
     for (let index = 0; index < listado.value.length; index++) {
       const element = listado.value[index];
@@ -362,7 +362,7 @@ const almacenDatosSucursales = (Lista) => {
 
 const consultar = async () => {
   if (cargado.value == false) {
-    let response = await axios.get(`http://${ipPublica.value}/fullstack/public/sucursals`)
+    await axios.get(`http://${ipPublica.value}/fullstack/public/sucursals`)
       .then((response) => {
         listado.value = response.data.data;
         almacenDatosSucursales(listado.value);
@@ -384,27 +384,27 @@ const consultar = async () => {
 
 }
 
-const editarU = () => {
-  axios.put(`http://${ipPublica.value}/fullstack/public/sucursals/${id.value}`, formSucursal)
-    .then((response) => {
-      // console.log(response)
-      consultar();
-      formSucursal.data.attributes.descripcion = ''
-      formSucursal.data.attributes.observacion = '';
-      formSucursal.data.attributes.codigo = '';
-      toast.fire({
-        icon: "success",
-        title: "Editado satisfactoriamente."
-      })
-      editar.value = false;
-      localStorage.setItem("editar", editar.value);
-    })
-    .catch((error) => {
-      if (error.response.status === 400) {
-        errors.value = error.response.data;
-      }
-    })
-}
+// const editarU = () => {
+//   axios.put(`http://${ipPublica.value}/fullstack/public/sucursals/${id.value}`, formSucursal)
+//     .then(() => {
+//       // console.log(response)
+//       consultar();
+//       formSucursal.data.attributes.descripcion = ''
+//       formSucursal.data.attributes.observacion = '';
+//       formSucursal.data.attributes.codigo = '';
+//       toast.fire({
+//         icon: "success",
+//         title: "Editado satisfactoriamente."
+//       })
+//       editar.value = false;
+//       localStorage.setItem("editar", editar.value);
+//     })
+//     .catch((error) => {
+//       if (error.response.status === 400) {
+//         errors.value = error.response.data;
+//       }
+//     })
+// }
 
 const borrarU = (id, correo) => {
   Swal.fire({
@@ -467,7 +467,7 @@ const cambiarLimite = () => {
   obtenerPagina(1);
 }
 
-onMounted(async => {
+onMounted(() => {
   if (localStorage.getItem('userName')) {
     listado.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
     obtenerListadoLimpio();

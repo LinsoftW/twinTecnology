@@ -1,116 +1,117 @@
 <template>
   <!-- <div v-if="!esperando" class="container-fluid"> -->
-    <transition name="fade-modal">
-      <div class="backdrop-modal">
-        <div class="modal" role="dialog" aria-labelledby="modalTitle" aria-describedby="modalDescription">
-          <header class="modal-header" id="modalTitle">
-            <slot name="header">
-             CODIGO DE BARRA DEL PRODUCTO
-            </slot>
-            <div class="btn-close" @click="closeVentana">
-              &times;
-            </div>
-            <!-- <button type="button" class="btn-close" @click="close" aria-label="Close modal">
+  <transition name="fade-modal">
+    <div class="backdrop-modal">
+      <div class="modal" role="dialog" aria-labelledby="modalTitle" aria-describedby="modalDescription">
+        <header class="modal-header" id="modalTitle">
+          <slot name="header">
+            CODIGO DE BARRA DEL PRODUCTO
+          </slot>
+          <div class="btn-close" @click="closeVentana">
+            &times;
+          </div>
+          <!-- <button type="button" class="btn-close" @click="close" aria-label="Close modal">
             X
           </button> -->
-          </header>
+        </header>
 
-          <section class="modal-body" id="modalDescription">
+        <section class="modal-body" id="modalDescription">
 
-            <div class="col-lg-12">
-              <div class="">
-                <div class="text-center">
-                  <h3 class="h6 text-gray-900 mb-4">CAMPOS OBLIGATORIOS (<label style="color: red;">*</label>)</h3>
-                </div>
-                <form class="user">
+          <div class="col-lg-12">
+            <div class="">
+              <div class="text-center">
+                <h3 class="h6 text-gray-900 mb-4">CAMPOS OBLIGATORIOS (<label style="color: red;">*</label>)</h3>
+              </div>
+              <form class="user">
 
-                  <div class="row">
-                    <!-- <FormKit label="Username" type="text" help="Pick a new username"
+                <div class="row">
+                  <!-- <FormKit label="Username" type="text" help="Pick a new username"
                         validation="required|matches:/^@[a-zA-Z]+$/|length:5" value="@FormKit" /> -->
-                    <div class="form-group col-lg-3">
-                      <label class="text-info">Código: <label style="color: red;">*</label></label> <i class="fas fa-barcode"></i> <a class="btn btn-secondary btn-xs" @click="generarBArCode()"><i class="fas fa-sync"></i></a>
-                      <input type="text" class="form-control" id="codigo" aria-describedby="emailHelp"
-                        v-model="formProductos.data.attributes.codigo" placeholder="Código" required>
+                  <div class="form-group col-lg-3">
+                    <label class="text-info">Código: <label style="color: red;">*</label></label> <i
+                      class="fas fa-barcode"></i> <a class="btn btn-secondary btn-xs" @click="generarBArCode()"><i
+                        class="fas fa-sync"></i></a>
+                    <input type="text" class="form-control" id="codigo" aria-describedby="emailHelp"
+                      v-model="formProductos.data.attributes.codigo" placeholder="Código" required>
 
-                    </div>
-                    <!-- <div class="col-lg-3 form-group">
+                  </div>
+                  <!-- <div class="col-lg-3 form-group">
                       <vue-barcode :value="cod" tag="svg"></vue-barcode>
                     </div> -->
-                    <div class="form-group col-lg-6">
-                      <label class="text-info">Descripción: <label style="color: red;">*</label></label>
-                      <input type="text" class="form-control" id="descripcion" aria-describedby="emailHelp"
-                        v-model="formProductos.data.attributes.descripcion" placeholder="Descripción del producto">
-                    </div>
+                  <div class="form-group col-lg-6">
+                    <label class="text-info">Descripción: <label style="color: red;">*</label></label>
+                    <input type="text" class="form-control" id="descripcion" aria-describedby="emailHelp"
+                      v-model="formProductos.data.attributes.descripcion" placeholder="Descripción del producto">
+                  </div>
 
-                  </div>
-                  <div class="form-group ">
-                    <label class="text-info">Observaciones:</label>
-                    <textarea class="form-control" id="observaciones"
-                      v-model="formProductos.data.attributes.observacion"
-                      placeholder="Observaciones acerca del producto"></textarea>
-                    <!-- <input type="text" class="form-control" id="observaciones"
+                </div>
+                <div class="form-group ">
+                  <label class="text-info">Observaciones:</label>
+                  <textarea class="form-control" id="observaciones" v-model="formProductos.data.attributes.observacion"
+                    placeholder="Observaciones acerca del producto"></textarea>
+                  <!-- <input type="text" class="form-control" id="observaciones"
                         aria-describedby="emailHelp" v-model="form.apellido1" placeholder="Observaciones acerca del producto"> -->
+                </div>
+                <div class="row">
+                  <div class="form-group col-lg-4">
+                    <label class="text-info">Sucursal: <label style="color: red;">*</label></label>
+                    <select name="rol" id="rol" style="width: 100%; text-align:center" placeholder="Sucursal"
+                      class="text-gray-900 form-control">
+                      <option v-for="dato in listadoSucursales" :key="dato.id" :value="dato.attributes.nombre">{{
+                        dato.attributes.nombre }}</option>
+                    </select>
                   </div>
-                  <div class="row">
-                    <div class="form-group col-lg-4">
-                      <label class="text-info">Sucursal: <label style="color: red;">*</label></label>
-                      <select name="rol" id="rol" style="width: 100%; text-align:center" placeholder="Sucursal"
-                        class="text-gray-900 form-control">
-                        <option v-for="dato in listadoSucursales" :key="dato.id" :value="dato.attributes.nombre">{{
-                          dato.attributes.nombre }}</option>
-                      </select>
-                    </div>
-                    <div class="form-group col-lg-4">
-                      <label class="text-info">Categoría: <label style="color: red;">*</label></label>
-                      <select name="rol" id="rol" style="width: 100%; text-align:center" placeholder="Sucursal"
-                        class="text-gray-900 form-control">
-                        <option v-for="dato in listadoSucursales" :key="dato.id" :value="dato.attributes.nombre">{{
-                          dato.attributes.nombre }}</option>
-                      </select>
-                    </div>
+                  <div class="form-group col-lg-4">
+                    <label class="text-info">Categoría: <label style="color: red;">*</label></label>
+                    <select name="rol" id="rol" style="width: 100%; text-align:center" placeholder="Sucursal"
+                      class="text-gray-900 form-control">
+                      <option v-for="dato in listadoSucursales" :key="dato.id" :value="dato.attributes.nombre">{{
+                        dato.attributes.nombre }}</option>
+                    </select>
                   </div>
-                  <!-- <div class="form-group">
+                </div>
+                <!-- <div class="form-group">
                       <label class="text-info">Imagen:</label>
                       <input type="file" class="form-control" id="foto"> Seleccione una foto para el producto...
                     </div> -->
 
-                </form>
-              </div>
+              </form>
             </div>
-            <!-- <slot name="body">
+          </div>
+          <!-- <slot name="body">
 
           </slot> -->
-          </section>
+        </section>
 
-          <footer class="modal-footer">
-            <div class="row m-1">
-              <!-- <div v-if="editar == false" class="col-lg-1"></div> -->
-              <div class=" col-xs-4">
-                <a @click="agregarU" class="btn btn-primary btn-user btn-block">
-                  Archivar y continuar
-                </a>
-              </div>
-              <div class="col-xs-4 ml-2">
-                <a @click="agregarU" class="btn btn-info btn-user btn-block">
-                  Guardar datos
-                </a>
-              </div>
-              <!-- <div v-if="editar" class="form-group h4 col-lg-6">
+        <footer class="modal-footer">
+          <div class="row m-1">
+            <!-- <div v-if="editar == false" class="col-lg-1"></div> -->
+            <div class=" col-xs-4">
+              <a @click="agregarU" class="btn btn-primary btn-user btn-block">
+                Archivar y continuar
+              </a>
+            </div>
+            <div class="col-xs-4 ml-2">
+              <a @click="agregarU" class="btn btn-info btn-user btn-block">
+                Guardar datos
+              </a>
+            </div>
+            <!-- <div v-if="editar" class="form-group h4 col-lg-6">
                     <a @click="editarU" class="btn btn-info btn-user btn-block">
                       Modificar producto
                     </a>
                   </div> -->
-              <div class="col-xs-4 ml-2">
-                <a @click="cancelarU()" class="btn btn-danger btn-user btn-block">
-                  Cerrar
-                </a>
-              </div>
+            <div class="col-xs-4 ml-2">
+              <a @click="cancelarU()" class="btn btn-danger btn-user btn-block">
+                Cerrar
+              </a>
             </div>
+          </div>
 
-          </footer>
-        </div>
+        </footer>
       </div>
-    </transition>
+    </div>
+  </transition>
   <!-- </div> -->
 
   <!-- <template v-if="esperando">
@@ -121,9 +122,10 @@
 </template>
 
 <script setup>
-import { onActivated, onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import router from '@/router';
 
 const emit = defineEmits(['cerrar'])
 
@@ -144,15 +146,15 @@ const formProductos = reactive({
 
 const cod = ref();
 
-function generarBArCode () {
+function generarBArCode() {
 
   cod.value = Math.floor(Math.random() * 9999);
-  if (cod.length < 4){
+  if (cod.value.length < 4) {
     generarBArCode();
   }
   formProductos.data.attributes.codigo = cod.value;
 }
-const mostrar = ref(false);
+// const mostrar = ref(false);
 
 let errors = ref([]);
 
@@ -178,17 +180,17 @@ const ipPublica = ref('192.168.121.123');
 
 const esperando = ref(false);
 
-const loading = (texto) => {
-  Swal.fire({
-    // title: "Sweet!",
-    text: texto,
-    imageUrl: "/cargando2.gif",
-    imageWidth: 100,
-    imageHeight: 100,
-    imageAlt: "Custom image",
-    showConfirmButton: false
-  });
-}
+// const loading = (texto) => {
+//   Swal.fire({
+//     // title: "Sweet!",
+//     text: texto,
+//     imageUrl: "/cargando2.gif",
+//     imageWidth: 100,
+//     imageHeight: 100,
+//     imageAlt: "Custom image",
+//     showConfirmButton: false
+//   });
+// }
 
 const cerrarAlert = () => {
   Swal.close();
@@ -197,7 +199,7 @@ const cerrarAlert = () => {
 const agregarU = () => {
   esperando.value = true;
   axios.post(`http://` + ipPublica.value + `/fullstack/public/productos`, formProductos)
-    .then((response) => {
+    .then(() => {
       cargado.value = false;
       esperando.value = false;
       // console.log(response.data.data)
@@ -236,23 +238,25 @@ const cancelarU = () => {
   closeVentana();
 }
 
-const actualizar_datos = () => {
-  // localStorage.removeItem('ListadoCache');
-  listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
-  obtenerListadoLimpio();
-  // listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
-  // listadoSucursales = obtenerListadoLimpioSucursales();
-}
+// const actualizar_datos = () => {
+//   // localStorage.removeItem('ListadoCache');
+//   listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
+//   obtenerListadoLimpio();
+//   // listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
+//   // listadoSucursales = obtenerListadoLimpioSucursales();
+// }
+
+let i = ref(0);
 
 const obtenerListadoLimpio = () => {
-  let i = 0;
-  if (cargado.value = false) {
+  i.value = 0;
+  if (cargado.value == false) {
     newListado.value = [];
     for (let index = 0; index < listado.value.length; index++) {
       const element = listado.value[index];
       if (element.attributes.deleted_at == null) {
-        newListado.value[i] = element;
-        i++;
+        newListado.value[i.value] = element;
+        i.value++;
       }
     }
     datosSinPaginar.value = newListado.value;
@@ -264,8 +268,8 @@ const obtenerListadoLimpio = () => {
     for (let index = 0; index < listado.value.length; index++) {
       const element = listado.value[index];
       if (element.attributes.deleted_at == null) {
-        newListado.value[i] = element;
-        i++;
+        newListado.value[i.value] = element;
+        i.value++;
       }
     }
     datosSinPaginar.value = newListado.value;
@@ -291,26 +295,26 @@ const obtenerListadoLimpioSucursales = () => {
 
 }
 
-const almacenDatosProductos = (Lista) => {
-  localStorage.removeItem('ListadoCache');
-  const parsed = JSON.stringify(Lista);
-  localStorage.setItem('ListadoCache', parsed);
-}
+// const almacenDatosProductos = (Lista) => {
+//   localStorage.removeItem('ListadoCache');
+//   const parsed = JSON.stringify(Lista);
+//   localStorage.setItem('ListadoCache', parsed);
+// }
 
-const consultar = async () => {
-  if (cargado.value == false) {
-    let response = await axios.get(`http://` + ipPublica.value + `/fullstack/public/productos`)
-      .then((response) => {
-        listado.value = response.data.data;
-        almacenDatosProductos(listado.value);
-        obtenerListadoLimpio();
-        cargado.value = true;
-      });
-  } else {
-    almacenDatosProductos(listado.value);
-  }
+// const consultar = async () => {
+//   if (cargado.value == false) {
+//     await axios.get(`http://` + ipPublica.value + `/fullstack/public/productos`)
+//       .then((response) => {
+//         listado.value = response.data.data;
+//         almacenDatosProductos(listado.value);
+//         obtenerListadoLimpio();
+//         cargado.value = true;
+//       });
+//   } else {
+//     almacenDatosProductos(listado.value);
+//   }
 
-}
+// }
 
 // onActivated(async () => {
 //   generarBArCode()
@@ -323,7 +327,7 @@ onMounted(async () => {
     listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
     obtenerListadoLimpio();
     listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
-    listadoSucursales = obtenerListadoLimpioSucursales();
+    listadoSucursales.value = obtenerListadoLimpioSucursales();
     cargado.value = true;
   } else {
     router.push('/login');
@@ -364,8 +368,8 @@ onMounted(async () => {
   scrollbar-width: thin;
 
   @media (max-width: 768px) {
-        width: 95%;
-    }
+    width: 95%;
+  }
 
 }
 

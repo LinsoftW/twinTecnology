@@ -212,14 +212,12 @@
                                   <div class="row">
                                     <div class="form-group col-lg-12">
                                       <label class="text-info">Sucursal: <label style="color: red;">*</label></label>
-                                      <select name="rol" id="rol" style="width: 100%; text-align:center"
+                                      <!-- <select name="rol" id="rol" style="width: 100%; text-align:center"
                                         placeholder="Sucursal" class="text-gray-900 form-control">
                                         <option v-for="dato in listadoSucursales" :key="dato.id"
                                           :value="dato.attributes.nombre">{{
                                             dato.attributes.nombre }}</option>
-                                        <!-- <option value="Matanzas">Matanzas</option> -->
-                                        <!-- <option value="Mensajero">Mensajero</option> -->
-                                      </select>
+                                      </select> -->
                                     </div>
                                   </div>
                                   <div class="row">
@@ -427,14 +425,13 @@
                                   <div class="row">
                                     <div class="form-group col-lg-12">
                                       <label class="text-info">Sucursal: <label style="color: red;">*</label></label>
-                                      <select name="rol" id="rol" style="width: 100%; text-align:center"
+                                      <!-- <select name="rol" id="rol" style="width: 100%; text-align:center"
                                         placeholder="Sucursal" class="text-gray-900 form-control">
                                         <option v-for="dato in listadoSucursales" :key="dato.id"
                                           :value="dato.attributes.nombre">{{
                                             dato.attributes.nombre }}</option>
-                                        <!-- <option value="Matanzas">Matanzas</option> -->
-                                        <!-- <option value="Mensajero">Mensajero</option> -->
-                                      </select>
+
+                                      </select> -->
                                     </div>
                                   </div>
                                   <div class="row">
@@ -772,8 +769,8 @@ const agregarU = () => {
 // Paginado
 const obtenerPagina = (nopage) => {
   paginaActual.value = nopage;
-  inicio = (nopage * elementPagina.value) - elementPagina.value;
-  fin = (nopage * elementPagina.value);
+  inicio.value = (nopage * elementPagina.value) - elementPagina.value;
+  fin.value = (nopage * elementPagina.value);
   datosPaginados.value = [];
   datosPaginados.value = datosSinPaginar.value.slice(inicio, fin);
 
@@ -969,7 +966,7 @@ const consultarSucursales = async () => {
       // obtenerPagina(1);
       // cargado.value = true;
       // router.go();
-      listadoSucursales = obtenerListadoLimpioSucursales();
+      listadoSucursales.value = obtenerListadoLimpioSucursales();
     });
 
   // }
@@ -1097,7 +1094,7 @@ onMounted(async () => {
       listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
       obtenerListadoLimpio();
       listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
-      listadoSucursales = obtenerListadoLimpioSucursales();
+      listadoSucursales.value = obtenerListadoLimpioSucursales();
     }
 
   } else {
