@@ -47,7 +47,8 @@
               </div> -->
               <div class="col-xl-8 col-lg-6 col-md-6">
                 <!-- <label>Por Sucursal</label> -->
-                <input type="file" id="archivoExcel" class="form-control form-control-user" @change="onFileChange" />
+                <input type="file" id="archivoExcel" class="form-control form-control-user" @change="onFileChange2"
+                  accept=".xlsx, .xls" />
                 <!---->
               </div>
               <!-- <div class="col-xl-2 col-lg-6 col-md-6 col-sm-4">
@@ -115,7 +116,7 @@
                 <div class="spreadsheet-container">
 
                   <!--EJEMPLO CARGARR EXCEL -->
-                  <table v-if="sheetData.length">
+                  <table v-if="sheetData.length && cantidad == 1">
                     <thead>
                       <tr>
                         <th v-for="(header, index) in headers" :key="index">{{ header }}</th>
@@ -127,6 +128,22 @@
                       </tr>
                     </tbody>
                   </table>
+
+                  <div v-if="cantidad > 1" v-for="(sheet, index) in sheetsData" :key="index">
+                    <h3>Hoja: {{ sheet.name }} </h3>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th v-for="(header, hIndex) in sheet.headers1" :key="hIndex">{{ header }}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(row, rIndex) in sheet.data" :key="rIndex">
+                          <td v-for="(cell, cIndex) in row" :key="cIndex">{{ cell }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                   <!-- <gc-spread-sheets :hostClass='hostClass' @workbookInitialized='workbookInit'>
                     <gc-worksheet :dataSource='tableData' :autoGenerateColumns='autoGenerateColumns'>
                       <gc-column :width='50' :dataField="'id'" :headerText="'ID'" :visible='visible'
@@ -229,11 +246,11 @@
     </div>
     <AddProducto v-show="popup" @cerrar="abrirModalAddProd()" />
   </div>
-  <!-- <template v-if="esperando">
-    <div v-on="loading('Actualizando datos...')">
+  <template v-if="esperando">
+    <div v-on="loading('Cargando datos del archivo excel...')">
 
     </div>
-  </template> -->
+  </template>
 
   <!-- <div :class="showModBack" @click="abrirModal()"></div> -->
 </template>
@@ -263,7 +280,10 @@ export default {
       priceFormatter: "$ #.00",
       item: [],
       sheetData: [],
+      sheetsData: [],
       headers: [],
+      esperando: false,
+      cantidad: 0
     }
   },
   methods: {
@@ -282,6 +302,57 @@ export default {
           // console.log(this.sheetData[0][3]) De esta forma leo los valores del excel para poder guardarlos en la base de datos
         };
         reader.readAsArrayBuffer(file);
+      }
+
+    },
+    onFileChange2(event) {
+      // console.log("entro")
+      this.esperando = true;
+      const file = event.target.files[0];
+      if (file) {
+        // console.log("OKKK")
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          this.sheetsData = [];
+          // console.log(workbook.SheetNames.length)
+          this.cantidad = workbook.SheetNames.length;
+          console.log(this.cantidad)
+          if (workbook.SheetNames.length > 1) {
+            // Loop through each sheet in the workbook
+            workbook.SheetNames.forEach((sheetName) => {
+              const worksheet = workbook.Sheets[sheetName];
+              const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+              const headers1 = jsonData[0]; // Assuming the first row contains headers
+              const data = jsonData.slice(1); // Remove the header row from data
+
+              this.sheetsData.push({
+                name: sheetName,
+                headers1: headers1,
+                data: data,
+              });
+            });
+            reader.readAsArrayBuffer(file);
+            this.successFull("Datos cargados satisfactoriamente.")
+          } else {
+            if (file) {
+              const reader = new FileReader();
+              reader.onload = (e) => {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const firstSheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[firstSheetName];
+                this.sheetData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                this.headers = this.sheetData[0]; // Assuming the first row contains headers
+                this.sheetData = this.sheetData.slice(1); // Remove the header row from data
+                // console.log(this.sheetData[0][3]) De esta forma leo los valores del excel para poder guardarlos en la base de datos
+              };
+              reader.readAsArrayBuffer(file);
+            }
+          }
+        }
+        this.esperando = false;
       }
 
     },
@@ -314,14 +385,16 @@ export default {
       })
     }
   },
-  mutations: {
-    UPDATE_RECENT_SALES(state) {
-      state.recentSales.push([]);
-      state.recentSales.pop();
-    },
-    IMPORT_RECENT_SALES(state, sales) {
-      state.recentSales = sales;
-    }
+  loading: (texto) => {
+    Swal.fire({
+      // title: "Sweet!",
+      text: texto,
+      imageUrl: "/cargando2.gif",
+      imageWidth: 100,
+      imageHeight: 100,
+      imageAlt: "Custom image",
+      showConfirmButton: false
+    });
   }
 };
 </script>
@@ -874,7 +947,8 @@ table {
   width: 100%;
 }
 
-th, td {
+th,
+td {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: left;
