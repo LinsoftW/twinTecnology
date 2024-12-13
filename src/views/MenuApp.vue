@@ -420,9 +420,9 @@
                   Enviar correo electrónico
                 </a>
                 <router-link to="/cmasiva"><a class="dropdown-item" href="#">
-                  <i class="fa fa-upload fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Carga masiva de datos
-                </a></router-link>
+                    <i class="fa fa-upload fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Carga masiva de datos
+                  </a></router-link>
 
                 <!-- <a class="dropdown-item" href="#" @click="Cambia_Color">
                   <i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -579,16 +579,17 @@
             <div class="row">
               <div class="col-lg-12">
                 <label for="para" class="text-info"> Para: </label>
-                <input type="text" class="form-control" name="to_name" id="to_name"
-                  placeholder="Nombre del cliente:">
+                <input type="text" class="form-control" name="to_name" id="to_name" placeholder="Nombre del cliente:">
               </div><br>
               <div class="col-lg-12">
                 <label for="to_email" class="text-info">Dirección de correo electrónico destino:</label>
-                <input type="text" class="form-control" name="to_email" id="to_email" placeholder="Dirección de correo electrónico destino:">
+                <input type="text" class="form-control" name="to_email" id="to_email"
+                  placeholder="Dirección de correo electrónico destino:">
               </div>
               <div class="col-lg-12">
                 <label for="para" class="text-info" v-show="false">De: </label>
-                <input type="text" class="form-control" name="from_name" id="from_name" placeholder="Dirección de correo electrónico del remitente:" value="TwinTecnology" v-show="false">
+                <input type="text" class="form-control" name="from_name" id="from_name"
+                  placeholder="Dirección de correo electrónico del remitente:" value="TwinTecnology" v-show="false">
               </div>
               <div class="col-lg-12">
                 <label for="para" class="text-info">Asunto: </label>
@@ -602,7 +603,8 @@
               </div>
               <div class="col-lg-12">
                 <label for="reply_to" v-show="false">Reenviar a:</label>
-                <input type="text" class="form-control" name="reply_to" id="reply_to" value="no-reply@gmail.com" v-show="false">
+                <input type="text" class="form-control" name="reply_to" id="reply_to" value="no-reply@gmail.com"
+                  v-show="false">
               </div>
 
             </div>
@@ -664,6 +666,7 @@ import GestNomencladoresApp from '@/components/GestNomencladoresApp.vue';
 import CargaMasivaApp from '@/components/CargaMasivaApp.vue';
 import CategoriasApp from '@/components/CategoriasApp.vue';
 import emailjs from 'emailjs-com';
+import * as XLSX from 'xlsx';
 // import { Input, TextArea } from "@progress/kendo-vue-inputs";
 // import { Button } from "@progress/kendo-vue-buttons";
 
@@ -1024,6 +1027,7 @@ const consultar = async (n) => {
 
   }
   if (n == 2) {
+    // console.log()
     // console.log("Excel")
     // Kinventario.value = Kinventario.value + 1;
   }

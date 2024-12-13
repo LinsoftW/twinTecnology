@@ -55,7 +55,8 @@
                     <!-- <a class="btn btn-secondary btn-xs" @click="generarBArCode()"><i
                         class="fas fa-sync"></i></a> -->
                     <select id="categH" class="form-control" v-model="selected1" @change="ObtenCodigoHijo(selected1)">
-                      <option v-for="categ in categoriasH" :value="categ.cod" :key="categ.cod"> {{ categ.valor }} </option>
+                      <option v-for="categ in categoriasH" :value="categ.cod" :key="categ.cod"> {{ categ.valor }}
+                      </option>
                     </select>
 
                   </div>
@@ -176,10 +177,18 @@ const selecImagen = () => {
   let imagen = document.getElementById('avatar');
   //Recuperamos el archivo subido
   let file = imagen.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      image.value = e.target.result; // Esto es el Base64
+    };
+    reader.readAsDataURL(file);
+  }
+  // console.log(image)
   //Creamos la url
-  let objectURL = URL.createObjectURL(file);
+  // let objectURL = URL.createObjectURL(file);
   // console.log(objectURL)
-  image.value = objectURL
+  // image.value = objectURL
   // console.log(image.value)
 }
 

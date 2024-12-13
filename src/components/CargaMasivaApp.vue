@@ -47,12 +47,13 @@
               </div> -->
               <div class="col-xl-8 col-lg-6 col-md-6">
                 <!-- <label>Por Sucursal</label> -->
-                <input type="file" id="archivoExcel" class="form-control form-control-user" @change="changeFileDemo"/> <!---->
+                <input type="file" id="archivoExcel" class="form-control form-control-user" @change="onFileChange" />
+                <!---->
               </div>
-              <div class="col-xl-2 col-lg-6 col-md-6 col-sm-4">
+              <!-- <div class="col-xl-2 col-lg-6 col-md-6 col-sm-4">
                 <button class="form-control form-control-user d-sm-inline-block btn btn-sm btn-info shadow-sm m-2"
                   id="loadExcel" @click="loadExcel"><i class="fas fa-upload"></i> Cargar Excel</button>
-              </div>
+              </div> -->
               <div class="col-xl-2 col-lg-6 col-md-6 col-sm-4">
                 <button class="form-control form-control-user d-sm-inline-block btn btn-sm btn-danger shadow-sm m-2"
                   id="modifyExcel" @click="modifyExcel"><i class="fas fa-save"></i> Guardar datos en BD</button>
@@ -112,7 +113,21 @@
             <div class="row d-sm-flex align-items-center justify-content-between mb-4 ">
               <div class="col-xl-12 col-lg-12 col-md-12">
                 <div class="spreadsheet-container">
-                  <gc-spread-sheets :hostClass='hostClass' @workbookInitialized='workbookInit'>
+
+                  <!--EJEMPLO CARGARR EXCEL -->
+                  <table v-if="sheetData.length">
+                    <thead>
+                      <tr>
+                        <th v-for="(header, index) in headers" :key="index">{{ header }}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="(row, rowIndex) in sheetData" :key="rowIndex">
+                        <td v-for="(cell, cellIndex) in row" :key="cellIndex">{{ cell }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <!-- <gc-spread-sheets :hostClass='hostClass' @workbookInitialized='workbookInit'>
                     <gc-worksheet :dataSource='tableData' :autoGenerateColumns='autoGenerateColumns'>
                       <gc-column :width='50' :dataField="'id'" :headerText="'ID'" :visible='visible'
                         :resizable='resizable'>
@@ -134,7 +149,7 @@
                       <gc-column :width="100" :dataField="'country'" :headerText="'Country'" :visible='visible'
                         :resizable='resizable'></gc-column>
                     </gc-worksheet>
-                  </gc-spread-sheets>
+                  </gc-spread-sheets> -->
                   <!-- <div class="dashboardRow">
                     <button class="btn btn-primary dashboardButton" @click="exportSheet">
                       Exportar a Excel
@@ -224,14 +239,15 @@
 </template>
 <script>
 import Swal from 'sweetalert2';
-import "@mescius/spread-sheets/styles/gc.spread.sheets.excel2016colorful.css";
+// import "@mescius/spread-sheets/styles/gc.spread.sheets.excel2016colorful.css";
 // SpreadJS imports
-import GC from "@mescius/spread-sheets";
-import "@mescius/spread-sheets-vue";
-import Excel from "@mescius/spread-excelio";
-import { saveAs } from 'file-saver';
-import "@mescius/spread-sheets-io";
-import readXlsxFile from 'read-excel-file';
+// import GC from "@mescius/spread-sheets";
+// import "@mescius/spread-sheets-vue";
+// import Excel from "@mescius/spread-excelio";
+// import { saveAs } from 'file-saver';
+// import "@mescius/spread-sheets-io";
+// import readXlsxFile from 'read-excel-file';
+import * as XLSX from 'xlsx'
 
 export default {
   // components: { TablePanel },
@@ -245,177 +261,29 @@ export default {
       visible: true,
       resizable: true,
       priceFormatter: "$ #.00",
-      item: []
+      item: [],
+      sheetData: [],
+      headers: [],
     }
   },
   methods: {
-    cargarExcel() {
-      const input = document.getElementById('archivoExcel');
-      readXlsxFile(input.files[0]).then((rows) => {
-        this.item = rows;
-        console.log(rows)
-      })
-    },
-    workbookInit: function (spread) {
-      this._spread = spread;
-      let sheet = this._spread.getActiveSheet();
-      this.revenueCount = 8;
-      this.newRowIndex = 11;
-      // this._spread = spread;
-      // var self = this;
-      // spread.bind(GC.Spread.Sheets.Events.ValueChanged, function () {
-      //   const store = self.$store;
-      //   var sheet = self._spread.getSheetFromName("Sales Data");
-      //   var newSalesData = sheet.getDataSource();
-      //   store.commit('UPDATE_RECENT_SALES', newSalesData);
-      // });
-    },
-    exportSheet: function () {
-      const spread = this._spread;
-      const fileName = "SalesData.xlsx";
-      //const sheet = spread.getSheet(0);
-      const excelIO = new IO();
-      const json = JSON.stringify(spread.toJSON({
-        includeBindingSource: true,
-        columnHeadersAsFrozenRows: true,
-      }));
-
-      excelIO.save(json, (blob) => {
-        saveAs(blob, fileName);
-      }, function (e) {
-        console.log(e)
-      });
-    },
-    fileChange: function (e) {
-      // console.log(this._spread)
-      if (this._spread) {
-
-        let spread = this._spread;
-        let excelFile = this.importExcelFile;
-        let options = {
-          fileType: GC.Spread.Sheets.FileType.excel,
+    onFileChange(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const firstSheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[firstSheetName];
+          this.sheetData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+          this.headers = this.sheetData[0]; // Assuming the first row contains headers
+          this.sheetData = this.sheetData.slice(1); // Remove the header row from data
+          // console.log(this.sheetData[0][3]) De esta forma leo los valores del excel para poder guardarlos en la base de datos
         };
-        // Import an existing Excel file to Vue spreadsheet
-        spread.import(
-          excelFile,
-          () => {
-            console.log("Import successful");
-          },
-          (e) => {
-            console.error("Error during import:", e);
-          },
-          options
-        );
-        // const fileDom = e.target || e.srcElement;
-        // const excelIO = new Excel.IO();
-        // const spread = this._spread;
-        // const store = this.$store;
+        reader.readAsArrayBuffer(file);
+      }
 
-        // excelIO.open(fileDom.files[0], (_data_) => {
-        //   // Used for simply loading the JSON from a file
-        //   //spread.fromJSON(data, deserializationOptions);
-        //   var newSalesData = extractSheetData(data);
-        //   store.commit('IMPORT_RECENT_SALES', newSalesData)
-        // });
-      }
-    },
-    changeFileDemo(e) {
-      this.importExcelFile = e.target.files[0];
-      let spread = this._spread;
-      let excelFile = this.importExcelFile;
-      let options = {
-        fileType: GC.Spread.Sheets.FileType.excel,
-      };
-      // console.log(this.importExcelFile)
-      // Import an existing Excel file to Vue spreadsheet
-      spread.import(
-        excelFile,
-        () => {
-          this.successFull("Excel cargado satisfactoriamente.", "top-end")
-          // console.log(excelFile);
-        },
-        (e) => {
-          this.ErrorFull("Formato de archivo incorrecto.", "top-start")
-          // console.error("Error during import:", e);
-        },
-        options
-      );
-      // console.log(this.importExcelFile)
-    },
-    changeExportFileName(e) {
-      this.exportFileName = e.target.value;
-    },
-    loadExcel() {
-      // Load an existing Excel file into the Vue spreadsheet app
-      let spread = this._spread;
-      let excelFile = this.importExcelFile;
-      console.log(spread)
-      let options = {
-        fileType: GC.Spread.Sheets.FileType.excel,
-      };
-      // Import an existing Excel file to Vue spreadsheet
-      spread.import(
-        excelFile,
-        () => {
-          console.log("Import successful");
-        },
-        (e) => {
-          console.error("Error during import:", e);
-        },
-        options
-      );
-    },
-    modifyExcel() {
-      // Modify the import Excel file within the Vue instance
-      let spread = this._spread;
-      let sheet = spread.getActiveSheet();
-      // Add a new row for the next revenue item
-      sheet.addRows(this.newRowIndex, 1);
-      // Copy styles from an existing row
-      sheet.copyTo(3, 1, this.newRowIndex, 1, 1, 29, GC.Spread.Sheets.CopyToOptions.style);
-      // Set the new row's first column with the revenue label
-      var cellText = ("Revenue " + this.revenueCount++);
-      sheet.setValue(this.newRowIndex, 1, cellText);
-      // Fill the row with random revenue data
-      for (var c = 3; c < 15; c++) {
-        sheet.setValue(this.newRowIndex, c, Math.floor(Math.random() * 200) + 10);
-      }
-      // Add a sparkline chart for the revenue data
-      var data = new GC.Spread.Sheets.Range(this.newRowIndex, 3, 1, 12);
-      var setting = new GC.Spread.Sheets.Sparklines.SparklineSetting();
-      setting.options.seriesColor = "Text 2";
-      setting.options.lineWeight = 1;
-      setting.options.showLow = true;
-      setting.options.showHigh = true;
-      setting.options.lowMarkerColor = "Text 2";
-      setting.options.highMarkerColor = "Text 1";
-      sheet.setSparkline(this.newRowIndex, 2, data, GC.Spread.Sheets.Sparklines.DataOrientation.horizontal, GC.Spread.Sheets.Sparklines.SparklineType.line, setting);
-      // Add a formula to calculate the sum for the new row's year data
-      sheet.setFormula(this.newRowIndex, 15, "=SUM([@[Jan]:[Dec]])");
-      // Move to the next row for future modifications
-      this.newRowIndex++;
-      // Set a fixed value in the next column
-      sheet.setValue(this.newRowIndex, 16, 0.15);
-      // Copy formula settings to other parts of the row
-      sheet.copyTo(10, 17, this.newRowIndex, 17, 1, 13, GC.Spread.Sheets.CopyToOptions.formula);
-    },
-    saveExcel() {
-      // Save Vue spreadsheet to local Excel XLSX file
-      let spread = this._spread;
-      var fileName = "Excel_Export.xlsx";
-      // Save Vue spreadsheet to local Excel XLSX file
-      spread.export(
-        function (blob) {
-          // save blob to a file
-          saveAs(blob, fileName);
-        },
-        function (e) {
-          console.log(e);
-        },
-        {
-          fileType: GC.Spread.Sheets.FileType.excel,
-        }
-      );
     },
     successFull: (mensaje, posicion) => {
 
@@ -999,5 +867,20 @@ onMounted(() => {
   width: 100%;
   height: 400px;
   border: 1px solid lightgray;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
 }
 </style>

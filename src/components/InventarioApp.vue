@@ -495,6 +495,7 @@ import axios from 'axios';
 import AddProducto from './modal/AddProducto.vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
+import * as XLSX from 'xlsx';
 
 import { StreamBarcodeReader, ImageBarcodeReader } from '@teckel/vue-barcode-reader'
 
@@ -530,8 +531,30 @@ function Consultar_Productos() {
   emit('consultar', 1);
 }
 
+const nuevoArreglo = ref([]);
+const elementos = ref([]);
+
 function ExportExcel() {
-  emit('consultar', 2);
+  // emit('consultar', 2);
+  // console.log(items.value)
+
+  for (let index = 0; index < items.value.length; index++) {
+    elementos.value.type= items.value[index].type;
+    elementos.value.codigo= items.value[index].attributes.codigo;
+    elementos.value.descripcion= items.value[index].attributes.descripcion;
+    elementos.value.observacion= items.value[index].attributes.observacion;
+    nuevoArreglo.value.push(elementos.value)
+    elementos.value = []
+  }
+  // console.log(nuevoArreglo)
+  const worksheet = XLSX.utils.json_to_sheet(nuevoArreglo.value);
+  const workbook = XLSX.utils.book_new();
+  // // Abriendo el excel
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+  // // Generar el archivo
+  const fileName = 'table_data.xlsx';
+  // // Guardar el archivo execl
+  XLSX.writeFile(workbook, fileName);
 }
 
 function ImprimirDoc() {
