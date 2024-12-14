@@ -1,6 +1,11 @@
 <template>
   <div>
     <div class="container-fluid">
+      <!-- <div>
+        <div id="interactive" class="viewport"></div>
+        <button @click="startScanner">Iniciar Escaneo</button>
+        <p v-if="barcode">Código de barras detectado: {{ barcode }}</p>
+      </div> -->
       <!-- <ImageBarcodeReader @decode="onDecode" @error="onError" /> -->
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-2 text-gray-800">INVENTARIO</h1>
@@ -18,9 +23,9 @@
               masiva</a> -->
             <a @click="ImprimirDoc()" href="#" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm"
               v-b-tooltip.hover title="Imprimir"><i class="fas fa-print fa-sm "></i> Imprimir</a>
-            <!-- <a @click="escanea = true" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
+            <a @click="escanea = true" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
               v-b-tooltip.hover data-toggle="modal" data-target="#escanearCode" title="Escanear código de barras"><i
-                class="fa fa-barcode fa-sm "></i> Escanear</a> -->
+                class="fa fa-barcode fa-sm "></i> Escanear</a>
           </div>
         </div>
 
@@ -205,6 +210,13 @@
             </div>
             <br>
 
+            <!-- Aqui la tabla -->
+            <!-- <DataTable :columns="columnas" :data="items" :options="{ options }"
+              class="table table-striped table-bordered display">
+
+            </DataTable> -->
+            <!-- Fin -->
+
             <EasyDataTable table-class-name="customize-table" :headers="headers" :items="items" buttons-pagination
               border-cell v-model:items-selected="itemsSelected" header-text-direction="center"
               body-text-direction="center" :search-field="searchField1" :search-value="searchValue" @click-row="showRow"
@@ -228,16 +240,10 @@
                   <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode"
                     @click="generarCodeBar(item.attributes.codigo)" v-b-tooltip.hover title="Código de barra"><span
                       class="fas fas fa-barcode"></span></button>
-                  <!-- <a class="dropdown-item btn btn-info btn-sm btn-circle ml-1" href="#" @click="generarCodeBar(item.attributes.codigo)" data-toggle="modal" data-target="#BarCode"
-                    >
-                    <span class="fas fa-barcode"></span>
-                  </a> -->
+
                 </div>
               </template>
-              <!-- <template #loading>
-                <img src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
-                  style="width: 100px; height: 80px;" />
-              </template> -->
+
             </EasyDataTable>
             <!-- Fin -->
             <!-- <div class="table-responsive">
@@ -447,31 +453,50 @@
     </div>
 
     <!-- Editar producto Modal-->
-    <div :class="'modal fade ' + showModal2" id="escanearCode" tabindex="-1" role="dialog"
+    <div @click="beforeDestroy()" :class="'modal fade ' + showModal2" id="escanearCode" tabindex="-1" role="dialog"
       aria-labelledby="exampleModalLabel" :aria-hidden="activaHide2" :arial-modal="activaModal2" :style="displayModal2">
       <div class="modal-dialog" role="document">
-        <!-- <div class="modal-content"> -->
-        <!-- <div class="modal-header">
+        <div class="modal-content">
+          <!-- <div class="modal-header">
             <h5 class="modal-title text-info" id="exampleModalLabel">Apunte la cámara hacia el código de barra
             </h5>
-            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close" @click="beforeDestroy()">
               <span aria-hidden="true" class="text-info">×</span>
             </button>
           </div> -->
-        <!-- <div class="modal-body text-center"> -->
-        <!-- <vue-barcode :value="cod" tag="svg"></vue-barcode> -->
-        <div class="row col-lg-12 text-center">
-          <StreamBarcodeReader v-if="escanea" torch no-front-cameras @decode="onDecode" @loaded="onLoaded"
+          <!-- <div class="modal-body text-center"> -->
+          <!-- <vue-barcode :value="cod" tag="svg"></vue-barcode> -->
+          <!-- <div class="row col-lg-12 text-center"> -->
+
+          <div class="text-center">
+            <!-- <div data-barcode-canvas class="barcode-canvas"></div>
+            <div data-barcode-msg class="barcode-message"></div> -->
+            <div id="interactive" class="viewport"></div><br>
+            <div class="row">
+              <div class="col-xl-4">
+                <button class="btn btn-primary mx-2" @click="startScanner">Iniciar Escaneo</button>
+              </div>
+              <div class="col-xl-4">
+                <button class="btn btn-danger" @click="beforeDestroy">Detener Escaneo</button>
+              </div>
+              <div class="col-xl-4">
+                <button class="btn btn-info" @click="beforeDestroy()" data-dismiss="modal">Cerrar</button>
+              </div>
+            </div>
+            <br>
+            <p v-if="barcode">Código de barras detectado: {{ barcode }}</p>
+          </div>
+          <!-- <StreamBarcodeReader v-if="escanea" torch no-front-cameras @decode="onDecode" @loaded="onLoaded"
             style="width: 100%; height:100%" />
-          <h2 v-if="escanea" style="color:white">Código: {{ decodedText }}</h2>
+          <h2 v-if="escanea" style="color:white">Código: {{ decodedText }}</h2> -->
           <!-- </div> -->
           <!-- <ImageBarcodeReader @decode="onDecode" @error="onError" /> -->
 
         </div>
 
-        <!-- </div> -->
-        <!-- <div class="modal-footer">
-          <a class="btn btn-info btn-sm" @click="escanea = false" data-dismiss="modal">Cerrar</a>
+        <!-- </div>
+        <div class="modal-footer">
+          <a class="btn btn-info btn-sm" @click="beforeDestroy()" data-dismiss="modal">Cerrar</a>
 
         </div> -->
       </div>
@@ -496,8 +521,108 @@ import AddProducto from './modal/AddProducto.vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import * as XLSX from 'xlsx';
+import Quagga from 'quagga';
 
-import { StreamBarcodeReader, ImageBarcodeReader } from '@teckel/vue-barcode-reader'
+const barcode = ref();
+
+const attachListeners = () => {
+  Quagga.onDetected((data) => {
+    barcode.value = data.codeResult.code; // Aquí obtienes el código de barras detectado
+    console.log("Código de barras detectado:", barcode.value);
+    Quagga.stop(); // Detener el escaneo si quieres solo un código
+  });
+}
+
+const startScanner = () => {
+  Quagga.init({
+    locate: false,
+    numOfWorkers: navigator.hardwareConcurrency || 2,
+    inputStream: {
+      name: "Live",
+      type: "LiveStream",
+      target: document.querySelector('#interactive'),
+      constraints: {
+        width: 600,
+        height: 600,
+        facingMode: "environment"
+      }, // El elemento donde se mostrará el video
+      area: {
+        // update area if its small mobile
+        top: "20%",
+        right: "15%",
+        left: "15%",
+        bottom: "20%"
+      }
+    },
+    decoder: {
+      readers: [
+        "code_128_reader",
+        "ean_reader",
+        "ean_8_reader",
+        "code_39_reader",
+        "code_39_vin_reader",
+        "codabar_reader",
+        "upc_reader",
+        "upc_e_reader",
+        "i2of5_reader"
+      ], // Puedes agregar otros lectores según tus necesidades
+    },
+  }, function (err) {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    Quagga.start();
+    // Quagga.onProcessed(function (result) {
+    //   var drawingCtx = Quagga.canvas.ctx.overlay,
+    //     drawingCanvas = Quagga.canvas.dom.overlay;
+
+    //   if (result) {
+    //     if (result.boxes) {
+    //       drawingCtx.clearRect(0, 0, parseInt(drawingCanvas.getAttribute("width")), parseInt(drawingCanvas.getAttribute("height")));
+    //       result.boxes.filter(function (box) {
+    //         return box !== result.box;
+    //       }).forEach(function (box) {
+    //         Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, drawingCtx, { color: "green", lineWidth: 2 });
+    //       });
+    //     }
+
+    //     if (result.box) {
+    //       Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, drawingCtx, { color: "#00F", lineWidth: 2 });
+    //     }
+
+    //     if (result.codeResult && result.codeResult.code) {
+    //       Quagga.ImageDebug.drawPath(result.line, { x: 'x', y: 'y' }, drawingCtx, { color: 'red', lineWidth: 3 });
+    //     }
+    //   }
+    // }),
+    // attachListeners();
+    Quagga.onDetected((data) => {
+      barcode.value = data.codeResult.code; // Aquí obtienes el código de barras detectado
+      // console.log("Código de barras detectado:", barcode.value);
+      Quagga.stop(); // Detener el escaneo si quieres solo un código
+    });
+  });
+}
+
+const beforeDestroy = () => {
+  Quagga.stop();
+}
+// import { StreamBarcodeReader, ImageBarcodeReader } from '@teckel/vue-barcode-reader';
+// import DataTable from 'datatables.net-vue3';
+// import DataTablesCore from 'datatables.net-dt';
+// import DataTableLib from 'datatables.net-bs5';
+// import ButtonsHtml5 from 'datatables.net-buttons/js/buttons.html5';
+// import Buttons from 'datatables.net-buttons-bs5';
+// import print from 'datatables.net-buttons/js/buttons.print';
+// import pdfmake from 'pdfmake';
+// import pdfFonts from 'pdfmake/build/vfs_fonts';
+// import 'datatables.net-responsive-bs5'
+// import JsZip from 'JsZip'
+
+// DataTable.use(DataTableLib);
+// DataTable.use(pdfmake);
+// DataTable.use(ButtonsHtml5);
 
 const image1 = ref('')
 
@@ -539,10 +664,10 @@ function ExportExcel() {
   // console.log(items.value)
 
   for (let index = 0; index < items.value.length; index++) {
-    elementos.value.type= items.value[index].type;
-    elementos.value.codigo= items.value[index].attributes.codigo;
-    elementos.value.descripcion= items.value[index].attributes.descripcion;
-    elementos.value.observacion= items.value[index].attributes.observacion;
+    elementos.value.type = items.value[index].type;
+    elementos.value.codigo = items.value[index].attributes.codigo;
+    elementos.value.descripcion = items.value[index].attributes.descripcion;
+    elementos.value.observacion = items.value[index].attributes.observacion;
     nuevoArreglo.value.push(elementos.value)
     elementos.value = []
   }
@@ -677,6 +802,33 @@ const cuandoCambie = () => {
     searchField1.value = "type";
   }
 }
+
+// const columnas = [
+//   { title: "NO" },
+//   { title: "IMAGEN" },
+//   { title: "CODIGO" },
+//   { title: "CATEGORIA" },
+//   { title: "P. COMPRA" },
+//   { title: "P. VENTA" },
+//   { title: "UNIDAD" },
+//   { title: "STOCK" },
+//   { title: "VENTAS" },
+//   { title: "OPCIONES" }
+// ];
+
+// const options = {
+//   responsive: true,
+//   select: true,
+//   autoWidth: false,
+//   dom: 'Bfrtip',
+//   language:
+//   {
+//     search: 'Buscar', zeroRecords: 'No hay registros para mostrar',
+//     info: 'Mostrando del _START_ a _END_ de _TOTAL registros',
+//     infoFiltered: '(Filtrados de _MAX_ registros.)',
+//     paginate: { first: 'Primero', previous: 'Anterior', next: 'Siguiente', last: 'Último' }
+//   }
+// };
 
 const headers = [
   { text: "NO", value: "id", width: 50, sortable: true },
@@ -1039,7 +1191,7 @@ const obtenerListadoLimpio = async () => {
   for (let index = 0; index < listado.value.length; index++) {
     items.value.push(listado.value[index])
   }
-
+  //  console.log(items)
   return await items;
 
 }
@@ -1234,6 +1386,45 @@ onMounted(() => {
 
 </script>
 <style scoped>
+.viewport {
+  width: 100%;
+  height: 400px;
+  background-color: black;
+
+  position: relative;
+  overflow: hidden;
+  /*display: none;*/
+  padding-bottom: 56.25%;
+  line-height: 0;
+
+  video {
+    z-index: 10;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    right: 50%;
+    top: 50%;
+    bottom: 50%;
+    background: black
+  }
+
+ canvas.drawingBuffer {
+    z-index: 20;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+  }
+
+  br {
+    display: none;
+  }
+}
+
 .customize-table {
   --easy-table-border: 1px solid #f5f5f7;
   --easy-table-row-border: 1px solid #c8ced8;

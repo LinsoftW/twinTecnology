@@ -47,7 +47,7 @@
               </div> -->
               <div class="col-xl-8 col-lg-6 col-md-6">
                 <!-- <label>Por Sucursal</label> -->
-                <input type="file" id="archivoExcel" class="form-control form-control-user" @change="onFileChange2"
+                <input type="file" id="archivoExcel" class="form-control form-control-user" @change="onFileChange"
                   accept=".xlsx, .xls" />
                 <!---->
               </div>
@@ -116,7 +116,7 @@
                 <div class="spreadsheet-container">
 
                   <!--EJEMPLO CARGARR EXCEL -->
-                  <table v-if="sheetData.length && cantidad == 1">
+                  <table v-if="sheetData.length" class="table table-bordered">
                     <thead>
                       <tr>
                         <th v-for="(header, index) in headers" :key="index">{{ header }}</th>
@@ -129,7 +129,36 @@
                     </tbody>
                   </table>
 
-                  <div v-if="cantidad > 1" v-for="(sheet, index) in sheetsData" :key="index">
+                  <!-- <EasyDataTable table-class-name="customize-table" :headers="headers" :items="items" buttons-pagination
+                    border-cell v-model:items-selected="itemsSelected" header-text-direction="center"
+                    body-text-direction="center" :search-field="searchField1" :search-value="searchValue"
+                    @click-row="showRow" :rows-per-page="5">
+                    <template #item-image="item">
+                      <img src="/inventario.jpg" alt="No image" class="img img-thumbnail"
+                        style="width: 70px; height: 70px;" />
+                    </template>
+                    <template #item-opciones="item">
+                      <div class="operation-wrapper">
+                        <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal"
+                          data-target="#EditarProducto" @click="seleccionaProducto(item)" v-b-tooltip.hover
+                          title="Modificar"><span class="fas fa-edit"></span></button>
+                        <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
+                          title="Aumentar"><span class="fas fa-plus"></span></button>
+                        <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)"
+                          v-b-tooltip.hover title="Restar"><span class="fas fa-minus"></span></button>
+                        <button class="btn btn-danger btn-sm btn-circle ml-1"
+                          @click="borrarU(item.id, item.attributes.codigo, 1)" v-b-tooltip.hover title="Eliminar"><span
+                            class="fas fas fa-trash-alt"></span></button>
+                        <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode"
+                          @click="generarCodeBar(item.attributes.codigo)" v-b-tooltip.hover
+                          title="Código de barra"><span class="fas fas fa-barcode"></span></button>
+
+                      </div>
+                    </template>
+
+                  </EasyDataTable> -->
+
+                  <!-- <div v-if="cantidad > 1" v-for="(sheet, index) in sheetsData" :key="index">
                     <h3>Hoja: {{ sheet.name }} </h3>
                     <table>
                       <thead>
@@ -143,7 +172,7 @@
                         </tr>
                       </tbody>
                     </table>
-                  </div>
+                  </div> -->
                   <!-- <gc-spread-sheets :hostClass='hostClass' @workbookInitialized='workbookInit'>
                     <gc-worksheet :dataSource='tableData' :autoGenerateColumns='autoGenerateColumns'>
                       <gc-column :width='50' :dataField="'id'" :headerText="'ID'" :visible='visible'
@@ -256,6 +285,7 @@
 </template>
 <script>
 import Swal from 'sweetalert2';
+import { ref } from 'vue';
 // import "@mescius/spread-sheets/styles/gc.spread.sheets.excel2016colorful.css";
 // SpreadJS imports
 // import GC from "@mescius/spread-sheets";
@@ -265,6 +295,29 @@ import Swal from 'sweetalert2';
 // import "@mescius/spread-sheets-io";
 // import readXlsxFile from 'read-excel-file';
 import * as XLSX from 'xlsx'
+
+// const searchField = ref("attributes.codigo");
+
+// const searchField1 = ref('')
+
+// const searchValue = ref("");
+
+// const itemsSelected = ref([]);
+
+// const headers = [
+//   { text: "NO", value: "id", width: 50, sortable: true },
+//   { text: "IMAGEN", value: "image" },
+//   { text: "CODIGO", value: "attributes.codigo", sortable: true },
+//   { text: "CATEGORIA", value: "type" },
+//   { text: "P.COMPRA", value: "precioC", sortable: true },
+//   { text: "P.VENTA", value: "precioV", sortable: true },
+//   { text: "UNIDAD", value: "unidad" },
+//   { text: "STOCK", value: "stock", sortable: true },
+//   { text: "VENTAS", value: "cantV", sortable: true },
+//   { text: "OPCIONES", value: "opciones" }
+// ];
+
+// const items = ref([]);
 
 export default {
   // components: { TablePanel },
@@ -303,12 +356,12 @@ export default {
         };
         reader.readAsArrayBuffer(file);
       }
-
     },
     onFileChange2(event) {
       // console.log("entro")
       this.esperando = true;
       const file = event.target.files[0];
+      // console.log(file)
       if (file) {
         // console.log("OKKK")
         const reader = new FileReader();
@@ -316,9 +369,9 @@ export default {
           const data = new Uint8Array(e.target.result);
           const workbook = XLSX.read(data, { type: 'array' });
           this.sheetsData = [];
-          // console.log(workbook.SheetNames.length)
+          console.log(workbook.SheetNames.length)
           this.cantidad = workbook.SheetNames.length;
-          console.log(this.cantidad)
+          // console.log(this.cantidad)
           if (workbook.SheetNames.length > 1) {
             // Loop through each sheet in the workbook
             workbook.SheetNames.forEach((sheetName) => {
