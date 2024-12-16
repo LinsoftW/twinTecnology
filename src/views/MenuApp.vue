@@ -723,6 +723,10 @@ const enviarEmail = async () => {
 
 const listado = ref([]);
 
+const listadoArticulos = ref([])
+
+const listadoDepartamentos = ref([])
+
 let listadoSucursales = ref([]);
 
 // const newListado = ref([])
@@ -971,15 +975,85 @@ const almacenDatosSucursales = (Lista) => {
   localStorage.setItem('ListadoCacheSucursal', parsed);
 }
 
+const almacenDatosDepartamentos = (Lista) => {
+  localStorage.removeItem('ListadoCacheDepartamentos');
+  const parsed = JSON.stringify(Lista);
+  localStorage.setItem('ListadoCacheDepartamentos', parsed);
+}
+
+const almacenDatosArticulos = (Lista) => {
+  localStorage.removeItem('ListadoCacheArticulos');
+  const parsed = JSON.stringify(Lista);
+  localStorage.setItem('ListadoCacheArticulos', parsed);
+}
+
+const almacenDatosMagnitudes = (Lista) => {
+  localStorage.removeItem('ListadoCacheMagnitudes');
+  const parsed = JSON.stringify(Lista);
+  localStorage.setItem('ListadoCacheMagnitudes', parsed);
+}
+
+const almacenDatosUnidadess = (Lista) => {
+  localStorage.removeItem('ListadoCacheUnidades');
+  const parsed = JSON.stringify(Lista);
+  localStorage.setItem('ListadoCacheUnidades', parsed);
+}
+
+const almacenDatosCodigos = (Lista) => {
+  localStorage.removeItem('ListadoCacheCodigos');
+  const parsed = JSON.stringify(Lista);
+  localStorage.setItem('ListadoCacheCodigos', parsed);
+}
+
 const errors = ref();
 
 const consultarPrincipal = async () => {
   // if (cargado.value == false) {
+  // PRODUCTOS
   await axios.get(`http://` + ipPublica.value + `/fullstack/public/productos`)
     .then((response) => {
       listado.value = response.data.data;
       almacenDatosProductos(listado.value);
       // obtenerListadoLimpio();
+      Kinventario.value = Kinventario.value + 1;
+
+    }).catch((error) => {
+      if (error.response.status === 500) {
+        errors.value = error.response.status;
+      }
+    })
+
+  // DEPARTAMENTOS
+  await axios.get(`http://` + ipPublica.value + `/fullstack/public/departamentos`)
+    .then((response) => {
+      listadoDepartamentos.value = response.data.data;
+      almacenDatosDepartamentos(listadoDepartamentos.value);
+      Kcategorias.value = Kcategorias.value + 1;
+
+    }).catch((error) => {
+      if (error.response.status === 500) {
+        errors.value = error.response.status;
+      }
+    })
+
+  // ARTICULOS
+  await axios.get(`http://` + ipPublica.value + `/fullstack/public/articulos`)
+    .then((response) => {
+      listadoArticulos.value = response.data.data;
+      almacenDatosArticulos(listadoArticulos.value);
+      Kcategorias.value = Kcategorias.value + 1;
+
+    }).catch((error) => {
+      if (error.response.status === 500) {
+        errors.value = error.response.status;
+      }
+    })
+
+    // MAGNITUDES
+  await axios.get(`http://` + ipPublica.value + `/fullstack/public/magnituds`)
+    .then((response) => {
+      listadoMagnitudes.value = response.data.data;
+      almacenDatosArticulos(listadoMagnitudes.value);
 
     }).catch((error) => {
       if (error.response.status === 500) {
@@ -1036,6 +1110,18 @@ const consultar = async (n) => {
   }
 
   if (n == 4) {
+    // console.log("Carga masiva")
+  }
+
+  if (n == 5) { // Actualizar los departamentos
+    console.log("Departamentos")
+    await axios.get(`http://` + ipPublica.value + `/fullstack/public/departamentos`)
+      .then((response) => {
+        listado.value = response.data.data;
+        almacenDatosDepartamentos(listado.value);
+        // cargado.value = true;
+        Kcategorias.value = Kcategorias.value + 1;
+      });
     // console.log("Carga masiva")
   }
 

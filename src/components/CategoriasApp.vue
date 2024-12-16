@@ -12,12 +12,13 @@
       <!-- Datos del producto a agregar -->
       <div class="row">
 
-        <!--Listado de productos -->
-        <div class="col-xl-9 col-lg-7">
+        <!--Listado de departamentos -->
+        <div class="col-xl-12 col-lg-12">
           <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-              <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-edit"></i> LISTADO DE CATEGORÍAS</h6>
+              <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-edit"></i> LISTADO DE DEPARTAMENTOS</h6>
+              <button class="btn btn-info" @click="abrirModalAddProd()"> <span class="fa fa-plus"></span> Nuevo</button>
             </div>
             <!-- Card Body -->
             <div class="card-body">
@@ -40,9 +41,9 @@
               </div>
               <br>
 
-              <EasyDataTable table-class-name="customize-table" :headers="headers" :items="items" buttons-pagination
-                border-cell header-text-direction="center" body-text-direction="center" :search-field="searchField"
-                :search-value="searchValue" :rows-per-page="5">
+              <EasyDataTable table-class-name="customize-table" :headers="headers" :items="itemsdepartamentos"
+                buttons-pagination border-cell header-text-direction="center" body-text-direction="center"
+                :search-field="searchField" :search-value="searchValue" :rows-per-page="5">
                 <template #item-opciones="item">
                   <div class="operation-wrapper">
                     <button class="btn btn-success btn-sm btn-circle" @click="clickEditar(item.id)" v-b-tooltip.hover
@@ -66,9 +67,64 @@
           </div>
         </div>
         <!-- FIN -->
-        <div class="col-xl-3 col-lg-5">
+        <!--Listado de articulos -->
+        <div class="col-xl-12 col-lg-12">
           <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-edit"></i> LISTADO DE ARTÍCULOS</h6>
+              <button class="btn btn-info"> <span class="fa fa-plus"></span> Nuevo</button>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6 col-xl-6 col-lg-12">
+                  <div class="justify-content-between">
+                    <!-- <router-link class="button" to="/gest_inventario"> -->
+                    <a @click="abrirModalAddProd()" href="#"
+                      class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm" v-b-tooltip.hover
+                      title="Agregar producto"><i class="fas fa-print fa-sm "></i> Imprimir </a>
+                    <!-- </router-link> -->
+                    <a @click="ExportExcel()" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
+                      v-b-tooltip.hover title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a>
+                  </div>
+                </div>
+                <div class="col-md-6 col-xl-6 col-lg-12 ">
+                  <span class="text-info">Buscar: </span>
+                  <input class="form-control" type="text" v-model="searchValue" placeholder="" />
+                </div>
+              </div>
+              <br>
+
+              <EasyDataTable table-class-name="customize-table" :headers="headersArticulos" :items="itemsarticlos"
+                buttons-pagination border-cell header-text-direction="center" body-text-direction="center"
+                :search-field="searchFieldArticulo" :search-value="searchValueArticulo" :rows-per-page="5">
+                <template #item-opciones="item">
+                  <div class="operation-wrapper">
+                    <button class="btn btn-success btn-sm btn-circle" @click="clickEditar(item.id)" v-b-tooltip.hover
+                      title="Editar"><span class="fas fa-edit"></span></button>
+                    <!-- <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
+                    title="Aumentar"><span class="fas fa-plus"></span></button>
+                  <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
+                    title="Restar"><span class="fas fa-minus"></span></button>-->
+                    <button class="btn btn-danger btn-sm btn-circle ml-1"
+                      @click="borrarU(item.id, item.attributes.codigo)" v-b-tooltip.hover title="Eliminar"><span
+                        class="fas fas fa-trash-alt"></span></button>
+                  </div>
+                </template>
+                <!-- <template #loading>
+                <img src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
+                  style="width: 100px; height: 80px;" />
+              </template> -->
+              </EasyDataTable>
+
+            </div>
+          </div>
+        </div>
+        <!-- FIN -->
+        <!-- <div class="col-xl-3 col-lg-5">
+          <div class="card shadow mb-4">
+
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
               style="text-align: center;">
               <h6 class="m-0 font-weight-bold text-info" v-if="editar == false"><span class="fa fa-plus"></span> AGREGAR
@@ -77,10 +133,10 @@
                 MODIFICAR CATEGORÍA (<label style="color: red;">{{ formProductos.data.attributes.codigo
                   }}</label>)</h6>
             </div>
-            <!-- Card Body -->
+
             <div class="card-body">
 
-              <!-- Personas -->
+
               <div class="col-lg-12">
                 <div class="">
                   <div class="text-center">
@@ -88,9 +144,7 @@
                   </div>
                   <form class="user">
 
-                    <!-- <div class="row"> -->
-                    <!-- <FormKit label="Username" type="text" help="Pick a new username"
-                        validation="required|matches:/^@[a-zA-Z]+$/|length:5" value="@FormKit" /> -->
+
                     <div class="form-group col-lg-12">
                       <label class="text-info">Categoría: <label style="color: red;">*</label></label>
                       <input type="text" class="form-control" id="codigo" aria-describedby="emailHelp"
@@ -111,18 +165,10 @@
                         <option value="">Lts(s)</option>
                       </select>
                     </div>
-                    <!-- </div> -->
-                    <!-- <div class="form-group">
-                      <label class="text-info">Imagen:</label>
-                      <input type="file" class="form-control" id="foto"> Seleccione una foto para el producto...
-                    </div> -->
+
                     <div class="row">
                       <div v-if="editar == false" class="col-lg-3"></div>
-                      <!-- <div v-if="editar == false" class="form-group h4 col-lg-6">
-                        <a @click="agregarU" class="btn btn-primary btn-user btn-block">
-                          Archivar y continuar agregando
-                        </a>
-                      </div> -->
+
                       <div v-if="editar == false" class="form-group h4 col-lg-6">
                         <a @click="agregarU" class="btn btn-info btn-block">
                           Agregar
@@ -146,7 +192,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <!-- TABLA INVENTARIOS -->
@@ -159,7 +205,7 @@
       <!-- por cantidad -->
 
     </div>
-
+    <AddDepartamento v-show="popup" @cerrar="abrirModalAddProd()" />
   </div>
   <template v-if="esperando">
     <div v-on="loading('Actualizando datos...')">
@@ -173,8 +219,27 @@ import axios from 'axios';
 import router from '@/router';
 import Swal from 'sweetalert2';
 import { onMounted, reactive, ref } from 'vue';
+import AddDepartamento from './modal/AddDepartamento.vue';
 
 const esperando = ref(false);
+
+const popup = ref(false);
+
+const abrirModalAddProd = () => {
+  popup.value = !popup.value;
+  // console.log(x);
+  if (popup.value == false) {
+
+    localStorage.removeItem('Carg_dat');
+    if (localStorage.getItem('Carg_dat') != '0') {
+      emit('consultar', 5);
+      listado.value = JSON.parse(localStorage.getItem('ListadoCacheDepartamentos'));
+      obtenerDepartamentos();
+    }
+
+  }
+
+}
 
 const loading = (texto) => {
   Swal.fire({
@@ -194,21 +259,41 @@ const cerrarAlert = () => {
 
 const itemsSelected = ref([]);
 
-const searchField = ref(["attributes.codigo"]);
+const searchField = ref(["attributes.departamento"]);
+
+const searchFieldArticulo = ref(["attributes.articulo"]);
 
 const searchValue = ref("");
+
+const searchValueArticulo = ref("");
 
 const headers = [
   { text: "NO", value: "id", width: 50, sortable: true },
   // { text: "CODIGO", value: "attributes.codigo", sortable: true },
-  { text: "CATEGORIA", value: "type" },
-  { text: "UNIDAD DE MEDIDA", value: "precioC", sortable: true },
-  { text: "FECHA CREACIÓN", value: "precioV", sortable: true },
-  { text: "FECHA ACTUALIZACIÓN", value: "unidad" },
+  { text: "NOMBRE", value: "attributes.departamento" },
+  { text: "DESCRIPCIÓN", value: "attributes.descripcion", sortable: true },
+  { text: "OBSERVACIONES", value: "attributes.observacion", sortable: true },
+  { text: "FECHA CREACIÓN", value: "meta.created_at" },
+  { text: "FECHA ACTUALIZACIÓN", value: "meta.updated_at" },
+  { text: "OPCIONES", value: "opciones" }
+];
+
+const headersArticulos = [
+  { text: "NO", value: "id", width: 50, sortable: true },
+  // { text: "CODIGO", value: "attributes.codigo", sortable: true },
+  { text: "NOMBRE", value: "attributes.articulo" },
+  { text: "DESCRIPCIÓN", value: "attributes.descripcion", sortable: true },
+  { text: "OBSERVACIONES", value: "attributes.observacion", sortable: true },
+  { text: "FECHA CREACIÓN", value: "meta.created_at" },
+  { text: "FECHA ACTUALIZACIÓN", value: "meta.updated_at" },
   { text: "OPCIONES", value: "opciones" }
 ];
 
 const items = ref([]);
+
+const itemsdepartamentos = ref([]);
+
+const itemsarticlos = ref([]);
 
 // Definicion de props
 // defineProps({
@@ -226,6 +311,10 @@ const items = ref([]);
 let errors = ref([]);
 
 let listado = ref([]);
+
+let listadoDepartamentos = ref([]);
+
+let listadoArticulos = ref([]);
 
 let listadoSucursales = ref([]);
 
@@ -390,36 +479,56 @@ const cambiarLimite = () => {
 
 const obtenerListadoLimpio = () => {
   let i = 0;
-  if (cargado.value = false) {
-    newListado.value = [];
-    for (let index = 0; index < listado.value.length; index++) {
-      const element = listado.value[index];
-      if (element.attributes.deleted_at == null) {
-        newListado.value[i] = element;
-        i++;
-      }
-    }
-    datosSinPaginar.value = newListado.value;
-    cantidad.value = Math.ceil(newListado.value.length / elementPagina.value);
-    obtenerPagina(1);
-    cargado.value = true;
-  } else {
-    newListado.value = []
-    for (let index = 0; index < listado.value.length; index++) {
-      const element = listado.value[index];
-      if (element.attributes.deleted_at == null) {
-        newListado.value[i] = element;
-        i++;
-      }
-    }
-    datosSinPaginar.value = newListado.value;
-    cantidad.value = Math.ceil(newListado.value.length / elementPagina.value);
-    obtenerPagina(1);
-  }
+  // if (cargado.value = false) {
+  //   newListado.value = [];
+  //   for (let index = 0; index < listado.value.length; index++) {
+  //     const element = listado.value[index];
+  //     if (element.attributes.deleted_at == null) {
+  //       newListado.value[i] = element;
+  //       i++;
+  //     }
+  //   }
+  //   datosSinPaginar.value = newListado.value;
+  //   cantidad.value = Math.ceil(newListado.value.length / elementPagina.value);
+  //   obtenerPagina(1);
+  //   cargado.value = true;
+  // } else {
+  //   newListado.value = []
+  //   for (let index = 0; index < listado.value.length; index++) {
+  //     const element = listado.value[index];
+  //     if (element.attributes.deleted_at == null) {
+  //       newListado.value[i] = element;
+  //       i++;
+  //     }
+  //   }
+  //   datosSinPaginar.value = newListado.value;
+  //   cantidad.value = Math.ceil(newListado.value.length / elementPagina.value);
+  //   obtenerPagina(1);
+  // }
 
   items.value = [];
   for (let index = 0; index < listado.value.length; index++) {
     items.value.push(listado.value[index])
+  }
+
+}
+
+const obtenerDepartamentos = () => {
+  let i = 0;
+
+  itemsdepartamentos.value = [];
+  for (let index = 0; index < listadoDepartamentos.value.length; index++) {
+    itemsdepartamentos.value.push(listadoDepartamentos.value[index])
+  }
+
+}
+
+const obtenerArticulos = () => {
+  let i = 0;
+
+  itemsarticlos.value = [];
+  for (let index = 0; index < listadoArticulos.value.length; index++) {
+    itemsarticlos.value.push(listadoArticulos.value[index])
   }
 
 }
@@ -677,6 +786,10 @@ onMounted(async () => {
       obtenerListadoLimpio();
       listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
       listadoSucursales.value = obtenerListadoLimpioSucursales();
+      listadoDepartamentos.value = JSON.parse(localStorage.getItem('ListadoCacheDepartamentos'));
+      obtenerDepartamentos();
+      listadoArticulos.value = JSON.parse(localStorage.getItem('ListadoCacheArticulos'));
+      obtenerArticulos();
     }
 
   } else {

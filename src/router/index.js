@@ -76,6 +76,7 @@ const router = createRouter({
             name: 'categorias',
             component: MenuApp,
         },
+        
     ]
 })
 
