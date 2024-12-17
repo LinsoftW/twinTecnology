@@ -667,6 +667,7 @@ import CargaMasivaApp from '@/components/CargaMasivaApp.vue';
 import CategoriasApp from '@/components/CategoriasApp.vue';
 import emailjs from 'emailjs-com';
 import * as XLSX from 'xlsx';
+import { useAlertsStore } from '@/components/ComunicacionApp';
 // import { Input, TextArea } from "@progress/kendo-vue-inputs";
 // import { Button } from "@progress/kendo-vue-buttons";
 
@@ -675,6 +676,7 @@ const Kpedidos = ref(0);
 const Kinventario = ref(0);
 // const Kproductos = ref(0);
 const Ksucursales = ref(0);
+const Kcategorias = ref(0)
 
 const tiempoEspera = async () => {
   // console.log(n)
@@ -1007,10 +1009,21 @@ const almacenDatosCodigos = (Lista) => {
 
 const errors = ref();
 
+// Funcion q esta escuchando las llamadas de los demas hijos
+
+const comunicador = useAlertsStore();
+comunicador.$onAction(() => {
+  console.log("LLamaron")
+})
+// useAlertsStore.onAction(() => {
+//
+// })
+// FIN
+
 const consultarPrincipal = async () => {
   // if (cargado.value == false) {
   // PRODUCTOS
-  await axios.get(`http://` + ipPublica.value + `/fullstack/public/productos`)
+  await axios.get(`https://` + ipPublica.value + `/fullstack/public/productos`)
     .then((response) => {
       listado.value = response.data.data;
       almacenDatosProductos(listado.value);
@@ -1023,43 +1036,17 @@ const consultarPrincipal = async () => {
       }
     })
 
-  // DEPARTAMENTOS
-  await axios.get(`http://` + ipPublica.value + `/fullstack/public/departamentos`)
-    .then((response) => {
-      listadoDepartamentos.value = response.data.data;
-      almacenDatosDepartamentos(listadoDepartamentos.value);
-      Kcategorias.value = Kcategorias.value + 1;
+  // MAGNITUDES
+  // await axios.get(`https://` + ipPublica.value + `/fullstack/public/magnituds`)
+  //   .then((response) => {
+  //     listadoMagnitudes.value = response.data.data;
+  //     almacenDatosArticulos(listadoMagnitudes.value);
 
-    }).catch((error) => {
-      if (error.response.status === 500) {
-        errors.value = error.response.status;
-      }
-    })
-
-  // ARTICULOS
-  await axios.get(`http://` + ipPublica.value + `/fullstack/public/articulos`)
-    .then((response) => {
-      listadoArticulos.value = response.data.data;
-      almacenDatosArticulos(listadoArticulos.value);
-      Kcategorias.value = Kcategorias.value + 1;
-
-    }).catch((error) => {
-      if (error.response.status === 500) {
-        errors.value = error.response.status;
-      }
-    })
-
-    // MAGNITUDES
-  await axios.get(`http://` + ipPublica.value + `/fullstack/public/magnituds`)
-    .then((response) => {
-      listadoMagnitudes.value = response.data.data;
-      almacenDatosArticulos(listadoMagnitudes.value);
-
-    }).catch((error) => {
-      if (error.response.status === 500) {
-        errors.value = error.response.status;
-      }
-    })
+  //   }).catch((error) => {
+  //     if (error.response.status === 500) {
+  //       errors.value = error.response.status;
+  //     }
+  //   })
 
   await axios.get(`http://` + ipPublica.value + `/fullstack/public/sucursals`)
     .then((response1) => {
@@ -1114,15 +1101,25 @@ const consultar = async (n) => {
   }
 
   if (n == 5) { // Actualizar los departamentos
-    console.log("Departamentos")
-    await axios.get(`http://` + ipPublica.value + `/fullstack/public/departamentos`)
+    // console.log("Departamentos")
+    await axios.get(`https://` + ipPublica.value + `/fullstack/public/departamentos`)
       .then((response) => {
         listado.value = response.data.data;
         almacenDatosDepartamentos(listado.value);
         // cargado.value = true;
         Kcategorias.value = Kcategorias.value + 1;
       });
-    // console.log("Carga masiva")
+  }
+
+  if (n == 6) { // Actualizar los articulos
+    // console.log("Departamentos")
+    await axios.get(`https://` + ipPublica.value + `/fullstack/public/articulos`)
+      .then((response) => {
+        listado.value = response.data.data;
+        almacenDatosArticulos(listado.value);
+        // cargado.value = true;
+        Kcategorias.value = Kcategorias.value + 1;
+      });
   }
 
 

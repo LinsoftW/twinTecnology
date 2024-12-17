@@ -42,6 +42,7 @@
     "jspdf": "^2.5.2",
     "jspdf-autotable": "^3.8.4",
     "pdfmake": "^0.2.15",
+    "pinia": "^2.3.0",
     "quagga": "^0.12.1",
     "sass-loader": "16.0.3",
     "sweetalert2": "^11.6.13",

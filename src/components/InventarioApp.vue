@@ -217,10 +217,10 @@
             </DataTable> -->
             <!-- Fin -->
 
-            <EasyDataTable table-class-name="customize-table" :headers="headers" :items="items" buttons-pagination
+            <EasyDataTable :headers="headers" :items="items" buttons-pagination
               border-cell v-model:items-selected="itemsSelected" header-text-direction="center"
               body-text-direction="center" :search-field="searchField1" :search-value="searchValue" @click-row="showRow"
-              :rows-per-page="5">
+              :rows-per-page="5" :loading="loading">
               <template #item-image="item">
                 <img src="/inventario.jpg" alt="No image" class="img img-thumbnail"
                   style="width: 70px; height: 70px;" />
@@ -243,6 +243,13 @@
 
                 </div>
               </template>
+              <template #loading>
+                  <img src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
+                    style="width: 100px; height: 80px;" />
+                </template>
+                <template #empty-message>
+                  <a>No hay datos que mostrar</a>
+                </template>
 
             </EasyDataTable>
             <!-- Fin -->
@@ -505,7 +512,7 @@
     <AddProducto v-show="popup" @cerrar="abrirModalAddProd()" />
   </div>
   <template v-if="esperando">
-    <div v-on="loading('Actualizando datos...')">
+    <div v-on="loadingA('Actualizando datos...')">
 
     </div>
   </template>
@@ -847,7 +854,9 @@ const items = ref([]);
 
 const esperando = ref(false);
 
-const loading = (texto) => {
+const loading = ref(false)
+
+const loadingA = (texto) => {
   Swal.fire({
     // title: "Sweet!",
     text: texto,

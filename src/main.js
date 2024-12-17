@@ -11,6 +11,9 @@ import 'vue3-easy-data-table/dist/style.css';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import VueBarcode from '@chenfengyuan/vue-barcode';
+import {createPinia} from 'pinia'
+
+const pinia = createPinia()
 // import {
 //   GcSpreadSheets,
 //   GcWorksheet,
@@ -32,5 +35,5 @@ app.component('EasyDataTable', Vue3EasyDataTable)
 // .component("gc-spread-sheets", GcSpreadSheets)
 // .component("gc-worksheet", GcWorksheet)
 // .component("gc-column", GcColumn);
-
-app.use(router, plugin, defaultConfig, DoughnutChart).mount('#app')
+app.use(pinia)
+app.use(router, plugin, defaultConfig, DoughnutChart ).mount('#app')

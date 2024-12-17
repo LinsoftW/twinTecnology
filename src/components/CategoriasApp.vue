@@ -43,7 +43,7 @@
 
               <EasyDataTable table-class-name="customize-table" :headers="headers" :items="itemsdepartamentos"
                 buttons-pagination border-cell header-text-direction="center" body-text-direction="center"
-                :search-field="searchField" :search-value="searchValue" :rows-per-page="5">
+                :search-field="searchField" :search-value="searchValue" :rows-per-page="5" :loading="loading">
                 <template #item-opciones="item">
                   <div class="operation-wrapper">
                     <button class="btn btn-success btn-sm btn-circle" @click="clickEditar(item.id)" v-b-tooltip.hover
@@ -57,12 +57,19 @@
                         class="fas fas fa-trash-alt"></span></button>
                   </div>
                 </template>
-                <!-- <template #loading>
-                <img src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
-                  style="width: 100px; height: 80px;" />
-              </template> -->
-              </EasyDataTable>
+                <template #loading>
+                  <img src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
+                    style="width: 100px; height: 80px;" />
+                </template>
+                <template #empty-message>
+                  <a>No hay datos que mostrar</a>
+                </template>
 
+              </EasyDataTable>
+              <!-- <div class="customize-pagination">
+                <button class="prev-page" @click="prevPage" :disabled="isFirstPage">prev page</button>
+                <button class="next-page" @click="nextPage" :disabled="isLastPage">next page</button>
+              </div> -->
             </div>
           </div>
         </div>
@@ -73,7 +80,7 @@
             <!-- Card Header - Dropdown -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
               <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-edit"></i> LISTADO DE ARTÍCULOS</h6>
-              <button class="btn btn-info"> <span class="fa fa-plus"></span> Nuevo</button>
+              <button class="btn btn-info" @click="abrirModalAddArti()"> <span class="fa fa-plus"></span> Nuevo</button>
             </div>
             <!-- Card Body -->
             <div class="card-body">
@@ -98,7 +105,8 @@
 
               <EasyDataTable table-class-name="customize-table" :headers="headersArticulos" :items="itemsarticlos"
                 buttons-pagination border-cell header-text-direction="center" body-text-direction="center"
-                :search-field="searchFieldArticulo" :search-value="searchValueArticulo" :rows-per-page="5">
+                :search-field="searchFieldArticulo" :search-value="searchValueArticulo" :rows-per-page="5"
+                :loading="loading">
                 <template #item-opciones="item">
                   <div class="operation-wrapper">
                     <button class="btn btn-success btn-sm btn-circle" @click="clickEditar(item.id)" v-b-tooltip.hover
@@ -112,10 +120,13 @@
                         class="fas fas fa-trash-alt"></span></button>
                   </div>
                 </template>
-                <!-- <template #loading>
-                <img src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
-                  style="width: 100px; height: 80px;" />
-              </template> -->
+                <template #loading>
+                  <img src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
+                    style="width: 100px; height: 80px;" />
+                </template>
+                <template #empty-message>
+                  <a>No hay datos que mostrar</a>
+                </template>
               </EasyDataTable>
 
             </div>
@@ -205,10 +216,11 @@
       <!-- por cantidad -->
 
     </div>
-    <AddDepartamento v-show="popup" @cerrar="abrirModalAddProd()" />
+    <AddDepartamento v-show="popup" @cerrar="abrirModalAddProd()" @consulta="actualiza()"/>
+    <AddArticulo v-show="popupArt" @cerrar="abrirModalAddArti()" @consulta="actualizaArt()"/>
   </div>
   <template v-if="esperando">
-    <div v-on="loading('Actualizando datos...')">
+    <div v-on="loadingA('Actualizando datos...')">
 
     </div>
   </template>
@@ -220,12 +232,33 @@ import router from '@/router';
 import Swal from 'sweetalert2';
 import { onMounted, reactive, ref } from 'vue';
 import AddDepartamento from './modal/AddDepartamento.vue';
+import 'vue3-easy-data-table/dist/style.css';
+import AddArticulo from './modal/AddArticulo.vue';
+import { load } from '@progress/kendo-vue-intl';
 
 const esperando = ref(false);
 
 const popup = ref(false);
 
+const emit = defineEmits(['cerrar']);
+
 const abrirModalAddProd = () => {
+  popup.value = !popup.value;
+  // console.log(x);
+  // if (popup.value == false) {
+
+  //   localStorage.removeItem('Carg_dat');
+  //   if (localStorage.getItem('Carg_dat') != '0') {
+  //     emit('consultar', 5);
+  //     listado.value = JSON.parse(localStorage.getItem('ListadoCacheDepartamentos'));
+  //     obtenerDepartamentos();
+  //   }
+
+  // }
+
+}
+
+const actualiza = () => {
   popup.value = !popup.value;
   // console.log(x);
   if (popup.value == false) {
@@ -241,7 +274,45 @@ const abrirModalAddProd = () => {
 
 }
 
-const loading = (texto) => {
+const actualizaArt = () => {
+  popup.value = !popup.value;
+  // console.log(x);
+  if (popup.value == false) {
+
+    localStorage.removeItem('Carg_dat');
+    if (localStorage.getItem('Carg_dat') != '0') {
+      emit('consultar', 6);
+      listado.value = JSON.parse(localStorage.getItem('ListadoCacheDepartamentos'));
+      obtenerDepartamentos();
+    }
+
+  }
+
+}
+
+const popupArt = ref(false)
+
+const abrirModalAddArti = () => {
+  popupArt.value = !popupArt.value;
+  // console.log(x);
+  // if (popupArt.value == false) {
+
+  //   localStorage.removeItem('Carg_dat');
+  //   if (localStorage.getItem('Carg_dat') != '0') {
+  //     loading.value = true;
+  //     emit('consultar', 6);
+  //     listado.value = JSON.parse(localStorage.getItem('ListadoCacheArticulos'));
+  //     obtenerArticulos();
+  //     loading.value = false
+  //   }
+
+  // }
+
+}
+
+const loading = ref(false);
+
+const loadingA = (texto) => {
   Swal.fire({
     // title: "Sweet!",
     text: texto,
@@ -778,10 +849,49 @@ const actualizar_datos = () => {
   // listadoSucursales = obtenerListadoLimpioSucursales();
 }
 
+const almacenDatosDepartamentos = (Lista) => {
+  localStorage.removeItem('ListadoCacheDepartamentos');
+  const parsed = JSON.stringify(Lista);
+  localStorage.setItem('ListadoCacheDepartamentos', parsed);
+}
+
+const almacenDatosArticulos = (Lista) => {
+  localStorage.removeItem('ListadoCacheArticulos');
+  const parsed = JSON.stringify(Lista);
+  localStorage.setItem('ListadoCacheArticulos', parsed);
+}
+
 onMounted(async () => {
   // localStorage.setItem("userName", form.nombre);
   if (localStorage.getItem('userName')) {
     if (localStorage.getItem('Carg_dat') != '0') {
+      loading.value = true;
+      // DEPARTAMENTOS
+      await axios.get(`https://` + ipPublica.value + `/fullstack/public/departamentos`)
+        .then((response) => {
+          listadoDepartamentos.value = response.data.data;
+          almacenDatosDepartamentos(listadoDepartamentos.value);
+          // Kcategorias.value = Kcategorias.value + 1;
+
+        }).catch((error) => {
+          console.log(error)
+          if (error.response.status === 500) {
+            errors.value = error.response.status;
+          }
+        })
+
+      // ARTICULOS
+      await axios.get(`https://` + ipPublica.value + `/fullstack/public/articulos`)
+        .then((response) => {
+          listadoArticulos.value = response.data.data;
+          almacenDatosArticulos(listadoArticulos.value);
+          // Kcategorias.value = Kcategorias.value + 1;
+
+        }).catch((error) => {
+          if (error.response.status === 500) {
+            errors.value = error.response.status;
+          }
+        })
       listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
       obtenerListadoLimpio();
       listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
@@ -790,6 +900,7 @@ onMounted(async () => {
       obtenerDepartamentos();
       listadoArticulos.value = JSON.parse(localStorage.getItem('ListadoCacheArticulos'));
       obtenerArticulos();
+      loading.value = false
     }
 
   } else {

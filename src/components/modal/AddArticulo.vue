@@ -5,7 +5,7 @@
       <div class="modal" role="dialog" aria-labelledby="modalTitle" aria-describedby="modalDescription">
         <header class="modal-header" id="modalTitle">
           <slot name="header">
-            DATOS DEL NUEVO DEPARTAMENTO
+            DATOS DEL NUEVO ARTÍCULO
           </slot>
           <div class="btn-close" @click="closeVentana">
             &times;
@@ -34,23 +34,22 @@
                 </div><br> -->
 
                 <div class="row">
-                  <div class="form-group col-lg-12">
+                  <div class="form-group col-lg-5">
                     <label class="text-info">Nombre: <label style="color: red;">*</label></label>
 
                     <input type="text" class="form-control" id="depart" aria-describedby="emailHelp"
-                      v-model="formDepartamentos.data.attributes.departamento" placeholder="Nombre del departamento"
-                      required>
+                      v-model="formArticulo.data.attributes.articulo" placeholder="Nombre del artículo" required>
                     <!-- <input v-if="nombVacio" style="background-color: red;" type="text" class="form-control" id="departament" aria-describedby="emailHelp"
-                      v-model="formDepartamentos.data.attributes.departamento" placeholder="Nombre del departamento"
+                      v-model="formArticulo.data.attributes.departamento" placeholder="Nombre del departamento"
                       required> -->
                     <span v-if="nombVacio" style="color: red;">Campo en blanco</span>
 
                   </div>
 
-                  <div class="form-group col-lg-12">
+                  <div class="form-group col-lg-7">
                     <label class="text-info">Descripción: <label style="color: red;">*</label></label>
                     <input type="text" class="form-control" id="descrip" aria-describedby="emailHelp1"
-                      v-model="formDepartamentos.data.attributes.descripcion" placeholder="Descripción del departamento"
+                      v-model="formArticulo.data.attributes.descripcion" placeholder="Descripción del artículo"
                       required>
                     <span v-if="descripVacio" style="color: red;">Campo en blanco</span>
                   </div>
@@ -61,10 +60,30 @@
 
                     <div class="col-xl-12">
                       <label class="text-info">Observaciones:</label>
-                      <textarea class="form-control" id="observa"
-                        v-model="formDepartamentos.data.attributes.observacion"
-                        placeholder="Observaciones acerca del departamento"></textarea>
+                      <textarea class="form-control" id="observa" v-model="formArticulo.data.attributes.observacion"
+                        placeholder="Observaciones acerca del artículo"></textarea>
 
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="form-group col-lg-6">
+                      <label class="text-info">Seleccione el departamento: <label style="color: red;">*</label></label>
+                      <select name="rol" id="rol" style="width: 100%; text-align:center" placeholder="Sucursal"
+                        class="text-gray-900 form-control">
+                        <option v-for="dato in listadoDepartamentos" :key="dato.id"
+                          :value="dato.attributes.departamento">{{
+                            dato.attributes.departamento }}</option>
+                      </select>
+                    </div>
+                    <div class="form-group col-lg-6">
+                      <label class="text-info">Seleccione la unidad de medida: <label style="color: red;">*</label></label>
+                      <select name="rol" id="rol" style="width: 100%; text-align:center" placeholder="Sucursal"
+                        class="text-gray-900 form-control">
+                        <option v-for="dato in listadoDepartamentos" :key="dato.id"
+                          :value="dato.attributes.departamento">{{
+                            dato.attributes.departamento }}</option>
+                      </select>
                     </div>
                   </div>
 
@@ -166,12 +185,14 @@ function closeVentana() {
   // alerta.ActualizarDepartamentos();
 }
 
-const formDepartamentos = reactive({
+const formArticulo = reactive({
   data: {
     attributes: {
-      departamento: "",
+      articulo: "",
       descripcion: "",
       observacion: "",
+      departamento_id: 0, //ID del departamento con el cual se relaciona, números de 2 dítios comenzando en 10, ej. 10
+      medida_id: 0 //IP de la medida en que se contabiliza el artículo
     }
   }
 })
@@ -287,7 +308,7 @@ const categoriasM = [
 const codig_final = ref();
 
 // const ObtenCategHijaF = (valor) => {
-//   formDepartamentos.data.attributes.codigo = valor;
+//   formArticulo.data.attributes.codigo = valor;
 //   codig_final.value = valor;
 //   switch (valor) {
 //   case 10:
@@ -326,7 +347,7 @@ const codig_final = ref();
 // }
 
 const ObtenCategHija = (valor) => {
-  formDepartamentos.data.attributes.codigo = valor;
+  formArticulo.data.attributes.codigo = valor;
   codig_final.value = valor;
   if (valor == 10) {
     categoriasH.value = cat_Electronica
@@ -361,7 +382,7 @@ const ObtenCategHija = (valor) => {
 }
 
 const ObtenCodigoHijo = (valor) => {
-  formDepartamentos.data.attributes.codigo = codig_final.value + '-' + valor;
+  formArticulo.data.attributes.codigo = codig_final.value + '-' + valor;
 }
 
 const cod = ref();
@@ -433,7 +454,7 @@ function generarBArCode() {
     generarBArCode();
   }
   // cod.value = '10-0001'
-  formDepartamentos.data.attributes.codigo = cod.value;
+  formArticulo.data.attributes.codigo = cod.value;
 }
 // const mostrar = ref(false);
 
@@ -442,6 +463,8 @@ let errors = ref([]);
 let listado = ref([]);
 
 let listadoSucursales = ref([]);
+
+let listadoDepartamentos = ref([]);
 
 let newListado = ref([]);
 
@@ -508,18 +531,18 @@ const ErrorFull = (mensaje, posicion) => {
 }
 
 const agregarU = () => {
-  // console.log(formDepartamentos)
-  if (formDepartamentos.is_valid) {
+  console.log(formArticulo)
+  if (formArticulo.is_valid) {
     esperando.value = true;
-    axios.post(`http://` + ipPublica.value + `/fullstack/public/departamentos`, formDepartamentos)
+    axios.post(`http://` + ipPublica.value + `/fullstack/public/articulos`, formArticulo)
       .then(() => {
-        formDepartamentos.data.attributes.observacion = ''
-        formDepartamentos.data.attributes.descripcion = '';
-        formDepartamentos.data.attributes.departamento = '';
+        formArticulo.data.attributes.observacion = ''
+        formArticulo.data.attributes.descripcion = '';
+        formArticulo.data.attributes.departamento = '';
         // useAlertsStore.ActualizarDepartamentos();
-        successFull("Departamento agregado satisfactoriamente.", "top-center")
+        successFull("Artículo agregado satisfactoriamente.", "top-center")
         // closeVentana();
-        emit('actualiza');
+        emit('actualiza')
       })
       .catch((error) => {
         if (error.response.status === 400) {
@@ -530,11 +553,11 @@ const agregarU = () => {
         closeVentana();
       })
   } else {
-    if (formDepartamentos.data.attributes.departamento == "") {
+    if (formArticulo.data.attributes.departamento == "") {
       nombVacio.value = true;
     }
 
-    if (formDepartamentos.data.attributes.descripcion == "") {
+    if (formArticulo.data.attributes.descripcion == "") {
       descripVacio.value = true;
     }
 
@@ -544,15 +567,16 @@ const agregarU = () => {
 }
 
 const agregarC = () => {
-  if (formDepartamentos.is_valid) {
+  if (formArticulo.is_valid) {
     esperando.value = true;
-    axios.post(`http://` + ipPublica.value + `/fullstack/public/departamentos`, formDepartamentos)
+    axios.post(`https://` + ipPublica.value + `/fullstack/public/articulos`, formArticulo)
       .then(() => {
-        formDepartamentos.data.attributes.observacion = ''
-        formDepartamentos.data.attributes.descripcion = '';
-        formDepartamentos.data.attributes.departamento = '';
-        successFull("Departamento agregado satisfactoriamente.", "top-center")
+        formArticulo.data.attributes.observacion = ''
+        formArticulo.data.attributes.descripcion = '';
+        formArticulo.data.attributes.departamento = '';
+        successFull("Artículo agregado satisfactoriamente.", "top-center")
         // closeVentana();
+
       })
       .catch((error) => {
         if (error.response.status === 400) {
@@ -570,9 +594,9 @@ const agregarC = () => {
 
 const cancelarU = () => {
   // editar.value = false;
-  formDepartamentos.data.attributes.descripcion = '';
-  formDepartamentos.data.attributes.departamento = '';
-  formDepartamentos.data.attributes.observacion = '';
+  formArticulo.data.attributes.descripcion = '';
+  formArticulo.data.attributes.departamento = '';
+  formArticulo.data.attributes.observacion = '';
   closeVentana();
 }
 
@@ -608,19 +632,17 @@ const obtenerListadoLimpio = () => {
 }
 
 onMounted(async () => {
-  // if (localStorage.getItem('userName')) {
-  //   if (localStorage.getItem('Carg_dat') != '0') {
-  //     generarBArCode()
-  //     listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
-  //     obtenerListadoLimpio();
-  //     listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
-  //     listadoSucursales.value = obtenerListadoLimpioSucursales();
-  //     cargado.value = true;
-  //   }
+  if (localStorage.getItem('userName')) {
+    // if (localStorage.getItem('Carg_dat') != '0') {
+    // generarBArCode()
+    listadoDepartamentos.value = JSON.parse(localStorage.getItem('ListadoCacheDepartamentos'));
+    // obtenerListadoLimpio();
+    cargado.value = true;
+    // }
 
-  // } else {
-  //   router.push('/login');
-  // }
+  } else {
+    router.push('/login');
+  }
 
 })
 </script>
