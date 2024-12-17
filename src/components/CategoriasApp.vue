@@ -53,7 +53,7 @@
                   <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
                     title="Restar"><span class="fas fa-minus"></span></button>-->
                     <button class="btn btn-danger btn-sm btn-circle ml-1"
-                      @click="borrarU(item.id, item.attributes.codigo)" v-b-tooltip.hover title="Eliminar"><span
+                      @click="borrarU(item.id, item.attributes.departamento)" v-b-tooltip.hover title="Eliminar"><span
                         class="fas fas fa-trash-alt"></span></button>
                   </div>
                 </template>
@@ -586,7 +586,7 @@ const obtenerListadoLimpio = () => {
 
 const obtenerDepartamentos = () => {
   let i = 0;
-
+// console.log(listadoDepartamentos)
   itemsdepartamentos.value = [];
   for (let index = 0; index < listadoDepartamentos.value.length; index++) {
     itemsdepartamentos.value.push(listadoDepartamentos.value[index])
@@ -766,6 +766,7 @@ const editarU = () => {
 }
 
 const borrarU = (id, correo) => {
+  // console.log(correo)
   Swal.fire({
     title: "Confirmación",
     text: `Está a punto de eliminar el producto: ${correo}`,
@@ -810,6 +811,7 @@ const borrarU = (id, correo) => {
 
 const clickEditar = async (idSelect) => {
   editar.value = true;
+  // console.log(idSelect)
   // localStorage.setItem("editar", editar.value);
   id.value = idSelect;
 
