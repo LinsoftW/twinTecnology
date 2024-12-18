@@ -131,7 +131,7 @@
           <div class="row m-1">
             <!-- <div v-if="editar == false" class="col-lg-1"></div> -->
             <div class=" col-xs-4">
-              <a @click="agregarU()" class="btn btn-primary btn-user btn-block">
+              <a @click="agregarC()" class="btn btn-primary btn-user btn-block">
                 Archivar y continuar
               </a>
             </div>

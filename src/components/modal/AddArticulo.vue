@@ -80,9 +80,9 @@
                       <label class="text-info">Seleccione la unidad de medida: <label style="color: red;">*</label></label>
                       <select name="rol" id="rol" style="width: 100%; text-align:center" placeholder="Sucursal"
                         class="text-gray-900 form-control">
-                        <option v-for="dato in listadoDepartamentos" :key="dato.id"
-                          :value="dato.attributes.departamento">{{
-                            dato.attributes.departamento }}</option>
+                        <option v-for="dato in listadoMedida" :key="dato.id"
+                          :value="dato.id">{{
+                            dato.attributes.medida }}</option>
                       </select>
                     </div>
                   </div>
@@ -636,6 +636,7 @@ onMounted(async () => {
     // if (localStorage.getItem('Carg_dat') != '0') {
     // generarBArCode()
     listadoDepartamentos.value = JSON.parse(localStorage.getItem('ListadoCacheDepartamentos'));
+    listadoMedida.value = JSON.parse(localStorage.getItem('ListadoCacheUnidades'));
     // obtenerListadoLimpio();
     cargado.value = true;
     // }

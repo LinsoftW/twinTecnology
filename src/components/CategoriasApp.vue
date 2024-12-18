@@ -43,7 +43,7 @@
 
               <EasyDataTable table-class-name="customize-table" :headers="headers" :items="itemsdepartamentos"
                 buttons-pagination border-cell header-text-direction="center" body-text-direction="center"
-                :search-field="searchField" :search-value="searchValue" :rows-per-page="5" :loading="loading">
+                :search-field="searchField" :search-value="searchValue" :rows-per-page="5" :loading="loading" show-index>
                 <template #item-opciones="item">
                   <div class="operation-wrapper">
                     <button class="btn btn-success btn-sm btn-circle" @click="clickEditar(item.id)" v-b-tooltip.hover
@@ -106,7 +106,7 @@
               <EasyDataTable table-class-name="customize-table" :headers="headersArticulos" :items="itemsarticlos"
                 buttons-pagination border-cell header-text-direction="center" body-text-direction="center"
                 :search-field="searchFieldArticulo" :search-value="searchValueArticulo" :rows-per-page="5"
-                :loading="loading">
+                :loading="loading" show-index>
                 <template #item-opciones="item">
                   <div class="operation-wrapper">
                     <button class="btn btn-success btn-sm btn-circle" @click="clickEditar(item.id)" v-b-tooltip.hover
@@ -339,7 +339,7 @@ const searchValue = ref("");
 const searchValueArticulo = ref("");
 
 const headers = [
-  { text: "NO", value: "id", width: 50, sortable: true },
+  { text: "CÓDIGO", value: "id", width: 50, sortable: true },
   // { text: "CODIGO", value: "attributes.codigo", sortable: true },
   { text: "NOMBRE", value: "attributes.departamento" },
   { text: "DESCRIPCIÓN", value: "attributes.descripcion", sortable: true },
@@ -350,7 +350,7 @@ const headers = [
 ];
 
 const headersArticulos = [
-  { text: "NO", value: "id", width: 50, sortable: true },
+  { text: "CÓDIGO", value: "id", width: 50, sortable: true },
   // { text: "CODIGO", value: "attributes.codigo", sortable: true },
   { text: "NOMBRE", value: "attributes.articulo" },
   { text: "DESCRIPCIÓN", value: "attributes.descripcion", sortable: true },
@@ -384,6 +384,8 @@ let errors = ref([]);
 let listado = ref([]);
 
 let listadoDepartamentos = ref([]);
+
+let listadoMedida = ref([])
 
 let listadoArticulos = ref([]);
 
@@ -863,11 +865,18 @@ const almacenDatosArticulos = (Lista) => {
   localStorage.setItem('ListadoCacheArticulos', parsed);
 }
 
+const almacenDatosMedida = (Lista) => {
+  localStorage.removeItem('ListadoCacheUnidades');
+  const parsed = JSON.stringify(Lista);
+  localStorage.setItem('ListadoCacheUnidades', parsed);
+}
+
 onMounted(async () => {
   // localStorage.setItem("userName", form.nombre);
   if (localStorage.getItem('userName')) {
     if (localStorage.getItem('Carg_dat') != '0') {
       loading.value = true;
+      emit('actualiza', 5)
       // DEPARTAMENTOS
       await axios.get(`https://` + ipPublica.value + `/fullstack/public/departamentos`)
         .then((response) => {
@@ -894,6 +903,19 @@ onMounted(async () => {
             errors.value = error.response.status;
           }
         })
+
+        // UNIDADES DE MEDIDA
+      await axios.get(`https://` + ipPublica.value + `/fullstack/public/medidas`)
+        .then((response) => {
+          listadoMedida.value = response.data.data;
+          almacenDatosMedida(listadoMedida.value);
+          // Kcategorias.value = Kcategorias.value + 1;
+
+        }).catch((error) => {
+          if (error.response.status === 500) {
+            errors.value = error.response.status;
+          }
+        })
       listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
       obtenerListadoLimpio();
       listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
@@ -902,6 +924,7 @@ onMounted(async () => {
       obtenerDepartamentos();
       listadoArticulos.value = JSON.parse(localStorage.getItem('ListadoCacheArticulos'));
       obtenerArticulos();
+      listadoMedida.value = JSON.parse(localStorage.getItem('ListadoCacheUnidades'));
       loading.value = false
     }
 

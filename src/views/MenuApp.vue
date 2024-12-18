@@ -486,7 +486,7 @@
           <GestPedidoApp :key="Kgest_pedidos" />
         </div>
         <div v-if="route.path == '/gest_nomencladores'">
-          <GestNomencladoresApp :key="Kgest_nomencladores" />
+          <GestNomencladoresApp :key="Kgest_nomencladores" @actualiza="consultar" />
         </div>
 
         <!-- /.container-fluid -->
@@ -995,7 +995,7 @@ const almacenDatosMagnitudes = (Lista) => {
   localStorage.setItem('ListadoCacheMagnitudes', parsed);
 }
 
-const almacenDatosUnidadess = (Lista) => {
+const almacenDatosUnidades = (Lista) => {
   localStorage.removeItem('ListadoCacheUnidades');
   const parsed = JSON.stringify(Lista);
   localStorage.setItem('ListadoCacheUnidades', parsed);
@@ -1077,6 +1077,7 @@ const consultarPrincipal = async () => {
 }
 
 const consultar = async (n) => {
+  //Productos
   if (n == 1) {
     await axios.get(`http://` + ipPublica.value + `/fullstack/public/productos`)
       .then((response) => {
@@ -1112,13 +1113,35 @@ const consultar = async (n) => {
   }
 
   if (n == 6) { // Actualizar los articulos
-    // console.log("Departamentos")
+    // console.log("Artculos")
     await axios.get(`https://` + ipPublica.value + `/fullstack/public/articulos`)
       .then((response) => {
         listado.value = response.data.data;
         almacenDatosArticulos(listado.value);
         // cargado.value = true;
         Kcategorias.value = Kcategorias.value + 1;
+      });
+  }
+
+  if (n == 7) { // Actualizar los magnitudes
+    // console.log("Magnitudes")
+    await axios.get(`https://` + ipPublica.value + `/fullstack/public/magnitudes`)
+      .then((response) => {
+        listado.value = response.data.data;
+        almacenDatosMagnitudes(listado.value);
+        // cargado.value = true;
+        // Kgest_nomencladores.value = Kgest_nomencladores.value + 1;
+      });
+  }
+
+  if (n == 8) { // Actualizar los medidas
+    // console.log("medidas")
+    await axios.get(`https://` + ipPublica.value + `/fullstack/public/medidas`)
+      .then((response) => {
+        listado.value = response.data.data;
+        almacenDatosUnidades(listado.value);
+        // cargado.value = true;
+        // Kgest_nomencladores.value = Kgest_nomencladores.value + 1;
       });
   }
 
@@ -1332,6 +1355,9 @@ const salir = () => {
     if (result.isConfirmed) {
       localStorage.removeItem('userName');
       localStorage.removeItem('ListadoCache');
+      localStorage.removeItem('ListadoCacheUnidades');
+      localStorage.removeItem('ListadoCacheMagnitudes');
+      // localStorage.removeItem('ListadoCacheMedidas');
       localStorage.removeItem('ListadoCacheSucursal');
       localStorage.removeItem('Carg_dat');
       localStorage.clear();

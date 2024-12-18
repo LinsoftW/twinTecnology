@@ -23,9 +23,9 @@
               masiva</a> -->
             <a @click="ImprimirDoc()" href="#" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm"
               v-b-tooltip.hover title="Imprimir"><i class="fas fa-print fa-sm "></i> Imprimir</a>
-            <a @click="escanea = true" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
+            <!-- <a @click="escanea = true" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
               v-b-tooltip.hover data-toggle="modal" data-target="#escanearCode" title="Escanear código de barras"><i
-                class="fa fa-barcode fa-sm "></i> Escanear</a>
+                class="fa fa-barcode fa-sm "></i> Escanear</a> -->
           </div>
         </div>
 
