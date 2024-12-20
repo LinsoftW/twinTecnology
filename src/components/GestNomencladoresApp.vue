@@ -484,9 +484,9 @@
                                       </a>
                                     </div>
                                     <div v-if="editar" class="form-group h4 col-lg-6">
-                                      <button @click="editarU" class="btn btn-info btn-block">
+                                      <a @click="editarU" class="btn btn-info btn-block">
                                         {{ btnModificar }}
-                                      </button>
+                                      </a>
                                     </div>
                                     <div v-if="editar" class="form-group h4 col-lg-6">
                                       <a @click="cancelarU" class="btn btn-danger btn-block">
@@ -527,7 +527,7 @@
                         <div class="col-md-8 col-xl-6 col-lg-12">
                           <span class="text-info">Buscar: </span>
                           <input class="form-control form-control-user" type="text" v-model="searchValueMedida"
-                            placeholder="Teclee el nombre de la magnitud a buscar..." />
+                            placeholder="Teclee el nombre a buscar..." />
                         </div>
                       </div><br>
 
@@ -535,7 +535,7 @@
                       <EasyDataTable table-class-name="customize-table" :headers="headersMedidas" :items="itemsMedidas"
                         buttons-pagination border-cell v-model:items-selected="itemsSelected"
                         header-text-direction="center" body-text-direction="center" :search-field="searchFieldMedida"
-                        :search-value="searchValue" @click-row="showRow" :rows-per-page="5" :loading="loadingU"
+                        :search-value="searchValueMedida" @click-row="showRow" :rows-per-page="5" :loading="loadingU"
                         show-index>
                         <template #empty-message>
                           <a>No hay datos que mostrar</a>
@@ -1010,7 +1010,7 @@ const searchField = ref("attributes.magnitud");
 
 const searchValue = ref("");
 
-const searchFieldMedida = ref("attributes.magnitud");
+const searchFieldMedida = ref("attributes.medida");
 
 const searchValueMedida = ref("");
 
@@ -1479,10 +1479,10 @@ const editarU = async () => {
       formMagnitud.data.attributes.magnitud = '';
       loading.value = true;
       EditarListado(response.data.data)
-
       successFull("Magnitud editada satisfactoriamente.", "top-end")
       loading.value = false;
       esperando.value = false;
+      btnModificar.value = 'Modificar'
       // Swal.fire({
       //   icon: "success",
       //   title: "Editado satisfactoriamente."
@@ -1529,13 +1529,14 @@ const EliminarListadoMedidas = async (newdato) => {
   // console.log(newdato.id)
   for (let index = 0; index < listadoMedidas.value.length; index++) {
     if (newdato.id == listadoMedidas.value[index].id) {
-      delete listadoMedidas.value[index];
+      listadoMedidas.value.splice(index, 1)
+      // delete listadoMedidas.value[index];
       // listadoMedidas.value[index] = newdato;
     }
     itemsMedidas.value.push(listadoMedidas.value[index])
   }
   almacenDatosUnidades(itemsMedidas.value);
-  // console.log(items);
+  console.log(itemsMedidas);
 
   return await items;
 
@@ -1611,6 +1612,7 @@ const borrarU = (id, correo) => {
           //     }
           //     loading.value = false
           //   });
+
           successFull("Magnitud eliminada satisfactoriamente.", "top-end")
           // Swal.fire({
           //   title: "Eliminado",
@@ -1643,26 +1645,27 @@ const borrarUMedida = (id, correo) => {
       esperando.value = true;
       // Eliminar //
       axios.delete(`https://${ipPublica.value}/fullstack/public/medidas/${id}`)
-        .then(() => {
+        .then((response) => {
           esperando.value = false;
           // consultar();
           // // cancelarU();
           // cerrarAlert();
           // emit('actualiza')
           loading.value = true;
-          axios.get(`https://` + ipPublica.value + `/fullstack/public/medidas`)
-            .then((response) => {
-              listadoMedidas.value = response.data.data;
-              almacenDatosUnidades(listadoMedidas.value);
-              loading.value = false
-              // cargado.value = true;
-              // Kgest_nomencladores.value = Kgest_nomencladores.value + 1;
-            }).catch((error) => {
-              if (error.response.status === 500) {
-                errors.value = error.response.status;
-              }
-              loading.value = false
-            });
+          // axios.get(`https://` + ipPublica.value + `/fullstack/public/medidas`)
+          //   .then((response) => {
+          //     listadoMedidas.value = response.data.data;
+          //     almacenDatosUnidades(listadoMedidas.value);
+          //     loading.value = false
+          //     // cargado.value = true;
+          //     // Kgest_nomencladores.value = Kgest_nomencladores.value + 1;
+          //   }).catch((error) => {
+          //     if (error.response.status === 500) {
+          //       errors.value = error.response.status;
+          //     }
+          //     loading.value = false
+          //   });
+          EliminarListadoMedidas(response.data.data)
           successFull("Unidad de medida eliminada satisfactoriamente.", "top-end")
           // Swal.fire({
           //   title: "Eliminado",
