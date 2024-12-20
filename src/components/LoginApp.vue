@@ -29,8 +29,8 @@
                       <label style="color: black;"><i class="fa fa-user-circle"></i> Correo
                         electrónico:</label>
                       <input type="text" class="form-control form-control-user" id="correo"
-                        aria-describedby="emailHelp" v-model="form.nombre"
-                        placeholder="Correo electrónico" @change="ValidacionEmail()" @keyup="ValidacionEmail()" style="text-transform:lowercase;">
+                        aria-describedby="" v-model="form.nombre"
+                        placeholder="Correo electrónico" @change="ValidacionEmail()" @keyup="ValidacionEmail()" style="text-transform:lowercase;" value="admin@admin.co">
                       <div class="text-center"><label v-if="emailError" :style="'color: ' + color">{{ emailError
                           }}</label></div>
 
@@ -40,7 +40,7 @@
                     <div class="form-group text-left">
                       <label style="color: black;"><i class="fa fa-key"></i> Contraseña:</label>
                       <input type="password" v-model="form.passw" class="form-control form-control-user"
-                        id="contras" placeholder="Contraseña" @keyup="ValidarPassWord()" @change="ValidarPassWord()">
+                        id="contras" placeholder="Contraseña" @keyup="ValidarPassWord()" @change="ValidarPassWord()" value="123">
                         <div class="text-center"><label v-if="passwError" :style="'color: ' + colorP">{{ passwError
                           }}</label></div>
                     </div>
@@ -154,8 +154,16 @@ const form = reactive({
 let bodyLogin1 = document.getElementById('page-top');
 
 onMounted(async () => {
+  form.nombre = "admin@admin.co";
+  form.passw = "123";
   localStorage.setItem('ListadoCache', []);
   localStorage.setItem('ListadoCacheSucursal', []);
+  localStorage.setItem('Carg_datA', '0'); // Articulos
+  localStorage.setItem('Carg_datD', '0'); // Departamentos
+  localStorage.setItem('Carg_datMe', '0'); // Unidades de medida
+  localStorage.setItem('Carg_datM', '0'); // Magitudes
+  localStorage.setItem('Carg_datP', '0'); // Productos
+  localStorage.setItem('Carg_datS', '0'); // Sucursales
   bodyLogin1.classList.add('bg-gradient-info');
   bodyLogin1.classList.remove('sidebar-toggled');
   // await consultar();

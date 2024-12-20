@@ -43,7 +43,8 @@
 
               <EasyDataTable table-class-name="customize-table" :headers="headers" :items="itemsdepartamentos"
                 buttons-pagination border-cell header-text-direction="center" body-text-direction="center"
-                :search-field="searchField" :search-value="searchValue" :rows-per-page="5" :loading="loading" show-index>
+                :search-field="searchField" :search-value="searchValue" :rows-per-page="5" :loading="loadingD"
+                show-index>
                 <template #item-opciones="item">
                   <div class="operation-wrapper">
                     <button class="btn btn-success btn-sm btn-circle" @click="clickEditar(item.id)" v-b-tooltip.hover
@@ -216,8 +217,8 @@
       <!-- por cantidad -->
 
     </div>
-    <AddDepartamento v-show="popup" @cerrar="abrirModalAddProd()" @consulta="actualiza()"/>
-    <AddArticulo v-show="popupArt" @cerrar="abrirModalAddArti()" @consulta="actualizaArt()"/>
+    <AddDepartamento v-show="popup" @cerrar="abrirModalAddProd()" @consulta="actualiza()" />
+    <AddArticulo v-show="popupArt" @cerrar="abrirModalAddArti()" @consulta="actualizaArt()" />
   </div>
   <template v-if="esperando">
     <div v-on="loadingA('Actualizando datos...')">
@@ -312,6 +313,8 @@ const abrirModalAddArti = () => {
 
 const loading = ref(false);
 
+const loadingD = ref(false);
+
 const loadingA = (texto) => {
   Swal.fire({
     // title: "Sweet!",
@@ -344,8 +347,8 @@ const headers = [
   { text: "NOMBRE", value: "attributes.departamento" },
   { text: "DESCRIPCIÓN", value: "attributes.descripcion", sortable: true },
   { text: "OBSERVACIONES", value: "attributes.observacion", sortable: true },
-  { text: "FECHA CREACIÓN", value: "meta.created_at" },
-  { text: "FECHA ACTUALIZACIÓN", value: "meta.updated_at" },
+  { text: "FECHA CREACIÓN", value: "attributes.timestamps.created_at" },
+  { text: "FECHA ACTUALIZACIÓN", value: "attributes.timestamps.updated_at" },
   { text: "OPCIONES", value: "opciones" }
 ];
 
@@ -355,8 +358,8 @@ const headersArticulos = [
   { text: "NOMBRE", value: "attributes.articulo" },
   { text: "DESCRIPCIÓN", value: "attributes.descripcion", sortable: true },
   { text: "OBSERVACIONES", value: "attributes.observacion", sortable: true },
-  { text: "FECHA CREACIÓN", value: "meta.created_at" },
-  { text: "FECHA ACTUALIZACIÓN", value: "meta.updated_at" },
+  { text: "FECHA CREACIÓN", value: "attributes.timestamps.created_at" },
+  { text: "FECHA ACTUALIZACIÓN", value: "attributes.timestamps.updated_at" },
   { text: "OPCIONES", value: "opciones" }
 ];
 
@@ -420,7 +423,7 @@ let setTiempoBusca = '';
 
 const datos_archivados = ref([]);
 
-const ipPublica = ref('192.168.121.123');
+const ipPublica = ref('localhost');
 
 const formProductos = reactive({
   data: {
@@ -588,7 +591,7 @@ const obtenerListadoLimpio = () => {
 
 const obtenerDepartamentos = () => {
   let i = 0;
-// console.log(listadoDepartamentos)
+  // console.log(listadoDepartamentos)
   itemsdepartamentos.value = [];
   for (let index = 0; index < listadoDepartamentos.value.length; index++) {
     itemsdepartamentos.value.push(listadoDepartamentos.value[index])
@@ -872,12 +875,11 @@ const almacenDatosMedida = (Lista) => {
 }
 
 onMounted(async () => {
-  // localStorage.setItem("userName", form.nombre);
   if (localStorage.getItem('userName')) {
-    if (localStorage.getItem('Carg_dat') != '0') {
-      loading.value = true;
-      emit('actualiza', 5)
+
+    if (localStorage.getItem('Carg_datD') == '0') {
       // DEPARTAMENTOS
+      loadingD.value = true;
       await axios.get(`https://` + ipPublica.value + `/fullstack/public/departamentos`)
         .then((response) => {
           listadoDepartamentos.value = response.data.data;
@@ -886,6 +888,31 @@ onMounted(async () => {
 
         }).catch((error) => {
           console.log(error)
+          if (error.response.status === 500) {
+            errors.value = error.response.status;
+          }
+        })
+      listadoDepartamentos.value = await JSON.parse(localStorage.getItem('ListadoCacheDepartamentos'));
+      obtenerDepartamentos();
+      localStorage.setItem('Carg_datD', '1')
+      loadingD.value = false;
+
+    } else {
+      loadingD.value = true;
+      listadoDepartamentos.value = await JSON.parse(localStorage.getItem('ListadoCacheDepartamentos'));
+      obtenerDepartamentos();
+      loadingD.value = false;
+    }
+    if (localStorage.getItem('Carg_datA') == '0') {
+      loading.value = true;
+      // UNIDADES DE MEDIDA
+      await axios.get(`https://` + ipPublica.value + `/fullstack/public/medidas`)
+        .then((response) => {
+          listadoMedida.value = response.data.data;
+          almacenDatosMedida(listadoMedida.value);
+          // Kcategorias.value = Kcategorias.value + 1;
+
+        }).catch((error) => {
           if (error.response.status === 500) {
             errors.value = error.response.status;
           }
@@ -903,41 +930,22 @@ onMounted(async () => {
             errors.value = error.response.status;
           }
         })
-
-        // UNIDADES DE MEDIDA
-      await axios.get(`https://` + ipPublica.value + `/fullstack/public/medidas`)
-        .then((response) => {
-          listadoMedida.value = response.data.data;
-          almacenDatosMedida(listadoMedida.value);
-          // Kcategorias.value = Kcategorias.value + 1;
-
-        }).catch((error) => {
-          if (error.response.status === 500) {
-            errors.value = error.response.status;
-          }
-        })
-      listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
-      obtenerListadoLimpio();
-      listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
-      listadoSucursales.value = obtenerListadoLimpioSucursales();
-      listadoDepartamentos.value = JSON.parse(localStorage.getItem('ListadoCacheDepartamentos'));
-      obtenerDepartamentos();
-      listadoArticulos.value = JSON.parse(localStorage.getItem('ListadoCacheArticulos'));
+      listadoArticulos.value = await JSON.parse(localStorage.getItem('ListadoCacheArticulos'));
       obtenerArticulos();
-      listadoMedida.value = JSON.parse(localStorage.getItem('ListadoCacheUnidades'));
+      listadoMedida.value = await JSON.parse(localStorage.getItem('ListadoCacheUnidades'));
+      localStorage.setItem('Carg_datA', '1')
       loading.value = false
+    } else {
+      loading.value = true;
+      listadoArticulos.value = await JSON.parse(localStorage.getItem('ListadoCacheArticulos'));
+      obtenerArticulos();
+      listadoMedida.value = await JSON.parse(localStorage.getItem('ListadoCacheUnidades'));
+      loading.value = false;
     }
 
   } else {
     router.push('/login');
   }
-
-  // console.log(datosPaginados1)
-  // if (cargado.value == false) {
-  //   consultar();
-  //   consultarSucursales();
-  // }
-
 })
 </script>
 <style lang="scss" scoped></style>

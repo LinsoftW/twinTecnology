@@ -476,12 +476,12 @@ const almacenDatosSucursales = (Lista) => {
 onMounted(async () => {
   if (localStorage.getItem('userName')) {
     // if (localStorage.getItem('Carg_dat') == '0') {
-    if (localStorage.getItem('Wait') == '0') {
-      // console.log("Cargar ahora")
-      bodyLogin.classList.remove('bg-gradient-info');
-      listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
-      obtenerListadoLimpio();
-    }
+    // if (localStorage.getItem('Wait') == '0') {
+    //   // console.log("Cargar ahora")
+    //   bodyLogin.classList.remove('bg-gradient-info');
+    //   listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
+    //   obtenerListadoLimpio();
+    // }
 
     // } else {
     //   console.log("Sigo esperando")

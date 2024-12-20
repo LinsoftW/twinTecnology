@@ -761,7 +761,7 @@ const activaNot = ref(false);
 
 const showNot = ref('');
 
-const ipPublica = ref('192.168.121.123');
+const ipPublica = ref('localhost');
 
 // let cargado = ref(false);
 
@@ -1037,17 +1037,65 @@ const consultarPrincipal = async () => {
     })
 
   // MAGNITUDES
-  // await axios.get(`https://` + ipPublica.value + `/fullstack/public/magnituds`)
+  // await axios.get(`https://` + ipPublica.value + `/fullstack/public/magnitudes`)
   //   .then((response) => {
   //     listadoMagnitudes.value = response.data.data;
   //     almacenDatosArticulos(listadoMagnitudes.value);
+  //     // localStorage.setItem("Carg_dat", '1');
+  //     localStorage.setItem("Carg_datM", '1');
+  //     Kgest_nomencladores.value = Kgest_nomencladores.value + 1;
 
   //   }).catch((error) => {
   //     if (error.response.status === 500) {
   //       errors.value = error.response.status;
   //     }
   //   })
+  // Medidas
+  // await axios.get(`https://` + ipPublica.value + `/fullstack/public/medidas`)
+  //   .then((response) => {
+  //     listadoMedidas.value = response.data.data;
+  //     almacenDatosUnidades(listadoMedidas.value);
+  //     // cargado.value = true;
+  //     localStorage.setItem("Carg_datMe", '1');
+  //     Kgest_nomencladores.value = Kgest_nomencladores.value + 1;
+  //   }).catch((error) => {
+  //     if (error.response.status === 500) {
+  //       errors.value = error.response.status;
+  //     }
+  //     // loading.value = false
+  //   });
 
+  // Departamentos
+  // await axios.get(`https://` + ipPublica.value + `/fullstack/public/departamentos`)
+  //   .then((response) => {
+  //     listadoDepartamentos.value = response.data.data;
+  //     almacenDatosDepartamentos(listadoDepartamentos.value);
+  //     localStorage.setItem("Carg_datD", '1');
+  //     Kcategorias.value = Kcategorias.value + 1;
+
+  //   }).catch((error) => {
+  //     // console.log(error)
+  //     if (error.response.status === 500) {
+  //       errors.value = error.response.status;
+  //     }
+  //   })
+
+  // Articulos
+  // await axios.get(`https://` + ipPublica.value + `/fullstack/public/articulos`)
+  //   .then((response) => {
+  //     listadoArticulos.value = response.data.data;
+  //     almacenDatosArticulos(listadoArticulos.value);
+  //     // cargado.value = true;
+  //     localStorage.setItem("Carg_datA", '1');
+  //     Kcategorias.value = Kcategorias.value + 1;
+  //   }).catch((error) => {
+  //     if (error.response.status === 500) {
+  //       errors.value = error.response.status;
+  //     }
+  //     // loading.value = false
+  //   });
+
+  // Sucursales
   await axios.get(`http://` + ipPublica.value + `/fullstack/public/sucursals`)
     .then((response1) => {
       listadoSucursales.value = response1.data.data;
@@ -1056,7 +1104,7 @@ const consultarPrincipal = async () => {
       // console.log("Cargado TODOO")
       localStorage.setItem("Carg_dat", '1');
       localStorage.setItem("Wait", '0');
-      successFull("Datos cargados.", "top-start")
+      successFull("Datos cargados.", "top-end")
       Kinicio.value = Kinicio.value + 1;
       // listadoSucursales = obtenerListadoLimpioSucursales();
 
@@ -1360,6 +1408,14 @@ const salir = () => {
       // localStorage.removeItem('ListadoCacheMedidas');
       localStorage.removeItem('ListadoCacheSucursal');
       localStorage.removeItem('Carg_dat');
+      // localStorage.setItem('ListadoCache', []);
+      // localStorage.setItem('ListadoCacheSucursal', []);
+      localStorage.removeItem('Carg_datA'); // Articulos
+      localStorage.removeItem('Carg_datD'); // Departamentos
+      localStorage.removeItem('Carg_datMe'); // Unidades de medida
+      localStorage.removeItem('Carg_datM'); // Magitudes
+      localStorage.removeItem('Carg_datP'); // Productos
+      localStorage.removeItem('Carg_datS'); // Sucursales
       localStorage.clear();
       router.push('/login')
     }

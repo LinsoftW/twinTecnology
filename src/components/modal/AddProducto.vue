@@ -490,7 +490,7 @@ let elementPagina = ref(5);
 
 let cargado = ref(false);
 
-const ipPublica = ref('192.168.121.123');
+const ipPublica = ref('localhost');
 
 const esperando = ref(false);
 
@@ -657,11 +657,11 @@ onMounted(async () => {
   // localStorage.setItem("userName", form.nombre);
   if (localStorage.getItem('userName')) {
     if (localStorage.getItem('Carg_dat') != '0') {
-      generarBArCode()
-      listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
-      obtenerListadoLimpio();
-      listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
-      listadoSucursales.value = obtenerListadoLimpioSucursales();
+      // generarBArCode()
+      // listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
+      // obtenerListadoLimpio();
+      // listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
+      // listadoSucursales.value = obtenerListadoLimpioSucursales();
       // console.log(listadoSucursales)
       cargado.value = true;
     }

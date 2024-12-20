@@ -1,104 +1,350 @@
 <template>
   <div>
+
+
+
     <div class="container-fluid">
+
+
+
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
+
+
+
         <h1 class="h3 mb-0 text-gray-800">TABLAS FIJAS (NOMENCLADORES)</h1>
+
+
+
         <!-- <img src="/cargando2.gif" style="width: 40px; height:40px" v-if="esperando" > -->
+
+
+
         <!-- {{ listado }} -->
+
+
+
         <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" v-b-tooltip.hover
-        title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar productos</a> -->
+
+
+
+                title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar productos</a> -->
+
+
+
       </div>
 
+
+
+
+
+
+
       <!-- Datos del producto a agregar -->
+
+
+
       <div class="row">
 
+
+
+
+
+
+
         <!--Listado de productos -->
+
+
+
         <div class="col-xl-12 col-lg-12">
+
+
+
           <div class="card shadow mb-4">
+
+
+
             <!-- Card Header - Dropdown -->
+
+
+
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+
+
+
               <h6 class="m-0 font-weight-bold text-info">NOMENCLADORES</h6>
+
+
+
             </div>
+
+
+
             <!-- Card Body -->
+
+
+
             <div class="card-body">
 
+
+
+
+
+
+
               <ul role="tablist" class="tabs-component-tabs">
+
+
+
                 <li :class="'tabs-component-tab--custom ' + isactive" role="presentation"><a role="tab"
                     :class="'tabs-component-tab-a--custom ' + isactive" aria-controls="first-tab-pane"
                     :aria-selected="selec" href="#first-tab" tabindex="0" @click="Tab1()">Magnitudes</a></li>
+
+
+
                 <li :class="'tabs-component-tab--custom ' + isactive2" role="presentation"><a role="tab"
                     :class="'tabs-component-tab-a--custom ' + isactive2" aria-controls="second-tab-pane"
                     :aria-selected="selec2" href="#second-tab" tabindex="0" @click="Tab2()">Unidades de medida</a></li>
+
+
+
                 <!-- <li class="tabs-component-tab is-disabled" role="presentation"><a role="tab"
-                    class="tabs-component-tab-a is-disabled" aria-controls="disabled-tab-pane" aria-selected="false"
-                    href="#" tabindex="0">Tabla 3</a></li>
-                <li class="tabs-component-tab is-inactive" role="presentation"><a role="tab"
-                    class="tabs-component-tab-a is-inactive" aria-controls="oh-hi-mark-pane" aria-selected="false"
-                    href="#oh-hi-mark" tabindex="0">Tabla 4</a></li>
-                <li class="tabs-component-tab is-inactive" role="presentation"><a role="tab"
-                    class="tabs-component-tab-a is-inactive" aria-controls="prefix-and-suffix-pane"
-                    aria-selected="false" href="#prefix-and-suffix" tabindex="0"><span class="prefix">→</span>Tabla
-                    5</a></li>
-                <li class="tabs-component-tab--custom is-inactive" role="presentation"><a role="tab"
-                    class="tabs-component-tab-a--custom is-inactive" aria-controls="custom-navigation-item-classes-pane"
-                    aria-selected="false" href="#custom-navigation-item-classes" tabindex="0">Custom navigation item
-                    classes</a></li> -->
+
+
+
+                            class="tabs-component-tab-a is-disabled" aria-controls="disabled-tab-pane" aria-selected="false"
+
+
+
+                            href="#" tabindex="0">Tabla 3</a></li>
+
+
+
+                        <li class="tabs-component-tab is-inactive" role="presentation"><a role="tab"
+
+
+
+                            class="tabs-component-tab-a is-inactive" aria-controls="oh-hi-mark-pane" aria-selected="false"
+
+
+
+                            href="#oh-hi-mark" tabindex="0">Tabla 4</a></li>
+
+
+
+                        <li class="tabs-component-tab is-inactive" role="presentation"><a role="tab"
+
+
+
+                            class="tabs-component-tab-a is-inactive" aria-controls="prefix-and-suffix-pane"
+
+
+
+                            aria-selected="false" href="#prefix-and-suffix" tabindex="0"><span class="prefix">→</span>Tabla
+
+
+
+                            5</a></li>
+
+
+
+                        <li class="tabs-component-tab--custom is-inactive" role="presentation"><a role="tab"
+
+
+
+                            class="tabs-component-tab-a--custom is-inactive" aria-controls="custom-navigation-item-classes-pane"
+
+
+
+                            aria-selected="false" href="#custom-navigation-item-classes" tabindex="0">Custom navigation item
+
+
+
+                            classes</a></li> -->
+
+
+
               </ul>
+
+
+
               <div class="tabs-component-panels">
+
+
+
                 <section id="first-tab-pane" data-tab-id="first-tab" :aria-hidden="vis" class="tabs-component-panel"
                   role="tabpanel" tabindex="-1" :style="display1">
+
+
+
                   <div class="row">
+
+
+
                     <div class="col-xl-8">
+
+
+
                       <div class="row">
+
+
+
                         <div class="col-md-6 col-xl-6 col-lg-6">
+
+
+
                           <a @click="ImprimirDoc()" href="#"
                             class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm" v-b-tooltip.hover
                             title="Imprimir"><i class="fas fa-print fa-sm "></i> Imprimir</a>
+
+
+
                         </div>
+
+
+
                         <!-- <div class="col-md-3 col-xl-3 col-lg-3">
-                          <span class="text-info">Filtrar por columna: </span>
-                          <select v-model="searchField" class="form-control form-control-user">
-                            <option>type</option>
-                            <option>attributes.codigo</option>
-                          </select>
-                        </div> -->
+
+
+
+                                  <span class="text-info">Filtrar por columna: </span>
+
+
+
+                                  <select v-model="searchField" class="form-control form-control-user">
+
+
+
+                                    <option>type</option>
+
+
+
+                                    <option>attributes.codigo</option>
+
+
+
+                                  </select>
+
+
+
+                                </div> -->
+
+
+
                         <div class="col-md-8 col-xl-6 col-lg-12">
+
+
+
                           <span class="text-info">Buscar: </span>
+
+
+
                           <input class="form-control form-control-user" type="text" v-model="searchValue"
                             placeholder="Tecle el nombre a buscar..." />
+
+
+
                         </div>
+
+
+
                       </div><br>
 
+
+
+
+
+
+
                       <!-- </div> -->
+
+
+
                       <EasyDataTable table-class-name="customize-table" :headers="headers" :items="items"
                         buttons-pagination border-cell v-model:items-selected="itemsSelected"
                         header-text-direction="center" body-text-direction="center" :search-field="searchField"
                         :search-value="searchValue" @click-row="showRow" :rows-per-page="5" show-index
                         :loading="loading">
+
+
+
                         <template #empty-message>
+
+
+
                           <a>No hay datos que mostrar</a>
                         </template>
                         <template #item-opciones="item">
                           <div class="operation-wrapper">
+
+
+
                             <!-- <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal"
-                              data-target="#EditarProducto" @click="seleccionaProducto(item)" v-b-tooltip.hover
-                              title="Modificar"><span class="fas fa-edit"></span></button> -->
+
+
+
+                                      data-target="#EditarProducto" @click="seleccionaProducto(item)" v-b-tooltip.hover
+
+
+
+                                      title="Modificar"><span class="fas fa-edit"></span></button> -->
+
+
+
                             <button class="btn btn-success btn-sm btn-circle" @click="clickEditar(item.id)"
                               v-b-tooltip.hover title="Editar"><span class="fas fa-edit"></span></button>
+
+
+
                             <!-- <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
-                    title="Aumentar"><span class="fas fa-plus"></span></button>
-                  <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
-                    title="Restar"><span class="fas fa-minus"></span></button> -->
+
+
+
+                            title="Aumentar"><span class="fas fa-plus"></span></button>
+
+
+
+                          <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
+
+
+
+                            title="Restar"><span class="fas fa-minus"></span></button> -->
+
+
+
                             <button class="btn btn-danger btn-sm btn-circle ml-1"
                               @click="borrarU(item.id, item.attributes.magnitud)" v-b-tooltip.hover
                               title="Eliminar"><span class="fas fas fa-trash-alt"></span></button>
+
+
+
                             <!-- <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode"
-                    @click="generarCodeBar(item.attributes.codigo)" v-b-tooltip.hover title="Código de barra"><span
-                      class="fas fas fa-barcode"></span></button> -->
+
+
+
+                            @click="generarCodeBar(item.attributes.codigo)" v-b-tooltip.hover title="Código de barra"><span
+
+
+
+                              class="fas fas fa-barcode"></span></button> -->
+
+
+
                             <!-- <a class="dropdown-item btn btn-info btn-sm btn-circle ml-1" href="#" @click="generarCodeBar(item.attributes.codigo)" data-toggle="modal" data-target="#BarCode"
-                    >
-                    <span class="fas fa-barcode"></span>
-                  </a> -->
+
+
+
+                            >
+
+
+
+                            <span class="fas fa-barcode"></span>
+
+
+
+                          </a> -->
+
+
+
                           </div>
                         </template>
                         <template #loading>
@@ -238,9 +484,9 @@
                                       </a>
                                     </div>
                                     <div v-if="editar" class="form-group h4 col-lg-6">
-                                      <a @click="editarU" class="btn btn-info btn-block">
-                                        Modificar
-                                      </a>
+                                      <button @click="editarU" class="btn btn-info btn-block">
+                                        {{ btnModificar }}
+                                      </button>
                                     </div>
                                     <div v-if="editar" class="form-group h4 col-lg-6">
                                       <a @click="cancelarU" class="btn btn-danger btn-block">
@@ -289,32 +535,83 @@
                       <EasyDataTable table-class-name="customize-table" :headers="headersMedidas" :items="itemsMedidas"
                         buttons-pagination border-cell v-model:items-selected="itemsSelected"
                         header-text-direction="center" body-text-direction="center" :search-field="searchFieldMedida"
-                        :search-value="searchValue" @click-row="showRow" :rows-per-page="5" :loading="loading"
+                        :search-value="searchValue" @click-row="showRow" :rows-per-page="5" :loading="loadingU"
                         show-index>
                         <template #empty-message>
                           <a>No hay datos que mostrar</a>
                         </template>
                         <template #item-opciones="item">
                           <div class="operation-wrapper">
+
+
+
                             <!-- <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal"
-                              data-target="#EditarProducto" @click="seleccionaProducto(item)" v-b-tooltip.hover
-                              title="Modificar"><span class="fas fa-edit"></span></button> -->
+
+
+
+                                      data-target="#EditarProducto" @click="seleccionaProducto(item)" v-b-tooltip.hover
+
+
+
+                                      title="Modificar"><span class="fas fa-edit"></span></button> -->
+
+
+
                             <button class="btn btn-success btn-sm btn-circle" @click="clickEditarMedidas(item.id)"
                               v-b-tooltip.hover title="Editar"><span class="fas fa-edit"></span></button>
+
+
+
                             <!-- <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
-                    title="Aumentar"><span class="fas fa-plus"></span></button>
-                  <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
-                    title="Restar"><span class="fas fa-minus"></span></button> -->
+
+
+
+                            title="Aumentar"><span class="fas fa-plus"></span></button>
+
+
+
+                          <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
+
+
+
+                            title="Restar"><span class="fas fa-minus"></span></button> -->
+
+
+
                             <button class="btn btn-danger btn-sm btn-circle ml-1"
                               @click="borrarUMedida(item.id, item.attributes.medida)" v-b-tooltip.hover
                               title="Eliminar"><span class="fas fas fa-trash-alt"></span></button>
+
+
+
                             <!-- <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode"
-                    @click="generarCodeBar(item.attributes.codigo)" v-b-tooltip.hover title="Código de barra"><span
-                      class="fas fas fa-barcode"></span></button> -->
+
+
+
+                            @click="generarCodeBar(item.attributes.codigo)" v-b-tooltip.hover title="Código de barra"><span
+
+
+
+                              class="fas fas fa-barcode"></span></button> -->
+
+
+
                             <!-- <a class="dropdown-item btn btn-info btn-sm btn-circle ml-1" href="#" @click="generarCodeBar(item.attributes.codigo)" data-toggle="modal" data-target="#BarCode"
-                    >
-                    <span class="fas fa-barcode"></span>
-                  </a> -->
+
+
+
+                            >
+
+
+
+                            <span class="fas fa-barcode"></span>
+
+
+
+                          </a> -->
+
+
+
                           </div>
                         </template>
                         <template #loading>
@@ -436,7 +733,9 @@
                                     <label class="text-info">Seleccione una magnitud: <label
                                         style="color: red;">*</label></label>
                                     <select name="IDmagnitud" id="IDmagnitud" style="width: 100%; text-align:center"
-                                      placeholder="Unidad de medida" class="text-gray-900 form-control" v-model="formMedida.data.attributes.magnitud_id" @change="ObtenIdMagnitud(selected)">
+                                      placeholder="Unidad de medida" class="text-gray-900 form-control"
+                                      v-model="formMedida.data.attributes.magnitud_id"
+                                      @change="ObtenIdMagnitud(selected)">
                                       <option v-for="dato in listadoMagnitudes" :key="dato.id" :value="dato.id">{{
                                         dato.attributes.magnitud }}</option>
                                     </select>
@@ -459,7 +758,7 @@
                                     </div>
                                     <div v-if="editar" class="form-group h4 col-lg-6">
                                       <a @click="editarUMedida" class="btn btn-info btn-block">
-                                        Modificar
+                                        {{ btnModificarM }}
                                       </a>
                                     </div>
                                     <div v-if="editar" class="form-group h4 col-lg-6">
@@ -603,13 +902,12 @@
 
   </div>
   <!-- <template v-if="esperando">
-    <div v-on="loading('Actualizando datos...')">
+    <div v-on="loadingA('Actualizando datos...')">
 
     </div>
   </template> -->
 </template>
 <script setup>
-
 import axios from 'axios';
 import router from '@/router';
 import Swal from 'sweetalert2';
@@ -618,7 +916,15 @@ import { load } from '@progress/kendo-vue-intl';
 
 const esperando = ref(false);
 
+const btnModificar = ref('Modificar')
+
+const btnModificarM = ref('Modificar')
+
+const deactiva = ref(false)
+
 const loading = ref(false);
+
+const loadingU = ref(false);
 
 const loadingA = (texto) => {
   Swal.fire({
@@ -636,7 +942,7 @@ const IdMagnitud = ref(0);
 
 const ObtenIdMagnitud = (ID) => {
   IdMagnitud.value = ID;
-  // console.log(ID)
+  // console.log(formMedida.data.attributes.magnitud_id)
 }
 
 const cerrarAlert = () => {
@@ -743,7 +1049,7 @@ let setTiempoBusca = '';
 
 const datos_archivados = ref([]);
 
-const ipPublica = ref('192.168.121.123');
+const ipPublica = ref('localhost');
 
 const formMagnitud = reactive({
   data: {
@@ -809,13 +1115,12 @@ let magnitudVacio = ref(false)
 
 let descripVacio = ref(false)
 
-const agregarU = () => {
+const agregarU = async () => {
   // console.log(formMagnitud)
-  // formMagnitud.data.type = 'Magnitud';
   esperando.value = true;
   if (formMagnitud) {
     // console.log("OKKKK")
-    axios.post(`https://` + ipPublica.value + `/fullstack/public/magnitudes`, formMagnitud)
+    await axios.post(`https://` + ipPublica.value + `/fullstack/public/magnitudes`, formMagnitud)
       .then((response) => {
         cargado.value = false;
         esperando.value = false;
@@ -826,19 +1131,12 @@ const agregarU = () => {
         formMagnitud.data.attributes.magnitud = '';
         // emit('actualiza', 7);
         loading.value = true;
-        // emit('actualiza', 7)
-        // emit('actualiza', 8)
-        axios.get(`https://` + ipPublica.value + `/fullstack/public/magnitudes`)
-          .then((response) => {
-            listadoMagnitudes.value = response.data.data;
-            almacenDatosMagnitudes(listadoMagnitudes.value);
-            obtenerListadoLimpio()
-
-          }).catch((error) => {
-            if (error.response.status === 500) {
-              errors.value = error.response.status;
-            }
-          })
+        // console.log(response.data.data)
+        listadoMagnitudes.value.push(response.data.data)
+        // console.log(listadoMagnitudes.value)
+        almacenDatosMagnitudes(listadoMagnitudes.value);
+        listadoMagnitudes.value = JSON.parse(localStorage.getItem('ListadoCacheMagnitudes'));
+        obtenerListadoLimpio();
         loading.value = false;
         successFull("Magnitud agregada satisfactoriamente.", "top-end")
         // closeVentana();
@@ -850,11 +1148,6 @@ const agregarU = () => {
         }
         esperando.value = false;
         ErrorFull(error.response.data.message, "top-start")
-        // cerrarAlert();
-        // Swal.fire({
-        //   icon: "error",
-        //   title: error.response.data.message
-        // })
       })
   } else {
     if (formMagnitud.data.attributes.magnitud == "") {
@@ -872,8 +1165,8 @@ const agregarU = () => {
 }
 
 const agregarUMedida = () => {
-  formMedida.data.attributes.magnitud_id = IdMagnitud.value;
-  console.log(formMedida)
+  // formMedida.data.attributes.magnitud_id = IdMagnitud.value;
+  // console.log(formMedida)
   // formMagnitud.data.type = 'Magnitud';
   esperando.value = true;
   if (formMedida) {
@@ -891,17 +1184,10 @@ const agregarUMedida = () => {
         loading.value = true;
         // emit('actualiza', 7)
         // emit('actualiza', 8)
-        axios.get(`https://` + ipPublica.value + `/fullstack/public/medidas`)
-          .then((response) => {
-            listadoMedidas.value = response.data.data;
-            almacenDatosUnidades(listadoMedidas.value);
-            obtenerListadoLimpioMedida()
-
-          }).catch((error) => {
-            if (error.response.status === 500) {
-              errors.value = error.response.status;
-            }
-          })
+        listadoMedidas.value.push(response.data.data)
+        almacenDatosUnidades(listadoMedidas.value);
+        listadoMagnitudes.value = JSON.parse(localStorage.getItem('ListadoCacheUnidades'));
+        obtenerListadoLimpioMedida()
         loading.value = false;
         successFull("Unidad de medida agregada satisfactoriamente.", "top-end")
         // closeVentana();
@@ -920,7 +1206,7 @@ const agregarUMedida = () => {
         // })
       })
   } else {
-    if (formMedidas.data.attributes.magnitud == "") {
+    if (formMedida.data.attributes.magnitud == "") {
       medidaVacio.value = true;
     }
 
@@ -1012,33 +1298,6 @@ const cambiarLimite = () => {
 
 const obtenerListadoLimpio = async () => {
   let i = 0;
-  // if (cargado.value = false) {
-  //   newListado.value = [];
-  //   for (let index = 0; index < listado.value.length; index++) {
-  //     const element = listado.value[index];
-  //     if (element.attributes.deleted_at == null) {
-  //       newListado.value[i] = element;
-  //       i++;
-  //     }
-  //   }
-  //   datosSinPaginar.value = newListado.value;
-  //   cantidad.value = Math.ceil(newListado.value.length / elementPagina.value);
-  //   obtenerPagina(1);
-  //   cargado.value = true;
-  // } else {
-  //   newListado.value = []
-  //   for (let index = 0; index < listado.value.length; index++) {
-  //     const element = listado.value[index];
-  //     if (element.attributes.deleted_at == null) {
-  //       newListado.value[i] = element;
-  //       i++;
-  //     }
-  //   }
-  //   datosSinPaginar.value = newListado.value;
-  //   cantidad.value = Math.ceil(newListado.value.length / elementPagina.value);
-  //   obtenerPagina(1);
-  // }
-
   items.value = [];
   // cargar datos en tabla-vue
   // console.log('Actualizando 1...')
@@ -1186,11 +1445,31 @@ const buscandoElemento = () => {
   setTiempoBusca = setTimeout(consultar, 360);
 }
 
+const EditarListado = async (newdato) => {
+  let i = 0;
+  items.value = [];
+  // cargar datos en tabla-vue
+  // console.log('Actualizando 1...')
+  for (let index = 0; index < listadoMagnitudes.value.length; index++) {
+    if (newdato.id == listadoMagnitudes.value[index].id) {
+      listadoMagnitudes.value[index] = newdato;
+    }
+    items.value.push(listadoMagnitudes.value[index])
+  }
+  almacenDatosMagnitudes(items.value);
+  // console.log(items);
+
+  return await items;
+
+}
+
 const editarU = async () => {
   esperando.value = true;
+  btnModificar.value = 'Actualizando...'
+  // deactiva.value = true;
   await axios.put(`https://${ipPublica.value}/fullstack/public/magnitudes/${id.value}`, formMagnitud)
     .then((response) => {
-      // console.log(response)
+      // console.log(response.data.data)
       // esperando.value = false;
       // cerrarAlert();
       // consultar();
@@ -1198,22 +1477,12 @@ const editarU = async () => {
       formMagnitud.data.attributes.descripcion = ''
       formMagnitud.data.attributes.observacion = '';
       formMagnitud.data.attributes.magnitud = '';
+      loading.value = true;
+      EditarListado(response.data.data)
+
       successFull("Magnitud editada satisfactoriamente.", "top-end")
-      loading.value = true;
-      // emit('actualiza', 7)
-      // emit('actualiza', 8)
-      axios.get(`https://` + ipPublica.value + `/fullstack/public/magnitudes`)
-        .then((response) => {
-          listadoMagnitudes.value = response.data.data;
-          almacenDatosMagnitudes(listadoMagnitudes.value);
-          obtenerListadoLimpio()
-
-        }).catch((error) => {
-          if (error.response.status === 500) {
-            errors.value = error.response.status;
-          }
-        })
       loading.value = false;
+      esperando.value = false;
       // Swal.fire({
       //   icon: "success",
       //   title: "Editado satisfactoriamente."
@@ -1226,61 +1495,84 @@ const editarU = async () => {
         errors.value = error.response.data;
       }
       esperando.value = false;
-      cerrarAlert();
-      Swal.fire({
-        icon: "danger",
-        title: "Error realizando operación."
-      })
-    })
-}
-
-const editarUMedida = async () => {
-  esperando.value = true;
-  await axios.put(`https://${ipPublica.value}/fullstack/public/medidas/${id.value}`, formMedida)
-    .then((response) => {
-      // console.log(response)
-      // esperando.value = false;
-      // cerrarAlert();
-      // consultar();
-      editar.value = false;
-      formMedida.data.attributes.descripcion = ''
-      formMedida.data.attributes.observacion = '';
-      formMedida.data.attributes.magnitud = '';
-      successFull("Unidad de medida editada satisfactoriamente.", "top-end")
-      loading.value = true;
-      // emit('actualiza', 7)
-      // emit('actualiza', 8)
-      axios.get(`https://` + ipPublica.value + `/fullstack/public/medidas`)
-        .then((response) => {
-          listadoMedidas.value = response.data.data;
-          almacenDatosUnidades(listadoMedidas.value);
-          // loading.value = true;
-          obtenerListadoLimpioMedida()
-          // loading.value = false;
-
-        }).catch((error) => {
-          if (error.response.status === 500) {
-            errors.value = error.response.status;
-          }
-        })
-      loading.value = false;
-      // Swal.fire({
-      //   icon: "success",
-      //   title: "Editado satisfactoriamente."
-      // })
-      // editar.value = false;
-      // localStorage.setItem("editar", editar.value);
-    })
-    .catch((error) => {
-      if (error.status === 400) {
-        errors.value = error.response.data;
-      }
-      esperando.value = false;
+      ErrorFull('Error realizando la operacion. Inténtelo más tarde.')
       // cerrarAlert();
       // Swal.fire({
       //   icon: "danger",
       //   title: "Error realizando operación."
       // })
+    })
+}
+
+const EditarListadoMedidas = async (newdato) => {
+  let i = 0;
+  itemsMedidas.value = [];
+  // cargar datos en tabla-vue
+  // console.log(newdato.id)
+  for (let index = 0; index < listadoMedidas.value.length; index++) {
+    if (newdato.id == listadoMedidas.value[index].id) {
+      listadoMedidas.value[index] = newdato;
+    }
+    itemsMedidas.value.push(listadoMedidas.value[index])
+  }
+  almacenDatosUnidades(itemsMedidas.value);
+  // console.log(items);
+
+  return await items;
+
+}
+
+const EliminarListadoMedidas = async (newdato) => {
+  let i = 0;
+  itemsMedidas.value = [];
+  // cargar datos en tabla-vue
+  // console.log(newdato.id)
+  for (let index = 0; index < listadoMedidas.value.length; index++) {
+    if (newdato.id == listadoMedidas.value[index].id) {
+      delete listadoMedidas.value[index];
+      // listadoMedidas.value[index] = newdato;
+    }
+    itemsMedidas.value.push(listadoMedidas.value[index])
+  }
+  almacenDatosUnidades(itemsMedidas.value);
+  // console.log(items);
+
+  return await items;
+
+}
+
+const editarUMedida = async () => {
+  esperando.value = true;
+  btnModificarM.value = "Actualizando..."
+  deactiva.value = true;
+  await axios.put(`https://${ipPublica.value}/fullstack/public/medidas/${id.value}`, formMedida)
+    .then((response) => {
+      editar.value = false;
+      formMedida.data.attributes.descripcion = ''
+      formMedida.data.attributes.observacion = '';
+      formMedida.data.attributes.magnitud = '';
+      loading.value = true;
+      // listadoMedidas.value.push(response.data.data);
+
+      EditarListadoMedidas(response.data.data)
+      // almacenDatosUnidades(listadoMedidas.value);
+      // listadoMedidas.value = JSON.parse(localStorage.getItem('ListadoCacheUnidades'));
+      // obtenerListadoLimpioMedida()
+      successFull("Unidad de medida editada satisfactoriamente.", "top-end")
+      loading.value = false;
+      esperando.value = false;
+      // Swal.fire({
+      //   icon: "success",
+      //   title: "Editado satisfactoriamente."
+      // })
+      // editar.value = false;
+      // localStorage.setItem("editar", editar.value);
+    })
+    .catch((error) => {
+      if (error.response.status === 400) {
+        errors.value = error.response.data;
+      }
+      esperando.value = false;
       ErrorFull("Error realizando operación.", "top-start")
     })
 }
@@ -1306,19 +1598,19 @@ const borrarU = (id, correo) => {
           // // cancelarU();
           // cerrarAlert();
           // emit('actualiza')
-          axios.get(`https://` + ipPublica.value + `/fullstack/public/magnitudes`)
-            .then((response) => {
-              listadoMagnitudes.value = response.data.data;
-              almacenDatosMagnitudes(listadoMagnitudes.value);
-              loading.value = false
-              // cargado.value = true;
-              // Kgest_nomencladores.value = Kgest_nomencladores.value + 1;
-            }).catch((error) => {
-              if (error.response.status === 500) {
-                errors.value = error.response.status;
-              }
-              loading.value = false
-            });
+          // axios.get(`https://` + ipPublica.value + `/fullstack/public/magnitudes`)
+          //   .then((response) => {
+          //     listadoMagnitudes.value = response.data.data;
+          //     almacenDatosMagnitudes(listadoMagnitudes.value);
+          //     loading.value = false
+          //     // cargado.value = true;
+          //     // Kgest_nomencladores.value = Kgest_nomencladores.value + 1;
+          //   }).catch((error) => {
+          //     if (error.response.status === 500) {
+          //       errors.value = error.response.status;
+          //     }
+          //     loading.value = false
+          //   });
           successFull("Magnitud eliminada satisfactoriamente.", "top-end")
           // Swal.fire({
           //   title: "Eliminado",
@@ -1358,7 +1650,7 @@ const borrarUMedida = (id, correo) => {
           // cerrarAlert();
           // emit('actualiza')
           loading.value = true;
-         axios.get(`https://` + ipPublica.value + `/fullstack/public/medidas`)
+          axios.get(`https://` + ipPublica.value + `/fullstack/public/medidas`)
             .then((response) => {
               listadoMedidas.value = response.data.data;
               almacenDatosUnidades(listadoMedidas.value);
@@ -1418,30 +1710,18 @@ const clickEditar = async (idSelect) => {
 
 const clickEditarMedidas = async (idSelect) => {
   editar.value = true;
-  // localStorage.setItem("editar", editar.value);
   id.value = idSelect;
-
   for (let index = 0; index < listadoMedidas.value.length; index++) {
     const element = listadoMedidas.value[index].id;
     if (element == idSelect) {
+      // console.log(listadoMedidas.value[index])
       formMedida.data.attributes.descripcion = listadoMedidas.value[index].attributes.descripcion;
       formMedida.data.attributes.medida = listadoMedidas.value[index].attributes.medida;
       formMedida.data.attributes.observacion = listadoMedidas.value[index].attributes.observacion;
-      formMedida.data.attributes.magnitud_id = listadoMedidas.value[index].attributes.magnitud_id;
-      // document.getElementById('IDmagnitud').value = listadoMedidas.value[index].attributes.magnitud_id;
+      formMedida.data.attributes.magnitud_id = listadoMedidas.value[index].relationships.magnitud.data.id;
       break;
     }
-    // console.log(element)
   }
-
-  // editarUModel()
-
-  // let response = await axios.get(`http://localhost/fullstack/public/api/nom/productos/${id.value}`)
-  //   .then((response) => {
-  //     formMagnitud.data.attributes.descripcion = response.data.data.attributes.descripcion;
-  //     formMagnitud.data.attributes.codigo = response.data.data.attributes.codigo;
-  //     formMagnitud.data.attributes.observacion = response.data.data.attributes.observacion;
-  //   })
 }
 
 const cancelarU = () => {
@@ -1480,7 +1760,7 @@ const almacenDatosUnidades = (Lista) => {
 
 onMounted(async () => {
   if (localStorage.getItem('userName')) {
-    if (localStorage.getItem('Carg_dat') != '0') {
+    if (localStorage.getItem('Carg_datM') == '0') {
       // MAGNITUDES
       loading.value = true;
       // emit('actualiza', 7)
@@ -1489,42 +1769,49 @@ onMounted(async () => {
         .then((response) => {
           listadoMagnitudes.value = response.data.data;
           almacenDatosMagnitudes(listadoMagnitudes.value);
-
+          listadoMagnitudes.value = JSON.parse(localStorage.getItem('ListadoCacheMagnitudes'));
+          obtenerListadoLimpio();
+          loading.value = false;
+          localStorage.setItem('Carg_datM', '1')
         }).catch((error) => {
           if (error.response.status === 500) {
             errors.value = error.response.status;
           }
         })
 
+    } else {
+      loading.value = true;
+      listadoMagnitudes.value = await JSON.parse(localStorage.getItem('ListadoCacheMagnitudes'));
+      obtenerListadoLimpio();
+      loading.value = false;
+    }
+
+    if (localStorage.getItem('Carg_datMe') == '0') {
+      loadingU.value = true;
       await axios.get(`https://` + ipPublica.value + `/fullstack/public/medidas`)
         .then((response) => {
           listadoMedidas.value = response.data.data;
           almacenDatosUnidades(listadoMedidas.value);
-          // cargado.value = true;
-          // Kgest_nomencladores.value = Kgest_nomencladores.value + 1;
+          listadoMedidas.value = JSON.parse(localStorage.getItem('ListadoCacheUnidades'));
+          obtenerListadoLimpioMedida();
+          localStorage.setItem('Carg_datMe', '1')
+          loadingU.value = false;
         }).catch((error) => {
           if (error.response.status === 500) {
             errors.value = error.response.status;
           }
-          loading.value = false
         });
-      listadoMagnitudes.value = await JSON.parse(localStorage.getItem('ListadoCacheMagnitudes'));
-      obtenerListadoLimpio();
+
+    } else {
+      loadingU.value = true;
       listadoMedidas.value = await JSON.parse(localStorage.getItem('ListadoCacheUnidades'));
       obtenerListadoLimpioMedida();
-      loading.value = false;
-      // localStorage.setItem('Carg_dat', '0')
+      loadingU.value = false;
     }
 
   } else {
     router.push('/login');
   }
-  // console.log(datosPaginados1)
-  // if (cargado.value == false) {
-  //   consultar();
-  //   consultarSucursales();
-  // }
-
 })
 
 const headers = [
@@ -1534,8 +1821,8 @@ const headers = [
   { text: "DESCRIPCIÓN", value: "attributes.descripcion" },
   { text: "OBSERVACIONES", value: "attributes.observacion" },
   // { text: "UNIDAD", value: "unidad" },
-  { text: "FECHA DE CREACIÓN", value: "meta.created_at", sortable: true },
-  { text: "FECHA DE ACTUALIZACION", value: "meta.updated_at", sortable: true },
+  { text: "FECHA DE CREACIÓN", value: "attributes.timestamps.created_at", sortable: true },
+  { text: "FECHA DE ACTUALIZACION", value: "attributes.timestamps.updated_at", sortable: true },
   // { text: "VENTAS", value: "cantV", sortable: true },
   { text: "OPCIONES", value: "opciones" }
 ];
@@ -1547,8 +1834,8 @@ const headersMedidas = [
   { text: "DESCRIPCIÓN", value: "attributes.descripcion" },
   { text: "OBSERVACIONES", value: "attributes.observacion" },
   // { text: "UNIDAD", value: "unidad" },
-  { text: "FECHA DE CREACIÓN", value: "meta.created_at", sortable: true },
-  { text: "FECHA DE ACTUALIZACION", value: "meta.updated_at", sortable: true },
+  { text: "FECHA DE CREACIÓN", value: "attributes.timestamps.created_at", sortable: true },
+  { text: "FECHA DE ACTUALIZACION", value: "attributes.timestamps.updated_at", sortable: true },
   // { text: "VENTAS", value: "cantV", sortable: true },
   { text: "OPCIONES", value: "opciones" }
 ];

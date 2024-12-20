@@ -462,6 +462,8 @@ let errors = ref([]);
 
 let listado = ref([]);
 
+let listadoMedida = ref([])
+
 let listadoSucursales = ref([]);
 
 let listadoDepartamentos = ref([]);
@@ -480,7 +482,7 @@ let elementPagina = ref(5);
 
 let cargado = ref(false);
 
-const ipPublica = ref('192.168.121.123');
+const ipPublica = ref('localhost');
 
 const esperando = ref(false);
 
@@ -633,13 +635,8 @@ const obtenerListadoLimpio = () => {
 
 onMounted(async () => {
   if (localStorage.getItem('userName')) {
-    // if (localStorage.getItem('Carg_dat') != '0') {
-    // generarBArCode()
-    listadoDepartamentos.value = JSON.parse(localStorage.getItem('ListadoCacheDepartamentos'));
-    listadoMedida.value = JSON.parse(localStorage.getItem('ListadoCacheUnidades'));
-    // obtenerListadoLimpio();
-    cargado.value = true;
-    // }
+    listadoDepartamentos.value =await JSON.parse(localStorage.getItem('ListadoCacheDepartamentos'));
+    listadoMedida.value = await JSON.parse(localStorage.getItem('ListadoCacheUnidades'));
 
   } else {
     router.push('/login');
