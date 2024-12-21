@@ -124,14 +124,14 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Configurar:</h6>
             <!-- <a class="collapse-item button" @click="click_sucursales">Sucursales</a> -->
-            <router-link class="button" to="/gest_nomencladores">
+            <!-- <router-link class="button" to="/gest_nomencladores">
               <a class="collapse-item" v-bind:class="ActivaLink(7)" :key="7" @click="obtenerLinkA(7)"> <i
                   class="fas fa-fw fa-cogs"></i> Datos empresa</a>
             </router-link>
             <router-link class="button" to="/gest_nomencladores">
               <a class="collapse-item" v-bind:class="ActivaLink(8)" :key="8" @click="obtenerLinkA(8)"> <i
                   class="fas fa-fw fa-cogs"></i> Datos usuarios</a>
-            </router-link>
+            </router-link> -->
             <router-link class="button" to="/gest_nomencladores">
               <a class="collapse-item" v-bind:class="ActivaLink(9)" :key="9" @click="obtenerLinkA(9)"> <i
                   class="fas fa-fw fa-cogs"></i> Nomencladores</a>

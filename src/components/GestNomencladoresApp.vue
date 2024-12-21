@@ -1,17 +1,144 @@
 <template>
   <div>
-
-
-
     <div class="container-fluid">
-
-
-
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
-
-
-
         <h1 class="h3 mb-0 text-gray-800">TABLAS FIJAS (NOMENCLADORES)</h1>
+      </div>
+      <div class="row">
+        <!--Listado de magnitudes -->
+        <div class="col-xl-12 col-lg-12">
+          <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-edit"></i> MAGNITUDES</h6>
+              <button class="btn btn-info" data-toggle="modal" @click="agrega()" data-target="#agregaMagnitudes">
+                <span class="fa fa-plus"></span> Nuevo</button>
+
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6 col-xl-6 col-lg-12">
+                  <div class="justify-content-between">
+                    <!-- <router-link class="button" to="/gest_inventario"> -->
+                    <a @click="abrirModalAddProd()" href="#"
+                      class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm" v-b-tooltip.hover
+                      title="Agregar producto"><i class="fas fa-print fa-sm "></i> Imprimir </a>
+                    <!-- </router-link> -->
+                    <a @click="ExportExcel()" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
+                      v-b-tooltip.hover title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a>
+                  </div>
+                </div>
+                <div class="col-md-6 col-xl-6 col-lg-12 ">
+                  <span class="text-info">Buscar: </span>
+                  <!-- <input class="form-control" type="text" v-model="searchValue" placeholder="" /> -->
+                  <input class="form-control form-control-user" type="text" v-model="searchValue"
+                    placeholder="Tecle el nombre a buscar..." />
+                </div>
+              </div>
+              <br>
+
+              <!--Tabla -->
+              <EasyDataTable table-class-name="customize-table" :headers="headers" :items="items" buttons-pagination
+                border-cell v-model:items-selected="itemsSelected" header-text-direction="center"
+                body-text-direction="center" :search-field="searchField" :search-value="searchValue"
+                @click-row="showRow" :rows-per-page="5" show-index :loading="loading">
+
+
+
+                <template #empty-message>
+
+
+
+                  <a>No hay datos que mostrar</a>
+                </template>
+                <template #item-opciones="item">
+                  <div class="operation-wrapper">
+
+
+
+                    <!-- <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal"
+
+
+
+                                      data-target="#EditarProducto" @click="seleccionaProducto(item)" v-b-tooltip.hover
+
+
+
+                                      title="Modificar"><span class="fas fa-edit"></span></button> -->
+
+
+
+                    <button class="btn btn-success btn-sm btn-circle" data-toggle="modal" @click="clickEditar(item.id)"
+                      data-target="#EditaMagnitudes" v-b-tooltip.hover title="Editar"><span
+                        class="fas fa-edit"></span></button>
+                    <!-- <button class="btn btn-info" data-toggle="modal" @click="clickEditar(item.id)" data-target="#agregaEditaMagnitudes"> <span
+                  class="fa fa-plus"></span> Nuevo</button> -->
+
+
+
+                    <!-- <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
+
+
+
+                            title="Aumentar"><span class="fas fa-plus"></span></button>
+
+
+
+                          <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
+
+
+
+                            title="Restar"><span class="fas fa-minus"></span></button> -->
+
+
+
+                    <button class="btn btn-danger btn-sm btn-circle ml-1"
+                      @click="borrarU(item.id, item.attributes.magnitud)" v-b-tooltip.hover title="Eliminar"><span
+                        class="fas fas fa-trash-alt"></span></button>
+
+
+
+                    <!-- <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode"
+
+
+
+                            @click="generarCodeBar(item.attributes.codigo)" v-b-tooltip.hover title="Código de barra"><span
+
+
+
+                              class="fas fas fa-barcode"></span></button> -->
+
+
+
+                    <!-- <a class="dropdown-item btn btn-info btn-sm btn-circle ml-1" href="#" @click="generarCodeBar(item.attributes.codigo)" data-toggle="modal" data-target="#BarCode"
+
+
+
+                            >
+
+
+
+                            <span class="fas fa-barcode"></span>
+
+
+
+                          </a> -->
+
+
+
+                  </div>
+                </template>
+                <template #loading>
+                  <img src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
+                    style="width: 100px; height: 80px;" />
+                </template>
+              </EasyDataTable>
+            </div>
+          </div>
+        </div>
+
+        <!-- </div> -->
 
 
 
@@ -33,861 +160,137 @@
 
       </div>
 
+      <div class="row">
+        <div class="col-xl-12 col-lg-12">
+          <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-edit"></i> UNIDADES DE MEDIDAS</h6>
+              <!-- <button class="btn btn-info" @click="abrirModalAddArti()"> <span class="fa fa-plus"></span> Nuevo</button> -->
+              <button class="btn btn-info" data-toggle="modal" @click="agrega()" data-target="#agregaMedidas">
+                <span class="fa fa-plus"></span> Nuevo</button>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6 col-xl-6 col-lg-12">
+                  <div class="justify-content-between">
+                    <!-- <router-link class="button" to="/gest_inventario"> -->
+                    <a @click="abrirModalAddProd()" href="#"
+                      class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm" v-b-tooltip.hover
+                      title="Agregar producto"><i class="fas fa-print fa-sm "></i> Imprimir </a>
+                    <!-- </router-link> -->
+                    <a @click="ExportExcel()" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
+                      v-b-tooltip.hover title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a>
+                  </div>
+                </div>
+                <div class="col-md-6 col-xl-6 col-lg-12 ">
+                  <span class="text-info">Buscar: </span>
+                  <!-- <input class="form-control" type="text" v-model="searchValue" placeholder="" /> -->
+                  <input class="form-control form-control-user" type="text" v-model="searchValueMedida"
+                    placeholder="Teclee el nombre a buscar..." />
+                </div>
+              </div>
+              <br>
 
+              <!--Tabla -->
+              <EasyDataTable table-class-name="customize-table" :headers="headersMedidas" :items="itemsMedidas"
+                buttons-pagination border-cell v-model:items-selected="itemsSelected" header-text-direction="center"
+                body-text-direction="center" :search-field="searchFieldMedida" :search-value="searchValueMedida"
+                @click-row="showRow" :rows-per-page="5" :loading="loadingU" show-index>
+                <template #empty-message>
+                  <a>No hay datos que mostrar</a>
+                </template>
+                <template #item-opciones="item">
+                  <div class="operation-wrapper">
+
+
+
+                    <!-- <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal"
+
+
+
+                                      data-target="#EditarProducto" @click="seleccionaProducto(item)" v-b-tooltip.hover
+
+
+
+                                      title="Modificar"><span class="fas fa-edit"></span></button> -->
+
+
+
+                    <button class="btn btn-success btn-sm btn-circle" data-toggle="modal" data-target="#EditaMedidas"
+                      @click="clickEditarMedidas(item.id)" v-b-tooltip.hover title="Editar"><span
+                        class="fas fa-edit"></span></button>
+
+
+
+                    <!-- <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
+
+
+
+                            title="Aumentar"><span class="fas fa-plus"></span></button>
+
+
+
+                          <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
+
+
+
+                            title="Restar"><span class="fas fa-minus"></span></button> -->
+
+
+
+                    <button class="btn btn-danger btn-sm btn-circle ml-1"
+                      @click="borrarUMedida(item.id, item.attributes.medida)" v-b-tooltip.hover title="Eliminar"><span
+                        class="fas fas fa-trash-alt"></span></button>
+
+
+
+                    <!-- <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode"
+
+
+
+                            @click="generarCodeBar(item.attributes.codigo)" v-b-tooltip.hover title="Código de barra"><span
+
+
+
+                              class="fas fas fa-barcode"></span></button> -->
+
+
+
+                    <!-- <a class="dropdown-item btn btn-info btn-sm btn-circle ml-1" href="#" @click="generarCodeBar(item.attributes.codigo)" data-toggle="modal" data-target="#BarCode"
+
+
+
+                            >
+
+
+
+                            <span class="fas fa-barcode"></span>
+
+
+
+                          </a> -->
+
+
+
+                  </div>
+                </template>
+                <template #loading>
+                  <img src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
+                    style="width: 100px; height: 80px;" />
+                </template>
+              </EasyDataTable>
+            </div>
+          </div>
+        </div>
+      </div>
 
 
 
 
 
       <!-- Datos del producto a agregar -->
-
-
-
-      <div class="row">
-
-
-
-
-
-
-
-        <!--Listado de productos -->
-
-
-
-        <div class="col-xl-12 col-lg-12">
-
-
-
-          <div class="card shadow mb-4">
-
-
-
-            <!-- Card Header - Dropdown -->
-
-
-
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-
-
-
-              <h6 class="m-0 font-weight-bold text-info">NOMENCLADORES</h6>
-
-
-
-            </div>
-
-
-
-            <!-- Card Body -->
-
-
-
-            <div class="card-body">
-
-
-
-
-
-
-
-              <ul role="tablist" class="tabs-component-tabs">
-
-
-
-                <li :class="'tabs-component-tab--custom ' + isactive" role="presentation"><a role="tab"
-                    :class="'tabs-component-tab-a--custom ' + isactive" aria-controls="first-tab-pane"
-                    :aria-selected="selec" href="#first-tab" tabindex="0" @click="Tab1()">Magnitudes</a></li>
-
-
-
-                <li :class="'tabs-component-tab--custom ' + isactive2" role="presentation"><a role="tab"
-                    :class="'tabs-component-tab-a--custom ' + isactive2" aria-controls="second-tab-pane"
-                    :aria-selected="selec2" href="#second-tab" tabindex="0" @click="Tab2()">Unidades de medida</a></li>
-
-
-
-                <!-- <li class="tabs-component-tab is-disabled" role="presentation"><a role="tab"
-
-
-
-                            class="tabs-component-tab-a is-disabled" aria-controls="disabled-tab-pane" aria-selected="false"
-
-
-
-                            href="#" tabindex="0">Tabla 3</a></li>
-
-
-
-                        <li class="tabs-component-tab is-inactive" role="presentation"><a role="tab"
-
-
-
-                            class="tabs-component-tab-a is-inactive" aria-controls="oh-hi-mark-pane" aria-selected="false"
-
-
-
-                            href="#oh-hi-mark" tabindex="0">Tabla 4</a></li>
-
-
-
-                        <li class="tabs-component-tab is-inactive" role="presentation"><a role="tab"
-
-
-
-                            class="tabs-component-tab-a is-inactive" aria-controls="prefix-and-suffix-pane"
-
-
-
-                            aria-selected="false" href="#prefix-and-suffix" tabindex="0"><span class="prefix">→</span>Tabla
-
-
-
-                            5</a></li>
-
-
-
-                        <li class="tabs-component-tab--custom is-inactive" role="presentation"><a role="tab"
-
-
-
-                            class="tabs-component-tab-a--custom is-inactive" aria-controls="custom-navigation-item-classes-pane"
-
-
-
-                            aria-selected="false" href="#custom-navigation-item-classes" tabindex="0">Custom navigation item
-
-
-
-                            classes</a></li> -->
-
-
-
-              </ul>
-
-
-
-              <div class="tabs-component-panels">
-
-
-
-                <section id="first-tab-pane" data-tab-id="first-tab" :aria-hidden="vis" class="tabs-component-panel"
-                  role="tabpanel" tabindex="-1" :style="display1">
-
-
-
-                  <div class="row">
-
-
-
-                    <div class="col-xl-8">
-
-
-
-                      <div class="row">
-
-
-
-                        <div class="col-md-6 col-xl-6 col-lg-6">
-
-
-
-                          <a @click="ImprimirDoc()" href="#"
-                            class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm" v-b-tooltip.hover
-                            title="Imprimir"><i class="fas fa-print fa-sm "></i> Imprimir</a>
-
-
-
-                        </div>
-
-
-
-                        <!-- <div class="col-md-3 col-xl-3 col-lg-3">
-
-
-
-                                  <span class="text-info">Filtrar por columna: </span>
-
-
-
-                                  <select v-model="searchField" class="form-control form-control-user">
-
-
-
-                                    <option>type</option>
-
-
-
-                                    <option>attributes.codigo</option>
-
-
-
-                                  </select>
-
-
-
-                                </div> -->
-
-
-
-                        <div class="col-md-8 col-xl-6 col-lg-12">
-
-
-
-                          <span class="text-info">Buscar: </span>
-
-
-
-                          <input class="form-control form-control-user" type="text" v-model="searchValue"
-                            placeholder="Tecle el nombre a buscar..." />
-
-
-
-                        </div>
-
-
-
-                      </div><br>
-
-
-
-
-
-
-
-                      <!-- </div> -->
-
-
-
-                      <EasyDataTable table-class-name="customize-table" :headers="headers" :items="items"
-                        buttons-pagination border-cell v-model:items-selected="itemsSelected"
-                        header-text-direction="center" body-text-direction="center" :search-field="searchField"
-                        :search-value="searchValue" @click-row="showRow" :rows-per-page="5" show-index
-                        :loading="loading">
-
-
-
-                        <template #empty-message>
-
-
-
-                          <a>No hay datos que mostrar</a>
-                        </template>
-                        <template #item-opciones="item">
-                          <div class="operation-wrapper">
-
-
-
-                            <!-- <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal"
-
-
-
-                                      data-target="#EditarProducto" @click="seleccionaProducto(item)" v-b-tooltip.hover
-
-
-
-                                      title="Modificar"><span class="fas fa-edit"></span></button> -->
-
-
-
-                            <button class="btn btn-success btn-sm btn-circle" @click="clickEditar(item.id)"
-                              v-b-tooltip.hover title="Editar"><span class="fas fa-edit"></span></button>
-
-
-
-                            <!-- <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
-
-
-
-                            title="Aumentar"><span class="fas fa-plus"></span></button>
-
-
-
-                          <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
-
-
-
-                            title="Restar"><span class="fas fa-minus"></span></button> -->
-
-
-
-                            <button class="btn btn-danger btn-sm btn-circle ml-1"
-                              @click="borrarU(item.id, item.attributes.magnitud)" v-b-tooltip.hover
-                              title="Eliminar"><span class="fas fas fa-trash-alt"></span></button>
-
-
-
-                            <!-- <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode"
-
-
-
-                            @click="generarCodeBar(item.attributes.codigo)" v-b-tooltip.hover title="Código de barra"><span
-
-
-
-                              class="fas fas fa-barcode"></span></button> -->
-
-
-
-                            <!-- <a class="dropdown-item btn btn-info btn-sm btn-circle ml-1" href="#" @click="generarCodeBar(item.attributes.codigo)" data-toggle="modal" data-target="#BarCode"
-
-
-
-                            >
-
-
-
-                            <span class="fas fa-barcode"></span>
-
-
-
-                          </a> -->
-
-
-
-                          </div>
-                        </template>
-                        <template #loading>
-                          <img src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
-                            style="width: 100px; height: 80px;" />
-                        </template>
-                      </EasyDataTable>
-
-                      <!-- <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                          <thead>
-                            <tr style="text-align: center;">
-                              <th>No</th>
-
-                              <th>CÓDIGO</th>
-                              <th>SUCURSAL</th>
-                              <th>DESCRIPCION</th>
-                              <th>OBSERVACIONES</th>
-                              <th>ACCIONES</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr v-for="datos in datosPaginados" :key="datos.id">
-                              <td v-if="datos.attributes.deleted_at == null">{{ datos.id }}</td>
-
-                              <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.codigo }}</td>
-                              <td v-if="datos.attributes.deleted_at == null">Sucursal</td>
-                              <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.descripcion }}</td>
-                              <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.observacion }}</td>
-                              <td v-if="datos.attributes.deleted_at == null" style="text-align: center;">
-                                <button class="btn btn-success btn-sm btn-circle" @click="clickEditar(datos.id)"
-                                  v-b-tooltip.hover title="Editar"><span class="fas fa-edit"></span></button>&nbsp;
-
-                                <button class="btn btn-danger btn-sm btn-circle"
-                                  @click="borrarU(datos.id, datos.attributes.codigo)" v-b-tooltip.hover
-                                  title="Eliminar"><span class="fas fa-trash"></span></button>
-                              </td>
-                            </tr>
-
-
-                          </tbody>
-                        </table>
-                        <div class="text-center">
-                          <nav aria-label="Page navigation example" style="text-align: center;">
-                            <label>Mostrando &nbsp;</label>
-                            <select style="width: 60px" @change="cambiarLimite()" v-model="elementPagina">
-                              <option value="5">5</option>
-                              <option value="10">10</option>
-                              <option value="20">20</option>
-                              <option value="50">50</option>
-                              <option value="100">100</option>
-                            </select>
-
-                            <label>&nbsp;registros </label>
-                            <ul class="pagination Mestilo btn-sm">
-
-                              <li class="page-item" :class="`${disableA}`" @click="obtenerAnterior"><a class="page-link"
-                                  href="#">Anterior</a></li>
-                              <li v-for="pagina in cantidad" class="page-item" v-bind:class="isActivo(pagina)"
-                                :key="pagina" @click="obtenerPagina(pagina)"><a class="page-link" href="#">{{ pagina
-                                  }}</a></li>
-                              <li class="page-item" :class="`${disableS}`" @click="obtenerSiguiente"><a
-                                  class="page-link" href="#">Siguiente</a></li>
-                            </ul>
-                          </nav>
-                        </div>
-                      </div> -->
-                    </div>
-                    <div class="col-xl-4">
-                      <div class="">
-                        <div class="card shadow mb-4">
-                          <!-- Card Header - Dropdown -->
-                          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
-                            style="text-align: center;">
-                            <h6 class="m-0 font-weight-bold text-info" v-if="editar == false"><span
-                                class="fa fa-plus"></span> AGREGAR
-                              NUEVA MAGNITUD </h6>
-                            <h6 class="m-0 font-weight-bold text-info" v-if="editar == true"><span
-                                class="fa fa-edit"></span>
-                              MODIFICAR LOS DATOS DE LA MAGNITUD <br>(<label style="color: red;">{{
-                                formMagnitud.data.attributes.magnitud
-                              }}</label>)</h6>
-                          </div>
-                          <!-- Card Body -->
-                          <div class="card-body">
-
-                            <!-- Personas -->
-                            <div class="col-lg-12">
-                              <div class="">
-                                <div class="text-center">
-                                  <h1 class="h6 text-gray-900 mb-4">CAMPOS OBLIGATORIOS (<label
-                                      style="color: red;">*</label>)</h1>
-                                </div>
-                                <form class="user">
-
-                                  <div class="row">
-                                    <div class="form-group col-lg-12">
-                                      <label class="text-info">Nombre de la magnitud: <label
-                                          style="color: red;">*</label></label>
-                                      <input type="text" class="form-control" id="magnitud" aria-describedby="emailHelp"
-                                        v-model="formMagnitud.data.attributes.magnitud"
-                                        placeholder="Nombre de la magnitud" required>
-                                      <span v-if="magnitudVacio" style="color: red;">Campo en blanco</span>
-                                    </div>
-                                    <div class="form-group col-lg-12">
-                                      <label class="text-info">Descripción: <label style="color: red;">*</label></label>
-                                      <input type="text" class="form-control" id="descripcion"
-                                        aria-describedby="emailHelp" v-model="formMagnitud.data.attributes.descripcion"
-                                        placeholder="Descripción de la magnitud">
-                                      <span v-if="descripVacio" style="color: red;">Campo en blanco</span>
-                                    </div>
-
-                                  </div>
-                                  <div class="row">
-                                    <div class="form-group col-lg-12">
-                                      <label class="text-info">Observaciones:</label>
-                                      <textarea class="form-control" id="observaciones"
-                                        v-model="formMagnitud.data.attributes.observacion"
-                                        placeholder="Observaciones de la magnitud"></textarea>
-
-                                    </div>
-                                  </div>
-
-                                  <div class="row">
-                                    <!-- <div v-if="editar == false" class="col-lg-1"></div> -->
-                                    <!-- <div v-if="editar == false" class="form-group h4 col-lg-6">
-                                      <a @click="agregarU" class="btn btn-primary btn-user btn-block">
-                                        Archivar y continuar agregando
-                                      </a>
-                                    </div> -->
-                                    <div v-if="editar == false" class="form-group h4 col-lg-3">
-
-                                    </div>
-                                    <div v-if="editar == false" class="form-group h4 col-lg-6">
-                                      <a @click="agregarU" class="btn btn-info btn-block">
-                                        Guardar datos
-                                      </a>
-                                    </div>
-                                    <div v-if="editar" class="form-group h4 col-lg-6">
-                                      <a @click="editarU" class="btn btn-info btn-block">
-                                        {{ btnModificar }}
-                                      </a>
-                                    </div>
-                                    <div v-if="editar" class="form-group h4 col-lg-6">
-                                      <a @click="cancelarU" class="btn btn-danger btn-block">
-                                        Cancelar
-                                      </a>
-                                    </div>
-                                  </div>
-
-
-                                </form>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                </section>
-                <section id="second-tab-pane" data-tab-id="second-tab" :aria-hidden="vis2" class="tabs-component-panel"
-                  role="tabpanel" tabindex="-1" :style="display2">
-                  <div class="row">
-                    <div class="col-xl-8">
-                      <div class="row">
-                        <div class="col-md-6 col-xl-6 col-lg-6">
-                          <!-- <h3>LISTADO DE U. DE MEDIDAS</h3> -->
-                          <a @click="ImprimirDoc()" href="#"
-                            class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm" v-b-tooltip.hover
-                            title="Imprimir"><i class="fas fa-print fa-sm "></i> Imprimir</a>
-                        </div>
-                        <!-- <div class="col-md-3 col-xl-3 col-lg-3">
-                          <span class="text-info">Filtrar por columna: </span>
-                          <select v-model="searchField" class="form-control form-control-user">
-                            <option>type</option>
-                            <option>attributes.codigo</option>
-                          </select>
-                        </div> -->
-                        <div class="col-md-8 col-xl-6 col-lg-12">
-                          <span class="text-info">Buscar: </span>
-                          <input class="form-control form-control-user" type="text" v-model="searchValueMedida"
-                            placeholder="Teclee el nombre a buscar..." />
-                        </div>
-                      </div><br>
-
-                      <!-- </div> -->
-                      <EasyDataTable table-class-name="customize-table" :headers="headersMedidas" :items="itemsMedidas"
-                        buttons-pagination border-cell v-model:items-selected="itemsSelected"
-                        header-text-direction="center" body-text-direction="center" :search-field="searchFieldMedida"
-                        :search-value="searchValueMedida" @click-row="showRow" :rows-per-page="5" :loading="loadingU"
-                        show-index>
-                        <template #empty-message>
-                          <a>No hay datos que mostrar</a>
-                        </template>
-                        <template #item-opciones="item">
-                          <div class="operation-wrapper">
-
-
-
-                            <!-- <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal"
-
-
-
-                                      data-target="#EditarProducto" @click="seleccionaProducto(item)" v-b-tooltip.hover
-
-
-
-                                      title="Modificar"><span class="fas fa-edit"></span></button> -->
-
-
-
-                            <button class="btn btn-success btn-sm btn-circle" @click="clickEditarMedidas(item.id)"
-                              v-b-tooltip.hover title="Editar"><span class="fas fa-edit"></span></button>
-
-
-
-                            <!-- <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
-
-
-
-                            title="Aumentar"><span class="fas fa-plus"></span></button>
-
-
-
-                          <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
-
-
-
-                            title="Restar"><span class="fas fa-minus"></span></button> -->
-
-
-
-                            <button class="btn btn-danger btn-sm btn-circle ml-1"
-                              @click="borrarUMedida(item.id, item.attributes.medida)" v-b-tooltip.hover
-                              title="Eliminar"><span class="fas fas fa-trash-alt"></span></button>
-
-
-
-                            <!-- <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode"
-
-
-
-                            @click="generarCodeBar(item.attributes.codigo)" v-b-tooltip.hover title="Código de barra"><span
-
-
-
-                              class="fas fas fa-barcode"></span></button> -->
-
-
-
-                            <!-- <a class="dropdown-item btn btn-info btn-sm btn-circle ml-1" href="#" @click="generarCodeBar(item.attributes.codigo)" data-toggle="modal" data-target="#BarCode"
-
-
-
-                            >
-
-
-
-                            <span class="fas fa-barcode"></span>
-
-
-
-                          </a> -->
-
-
-
-                          </div>
-                        </template>
-                        <template #loading>
-                          <img src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
-                            style="width: 100px; height: 80px;" />
-                        </template>
-                      </EasyDataTable>
-
-                      <!-- <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                          <thead>
-                            <tr style="text-align: center;">
-                              <th>No</th>
-
-                              <th>CÓDIGO</th>
-                              <th>SUCURSAL</th>
-                              <th>DESCRIPCION</th>
-                              <th>OBSERVACIONES</th>
-                              <th>ACCIONES</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr v-for="datos in datosPaginados" :key="datos.id">
-                              <td v-if="datos.attributes.deleted_at == null">{{ datos.id }}</td>
-
-                              <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.codigo }}</td>
-                              <td v-if="datos.attributes.deleted_at == null">Sucursal</td>
-                              <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.descripcion }}</td>
-                              <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.observacion }}</td>
-                              <td v-if="datos.attributes.deleted_at == null" style="text-align: center;">
-                                <button class="btn btn-success btn-sm btn-circle" @click="clickEditar(datos.id)"
-                                  v-b-tooltip.hover title="Editar"><span class="fas fa-edit"></span></button>&nbsp;
-
-                                <button class="btn btn-danger btn-sm btn-circle"
-                                  @click="borrarU(datos.id, datos.attributes.codigo)" v-b-tooltip.hover
-                                  title="Eliminar"><span class="fas fa-trash"></span></button>
-                              </td>
-                            </tr>
-
-
-                          </tbody>
-                        </table>
-                        <div class="text-center">
-                          <nav aria-label="Page navigation example" style="text-align: center;">
-                            <label>Mostrando &nbsp;</label>
-                            <select style="width: 60px" @change="cambiarLimite()" v-model="elementPagina">
-                              <option value="5">5</option>
-                              <option value="10">10</option>
-                              <option value="20">20</option>
-                              <option value="50">50</option>
-                              <option value="100">100</option>
-                            </select>
-
-                            <label>&nbsp;registros </label>
-                            <ul class="pagination Mestilo btn-sm">
-
-                              <li class="page-item" :class="`${disableA}`" @click="obtenerAnterior"><a class="page-link"
-                                  href="#">Anterior</a></li>
-                              <li v-for="pagina in cantidad" class="page-item" v-bind:class="isActivo(pagina)"
-                                :key="pagina" @click="obtenerPagina(pagina)"><a class="page-link" href="#">{{ pagina
-                                  }}</a></li>
-                              <li class="page-item" :class="`${disableS}`" @click="obtenerSiguiente"><a
-                                  class="page-link" href="#">Siguiente</a></li>
-                            </ul>
-                          </nav>
-                        </div>
-                      </div> -->
-                    </div>
-                    <div class="col-xl-4">
-                      <div class="">
-                        <div class="card shadow mb-4">
-                          <!-- Card Header - Dropdown -->
-                          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
-                            style="text-align: center;">
-                            <h6 class="m-0 font-weight-bold text-info" v-if="editar == false"><span
-                                class="fa fa-plus"></span> AGREGAR
-                              NUEVA UNIDAD DE MEDIDA </h6>
-                            <h6 class="m-0 font-weight-bold text-info" v-if="editar == true"><span
-                                class="fa fa-edit"></span>
-                              MODIFICAR LOS DATOS DE LA UNIDAD DE MEDIDA <br>(<label style="color: red;">{{
-                                formMedida.data.attributes.medida
-                              }}</label>)</h6>
-                          </div>
-                          <!-- Card Body -->
-                          <div class="card-body">
-
-                            <!-- Personas -->
-                            <div class="col-lg-12">
-                              <div class="">
-                                <div class="text-center">
-                                  <h1 class="h6 text-gray-900 mb-4">CAMPOS OBLIGATORIOS (<label
-                                      style="color: red;">*</label>)</h1>
-                                </div>
-                                <form class="user">
-
-                                  <div class="row">
-                                    <div class="form-group col-lg-12">
-                                      <label class="text-info">Nombre: <label style="color: red;">*</label></label>
-                                      <input type="text" class="form-control" id="medida" aria-describedby="emailHelp"
-                                        v-model="formMedida.data.attributes.medida"
-                                        placeholder="Nombre de la unidad de medida" required>
-                                    </div>
-                                    <div class="form-group col-lg-12">
-                                      <label class="text-info">Descripción: <label style="color: red;">*</label></label>
-                                      <input type="text" class="form-control" id="descripcionMed"
-                                        aria-describedby="emailHelp" v-model="formMedida.data.attributes.descripcion"
-                                        placeholder="Descripción del producto">
-                                    </div>
-
-                                  </div>
-                                  <div class="form-group ">
-                                    <label class="text-info">Observaciones:</label>
-                                    <textarea class="form-control" id="observacionesMed"
-                                      v-model="formMedida.data.attributes.observacion"
-                                      placeholder="Observaciones acerca de la uidad de medida"></textarea>
-
-                                  </div>
-                                  <div class="form-group col-lg-12">
-                                    <label class="text-info">Seleccione una magnitud: <label
-                                        style="color: red;">*</label></label>
-                                    <select name="IDmagnitud" id="IDmagnitud" style="width: 100%; text-align:center"
-                                      placeholder="Unidad de medida" class="text-gray-900 form-control"
-                                      v-model="formMedida.data.attributes.magnitud_id"
-                                      @change="ObtenIdMagnitud(selected)">
-                                      <option v-for="dato in listadoMagnitudes" :key="dato.id" :value="dato.id">{{
-                                        dato.attributes.magnitud }}</option>
-                                    </select>
-                                  </div>
-
-                                  <div class="row">
-                                    <!-- <div v-if="editar == false" class="col-lg-1"></div> -->
-                                    <!-- <div v-if="editar == false" class="form-group h4 col-lg-6">
-                                      <a @click="agregarU" class="btn btn-primary btn-user btn-block">
-                                        Archivar y continuar agregando
-                                      </a>
-                                    </div> -->
-                                    <div v-if="editar == false" class="form-group h4 col-lg-3">
-
-                                    </div>
-                                    <div v-if="editar == false" class="form-group h4 col-lg-6">
-                                      <a @click="agregarUMedida" class="btn btn-info btn-block">
-                                        Guardar datos
-                                      </a>
-                                    </div>
-                                    <div v-if="editar" class="form-group h4 col-lg-6">
-                                      <a @click="editarUMedida" class="btn btn-info btn-block">
-                                        {{ btnModificarM }}
-                                      </a>
-                                    </div>
-                                    <div v-if="editar" class="form-group h4 col-lg-6">
-                                      <a @click="cancelarUMedida" class="btn btn-danger btn-block">
-                                        Cancelar
-                                      </a>
-                                    </div>
-                                  </div>
-
-
-                                </form>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-                <section id="disabled-tab-pane" data-tab-id="disabled-tab" aria-hidden="true"
-                  class="tabs-component-panel" role="tabpanel" tabindex="-1" style="display: none;">
-                  <h2 class="page-subtitle">Disabled tab</h2> This content will be unavailable while :is-disabled prop
-                  set to true
-                </section>
-                <section id="oh-hi-mark-pane" data-tab-id="oh-hi-mark" aria-hidden="true" class="tabs-component-panel"
-                  role="tabpanel" tabindex="-1" style="display: none;">
-                  <h2 class="page-subtitle">Custom fragment</h2> The hash that is appended to the url can be customized.
-                </section>
-                <section id="prefix-and-suffix-pane" data-tab-id="prefix-and-suffix" aria-hidden="true"
-                  class="tabs-component-panel" role="tabpanel" tabindex="-1" style="display: none;">
-                  <h2 class="page-subtitle">Prefix and suffix</h2> A prefix and a suffix can be added — HTML allowed.
-                </section>
-                <section id="custom-navigation-item-classes-pane" data-tab-id="custom-navigation-item-classes"
-                  aria-hidden="true" class="tabs-component-panel" role="tabpanel" tabindex="-1" style="display: none;">
-                  <h2 class="page-subtitle">Custom navigation item classes</h2> A custom nav-item-class &amp;
-                  nav-item-link-class can be added to a tab's navigation item.
-                </section>
-              </div>
-              <!-- <div class="">
-                <ul class="tabs-component-tabs">
-                  <li class="tabs-component-tab is-active">
-                    <a class="tabs-component-tab-a is-active">
-                      Articulos
-                    </a>
-                  </li>
-                  <li class="tabs-component-tab is-inactive">
-                    <a class="tabs-component-tab-a is-inactive">2</a>
-                  </li>
-                  <li class="tabs-component-tab is-inactive">
-                    <a class="tabs-component-tab-a is-inactive">3</a>
-
-                  </li>
-                </ul>
-                <div class="tabs-component-panels">
-                  <section class="tabs-component-panel">
-                    1.1
-                  </section>
-                </div>
-
-              </div> -->
-
-              <!-- <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                  <thead>
-                    <tr style="text-align: center;">
-                      <th>No</th>
-
-                      <th>CÓDIGO</th>
-                      <th>SUCURSAL</th>
-                      <th>DESCRIPCION</th>
-                      <th>OBSERVACIONES</th>
-                      <th>ACCIONES</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="datos in datosPaginados" :key="datos.id">
-                      <td v-if="datos.attributes.deleted_at == null">{{ datos.id }}</td>
-
-                      <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.codigo }}</td>
-                      <td v-if="datos.attributes.deleted_at == null">Sucursal</td>
-                      <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.descripcion }}</td>
-                      <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.observacion }}</td>
-                      <td v-if="datos.attributes.deleted_at == null" style="text-align: center;">
-                        <button class="btn btn-success btn-sm btn-circle" @click="clickEditar(datos.id)"
-                          v-b-tooltip.hover title="Editar"><span class="fas fa-edit"></span></button>&nbsp;
-
-                        <button class="btn btn-danger btn-sm btn-circle"
-                          @click="borrarU(datos.id, datos.attributes.codigo)" v-b-tooltip.hover title="Eliminar"><span
-                            class="fas fa-trash"></span></button>
-                      </td>
-                    </tr>
-
-
-                  </tbody>
-                </table>
-
-                <div class="text-center">
-                  <nav aria-label="Page navigation example" style="text-align: center;">
-                    <label>Mostrando &nbsp;</label>
-                    <select style="width: 60px" @change="cambiarLimite()" v-model="elementPagina">
-                      <option value="5">5</option>
-                      <option value="10">10</option>
-                      <option value="20">20</option>
-                      <option value="50">50</option>
-                      <option value="100">100</option>
-                    </select>
-
-                    <label>&nbsp;registros </label>
-                    <ul class="pagination Mestilo btn-sm">
-
-                      <li class="page-item" :class="`${disableA}`" @click="obtenerAnterior"><a class="page-link"
-                          href="#">Anterior</a></li>
-                      <li v-for="pagina in cantidad" class="page-item" v-bind:class="isActivo(pagina)" :key="pagina"
-                        @click="obtenerPagina(pagina)"><a class="page-link" href="#">{{ pagina
-                          }}</a></li>
-                      <li class="page-item" :class="`${disableS}`" @click="obtenerSiguiente"><a class="page-link"
-                          href="#">Siguiente</a></li>
-                    </ul>
-                  </nav>
-                </div>
-              </div> -->
-
-            </div>
-          </div>
-        </div>
-        <!-- FIN -->
-
-
-      </div>
 
       <!-- TABLA INVENTARIOS -->
       <!-- codigo, descripcion, cantidad -->
@@ -900,6 +303,528 @@
 
     </div>
 
+  </div>
+
+  <!-- Logout Modal-->
+  <div :class="'modal fade ' + showModal1" id="agregaMagnitudes" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-info" id="exampleModalLabel" v-if="editar == false">NUEVA MAGNITUD</h5>
+          <h5 class="modal-title text-info text-center" id="exampleModalLabel" v-if="editar == true"><span
+              class="fa fa-edit"></span>
+            MODIFICAR LOS DATOS DE LA MAGNITUD <br>(<label style="color: red;">{{
+              formMagnitud.data.attributes.magnitud
+            }}</label>)</h5>
+          <!-- <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+            style="text-align: center;">
+            <h6 class="m-0 font-weight-bold text-info" v-if="editar == false"><span class="fa fa-plus"></span>
+              AGREGAR
+              NUEVA MAGNITUD / <i style="color: red;">CAMPOS OBLIGATORIOS</i> (<label style="color: red;">*</label>)
+            </h6>
+            <h6 class="m-0 font-weight-bold text-info" v-if="editar == true"><span class="fa fa-edit"></span>
+              MODIFICAR LOS DATOS DE LA MAGNITUD <br>(<label style="color: red;">{{
+                formMagnitud.data.attributes.magnitud
+              }}</label>)</h6>
+          </div> -->
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="text-info">×</span>
+          </button>
+        </div>
+        <div class="modal-body text-center">
+
+          <form id="form">
+
+            <div class="col-lg-12">
+              <div class="">
+                <div class="text-center">
+                  <h1 class="h6 text-gray-900 mb-4"><i>CAMPOS OBLIGATORIOS</i> (<label style="color: red;">*</label>)
+                  </h1>
+                </div>
+                <form class="user">
+
+                  <div class="row">
+                    <div class="form-group col-lg-12">
+                      <label class="text-info">Nombre de la magnitud: <label style="color: red;">*</label></label>
+                      <input type="text" class="form-control" id="magnitud" aria-describedby="emailHelp"
+                        v-model="formMagnitud.data.attributes.magnitud" placeholder="Nombre de la magnitud" required>
+                      <span v-if="magnitudVacio" style="color: red;">Campo en blanco</span>
+                    </div>
+                    <div class="form-group col-lg-12">
+                      <label class="text-info">Descripción: <label style="color: red;">*</label></label>
+                      <input type="text" class="form-control" id="descripcion" aria-describedby="emailHelp"
+                        v-model="formMagnitud.data.attributes.descripcion" placeholder="Descripción de la magnitud">
+                      <span v-if="descripVacio" style="color: red;">Campo en blanco</span>
+                    </div>
+                    <div class="form-group col-lg-12">
+                      <label class="text-info">Observaciones:</label>
+                      <textarea class="form-control" id="observaciones"
+                        v-model="formMagnitud.data.attributes.observacion"
+                        placeholder="Observaciones de la magnitud"></textarea>
+
+                    </div>
+                  </div>
+                  <!-- <div class="row">
+
+                      </div> -->
+
+
+                </form>
+              </div>
+              <div class="row">
+
+                <div v-if="editar == false" class="form-group h4 col-lg-3">
+
+                </div>
+                <div v-if="editar == false" class="form-group h4 col-lg-6">
+                  <a @click="agregarU" class="btn btn-info btn-block">
+                    Guardar datos
+                  </a>
+                </div>
+                <div v-if="editar" class="form-group h4 col-lg-6">
+                  <a @click="editarU" class="btn btn-info btn-block">
+                    {{ btnModificar }}
+                  </a>
+                </div>
+                <div v-if="editar" class="form-group h4 col-lg-6">
+                  <a @click="cancelarU()" class="btn btn-danger btn-block" data-dismiss="modal" aria-label="Close">
+                    Cancelar
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="modal-footer" style="text-align: center;"> -->
+              <!-- <a class="btn btn-info" @click="AColumnas">Aceptar</a> -->
+              <!-- <button class="btn btn-secondary btn-sm" type="submit" id="button" @click="enviarEmail()">Enviar</button> -->
+              <!-- <div class="row">
+
+              <div v-if="editar == false" class="form-group h4 col-lg-1">
+
+              </div>
+              <div v-if="editar == false" class="form-group h4 col-lg-6">
+                <a @click="agregarU" class="btn btn-info btn-block">
+                  Guardar datos
+                </a>
+              </div>
+              <div v-if="editar" class="form-group h4 col-lg-6">
+                <a @click="editarU" class="btn btn-info btn-block">
+                  {{ btnModificar }}
+                </a>
+              </div>
+              <div v-if="editar" class="form-group h4 col-lg-6">
+                <a @click="cancelarU()" class="btn btn-danger btn-block" data-dismiss="modal" aria-label="Close">
+                  Cancelar
+                </a>
+              </div>
+              </div> -->
+            <!-- </div> -->
+          </form>
+
+          <!-- <div>
+            <card class="card-section" style="width: 450px; margin: auto">
+              <h1>Contact Form</h1>
+              <form ref="values" @submit.prevent="sendEmail">
+                <div class="form-group">
+                  <KInput class="form-input" :style="{ width: '290px' }" name="name" v-model="user_name"
+                    placeholder="Name"></KInput>
+                </div>
+                <div class="form-group">
+                  <KInput class="form-input" :style="{ width: '290px' }" name="email" v-model="user_email"
+                    placeholder="email address"></KInput>
+                </div>
+                <div class="form-group">
+                  <kTextarea class="form-input" :style="{ width: '290px' }" name="message" v-model="user_message"
+                    placeholder="Message" :rows="4" />
+                </div>
+                <div class="example-col">
+                  <kButton :style="{ width: '100px' }" id="submit-btn">Submit form</kButton>
+                </div>
+              </form>
+            </card>
+          </div> -->
+          <!-- <vue-barcode :value="cod" tag="svg"></vue-barcode> -->
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div :class="'modal fade ' + showModal1" id="EditaMagnitudes" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-info" id="exampleModalLabel" v-if="editar == false">NUEVA MAGNITUD</h5>
+          <h5 class="modal-title text-info text-center" id="exampleModalLabel" v-if="editar == true"><span
+              class="fa fa-edit"></span>
+            MODIFICAR LOS DATOS DE LA MAGNITUD <br>(<label style="color: red;">{{
+              formMagnitud.data.attributes.magnitud
+            }}</label>)</h5>
+          <!-- <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+            style="text-align: center;">
+            <h6 class="m-0 font-weight-bold text-info" v-if="editar == false"><span class="fa fa-plus"></span>
+              AGREGAR
+              NUEVA MAGNITUD / <i style="color: red;">CAMPOS OBLIGATORIOS</i> (<label style="color: red;">*</label>)
+            </h6>
+            <h6 class="m-0 font-weight-bold text-info" v-if="editar == true"><span class="fa fa-edit"></span>
+              MODIFICAR LOS DATOS DE LA MAGNITUD <br>(<label style="color: red;">{{
+                formMagnitud.data.attributes.magnitud
+              }}</label>)</h6>
+          </div> -->
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="text-info">×</span>
+          </button>
+        </div>
+        <div class="modal-body text-center">
+
+          <form id="form">
+
+            <div class="col-lg-12">
+              <div class="">
+                <div class="text-center">
+                  <h1 class="h6 text-gray-900 mb-4"><i>CAMPOS OBLIGATORIOS</i> (<label style="color: red;">*</label>)
+                  </h1>
+                </div>
+                <form class="user">
+
+                  <div class="row">
+                    <div class="form-group col-lg-12">
+                      <label class="text-info">Nombre de la magnitud: <label style="color: red;">*</label></label>
+                      <input type="text" class="form-control" id="magnitud" aria-describedby="emailHelp"
+                        v-model="formMagnitud.data.attributes.magnitud" placeholder="Nombre de la magnitud" required>
+                      <span v-if="magnitudVacio" style="color: red;">Campo en blanco</span>
+                    </div>
+                    <div class="form-group col-lg-12">
+                      <label class="text-info">Descripción: <label style="color: red;">*</label></label>
+                      <input type="text" class="form-control" id="descripcion" aria-describedby="emailHelp"
+                        v-model="formMagnitud.data.attributes.descripcion" placeholder="Descripción de la magnitud">
+                      <span v-if="descripVacio" style="color: red;">Campo en blanco</span>
+                    </div>
+                    <div class="form-group col-lg-12">
+                      <label class="text-info">Observaciones:</label>
+                      <textarea class="form-control" id="observaciones"
+                        v-model="formMagnitud.data.attributes.observacion"
+                        placeholder="Observaciones de la magnitud"></textarea>
+
+                    </div>
+                  </div>
+                  <!-- <div class="row">
+
+                      </div> -->
+
+
+                </form>
+              </div>
+              <div class="row">
+
+                <div v-if="editar == false" class="form-group h4 col-lg-3">
+
+                </div>
+                <div v-if="editar == false" class="form-group h4 col-lg-6">
+                  <a @click="agregarU" class="btn btn-info btn-block">
+                    Guardar datos
+                  </a>
+                </div>
+                <div v-if="editar" class="form-group h4 col-lg-6">
+                  <a @click="editarU" class="btn btn-info btn-block">
+                    {{ btnModificar }}
+                  </a>
+                </div>
+                <div v-if="editar" class="form-group h4 col-lg-6">
+                  <a class="btn btn-danger btn-block" data-dismiss="modal" aria-label="Close">
+                    Cancelar
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="modal-footer" style="text-align: center;"> -->
+            <!-- <div class="row">
+
+              <div v-if="editar == false" class="form-group h4 col-lg-1">
+
+              </div>
+              <div v-if="editar == false" class="form-group h4 col-lg-6">
+                <a @click="agregarU" class="btn btn-info btn-block">
+                  Guardar datos
+                </a>
+              </div>
+              <div v-if="editar" class="form-group h4 col-lg-6">
+                <a @click="editarU" class="btn btn-info btn-block">
+                  {{ btnModificar }}
+                </a>
+              </div>
+              <div v-if="editar" class="form-group h4 col-lg-6">
+                <a @click="cancelarU()" class="btn btn-danger btn-block" data-dismiss="modal" aria-label="Close">
+                  Cancelar
+                </a>
+              </div>
+              </div> -->
+            <!-- </div> -->
+          </form>
+
+          <!-- <div>
+            <card class="card-section" style="width: 450px; margin: auto">
+              <h1>Contact Form</h1>
+              <form ref="values" @submit.prevent="sendEmail">
+                <div class="form-group">
+                  <KInput class="form-input" :style="{ width: '290px' }" name="name" v-model="user_name"
+                    placeholder="Name"></KInput>
+                </div>
+                <div class="form-group">
+                  <KInput class="form-input" :style="{ width: '290px' }" name="email" v-model="user_email"
+                    placeholder="email address"></KInput>
+                </div>
+                <div class="form-group">
+                  <kTextarea class="form-input" :style="{ width: '290px' }" name="message" v-model="user_message"
+                    placeholder="Message" :rows="4" />
+                </div>
+                <div class="example-col">
+                  <kButton :style="{ width: '100px' }" id="submit-btn">Submit form</kButton>
+                </div>
+              </form>
+            </card>
+          </div> -->
+          <!-- <vue-barcode :value="cod" tag="svg"></vue-barcode> -->
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Logout Modal-->
+  <div :class="'modal fade ' + showModal1" id="agregaMedidas" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-info" id="exampleModalLabel" v-if="editar == false">NUEVA UNIDAD DE MEDIDA</h5>
+          <h5 class="modal-title text-info text-center" id="exampleModalLabel" v-if="editar == true"><span
+              class="fa fa-edit"></span>
+            MODIFICAR LOS DATOS DE LA UNIDAD DE MEDIDAS <br>(<label style="color: red;">{{
+              formMedida.data.attributes.medida
+            }}</label>)</h5>
+
+          <!-- <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+            style="text-align: center;">
+            <h6 class="m-0 font-weight-bold text-info" v-if="editar == false"><span class="fa fa-plus"></span>
+              AGREGAR
+              NUEVA MAGNITUD / <i style="color: red;">CAMPOS OBLIGATORIOS</i> (<label style="color: red;">*</label>)
+            </h6>
+            <h6 class="m-0 font-weight-bold text-info" v-if="editar == true"><span class="fa fa-edit"></span>
+              MODIFICAR LOS DATOS DE LA MAGNITUD <br>(<label style="color: red;">{{
+                formMagnitud.data.attributes.magnitud
+              }}</label>)</h6>
+          </div> -->
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="text-info">×</span>
+          </button>
+        </div>
+        <div class="modal-body text-center">
+          <div class="text-center">
+            <h1 class="h6 text-gray-900 mb-4"><i>CAMPOS OBLIGATORIOS</i> (<label style="color: red;">*</label>)
+            </h1>
+          </div>
+          <form class="user">
+
+            <div class="row">
+              <div class="form-group col-lg-12">
+                <label class="text-info">Nombre: <label style="color: red;">*</label></label>
+                <input type="text" class="form-control" id="medida" aria-describedby="emailHelp"
+                  v-model="formMedida.data.attributes.medida" placeholder="Nombre de la unidad de medida" required>
+              </div>
+              <div class="form-group col-lg-12">
+                <label class="text-info">Descripción: <label style="color: red;">*</label></label>
+                <input type="text" class="form-control" id="descripcionMed" aria-describedby="emailHelp"
+                  v-model="formMedida.data.attributes.descripcion" placeholder="Descripción del producto">
+              </div>
+
+            </div>
+            <div class="form-group ">
+              <label class="text-info">Observaciones:</label>
+              <textarea class="form-control" id="observacionesMed" v-model="formMedida.data.attributes.observacion"
+                placeholder="Observaciones acerca de la uidad de medida"></textarea>
+
+            </div>
+            <div class="form-group col-lg-12">
+              <label class="text-info">Seleccione una magnitud: <label style="color: red;">*</label></label>
+              <select name="IDmagnitud" id="IDmagnitud" style="width: 100%; text-align:center"
+                placeholder="Unidad de medida" class="text-gray-900 form-control"
+                v-model="formMedida.data.attributes.magnitud_id" @change="ObtenIdMagnitud(selected)">
+                <option v-for="dato in listadoMagnitudes" :key="dato.id" :value="dato.id">{{
+                  dato.attributes.magnitud }}</option>
+              </select>
+            </div>
+
+            <div class="row">
+              <div v-if="editar == false" class="form-group h4 col-lg-3">
+
+              </div>
+              <div v-if="editar == false" class="form-group h4 col-lg-6">
+                <a @click="agregarUMedida" class="btn btn-info btn-block">
+                  Guardar datos
+                </a>
+              </div>
+              <div v-if="editar" class="form-group h4 col-lg-6">
+                <a @click="editarUMedida" class="btn btn-info btn-block">
+                  {{ btnModificarM }}
+                </a>
+              </div>
+              <div v-if="editar" class="form-group h4 col-lg-6">
+                <a class="btn btn-danger btn-block" data-dismiss="modal" aria-label="close">
+                  Cancelar
+                </a>
+              </div>
+            </div>
+
+
+          </form>
+
+          <!-- <div>
+            <card class="card-section" style="width: 450px; margin: auto">
+              <h1>Contact Form</h1>
+              <form ref="values" @submit.prevent="sendEmail">
+                <div class="form-group">
+                  <KInput class="form-input" :style="{ width: '290px' }" name="name" v-model="user_name"
+                    placeholder="Name"></KInput>
+                </div>
+                <div class="form-group">
+                  <KInput class="form-input" :style="{ width: '290px' }" name="email" v-model="user_email"
+                    placeholder="email address"></KInput>
+                </div>
+                <div class="form-group">
+                  <kTextarea class="form-input" :style="{ width: '290px' }" name="message" v-model="user_message"
+                    placeholder="Message" :rows="4" />
+                </div>
+                <div class="example-col">
+                  <kButton :style="{ width: '100px' }" id="submit-btn">Submit form</kButton>
+                </div>
+              </form>
+            </card>
+          </div> -->
+          <!-- <vue-barcode :value="cod" tag="svg"></vue-barcode> -->
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div :class="'modal fade ' + showModal1" id="EditaMedidas" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-info" id="exampleModalLabel" v-if="editar == false">NUEVA UNIDAD DE MEDIDA</h5>
+          <h5 class="modal-title text-info text-center" id="exampleModalLabel" v-if="editar == true"><span
+              class="fa fa-edit"></span>
+            MODIFICAR LOS DATOS DE LA UNIDAD DE MEDIDA <br>(<label style="color: red;">{{
+              formMedida.data.attributes.medida
+            }}</label>)</h5>
+
+          <!-- <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+            style="text-align: center;">
+            <h6 class="m-0 font-weight-bold text-info" v-if="editar == false"><span class="fa fa-plus"></span>
+              AGREGAR
+              NUEVA MAGNITUD / <i style="color: red;">CAMPOS OBLIGATORIOS</i> (<label style="color: red;">*</label>)
+            </h6>
+            <h6 class="m-0 font-weight-bold text-info" v-if="editar == true"><span class="fa fa-edit"></span>
+              MODIFICAR LOS DATOS DE LA MAGNITUD <br>(<label style="color: red;">{{
+                formMagnitud.data.attributes.magnitud
+              }}</label>)</h6>
+          </div> -->
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="text-info">×</span>
+          </button>
+        </div>
+        <div class="modal-body text-center">
+          <div class="text-center">
+            <h1 class="h6 text-gray-900 mb-4"><i>CAMPOS OBLIGATORIOS</i> (<label style="color: red;">*</label>)
+            </h1>
+          </div>
+          <form class="user">
+
+            <div class="row">
+              <div class="form-group col-lg-12">
+                <label class="text-info">Nombre: <label style="color: red;">*</label></label>
+                <input type="text" class="form-control" id="medida" aria-describedby="emailHelp"
+                  v-model="formMedida.data.attributes.medida" placeholder="Nombre de la unidad de medida" required>
+              </div>
+              <div class="form-group col-lg-12">
+                <label class="text-info">Descripción: <label style="color: red;">*</label></label>
+                <input type="text" class="form-control" id="descripcionMed" aria-describedby="emailHelp"
+                  v-model="formMedida.data.attributes.descripcion" placeholder="Descripción del producto">
+              </div>
+
+            </div>
+            <div class="form-group ">
+              <label class="text-info">Observaciones:</label>
+              <textarea class="form-control" id="observacionesMed" v-model="formMedida.data.attributes.observacion"
+                placeholder="Observaciones acerca de la uidad de medida"></textarea>
+
+            </div>
+            <div class="form-group col-lg-12">
+              <label class="text-info">Seleccione una magnitud: <label style="color: red;">*</label></label>
+              <select name="IDmagnitud" id="IDmagnitud" style="width: 100%; text-align:center"
+                placeholder="Unidad de medida" class="text-gray-900 form-control"
+                v-model="formMedida.data.attributes.magnitud_id" @change="ObtenIdMagnitud(selected)">
+                <option v-for="dato in listadoMagnitudes" :key="dato.id" :value="dato.id">{{
+                  dato.attributes.magnitud }}</option>
+              </select>
+            </div>
+
+            <div class="row">
+              <div v-if="editar == false" class="form-group h4 col-lg-3">
+
+              </div>
+              <div v-if="editar == false" class="form-group h4 col-lg-6">
+                <a @click="agregarUMedida" class="btn btn-info btn-block">
+                  Guardar datos
+                </a>
+              </div>
+              <div v-if="editar" class="form-group h4 col-lg-6">
+                <a @click="editarUMedida" class="btn btn-info btn-block">
+                  {{ btnModificarM }}
+                </a>
+              </div>
+              <div v-if="editar" class="form-group h4 col-lg-6">
+                <a class="btn btn-danger btn-block" data-dismiss="modal" aria-label="close">
+                  Cancelar
+                </a>
+              </div>
+            </div>
+
+
+          </form>
+
+          <!-- <div>
+            <card class="card-section" style="width: 450px; margin: auto">
+              <h1>Contact Form</h1>
+              <form ref="values" @submit.prevent="sendEmail">
+                <div class="form-group">
+                  <KInput class="form-input" :style="{ width: '290px' }" name="name" v-model="user_name"
+                    placeholder="Name"></KInput>
+                </div>
+                <div class="form-group">
+                  <KInput class="form-input" :style="{ width: '290px' }" name="email" v-model="user_email"
+                    placeholder="email address"></KInput>
+                </div>
+                <div class="form-group">
+                  <kTextarea class="form-input" :style="{ width: '290px' }" name="message" v-model="user_message"
+                    placeholder="Message" :rows="4" />
+                </div>
+                <div class="example-col">
+                  <kButton :style="{ width: '100px' }" id="submit-btn">Submit form</kButton>
+                </div>
+              </form>
+            </card>
+          </div> -->
+          <!-- <vue-barcode :value="cod" tag="svg"></vue-barcode> -->
+        </div>
+
+      </div>
+    </div>
   </div>
   <!-- <template v-if="esperando">
     <div v-on="loadingA('Actualizando datos...')">
@@ -926,6 +851,14 @@ const loading = ref(false);
 
 const loadingU = ref(false);
 
+const showModal1 = ref('')
+
+const activaHide1 = ref('')
+
+const activaModal1 = ref('')
+
+const displayModal1 = ref('')
+
 const loadingA = (texto) => {
   Swal.fire({
     // title: "Sweet!",
@@ -949,6 +882,73 @@ const cerrarAlert = () => {
   Swal.close();
 }
 
+const EliminarTodos = () => {
+  Swal.fire({
+    title: "Confirmación",
+    text: `Está a punto de eliminar todos los registros de la tabla.`,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Sí, eliminar"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      esperando.value = true;
+      // Eliminar //
+      axios.delete(`http://${ipPublica.value}/fullstack/public/magnitudes`)
+        .then(() => {
+          esperando.value = false;
+          loading.value = true;
+          listadoMagnitudes.value = []
+          successFull("Se han eliminado todos los datos satisfactoriamente.", "top-end")
+          // cargado.value = false;
+          loading.value = false;
+          // esperando.value = false;
+        })
+        .catch((error) => {
+          if (error.response.status === 400) {
+            errors.value = error.response.data;
+          }
+          esperando.value = false;
+          ErrorFull("Error realizando la operación.", "top-start")
+        })
+    }
+  })
+}
+
+const EliminarTodosMedidas = () => {
+  Swal.fire({
+    title: "Confirmación",
+    text: `Está a punto de eliminar todos los registros de la tabla.`,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Sí, eliminar"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      esperando.value = true;
+      // Eliminar //
+      axios.delete(`http://${ipPublica.value}/fullstack/public/medidas`)
+        .then(() => {
+          esperando.value = false;
+          loadingU.value = true;
+          listadoMedidas.value = []
+          successFull("Se han eliminado todos los datos satisfactoriamente.", "top-end")
+          // cargado.value = false;
+          loadingU.value = false;
+          // esperando.value = false;
+        })
+        .catch((error) => {
+          if (error.response.status === 400) {
+            errors.value = error.response.data;
+          }
+          esperando.value = false;
+          ErrorFull("Error realizando la operación.", "top-start")
+        })
+    }
+  })
+}
 // Definicion de props
 // defineProps({
 //  datosPaginados1 : {
@@ -1115,6 +1115,10 @@ let magnitudVacio = ref(false)
 
 let descripVacio = ref(false)
 
+const agrega = () => {
+  editar.value = false
+}
+
 const agregarU = async () => {
   // console.log(formMagnitud)
   esperando.value = true;
@@ -1181,14 +1185,20 @@ const agregarUMedida = () => {
         formMedida.data.attributes.descripcion = '';
         formMedida.data.attributes.medida = '';
         // emit('actualiza', 7);
-        loading.value = true;
+        loadingU.value = true;
         // emit('actualiza', 7)
         // emit('actualiza', 8)
-        listadoMedidas.value.push(response.data.data)
+        if (listadoMedidas.value.length == 0) {
+          listadoMedidas.value.push(response.data.data)
+        } else {
+          listadoMedidas.value.push(response.data.data)
+        }
+
+        // console.log(listadoMedidas.value)
         almacenDatosUnidades(listadoMedidas.value);
         listadoMagnitudes.value = JSON.parse(localStorage.getItem('ListadoCacheUnidades'));
         obtenerListadoLimpioMedida()
-        loading.value = false;
+        loadingU.value = false;
         successFull("Unidad de medida agregada satisfactoriamente.", "top-end")
         // closeVentana();
 
@@ -1522,6 +1532,24 @@ const EditarListadoMedidas = async (newdato) => {
 
 }
 
+const EliminarListado = async (newdato) => {
+  let i = 0;
+  items.value = [];
+  // cargar datos en tabla-vue
+  // console.log(newdato.id)
+  for (let index = 0; index < listadoMagnitudes.value.length; index++) {
+    if (newdato.id == listadoMagnitudes.value[index].id) {
+      listadoMagnitudes.value.splice(index, 1)
+    }
+    items.value.push(listadoMagnitudes.value[index])
+  }
+  almacenDatosMagnitudes(items.value);
+  // console.log(itemsMedidas);
+
+  return await items;
+
+}
+
 const EliminarListadoMedidas = async (newdato) => {
   let i = 0;
   itemsMedidas.value = [];
@@ -1530,13 +1558,11 @@ const EliminarListadoMedidas = async (newdato) => {
   for (let index = 0; index < listadoMedidas.value.length; index++) {
     if (newdato.id == listadoMedidas.value[index].id) {
       listadoMedidas.value.splice(index, 1)
-      // delete listadoMedidas.value[index];
-      // listadoMedidas.value[index] = newdato;
     }
     itemsMedidas.value.push(listadoMedidas.value[index])
   }
   almacenDatosUnidades(itemsMedidas.value);
-  console.log(itemsMedidas);
+  // console.log(itemsMedidas);
 
   return await items;
 
@@ -1551,10 +1577,11 @@ const editarUMedida = async () => {
       editar.value = false;
       formMedida.data.attributes.descripcion = ''
       formMedida.data.attributes.observacion = '';
-      formMedida.data.attributes.magnitud = '';
+      formMedida.data.attributes.medida = '';
+      formMedida.data.attributes.magnitud_id = '';
       loading.value = true;
       // listadoMedidas.value.push(response.data.data);
-
+      console.log(response)
       EditarListadoMedidas(response.data.data)
       // almacenDatosUnidades(listadoMedidas.value);
       // listadoMedidas.value = JSON.parse(localStorage.getItem('ListadoCacheUnidades'));
@@ -1562,6 +1589,7 @@ const editarUMedida = async () => {
       successFull("Unidad de medida editada satisfactoriamente.", "top-end")
       loading.value = false;
       esperando.value = false;
+      btnModificarM.value = "Modificar"
       // Swal.fire({
       //   icon: "success",
       //   title: "Editado satisfactoriamente."
@@ -1592,7 +1620,7 @@ const borrarU = (id, correo) => {
       esperando.value = true;
       // Eliminar //
       axios.delete(`http://${ipPublica.value}/fullstack/public/magnitudes/${id}`)
-        .then(() => {
+        .then((response) => {
           esperando.value = false;
           loading.value = true;
           // consultar();
@@ -1612,8 +1640,10 @@ const borrarU = (id, correo) => {
           //     }
           //     loading.value = false
           //   });
-
+          EliminarListado(response.data.data)
+          loading.value = false;
           successFull("Magnitud eliminada satisfactoriamente.", "top-end")
+
           // Swal.fire({
           //   title: "Eliminado",
           //   text: "Producto eliminado satisfactoriamente.",
@@ -1667,6 +1697,7 @@ const borrarUMedida = (id, correo) => {
           //   });
           EliminarListadoMedidas(response.data.data)
           successFull("Unidad de medida eliminada satisfactoriamente.", "top-end")
+          loading.value = false;
           // Swal.fire({
           //   title: "Eliminado",
           //   text: "Producto eliminado satisfactoriamente.",
@@ -1689,6 +1720,12 @@ const clickEditar = async (idSelect) => {
   editar.value = true;
   // localStorage.setItem("editar", editar.value);
   id.value = idSelect;
+  // console.log(id.value)
+  // showModal1.value = 'show'
+  // displayModal1.value = "display: block; padding-right: 17px;"
+  // activaModal1.value = true;
+  // activaHide1.value = true;
+  // showModBack.value = 'modal-backdrop fade show';
 
   for (let index = 0; index < listadoMagnitudes.value.length; index++) {
     const element = listadoMagnitudes.value[index].id;
@@ -1714,6 +1751,7 @@ const clickEditar = async (idSelect) => {
 const clickEditarMedidas = async (idSelect) => {
   editar.value = true;
   id.value = idSelect;
+  // console.log(id.value)
   for (let index = 0; index < listadoMedidas.value.length; index++) {
     const element = listadoMedidas.value[index].id;
     if (element == idSelect) {
