@@ -7,57 +7,74 @@
       <div class="row">
         <!--Listado de magnitudes -->
         <div class="col-xl-12 col-lg-12">
-          <div class="card shadow mb-4">
+          <div class="card shadow mb-4 ">
             <!-- Card Header - Dropdown -->
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button"
+              aria-expanded="true" aria-controls="collapseCardExample">
               <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-edit"></i> MAGNITUDES</h6>
-              <button class="btn btn-info" data-toggle="modal" @click="agrega()" data-target="#agregaMagnitudes">
-                <span class="fa fa-plus"></span> Nuevo</button>
-
-            </div>
-            <!-- Card Body -->
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-6 col-xl-6 col-lg-12">
-                  <div class="justify-content-between">
-                    <!-- <router-link class="button" to="/gest_inventario"> -->
-                    <a @click="abrirModalAddProd()" href="#"
-                      class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm" v-b-tooltip.hover
-                      title="Agregar producto"><i class="fas fa-print fa-sm "></i> Imprimir </a>
-                    <!-- </router-link> -->
-                    <a @click="ExportExcel()" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
-                      v-b-tooltip.hover title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a>
+            </a>
+            <div class="collapse show" id="collapseCardExample">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6 col-xl-6 col-lg-12">
+                    <div class="justify-content-between">
+                      <a data-toggle="modal" @click="agrega()" data-target="#agregaMagnitudes"
+                        class="btn btn-info btn-sm btn-icon-split" :class="disabledMagnitud">
+                        <span class="icon text-white-50">
+                          <i class="fas fa-plus"></i>
+                        </span>
+                        <span class="text">Nuevo</span>
+                      </a>
+                      <a @click="abrirModalAddProd()" class="btn btn-secondary btn-sm btn-icon-split m-2"
+                        :class="disabledMagnitud">
+                        <span class="icon text-white-50">
+                          <i class="fas fa-print"></i>
+                        </span>
+                        <span class="text">Imprimir</span>
+                      </a>
+                      <a @click="ExportExcel()" class="btn btn-primary btn-sm btn-icon-split" :class="disabledMagnitud">
+                        <span class="icon text-white-50">
+                          <i class="fas fa-download"></i>
+                        </span>
+                        <span class="text">Excel</span>
+                      </a>
+                      <!-- <a data-toggle="modal" @click="agrega()" data-target="#agregaMagnitudes"
+                        class="d-sm-inline-block btn btn-sm btn-info shadow-sm m-2" v-b-tooltip.hover
+                        title="Agregar magnitud" disabled><i class="fas fa-plus fa-sm "></i> Nuevo </a> -->
+                      <!-- <a @click="abrirModalAddProd()" href="#"
+                        class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm" v-b-tooltip.hover
+                        title="Agregar producto"><i class="fas fa-print fa-sm "></i> Imprimir </a> -->
+                      <!-- <a @click="ExportExcel()" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
+                        v-b-tooltip.hover title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a> -->
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-xl-6 col-lg-12 ">
+                    <span class="text-info">Buscar: </span>
+                    <input class="form-control form-control-user" type="text" v-model="searchValue"
+                      placeholder="Tecle el nombre a buscar..." />
                   </div>
                 </div>
-                <div class="col-md-6 col-xl-6 col-lg-12 ">
-                  <span class="text-info">Buscar: </span>
-                  <!-- <input class="form-control" type="text" v-model="searchValue" placeholder="" /> -->
-                  <input class="form-control form-control-user" type="text" v-model="searchValue"
-                    placeholder="Tecle el nombre a buscar..." />
-                </div>
-              </div>
-              <br>
-
-              <!--Tabla -->
-              <EasyDataTable table-class-name="customize-table" :headers="headers" :items="items" buttons-pagination
-                border-cell v-model:items-selected="itemsSelected" header-text-direction="center"
-                body-text-direction="center" :search-field="searchField" :search-value="searchValue"
-                @click-row="showRow" :rows-per-page="5" show-index :loading="loading">
+                <br>
+                <!--Tabla -->
+                <EasyDataTable table-class-name="customize-table" :headers="headers" :items="items" buttons-pagination
+                  border-cell v-model:items-selected="itemsSelected" header-text-direction="center"
+                  body-text-direction="center" :search-field="searchField" :search-value="searchValue"
+                  @click-row="showRow" :rows-per-page="5" show-index :loading="loading">
 
 
 
-                <template #empty-message>
+                  <template #empty-message>
 
 
 
-                  <a>No hay datos que mostrar</a>
-                </template>
-                <template #item-opciones="item">
-                  <div class="operation-wrapper">
+                    <a>No hay datos que mostrar</a>
+                  </template>
+                  <template #item-opciones="item">
+                    <div class="operation-wrapper">
 
 
 
-                    <!-- <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal"
+                      <!-- <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal"
 
 
 
@@ -69,15 +86,15 @@
 
 
 
-                    <button class="btn btn-success btn-sm btn-circle" data-toggle="modal" @click="clickEditar(item.id)"
-                      data-target="#EditaMagnitudes" v-b-tooltip.hover title="Editar"><span
-                        class="fas fa-edit"></span></button>
-                    <!-- <button class="btn btn-info" data-toggle="modal" @click="clickEditar(item.id)" data-target="#agregaEditaMagnitudes"> <span
+                      <button class="btn btn-success btn-sm btn-circle" data-toggle="modal"
+                        @click="clickEditar(item.id)" data-target="#EditaMagnitudes" v-b-tooltip.hover
+                        title="Editar"><span class="fas fa-edit"></span></button>
+                      <!-- <button class="btn btn-info" data-toggle="modal" @click="clickEditar(item.id)" data-target="#agregaEditaMagnitudes"> <span
                   class="fa fa-plus"></span> Nuevo</button> -->
 
 
 
-                    <!-- <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
+                      <!-- <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
 
 
 
@@ -90,16 +107,11 @@
 
 
                             title="Restar"><span class="fas fa-minus"></span></button> -->
+                      <button class="btn btn-danger btn-sm btn-circle ml-1"
+                        @click="borrarU(item.id, item.attributes.magnitud)" v-b-tooltip.hover title="Eliminar"><span
+                          class="fas fas fa-trash-alt"></span></button>
 
-
-
-                    <button class="btn btn-danger btn-sm btn-circle ml-1"
-                      @click="borrarU(item.id, item.attributes.magnitud)" v-b-tooltip.hover title="Eliminar"><span
-                        class="fas fas fa-trash-alt"></span></button>
-
-
-
-                    <!-- <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode"
+                      <!-- <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode"
 
 
 
@@ -111,7 +123,7 @@
 
 
 
-                    <!-- <a class="dropdown-item btn btn-info btn-sm btn-circle ml-1" href="#" @click="generarCodeBar(item.attributes.codigo)" data-toggle="modal" data-target="#BarCode"
+                      <!-- <a class="dropdown-item btn btn-info btn-sm btn-circle ml-1" href="#" @click="generarCodeBar(item.attributes.codigo)" data-toggle="modal" data-target="#BarCode"
 
 
 
@@ -127,36 +139,17 @@
 
 
 
-                  </div>
-                </template>
-                <template #loading>
-                  <img src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
-                    style="width: 100px; height: 80px;" />
-                </template>
-              </EasyDataTable>
+                    </div>
+                  </template>
+                  <template #loading>
+                    <img src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
+                      style="width: 100px; height: 80px;" />
+                  </template>
+                </EasyDataTable>
+              </div>
             </div>
           </div>
         </div>
-
-        <!-- </div> -->
-
-
-
-        <!-- <img src="/cargando2.gif" style="width: 40px; height:40px" v-if="esperando" > -->
-
-
-
-        <!-- {{ listado }} -->
-
-
-
-        <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" v-b-tooltip.hover
-
-
-
-                title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar productos</a> -->
-
-
 
       </div>
 
@@ -164,49 +157,69 @@
         <div class="col-xl-12 col-lg-12">
           <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <a href="#collapseCardExample1" class="d-block card-header py-3" data-toggle="collapse" role="button"
+              aria-expanded="true" aria-controls="collapseCardExample">
               <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-edit"></i> UNIDADES DE MEDIDAS</h6>
-              <!-- <button class="btn btn-info" @click="abrirModalAddArti()"> <span class="fa fa-plus"></span> Nuevo</button> -->
-              <button class="btn btn-info" data-toggle="modal" @click="agrega()" data-target="#agregaMedidas">
-                <span class="fa fa-plus"></span> Nuevo</button>
-            </div>
+            </a>
             <!-- Card Body -->
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-6 col-xl-6 col-lg-12">
-                  <div class="justify-content-between">
-                    <!-- <router-link class="button" to="/gest_inventario"> -->
-                    <a @click="abrirModalAddProd()" href="#"
-                      class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm" v-b-tooltip.hover
-                      title="Agregar producto"><i class="fas fa-print fa-sm "></i> Imprimir </a>
-                    <!-- </router-link> -->
-                    <a @click="ExportExcel()" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
-                      v-b-tooltip.hover title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a>
+            <!-- <div class="card-body"> -->
+            <div class="collapse show" id="collapseCardExample1">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6 col-xl-6 col-lg-12">
+                    <div class="justify-content-between">
+                      <!-- <router-link class="button" to="/gest_inventario"> -->
+                      <a data-toggle="modal" @click="agrega()" data-target="#agregaMedidas"
+                        class="btn btn-info btn-sm btn-icon-split" :class="disabledMedida">
+                        <span class="icon text-white-50">
+                          <i class="fas fa-plus"></i>
+                        </span>
+                        <span class="text">Nuevo</span>
+                      </a>
+                      <a @click="abrirModalAddProd()" class="btn btn-secondary btn-sm btn-icon-split m-2"
+                        :class="disabledMedida">
+                        <span class="icon text-white-50">
+                          <i class="fas fa-print"></i>
+                        </span>
+                        <span class="text">Imprimir</span>
+                      </a>
+                      <a @click="ExportExcelMedidas()" class="btn btn-primary btn-sm btn-icon-split"
+                        :class="disabledMedida">
+                        <span class="icon text-white-50">
+                          <i class="fas fa-download"></i>
+                        </span>
+                        <span class="text">Excel</span>
+                      </a>
+                      <!-- <a data-toggle="modal" @click="agrega()" data-target="#agregaMedidas"
+                        class="d-sm-inline-block btn btn-sm btn-info shadow-sm m-2" v-b-tooltip.hover
+                        title="Agregar unidad de medida"><i class="fas fa-plus fa-sm "></i> Nuevo </a>
+                      <a @click="abrirModalAddProd()" href="#"
+                        class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm" v-b-tooltip.hover
+                        title="Agregar producto"><i class="fas fa-print fa-sm "></i> Imprimir </a>
+                      <a @click="ExportExcel()" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
+                        v-b-tooltip.hover title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a> -->
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-xl-6 col-lg-12 ">
+                    <span class="text-info">Buscar: </span>
+                    <!-- <input class="form-control" type="text" v-model="searchValue" placeholder="" /> -->
+                    <input class="form-control form-control-user" type="text" v-model="searchValueMedida"
+                      placeholder="Teclee el nombre a buscar..." />
                   </div>
                 </div>
-                <div class="col-md-6 col-xl-6 col-lg-12 ">
-                  <span class="text-info">Buscar: </span>
-                  <!-- <input class="form-control" type="text" v-model="searchValue" placeholder="" /> -->
-                  <input class="form-control form-control-user" type="text" v-model="searchValueMedida"
-                    placeholder="Teclee el nombre a buscar..." />
-                </div>
-              </div>
-              <br>
+                <br>
 
-              <!--Tabla -->
-              <EasyDataTable table-class-name="customize-table" :headers="headersMedidas" :items="itemsMedidas"
-                buttons-pagination border-cell v-model:items-selected="itemsSelected" header-text-direction="center"
-                body-text-direction="center" :search-field="searchFieldMedida" :search-value="searchValueMedida"
-                @click-row="showRow" :rows-per-page="5" :loading="loadingU" show-index>
-                <template #empty-message>
-                  <a>No hay datos que mostrar</a>
-                </template>
-                <template #item-opciones="item">
-                  <div class="operation-wrapper">
-
-
-
-                    <!-- <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal"
+                <!--Tabla -->
+                <EasyDataTable table-class-name="customize-table" :headers="headersMedidas" :items="itemsMedidas"
+                  buttons-pagination border-cell v-model:items-selected="itemsSelected" header-text-direction="center"
+                  body-text-direction="center" :search-field="searchFieldMedida" :search-value="searchValueMedida"
+                  @click-row="showRow" :rows-per-page="5" :loading="loadingU" show-index>
+                  <template #empty-message>
+                    <a>No hay datos que mostrar</a>
+                  </template>
+                  <template #item-opciones="item">
+                    <div class="operation-wrapper">
+                      <!-- <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal"
 
 
 
@@ -215,16 +228,10 @@
 
 
                                       title="Modificar"><span class="fas fa-edit"></span></button> -->
-
-
-
-                    <button class="btn btn-success btn-sm btn-circle" data-toggle="modal" data-target="#EditaMedidas"
-                      @click="clickEditarMedidas(item.id)" v-b-tooltip.hover title="Editar"><span
-                        class="fas fa-edit"></span></button>
-
-
-
-                    <!-- <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
+                      <button class="btn btn-success btn-sm btn-circle" data-toggle="modal" data-target="#EditaMedidas"
+                        @click="clickEditarMedidas(item.id)" v-b-tooltip.hover title="Editar"><span
+                          class="fas fa-edit"></span></button>
+                      <!-- <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
 
 
 
@@ -238,15 +245,13 @@
 
                             title="Restar"><span class="fas fa-minus"></span></button> -->
 
-
-
-                    <button class="btn btn-danger btn-sm btn-circle ml-1"
-                      @click="borrarUMedida(item.id, item.attributes.medida)" v-b-tooltip.hover title="Eliminar"><span
-                        class="fas fas fa-trash-alt"></span></button>
+                      <button class="btn btn-danger btn-sm btn-circle ml-1"
+                        @click="borrarUMedida(item.id, item.attributes.medida)" v-b-tooltip.hover title="Eliminar"><span
+                          class="fas fas fa-trash-alt"></span></button>
 
 
 
-                    <!-- <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode"
+                      <!-- <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode"
 
 
 
@@ -258,7 +263,7 @@
 
 
 
-                    <!-- <a class="dropdown-item btn btn-info btn-sm btn-circle ml-1" href="#" @click="generarCodeBar(item.attributes.codigo)" data-toggle="modal" data-target="#BarCode"
+                      <!-- <a class="dropdown-item btn btn-info btn-sm btn-circle ml-1" href="#" @click="generarCodeBar(item.attributes.codigo)" data-toggle="modal" data-target="#BarCode"
 
 
 
@@ -271,25 +276,20 @@
 
 
                           </a> -->
-
-
-
-                  </div>
-                </template>
-                <template #loading>
-                  <img src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
-                    style="width: 100px; height: 80px;" />
-                </template>
-              </EasyDataTable>
+                    </div>
+                  </template>
+                  <template #loading>
+                    <img src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
+                      style="width: 100px; height: 80px;" />
+                  </template>
+                </EasyDataTable>
+              </div>
             </div>
+
+            <!-- </div> -->
           </div>
         </div>
       </div>
-
-
-
-
-
       <!-- Datos del producto a agregar -->
 
       <!-- TABLA INVENTARIOS -->
@@ -378,17 +378,18 @@
 
                 </div>
                 <div v-if="editar == false" class="form-group h4 col-lg-6">
-                  <a @click="agregarU" class="btn btn-info btn-block">
-                    Guardar datos
+                  <a @click="agregarU" class="btn btn-info btn-block" :class="disabledMagnitudBtn">
+                    {{ GuardarMag }}
                   </a>
                 </div>
                 <div v-if="editar" class="form-group h4 col-lg-6">
-                  <a @click="editarU" class="btn btn-info btn-block">
+                  <a @click="editarU" class="btn btn-info btn-block" :class="btnModificarClass">
                     {{ btnModificar }}
                   </a>
                 </div>
                 <div v-if="editar" class="form-group h4 col-lg-6">
-                  <a @click="cancelarU()" class="btn btn-danger btn-block" data-dismiss="modal" aria-label="Close">
+                  <a @click="cancelarU()" class="btn btn-danger btn-block" :class="btnModificarClass"
+                    data-dismiss="modal" aria-label="Close">
                     Cancelar
                   </a>
                 </div>
@@ -396,9 +397,9 @@
             </div>
 
             <!-- <div class="modal-footer" style="text-align: center;"> -->
-              <!-- <a class="btn btn-info" @click="AColumnas">Aceptar</a> -->
-              <!-- <button class="btn btn-secondary btn-sm" type="submit" id="button" @click="enviarEmail()">Enviar</button> -->
-              <!-- <div class="row">
+            <!-- <a class="btn btn-info" @click="AColumnas">Aceptar</a> -->
+            <!-- <button class="btn btn-secondary btn-sm" type="submit" id="button" @click="enviarEmail()">Enviar</button> -->
+            <!-- <div class="row">
 
               <div v-if="editar == false" class="form-group h4 col-lg-1">
 
@@ -663,17 +664,17 @@
 
               </div>
               <div v-if="editar == false" class="form-group h4 col-lg-6">
-                <a @click="agregarUMedida" class="btn btn-info btn-block">
-                  Guardar datos
+                <a @click="agregarUMedida" class="btn btn-info btn-block" :class="disabledMedidaBtn">
+                  {{ GuardarMedida }}
                 </a>
               </div>
               <div v-if="editar" class="form-group h4 col-lg-6">
-                <a @click="editarUMedida" class="btn btn-info btn-block">
+                <a @click="editarUMedida()" class="btn btn-info btn-block" :class="deactiva">
                   {{ btnModificarM }}
                 </a>
               </div>
               <div v-if="editar" class="form-group h4 col-lg-6">
-                <a class="btn btn-danger btn-block" data-dismiss="modal" aria-label="close">
+                <a class="btn btn-danger btn-block" data-dismiss="modal" aria-label="close" :class="deactiva">
                   Cancelar
                 </a>
               </div>
@@ -836,8 +837,9 @@
 import axios from 'axios';
 import router from '@/router';
 import Swal from 'sweetalert2';
-import { onMounted, reactive, ref, defineEmits } from 'vue';
-import { load } from '@progress/kendo-vue-intl';
+import { onMounted, reactive, ref } from 'vue';
+// import { load } from '@progress/kendo-vue-intl';
+import * as XLSX from 'xlsx';
 
 const esperando = ref(false);
 
@@ -845,7 +847,7 @@ const btnModificar = ref('Modificar')
 
 const btnModificarM = ref('Modificar')
 
-const deactiva = ref(false)
+const deactiva = ref('')
 
 const loading = ref(false);
 
@@ -859,6 +861,14 @@ const activaModal1 = ref('')
 
 const displayModal1 = ref('')
 
+const disabledMagnitud = ref('')
+
+const disabledMagnitudBtn = ref('')
+
+const disabledMedida = ref('')
+
+const disabledMedidaBtn = ref('')
+
 const loadingA = (texto) => {
   Swal.fire({
     // title: "Sweet!",
@@ -869,6 +879,58 @@ const loadingA = (texto) => {
     imageAlt: "Custom image",
     showConfirmButton: false
   });
+}
+
+// Excel
+
+const nuevoArreglo = ref([]);
+const elementos = ref([]);
+function ExportExcel() {
+
+  for (let index = 0; index < items.value.length; index++) {
+    elementos.value.type = items.value[index].type;
+    elementos.value.magnitud = items.value[index].attributes.magnitud;
+    elementos.value.descripcion = items.value[index].attributes.descripcion;
+    elementos.value.observacion = items.value[index].attributes.observacion;
+    elementos.value.created_at = items.value[index].attributes.timestamps.created_at;
+    elementos.value.updated_at = items.value[index].attributes.timestamps.updated_at;
+    nuevoArreglo.value.push(elementos.value)
+    elementos.value = []
+  }
+  // console.log(nuevoArreglo)
+  const worksheet = XLSX.utils.json_to_sheet(nuevoArreglo.value);
+  const workbook = XLSX.utils.book_new();
+  // // Abriendo el excel
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+  // // Generar el archivo
+  const fileName = 'Magnitudes.xlsx';
+  // // Guardar el archivo execl
+  XLSX.writeFile(workbook, fileName);
+}
+// Fin
+
+function ExportExcelMedidas() {
+  elementos.value = []
+  nuevoArreglo.value = []
+  for (let index = 0; index < itemsMedidas.value.length; index++) {
+    elementos.value.type = itemsMedidas.value[index].type;
+    elementos.value.medida = itemsMedidas.value[index].attributes.medida;
+    elementos.value.descripcion = itemsMedidas.value[index].attributes.descripcion;
+    elementos.value.observacion = itemsMedidas.value[index].attributes.observacion;
+    elementos.value.created_at = itemsMedidas.value[index].attributes.timestamps.created_at;
+    elementos.value.updated_at = itemsMedidas.value[index].attributes.timestamps.updated_at;
+    nuevoArreglo.value.push(elementos.value)
+    elementos.value = []
+  }
+  // console.log(nuevoArreglo)
+  const worksheet = XLSX.utils.json_to_sheet(nuevoArreglo.value);
+  const workbook = XLSX.utils.book_new();
+  // // Abriendo el excel
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+  // // Generar el archivo
+  const fileName = 'U_Medidas.xlsx';
+  // // Guardar el archivo execl
+  XLSX.writeFile(workbook, fileName);
 }
 
 const IdMagnitud = ref(0);
@@ -1119,31 +1181,38 @@ const agrega = () => {
   editar.value = false
 }
 
+let GuardarMag = ref('Agregar magnitud')
+
 const agregarU = async () => {
   // console.log(formMagnitud)
   esperando.value = true;
-  if (formMagnitud) {
+  if (formMagnitud.data.attributes.magnitud != '' && formMagnitud.data.attributes.descripcion != '') {
     // console.log("OKKKK")
+    disabledMagnitudBtn.value = 'disabled'
+    GuardarMag.value = 'Guardando...'
     await axios.post(`https://` + ipPublica.value + `/fullstack/public/magnitudes`, formMagnitud)
       .then((response) => {
         cargado.value = false;
         esperando.value = false;
-        // cerrarAlert();
-        // consultar();
-        formMagnitud.data.attributes.observacion = ''
-        formMagnitud.data.attributes.descripcion = '';
-        formMagnitud.data.attributes.magnitud = '';
-        // emit('actualiza', 7);
-        loading.value = true;
-        // console.log(response.data.data)
-        listadoMagnitudes.value.push(response.data.data)
-        // console.log(listadoMagnitudes.value)
-        almacenDatosMagnitudes(listadoMagnitudes.value);
-        listadoMagnitudes.value = JSON.parse(localStorage.getItem('ListadoCacheMagnitudes'));
-        obtenerListadoLimpio();
-        loading.value = false;
-        successFull("Magnitud agregada satisfactoriamente.", "top-end")
-        // closeVentana();
+        if (response.data.data == null) {
+          ErrorFull("Está intentando agregar un dato que ya existe en la base datos.", "top-start")
+          disabledMagnitudBtn.value = '';
+          GuardarMag.value = 'Agregar departamento'
+        } else {
+          formMagnitud.data.attributes.observacion = ''
+          formMagnitud.data.attributes.descripcion = '';
+          formMagnitud.data.attributes.magnitud = '';
+          // emit('actualiza', 7);
+          loading.value = true;
+          listadoMagnitudes.value.push(response.data.data)
+          almacenDatosMagnitudes(listadoMagnitudes.value);
+          listadoMagnitudes.value = JSON.parse(localStorage.getItem('ListadoCacheMagnitudes'));
+          obtenerListadoLimpio();
+          disabledMagnitudBtn.value = ''
+          GuardarMag.value = 'Agregar magnitud'
+          loading.value = false;
+          successFull("Magnitud agregada satisfactoriamente.", "top-end")
+        }
 
       })
       .catch((error) => {
@@ -1168,6 +1237,8 @@ const agregarU = async () => {
 
 }
 
+let GuardarMedida = ref('Agregar u. medida');
+
 const agregarUMedida = () => {
   // formMedida.data.attributes.magnitud_id = IdMagnitud.value;
   // console.log(formMedida)
@@ -1175,6 +1246,8 @@ const agregarUMedida = () => {
   esperando.value = true;
   if (formMedida) {
     // console.log("OKKKK")
+    GuardarMedida.value = 'Guardando...'
+    disabledMedidaBtn.value = 'disabled'
     axios.post(`https://` + ipPublica.value + `/fullstack/public/medidas`, formMedida)
       .then((response) => {
         cargado.value = false;
@@ -1199,6 +1272,8 @@ const agregarUMedida = () => {
         listadoMagnitudes.value = JSON.parse(localStorage.getItem('ListadoCacheUnidades'));
         obtenerListadoLimpioMedida()
         loadingU.value = false;
+        GuardarMedida.value = 'Agregar u. medida';
+        disabledMedidaBtn.value = ''
         successFull("Unidad de medida agregada satisfactoriamente.", "top-end")
         // closeVentana();
 
@@ -1473,38 +1548,39 @@ const EditarListado = async (newdato) => {
 
 }
 
+const btnModificarClass = ref('')
+
 const editarU = async () => {
   esperando.value = true;
   btnModificar.value = 'Actualizando...'
+  btnModificarClass.value = 'disabled'
   // deactiva.value = true;
   await axios.put(`https://${ipPublica.value}/fullstack/public/magnitudes/${id.value}`, formMagnitud)
     .then((response) => {
-      // console.log(response.data.data)
-      // esperando.value = false;
-      // cerrarAlert();
-      // consultar();
-      editar.value = false;
-      formMagnitud.data.attributes.descripcion = ''
-      formMagnitud.data.attributes.observacion = '';
-      formMagnitud.data.attributes.magnitud = '';
-      loading.value = true;
-      EditarListado(response.data.data)
-      successFull("Magnitud editada satisfactoriamente.", "top-end")
-      loading.value = false;
-      esperando.value = false;
-      btnModificar.value = 'Modificar'
-      // Swal.fire({
-      //   icon: "success",
-      //   title: "Editado satisfactoriamente."
-      // })
-      // editar.value = false;
-      // localStorage.setItem("editar", editar.value);
+      if (response.data.data == null) {
+        btnModificar.value = 'Modificar'
+        btnModificarClass.value = ''
+      } else {
+        editar.value = false;
+        formMagnitud.data.attributes.descripcion = ''
+        formMagnitud.data.attributes.observacion = '';
+        formMagnitud.data.attributes.magnitud = '';
+        loading.value = true;
+        EditarListado(response.data.data)
+        successFull("Magnitud editada satisfactoriamente.", "top-end")
+        loading.value = false;
+        esperando.value = false;
+        btnModificar.value = 'Modificar'
+        btnModificarClass.value = ''
+      }
     })
     .catch((error) => {
       if (error.status === 400) {
         errors.value = error.response.data;
       }
       esperando.value = false;
+      btnModificar.value = 'Modificar'
+      btnModificarClass.value = ''
       ErrorFull('Error realizando la operacion. Inténtelo más tarde.')
       // cerrarAlert();
       // Swal.fire({
@@ -1528,7 +1604,7 @@ const EditarListadoMedidas = async (newdato) => {
   almacenDatosUnidades(itemsMedidas.value);
   // console.log(items);
 
-  return await items;
+  return await itemsMedidas;
 
 }
 
@@ -1564,38 +1640,34 @@ const EliminarListadoMedidas = async (newdato) => {
   almacenDatosUnidades(itemsMedidas.value);
   // console.log(itemsMedidas);
 
-  return await items;
+  return await itemsMedidas;
 
 }
 
 const editarUMedida = async () => {
   esperando.value = true;
   btnModificarM.value = "Actualizando..."
-  deactiva.value = true;
+  deactiva.value = 'disabled';
   await axios.put(`https://${ipPublica.value}/fullstack/public/medidas/${id.value}`, formMedida)
     .then((response) => {
-      editar.value = false;
-      formMedida.data.attributes.descripcion = ''
-      formMedida.data.attributes.observacion = '';
-      formMedida.data.attributes.medida = '';
-      formMedida.data.attributes.magnitud_id = '';
-      loading.value = true;
-      // listadoMedidas.value.push(response.data.data);
-      console.log(response)
-      EditarListadoMedidas(response.data.data)
-      // almacenDatosUnidades(listadoMedidas.value);
-      // listadoMedidas.value = JSON.parse(localStorage.getItem('ListadoCacheUnidades'));
-      // obtenerListadoLimpioMedida()
-      successFull("Unidad de medida editada satisfactoriamente.", "top-end")
-      loading.value = false;
-      esperando.value = false;
-      btnModificarM.value = "Modificar"
-      // Swal.fire({
-      //   icon: "success",
-      //   title: "Editado satisfactoriamente."
-      // })
-      // editar.value = false;
-      // localStorage.setItem("editar", editar.value);
+      if (response.data.data == null) {
+        btnModificarM.value = "Modificar"
+        deactiva.value = ''
+        ErrorFull("Error realizando operación.", "top-start")
+      } else {
+        editar.value = false;
+        formMedida.data.attributes.descripcion = ''
+        formMedida.data.attributes.observacion = '';
+        formMedida.data.attributes.medida = '';
+        formMedida.data.attributes.magnitud_id = '';
+        loading.value = true;
+        EditarListadoMedidas(response.data.data)
+        successFull("Unidad de medida editada satisfactoriamente.", "top-end")
+        loading.value = false;
+        esperando.value = false;
+        btnModificarM.value = "Modificar"
+        deactiva.value = ''
+      }
     })
     .catch((error) => {
       if (error.response.status === 400) {
@@ -1621,44 +1693,26 @@ const borrarU = (id, correo) => {
       // Eliminar //
       axios.delete(`http://${ipPublica.value}/fullstack/public/magnitudes/${id}`)
         .then((response) => {
-          esperando.value = false;
-          loading.value = true;
-          // consultar();
-          // // cancelarU();
-          // cerrarAlert();
-          // emit('actualiza')
-          // axios.get(`https://` + ipPublica.value + `/fullstack/public/magnitudes`)
-          //   .then((response) => {
-          //     listadoMagnitudes.value = response.data.data;
-          //     almacenDatosMagnitudes(listadoMagnitudes.value);
-          //     loading.value = false
-          //     // cargado.value = true;
-          //     // Kgest_nomencladores.value = Kgest_nomencladores.value + 1;
-          //   }).catch((error) => {
-          //     if (error.response.status === 500) {
-          //       errors.value = error.response.status;
-          //     }
-          //     loading.value = false
-          //   });
-          EliminarListado(response.data.data)
-          loading.value = false;
-          successFull("Magnitud eliminada satisfactoriamente.", "top-end")
 
-          // Swal.fire({
-          //   title: "Eliminado",
-          //   text: "Producto eliminado satisfactoriamente.",
-          //   icon: "success"
-          // });
-          cargado.value = false;
+          if (response.data.data == null) {
+
+          } else {
+            esperando.value = false;
+            loading.value = true;
+            EliminarListado(response.data.data)
+            loading.value = false;
+            successFull("Magnitud eliminada satisfactoriamente.", "top-end")
+          }
         })
+        .catch((error) => {
+          if (error.response.status === 400) {
+            errors.value = error.response.data;
+          }
+          esperando.value = false;
+          ErrorFull("Error realizando la operación. Intente nuevamente.", "top-start")
+        });
     }
-  }).catch((error) => {
-    if (error.response.status === 400) {
-      errors.value = error.response.data;
-    }
-    esperando.value = false;
-    cerrarAlert();
-  });
+  })
 }
 
 const borrarUMedida = (id, correo) => {
@@ -1677,42 +1731,21 @@ const borrarUMedida = (id, correo) => {
       axios.delete(`https://${ipPublica.value}/fullstack/public/medidas/${id}`)
         .then((response) => {
           esperando.value = false;
-          // consultar();
-          // // cancelarU();
-          // cerrarAlert();
-          // emit('actualiza')
           loading.value = true;
-          // axios.get(`https://` + ipPublica.value + `/fullstack/public/medidas`)
-          //   .then((response) => {
-          //     listadoMedidas.value = response.data.data;
-          //     almacenDatosUnidades(listadoMedidas.value);
-          //     loading.value = false
-          //     // cargado.value = true;
-          //     // Kgest_nomencladores.value = Kgest_nomencladores.value + 1;
-          //   }).catch((error) => {
-          //     if (error.response.status === 500) {
-          //       errors.value = error.response.status;
-          //     }
-          //     loading.value = false
-          //   });
           EliminarListadoMedidas(response.data.data)
           successFull("Unidad de medida eliminada satisfactoriamente.", "top-end")
           loading.value = false;
-          // Swal.fire({
-          //   title: "Eliminado",
-          //   text: "Producto eliminado satisfactoriamente.",
-          //   icon: "success"
-          // });
-          cargado.value = false;
         })
+        .catch((error) => {
+          if (error.response.status === 400) {
+            errors.value = error.response.data;
+          }
+          esperando.value = false;
+          ErrorFull("Error realizando la operación. Intente nuevamente.", "top-start")
+          // cerrarAlert();
+        });
     }
-  }).catch((error) => {
-    if (error.response.status === 400) {
-      errors.value = error.response.data;
-    }
-    esperando.value = false;
-    // cerrarAlert();
-  });
+  })
 }
 // Fin CRUD
 
@@ -1804,6 +1837,8 @@ onMounted(async () => {
     if (localStorage.getItem('Carg_datM') == '0') {
       // MAGNITUDES
       loading.value = true;
+      disabledMagnitud.value = 'disabled'
+      disabledMedida.value = 'disabled'
       // emit('actualiza', 7)
       // emit('actualiza', 8)
       await axios.get(`https://` + ipPublica.value + `/fullstack/public/magnitudes`)
@@ -1813,6 +1848,7 @@ onMounted(async () => {
           listadoMagnitudes.value = JSON.parse(localStorage.getItem('ListadoCacheMagnitudes'));
           obtenerListadoLimpio();
           loading.value = false;
+          disabledMagnitud.value = ''
           localStorage.setItem('Carg_datM', '1')
         }).catch((error) => {
           if (error.response.status === 500) {
@@ -1822,13 +1858,16 @@ onMounted(async () => {
 
     } else {
       loading.value = true;
+      disabledMagnitud.value = 'disabled'
       listadoMagnitudes.value = await JSON.parse(localStorage.getItem('ListadoCacheMagnitudes'));
       obtenerListadoLimpio();
+      disabledMagnitud.value = ''
       loading.value = false;
     }
 
     if (localStorage.getItem('Carg_datMe') == '0') {
       loadingU.value = true;
+      // disabledMedida.value = 'disabled'
       await axios.get(`https://` + ipPublica.value + `/fullstack/public/medidas`)
         .then((response) => {
           listadoMedidas.value = response.data.data;
@@ -1836,6 +1875,7 @@ onMounted(async () => {
           listadoMedidas.value = JSON.parse(localStorage.getItem('ListadoCacheUnidades'));
           obtenerListadoLimpioMedida();
           localStorage.setItem('Carg_datMe', '1')
+          disabledMedida.value = ''
           loadingU.value = false;
         }).catch((error) => {
           if (error.response.status === 500) {
@@ -1845,8 +1885,10 @@ onMounted(async () => {
 
     } else {
       loadingU.value = true;
+      disabledMedida.value = 'disabled'
       listadoMedidas.value = await JSON.parse(localStorage.getItem('ListadoCacheUnidades'));
       obtenerListadoLimpioMedida();
+      disabledMedida.value = ''
       loadingU.value = false;
     }
 

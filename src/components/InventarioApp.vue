@@ -184,14 +184,34 @@
                 <!-- <div class="row"> -->
                 <div class="justify-content-between">
                   <!-- <router-link class="button" to="/gest_inventario"> -->
-                  <a @click="abrirModalAddProd()" href="#" class="d-sm-inline-block btn btn-sm btn-info shadow-sm"
-                    v-b-tooltip.hover title="Agregar producto"><i class="fas fa-plus fa-sm "></i> Agregar productos </a>
+                  <a data-toggle="modal" @click="agrega()" data-target="#agregaProducto"
+                    class="btn btn-info btn-sm btn-icon-split" :class="disabledProductos">
+                    <span class="icon text-white-50">
+                      <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="text">Nuevo</span>
+                  </a>
+                  <a @click="abrirModalAddProd()" class="btn btn-secondary btn-sm btn-icon-split m-2"
+                    :class="disabledProductos">
+                    <span class="icon text-white-50">
+                      <i class="fas fa-print"></i>
+                    </span>
+                    <span class="text">Imprimir</span>
+                  </a>
+                  <a @click="ExportExcel()" class="btn btn-primary btn-sm btn-icon-split" :class="disabledProductos">
+                    <span class="icon text-white-50">
+                      <i class="fas fa-download"></i>
+                    </span>
+                    <span class="text">Excel</span>
+                  </a>
+                  <!-- <a @click="abrirModalAddProd()" href="#" class="d-sm-inline-block btn btn-sm btn-info shadow-sm"
+                    v-b-tooltip.hover title="Agregar producto"><i class="fas fa-plus fa-sm "></i> Agregar productos </a> -->
                   <!-- <a @click="EliminarSelecc()" href="#" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm m-2"
                     v-b-tooltip.hover title="Eliminar seleccionados"><i class="fas fa-trash fa-sm "></i> Eliminar
                     seleccionados </a> -->
                   <!-- </router-link> -->
-                  <a @click="ExportExcel()" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
-                    v-b-tooltip.hover title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a>
+                  <!-- <a @click="ExportExcel()" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
+                    v-b-tooltip.hover title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a> -->
                 </div>
                 <!-- </div> -->
               </div>
@@ -217,17 +237,17 @@
             </DataTable> -->
             <!-- Fin -->
 
-            <EasyDataTable :headers="headers" :items="items" buttons-pagination
-              border-cell v-model:items-selected="itemsSelected" header-text-direction="center"
-              body-text-direction="center" :search-field="searchField1" :search-value="searchValue" @click-row="showRow"
-              :rows-per-page="5" :loading="loading">
+            <EasyDataTable :headers="headers" :items="itemsProductos" buttons-pagination border-cell
+              v-model:items-selected="itemsSelected" header-text-direction="center" body-text-direction="center"
+              :search-field="searchField1" :search-value="searchValue" @click-row="showRow" :rows-per-page="5"
+              :loading="loadingP">
               <template #item-image="item">
                 <img src="/inventario.jpg" alt="No image" class="img img-thumbnail"
                   style="width: 70px; height: 70px;" />
               </template>
               <template #item-opciones="item">
                 <div class="operation-wrapper">
-                  <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal" data-target="#EditarProducto"
+                  <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal" data-target="#editaProducto"
                     @click="seleccionaProducto(item)" v-b-tooltip.hover title="Modificar"><span
                       class="fas fa-edit"></span></button>
                   <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
@@ -243,13 +263,13 @@
 
                 </div>
               </template>
-              <template #loading>
-                  <img src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
-                    style="width: 100px; height: 80px;" />
-                </template>
-                <template #empty-message>
-                  <a>No hay datos que mostrar</a>
-                </template>
+              <template #loadingP>
+                <img src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
+                  style="width: 100px; height: 80px;" />
+              </template>
+              <template #empty-message>
+                <a>No hay datos que mostrar</a>
+              </template>
 
             </EasyDataTable>
             <!-- Fin -->
@@ -509,15 +529,238 @@
       </div>
 
     </div>
-    <AddProducto v-show="popup" @cerrar="abrirModalAddProd()" />
+    <!-- <AddProducto v-show="popup" @cerrar="abrirModalAddProd()" /> -->
   </div>
-  <template v-if="esperando">
+
+  <!-- Logout Modal-->
+  <div :class="'modal fade ' + showModal1" id="agregaProducto" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-info" id="exampleModalLabel" v-if="editar == false">NUEVA PRODUCTO</h5>
+          <h5 class="modal-title text-info text-center" id="exampleModalLabel" v-if="editar == true"><span
+              class="fa fa-edit"></span>
+            MODIFICAR LOS DATOS DEL PRODUCTO <br>(<label style="color: red;">{{
+              formProductos.data.attributes.descripcion
+            }}</label>)</h5>
+
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="text-info">×</span>
+          </button>
+        </div>
+        <div class="modal-body text-center">
+          <div class="text-center">
+            <h1 class="h6 text-gray-900 mb-4"><i>CAMPOS OBLIGATORIOS</i> (<label style="color: red;">*</label>)
+            </h1>
+          </div>
+          <form class="user">
+
+            <div class="row">
+              <div class="form-group col-lg-12">
+                <label class="text-info">Descripción: <label style="color: red;">*</label></label>
+                <input type="text" class="form-control" id="descripcionP" aria-describedby="emailHelp"
+                  v-model="formProductos.data.attributes.descripcion" placeholder="Descripción del producto" required>
+                  <span v-if="errores.cod" style="color: red;">Campo en blanco</span>
+              </div>
+              <div class="form-group col-lg-12">
+                <label class="text-info">Observaciones: <label style="color: red;">*</label></label>
+                <input type="text" class="form-control" id="observacionP" aria-describedby="emailHelp"
+                  v-model="formProductos.data.attributes.observacion" placeholder="Observaciones del producto">
+              </div>
+
+            </div>
+            <div class="form-group col-lg-12">
+              <label class="text-info">Seleccione el artículo: <label style="color: red;">*</label></label>
+              <select name="articulo" id="articulo" style="width: 100%; text-align:center" placeholder="Artículo"
+                class="text-gray-900 form-control" v-model="formProductos.data.attributes.articulo_id">
+                <option v-for="dato in listadoArticulos" :key="dato.id" :value="dato.id">{{
+                  dato.attributes.articulo }}</option>
+              </select>
+              <span v-if="errores.descripcion" style="color: red;">Campo en blanco</span>
+            </div>
+
+            <div class="form-group col-lg-12">
+              <label class="text-info">Cantidad: <label style="color: red;">*</label></label>
+              <select name="cantidad" id="cantidad" style="width: 100%; text-align:center" placeholder="Artículo"
+                class="text-gray-900 form-control" v-model="formProductos.data.attributes.cantidad"
+                >
+                <option value="1"> 1 </option>
+                <option value="10"> 10 </option>
+              </select>
+              <span v-if="errores.cod" style="color: red;">Campo en blanco</span>
+            </div>
+
+            <div class="row">
+              <div v-if="editar == false" class="form-group h4 col-lg-3">
+
+              </div>
+              <div v-if="editar == false" class="form-group h4 col-lg-6">
+                <a @click="agregarUProducto()" class="btn btn-info btn-block" :class="disabledProductoBtn">
+                  {{ GuardarProducto }}
+                </a>
+              </div>
+              <div v-if="editar" class="form-group h4 col-lg-6">
+                <a @click="editarUMedida()" class="btn btn-info btn-block" :class="deactiva">
+                  {{ btnModificarM }}
+                </a>
+              </div>
+              <div v-if="editar" class="form-group h4 col-lg-6">
+                <a class="btn btn-danger btn-block" data-dismiss="modal" aria-label="close" :class="deactiva">
+                  Cancelar
+                </a>
+              </div>
+            </div>
+
+
+          </form>
+
+          <!-- <div>
+            <card class="card-section" style="width: 450px; margin: auto">
+              <h1>Contact Form</h1>
+              <form ref="values" @submit.prevent="sendEmail">
+                <div class="form-group">
+                  <KInput class="form-input" :style="{ width: '290px' }" name="name" v-model="user_name"
+                    placeholder="Name"></KInput>
+                </div>
+                <div class="form-group">
+                  <KInput class="form-input" :style="{ width: '290px' }" name="email" v-model="user_email"
+                    placeholder="email address"></KInput>
+                </div>
+                <div class="form-group">
+                  <kTextarea class="form-input" :style="{ width: '290px' }" name="message" v-model="user_message"
+                    placeholder="Message" :rows="4" />
+                </div>
+                <div class="example-col">
+                  <kButton :style="{ width: '100px' }" id="submit-btn">Submit form</kButton>
+                </div>
+              </form>
+            </card>
+          </div> -->
+          <!-- <vue-barcode :value="cod" tag="svg"></vue-barcode> -->
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div :class="'modal fade ' + showModal1" id="editaProducto" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-info" id="exampleModalLabel" v-if="editar == false">NUEVA PRODUCTO</h5>
+          <h5 class="modal-title text-info text-center" id="exampleModalLabel" v-if="editar == true"><span
+              class="fa fa-edit"></span>
+            MODIFICAR LOS DATOS DEL PRODUCTO <br>(<label style="color: red;">{{
+              formProductos.data.attributes.descripcion
+            }}</label>)</h5>
+
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="text-info">×</span>
+          </button>
+        </div>
+        <div class="modal-body text-center">
+          <div class="text-center">
+            <h1 class="h6 text-gray-900 mb-4"><i>CAMPOS OBLIGATORIOS</i> (<label style="color: red;">*</label>)
+            </h1>
+          </div>
+          <form class="user">
+
+            <div class="row">
+              <div class="form-group col-lg-12">
+                <label class="text-info">Descripción: <label style="color: red;">*</label></label>
+                <input type="text" class="form-control" id="descripcionP" aria-describedby="emailHelp"
+                  v-model="formProductos.data.attributes.descripcion" placeholder="Descripción del producto" required>
+                  <span v-if="errores.cod" style="color: red;">Campo en blanco</span>
+              </div>
+              <div class="form-group col-lg-12">
+                <label class="text-info">Observaciones: <label style="color: red;">*</label></label>
+                <input type="text" class="form-control" id="observacionP" aria-describedby="emailHelp"
+                  v-model="formProductos.data.attributes.observacion" placeholder="Observaciones del producto">
+              </div>
+
+            </div>
+            <div class="form-group col-lg-12">
+              <label class="text-info">Seleccione el artículo: <label style="color: red;">*</label></label>
+              <select name="articulo" id="articulo" style="width: 100%; text-align:center" placeholder="Artículo"
+                class="text-gray-900 form-control" v-model="formProductos.data.attributes.articulo_id">
+                <option v-for="dato in listadoArticulos" :key="dato.id" :value="dato.id">{{
+                  dato.attributes.articulo }}</option>
+              </select>
+              <span v-if="errores.descripcion" style="color: red;">Campo en blanco</span>
+            </div>
+
+            <div class="form-group col-lg-12">
+              <label class="text-info">Cantidad: <label style="color: red;">*</label></label>
+              <select name="cantidad" id="cantidad" style="width: 100%; text-align:center" placeholder="Artículo"
+                class="text-gray-900 form-control" v-model="formProductos.data.attributes.cantidad"
+                >
+                <option value="1"> 1 </option>
+                <option value="10"> 10 </option>
+              </select>
+              <span v-if="errores.cod" style="color: red;">Campo en blanco</span>
+            </div>
+
+            <div class="row">
+              <div v-if="editar == false" class="form-group h4 col-lg-3">
+
+              </div>
+              <div v-if="editar == false" class="form-group h4 col-lg-6">
+                <a @click="agregarUProducto()" class="btn btn-info btn-block" :class="disabledProductoBtn">
+                  {{ GuardarProducto }}
+                </a>
+              </div>
+              <div v-if="editar" class="form-group h4 col-lg-6">
+                <a @click="editarUMedida()" class="btn btn-info btn-block" :class="deactiva">
+                  {{ btnModificarM }}
+                </a>
+              </div>
+              <div v-if="editar" class="form-group h4 col-lg-6">
+                <a class="btn btn-danger btn-block" data-dismiss="modal" aria-label="close" :class="deactiva">
+                  Cancelar
+                </a>
+              </div>
+            </div>
+
+
+          </form>
+
+          <!-- <div>
+            <card class="card-section" style="width: 450px; margin: auto">
+              <h1>Contact Form</h1>
+              <form ref="values" @submit.prevent="sendEmail">
+                <div class="form-group">
+                  <KInput class="form-input" :style="{ width: '290px' }" name="name" v-model="user_name"
+                    placeholder="Name"></KInput>
+                </div>
+                <div class="form-group">
+                  <KInput class="form-input" :style="{ width: '290px' }" name="email" v-model="user_email"
+                    placeholder="email address"></KInput>
+                </div>
+                <div class="form-group">
+                  <kTextarea class="form-input" :style="{ width: '290px' }" name="message" v-model="user_message"
+                    placeholder="Message" :rows="4" />
+                </div>
+                <div class="example-col">
+                  <kButton :style="{ width: '100px' }" id="submit-btn">Submit form</kButton>
+                </div>
+              </form>
+            </card>
+          </div> -->
+          <!-- <vue-barcode :value="cod" tag="svg"></vue-barcode> -->
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- <template v-if="esperando">
     <div v-on="loadingA('Actualizando datos...')">
 
     </div>
-  </template>
+  </template> -->
 
-  <div :class="showModBack" @click="abrirModal()"></div>
+  <!-- <div :class="showModBack" @click="abrirModal()"></div> -->
   <!-- <div :class="showModBack2" @click="cerrarModal()"></div> -->
 </template>
 <script setup>
@@ -531,6 +774,63 @@ import * as XLSX from 'xlsx';
 import Quagga from 'quagga';
 
 const barcode = ref();
+
+let GuardarProducto = ref('Agregar producto');
+
+const disabledProductoBtn = ref('')
+
+const agrega = () => {
+  editar.value = false
+}
+
+const errores = ref({ cod: "", descripcion: "" })
+
+const agregarUProducto = () => {
+  esperando.value = true;
+  if (formProductos.data.attributes.descripcion != '' && formProductos.data.attributes.articulo_id != 0) {
+    // console.log("OKKKK")
+    GuardarProducto.value = 'Guardando...'
+    disabledProductoBtn.value = 'disabled'
+    axios.post(`https://` + ipPublica.value + `/fullstack/public/productos`, formProductos)
+      .then((response) => {
+        if (response.data.data == null) {
+          ErrorFull(response.data.data)
+        } else {
+          cargado.value = false;
+          esperando.value = false;
+          formProductos.data.attributes.observacion = ''
+          formProductos.data.attributes.descripcion = '';
+          loadingU.value = true;
+          // emit('actualiza', 7)
+          // emit('actualiza', 8)
+          if (listadoProductos.value.length == 0) {
+            listadoProductos.value.push(response.data.data)
+          } else {
+            listadoProductos.value.push(response.data.data)
+          }
+          almacenDatosProductos(listadoProductos.value);
+          listadoProductos.value = JSON.parse(localStorage.getItem('ListadoCacheProductos'));
+          obtenerProductos()
+          loadingU.value = false;
+          GuardarMedida.value = 'Agregar producto';
+          disabledProductoBtn.value = ''
+          successFull("Producto agregado satisfactoriamente.", "top-end")
+        }
+      })
+      .catch((error) => {
+        if (error.response.status === 400) {
+          errors.value = error.response.data.message;
+        }
+        esperando.value = false;
+        ErrorFull(error.response.data.message, "top-start")
+      })
+  } else {
+    errores.value.cod = "Campo requerido";
+    errores.value.descripcion = "Campo requerido";
+    ErrorFull("Debe llenar todos los campos obligatorios", "top-start")
+  }
+
+}
 
 const attachListeners = () => {
   Quagga.onDetected((data) => {
@@ -856,6 +1156,8 @@ const esperando = ref(false);
 
 const loading = ref(false)
 
+const loadingP = ref(false)
+
 const loadingA = (texto) => {
   Swal.fire({
     // title: "Sweet!",
@@ -1088,7 +1390,9 @@ const quitaracciones = () => {
 // CRUD
 let errors = ref([]);
 
-let listado = ref([]);
+let listadoProductos = ref([]);
+
+let listadoArticulos = ref([]);
 
 // let listadoSucursales = ref([]);
 
@@ -1119,15 +1423,15 @@ let cargado = ref(false);
 
 // let setTiempoBusca = '';
 
-const ipPublica = ref('192.168.121.123');
+const ipPublica = ref('localhost');
 
 const formProductos = reactive({
   data: {
-    type: 'Productos',
     attributes: {
-      codigo: "",
       descripcion: "",
       observacion: "",
+      cantidad: 0,
+      articulo_id: 100
     }
   }
 })
@@ -1206,9 +1510,9 @@ const obtenerListadoLimpio = async () => {
 }
 
 const almacenDatosProductos = (Lista) => {
-  localStorage.removeItem('ListadoCache');
+  localStorage.removeItem('ListadoCacheProductos');
   const parsed = JSON.stringify(Lista);
-  localStorage.setItem('ListadoCache', parsed);
+  localStorage.setItem('ListadoCacheProductos', parsed);
 }
 
 const consultar = async () => {
@@ -1370,21 +1674,107 @@ const borrarU = async (id, correo, caso) => {
 //   // console.log(`El viejo listado es ${oldQuestion}`)
 // })
 
-onMounted(() => {
+const itemsProductos = ref([])
+
+const disabledProductos = ref('')
+
+const obtenerProductos = () => {
+  let i = 0;
+  // console.log(listadoDepartamentos)
+  itemsProductos.value = [];
+  for (let index = 0; index < listadoProductos.value.length; index++) {
+    itemsProductos.value.push(listadoProductos.value[index])
+  }
+
+}
+
+const almacenDatosArticulos = (Lista) => {
+  localStorage.removeItem('ListadoCacheArticulos');
+  const parsed = JSON.stringify(Lista);
+  localStorage.setItem('ListadoCacheArticulos', parsed);
+}
+
+const itemsarticulos = ref([])
+
+const obtenerArticulos = () => {
+  let i = 0;
+
+  itemsarticulos.value = [];
+  for (let index = 0; index < listadoArticulos.value.length; index++) {
+    itemsarticulos.value.push(listadoArticulos.value[index])
+  }
+
+}
+
+onMounted(async () => {
   if (localStorage.getItem('userName')) {
-    if (localStorage.getItem('Carg_dat') != '0') {
-      // console.log("Inventario")
-      listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
-      obtenerListadoLimpio();
-      // console.log(itemsSelected.value);
-      // listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
-      // listadoSucursales = obtenerListadoLimpioSucursales();
-      // cargado.value = true;
-      // console.log(props.key)
+    if (localStorage.getItem('Carg_datP') == '0') {
+      loadingP.value = true;
+      disabledProductos.value = 'disabled'
+      await axios.get(`https://` + ipPublica.value + `/fullstack/public/productos`)
+        .then((response) => {
+          if (response.data.data == null) {
+            disabledProductos.value = '';
+            ErrorFull('Error realizando la operación.', "top-start")
+          } else {
+            listadoProductos.value = response.data.data;
+            almacenDatosProductos(listadoProductos.value);
+            obtenerProductos();
+            // disabledProductos.value = '';
+            // loadingP.value = false;
+            localStorage.setItem("Carg_datP", "1")
+            // Cargar Articulos
+            if (localStorage.getItem('Carg_datA') == '0') {
+              // ARTICULOS
+              axios.get(`https://` + ipPublica.value + `/fullstack/public/articulos`)
+                .then((response) => {
+                  // console.log(response.data.data)
+                  if (response.data.data == null) {
+                    // disabledArticulo.value = ''
+                    // ErrorFull("Error realizando la operación.", "top-start")
+                  } else {
+                    listadoArticulos.value = response.data.data;
+                    almacenDatosArticulos(listadoArticulos.value);
+                    loadingP.value = false;
+                    disabledProductos.value = '';
+                    localStorage.setItem('Carg_datA', '1')
+                    // loading.value = false
+                  }
+
+                }).catch((error) => {
+                  if (error.response.status === 500) {
+                    errors.value = error.response.status;
+                  }
+                  ErrorFull("Error realizando la operación.", "top-start")
+                })
+
+            } else {
+              listadoArticulos.value = JSON.parse(localStorage.getItem('ListadoCacheArticulos'));
+              obtenerArticulos();
+              loadingP.value = false;
+              disabledProductos.value = '';
+            }
+          }
+
+        }).catch((error) => {
+          if (error.response.status === 500) {
+            errors.value = error.response.status;
+          }
+          loadingP.value = false;
+          disabledProductos.value = '';
+          ErrorFull('Error realizando la operación.', "top-start")
+        })
     }
-    // else{
-    //   console.log("Aun sin conexion")
-    // }
+    else {
+      disabledProductos.value = 'disabled';
+      loadingP.value = true;
+      listadoProductos.value = JSON.parse(localStorage.getItem('ListadoCacheProductos'));
+      obtenerProductos();
+      listadoArticulos.value = JSON.parse(localStorage.getItem('ListadoCacheArticulos'));
+      obtenerArticulos();
+      disabledProductos.value = '';
+      loadingP.value = false;
+    }
 
   } else {
     router.push('/login');
@@ -1417,7 +1807,7 @@ onMounted(() => {
     background: black
   }
 
- canvas.drawingBuffer {
+  canvas.drawingBuffer {
     z-index: 20;
     position: absolute;
     left: 0;

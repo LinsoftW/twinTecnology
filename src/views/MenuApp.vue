@@ -75,7 +75,7 @@
         </div>
       </li>
 
-      <li class="nav-item" v-bind:class="ActivaLink(4)" :key="4" @click="obtenerLinkA(4)">
+      <!-- <li class="nav-item" v-bind:class="ActivaLink(4)" :key="4" @click="obtenerLinkA(4)">
 
         <router-link class="button" to="#">
           <a class="nav-link">
@@ -84,9 +84,9 @@
 
         </router-link>
 
-      </li>
+      </li> -->
 
-      <li class="nav-item" v-bind:class="ActivaLink(5)" :key="5" @click="obtenerLinkA(5)">
+      <!-- <li class="nav-item" v-bind:class="ActivaLink(5)" :key="5" @click="obtenerLinkA(5)">
 
         <router-link class="button" to="#">
           <a class="nav-link">
@@ -95,8 +95,8 @@
 
         </router-link>
 
-      </li>
-      <li class="nav-item" v-bind:class="ActivaLink(6)" :key="6" @click="obtenerLinkA(6)">
+      </li> -->
+      <!-- <li class="nav-item" v-bind:class="ActivaLink(6)" :key="6" @click="obtenerLinkA(6)">
 
         <router-link class="button" to="#">
           <a class="nav-link">
@@ -105,7 +105,7 @@
 
         </router-link>
 
-      </li>
+      </li> -->
       <hr class="sidebar-divider">
       <div class="sidebar-heading">
         ADMON
@@ -415,10 +415,10 @@
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Cambiar imagen de perfil
                 </a>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#sendEmail">
+                <!-- <a class="dropdown-item" href="#" data-toggle="modal" data-target="#sendEmail">
                   <i class="fa fa-envelope fa-sm fa-fw mr-2 text-gray-400"></i>
                   Enviar correo electrónico
-                </a>
+                </a> -->
                 <router-link to="/cmasiva"><a class="dropdown-item" href="#">
                     <i class="fa fa-upload fa-sm fa-fw mr-2 text-gray-400"></i>
                     Carga masiva de datos
