@@ -117,24 +117,24 @@
         <a :class="'nav-link ' + collapsed2" href="#" data-toggle="collapse" data-target="#collapseUtilities"
           :aria-expanded="activa2" aria-controls="collapseUtilities">
           <i class="fas fa-fw fa-cog"></i>
-          <span>Configuración</span>
+          <span>Administración</span>
         </a>
         <div id="collapseUtilities" :class="'collapse ' + show2" aria-labelledby="headingUtilities"
           data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Configurar:</h6>
+            <h6 class="collapse-header">Administrar:</h6>
             <!-- <a class="collapse-item button" @click="click_sucursales">Sucursales</a> -->
             <!-- <router-link class="button" to="/gest_nomencladores">
               <a class="collapse-item" v-bind:class="ActivaLink(7)" :key="7" @click="obtenerLinkA(7)"> <i
                   class="fas fa-fw fa-cogs"></i> Datos empresa</a>
+            </router-link>-->
+            <router-link class="button" to="/ubicaciones">
+              <a class="collapse-item" v-bind:class="ActivaLink(8)" :key="8" @click="obtenerLinkA(8)"> <i
+                  class="fas fa-fw fa-cogs"></i> Ubicaciones</a>
             </router-link>
             <router-link class="button" to="/gest_nomencladores">
-              <a class="collapse-item" v-bind:class="ActivaLink(8)" :key="8" @click="obtenerLinkA(8)"> <i
-                  class="fas fa-fw fa-cogs"></i> Datos usuarios</a>
-            </router-link> -->
-            <router-link class="button" to="/gest_nomencladores">
               <a class="collapse-item" v-bind:class="ActivaLink(9)" :key="9" @click="obtenerLinkA(9)"> <i
-                  class="fas fa-fw fa-cogs"></i> Nomencladores</a>
+                  class="fas fa-fw fa-cogs"></i> Magnitudes</a>
             </router-link>
             <!-- <router-link class="button" to="/gest_inventario">
               <a class="collapse-item" v-bind:class="ActivaLink(6)" :key="6" @click="obtenerLinkA(6)"> <i
@@ -488,6 +488,9 @@
         <div v-if="route.path == '/gest_nomencladores'">
           <GestNomencladoresApp :key="Kgest_nomencladores" @actualiza="consultar" />
         </div>
+        <div v-if="route.path == '/ubicaciones'">
+          <UbicacionesApp :key="Kubicaciones" />
+        </div>
 
         <!-- /.container-fluid -->
 
@@ -668,6 +671,7 @@ import CategoriasApp from '@/components/CategoriasApp.vue';
 import emailjs from 'emailjs-com';
 import * as XLSX from 'xlsx';
 import { useAlertsStore } from '@/components/ComunicacionApp';
+import UbicacionesApp from '@/components/UbicacionesApp.vue';
 // import { Input, TextArea } from "@progress/kendo-vue-inputs";
 // import { Button } from "@progress/kendo-vue-buttons";
 
@@ -1096,7 +1100,7 @@ const consultarPrincipal = async () => {
   //   });
 
   // Sucursales
-  await axios.get(`http://` + ipPublica.value + `/fullstack/public/sucursals`)
+  await axios.get(`http://` + ipPublica.value + `/fullstack/public/sucursales`)
     .then((response1) => {
       listadoSucursales.value = response1.data.data;
       almacenDatosSucursales(listadoSucursales.value);
@@ -1416,6 +1420,7 @@ const salir = () => {
       localStorage.removeItem('Carg_datM'); // Magitudes
       localStorage.removeItem('Carg_datP'); // Productos
       localStorage.removeItem('Carg_datS'); // Sucursales
+      localStorage.removeItem('Carg_datU'); // Ubicaciones
       localStorage.clear();
       router.push('/login')
     }

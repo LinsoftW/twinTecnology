@@ -164,6 +164,7 @@ onMounted(async () => {
   localStorage.setItem('Carg_datM', '0'); // Magitudes
   localStorage.setItem('Carg_datP', '0'); // Productos
   localStorage.setItem('Carg_datS', '0'); // Sucursales
+  localStorage.setItem('Carg_datU', '0'); // Ubicaciones
   bodyLogin1.classList.add('bg-gradient-info');
   bodyLogin1.classList.remove('sidebar-toggled');
   // await consultar();

@@ -1431,7 +1431,8 @@ const formProductos = reactive({
       descripcion: "",
       observacion: "",
       cantidad: 0,
-      articulo_id: 100
+      articulo_id: 100,
+      ubicacion_id: 0
     }
   }
 })

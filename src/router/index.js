@@ -76,7 +76,12 @@ const router = createRouter({
             name: 'categorias',
             component: MenuApp,
         },
-        
+        {
+            path: '/ubicaciones',
+            name: 'ubicaciones',
+            component: MenuApp,
+        },
+
     ]
 })
 
