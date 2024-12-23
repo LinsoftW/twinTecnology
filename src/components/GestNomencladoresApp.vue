@@ -2,7 +2,7 @@
   <div>
     <div class="container-fluid">
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">TABLAS FIJAS (NOMENCLADORES)</h1>
+        <h1 class="h3 mb-0 text-gray-800">MAGNITUDES Y UNIDADES DE MEDIDAS</h1>
       </div>
       <div class="row">
         <!--Listado de magnitudes -->
@@ -142,8 +142,7 @@
                     </div>
                   </template>
                   <template #loading>
-                    <img src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
-                      style="width: 100px; height: 80px;" />
+                    <img src="/cargando4.gif" style="width: 100px; height: 80px;" />
                   </template>
                 </EasyDataTable>
               </div>
@@ -279,8 +278,7 @@
                     </div>
                   </template>
                   <template #loading>
-                    <img src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
-                      style="width: 100px; height: 80px;" />
+                    <img src="/cargando4.gif" style="width: 100px; height: 80px;" />
                   </template>
                 </EasyDataTable>
               </div>
@@ -1111,7 +1109,7 @@ let setTiempoBusca = '';
 
 const datos_archivados = ref([]);
 
-const ipPublica = ref('localhost');
+const ipPublica = ref('192.168.121.154');
 
 const formMagnitud = reactive({
   data: {
@@ -1271,6 +1269,8 @@ const agregarUMedida = () => {
         almacenDatosUnidades(listadoMedidas.value);
         listadoMagnitudes.value = JSON.parse(localStorage.getItem('ListadoCacheUnidades'));
         obtenerListadoLimpioMedida()
+        listadoMagnitudes.value = JSON.parse(localStorage.getItem('ListadoCacheMagnitudes'));
+        obtenerListadoLimpio();
         loadingU.value = false;
         GuardarMedida.value = 'Agregar u. medida';
         disabledMedidaBtn.value = ''
@@ -1834,6 +1834,7 @@ const almacenDatosUnidades = (Lista) => {
 
 onMounted(async () => {
   if (localStorage.getItem('userName')) {
+    ipPublica.value = localStorage.getItem('Host_back');
     if (localStorage.getItem('Carg_datM') == '0') {
       // MAGNITUDES
       loading.value = true;

@@ -60,7 +60,21 @@
             <router-link class="button" to="/categorias">
               <a class="collapse-item" v-bind:class="ActivaLink(2)" :key="2" @click="obtenerLinkA(2)"> <i
                   class="far fa-check-circle"></i>
-                Categorías</a>
+                Departamentos</a>
+            </router-link>
+            <router-link class="button" to="/categorias">
+              <a class="collapse-item" v-bind:class="ActivaLink(3)" :key="3" @click="obtenerLinkA(3)"> <i
+                  class="far fa-check-circle"></i>
+                Etiquetas</a>
+            </router-link>
+            <router-link class="button" to="/gest_nomencladores">
+              <a class="collapse-item" v-bind:class="ActivaLink(9)" :key="9" @click="obtenerLinkA(9)"> <i
+                  class="far fa-check-circle"></i> Magnitudes</a>
+            </router-link>
+            <!-- <hr class="sidebar-divider"> -->
+            <router-link class="button" to="/auditoria">
+              <a class="collapse-item" v-bind:class="ActivaLink(10)" :key="10" @click="obtenerLinkA(10)"> <i
+                  class="far fa-check-circle"></i> Auditoría</a>
             </router-link>
             <!-- <router-link class="button" to="/pedidos">
               <a class="collapse-item" v-bind:class="ActivaLink(3)" :key="3" @click="obtenerLinkA(3)"> <i
@@ -132,10 +146,7 @@
               <a class="collapse-item" v-bind:class="ActivaLink(8)" :key="8" @click="obtenerLinkA(8)"> <i
                   class="fas fa-fw fa-cogs"></i> Ubicaciones</a>
             </router-link>
-            <router-link class="button" to="/gest_nomencladores">
-              <a class="collapse-item" v-bind:class="ActivaLink(9)" :key="9" @click="obtenerLinkA(9)"> <i
-                  class="fas fa-fw fa-cogs"></i> Magnitudes</a>
-            </router-link>
+
             <!-- <router-link class="button" to="/gest_inventario">
               <a class="collapse-item" v-bind:class="ActivaLink(6)" :key="6" @click="obtenerLinkA(6)"> <i
                   class="fas fa-fw fa-cogs"></i> Productos</a>
@@ -765,7 +776,7 @@ const activaNot = ref(false);
 
 const showNot = ref('');
 
-const ipPublica = ref('localhost');
+const ipPublica = ref('192.168.121.154');
 
 // let cargado = ref(false);
 
@@ -970,9 +981,9 @@ const ActivaLink = (valor) => {
 // })
 
 const almacenDatosProductos = (Lista) => {
-  localStorage.removeItem('ListadoCache');
+  localStorage.removeItem('ListadoCacheProductos');
   const parsed = JSON.stringify(Lista);
-  localStorage.setItem('ListadoCache', parsed);
+  localStorage.setItem('ListadoCacheProductos', parsed);
 }
 
 const almacenDatosSucursales = (Lista) => {
@@ -1029,11 +1040,65 @@ const consultarPrincipal = async () => {
   // PRODUCTOS
   await axios.get(`https://` + ipPublica.value + `/fullstack/public/productos`)
     .then((response) => {
-      listado.value = response.data.data;
-      almacenDatosProductos(listado.value);
-      // obtenerListadoLimpio();
-      Kinventario.value = Kinventario.value + 1;
+      if (response.data.data == null) {
 
+      } else {
+        listado.value = response.data.data;
+        almacenDatosProductos(listado.value);
+        localStorage.setItem("Carg_datP", '1');
+        // localStorage.setItem("Wait", '0');
+
+        // Departamentos
+        axios.get(`https://` + ipPublica.value + `/fullstack/public/departamentos`)
+          .then((response) => {
+            if (response.data.data == null) {
+
+            } else {
+              listadoDepartamentos.value = response.data.data;
+              almacenDatosDepartamentos(listadoDepartamentos.value);
+              localStorage.setItem("Carg_datD", '1');
+
+              // Articulos
+              axios.get(`https://` + ipPublica.value + `/fullstack/public/articulos`)
+                .then((response) => {
+                  if (response.data.data == null) {
+
+                  } else {
+                    listadoArticulos.value = response.data.data;
+                    almacenDatosArticulos(listadoArticulos.value);
+                    localStorage.setItem("Carg_datA", '1');
+
+                    // Sucursales
+                    axios.get(`https://` + ipPublica.value + `/fullstack/public/sucursales`)
+                      .then((response1) => {
+                        listadoSucursales.value = response1.data.data;
+                        almacenDatosSucursales(listadoSucursales.value);
+                        esperando.value = false;
+                        localStorage.setItem("Carg_datS", '1');
+                        localStorage.setItem("Wait", '0');
+                        Kinicio.value = Kinicio.value + 1;
+                        successFull("Datos cargados.", "top-end")
+                      }).catch((error) => {
+                        if (error.response.status === 500) {
+                          ErrorFull("Problemas de conexión, verificaremos en otro momento.", "top-end");
+                          esperando.value = false;
+                          localStorage.setItem("Carg_dat", '0');
+                        }
+                      });
+                  }
+
+                }).catch((error) => {
+                  if (error.response.status === 500) {
+                    errors.value = error.response.status;
+                  }
+                });
+            }
+          }).catch((error) => {
+            if (error.response.status === 500) {
+              errors.value = error.response.status;
+            }
+          })
+      }
     }).catch((error) => {
       if (error.response.status === 500) {
         errors.value = error.response.status;
@@ -1047,13 +1112,14 @@ const consultarPrincipal = async () => {
   //     almacenDatosArticulos(listadoMagnitudes.value);
   //     // localStorage.setItem("Carg_dat", '1');
   //     localStorage.setItem("Carg_datM", '1');
-  //     Kgest_nomencladores.value = Kgest_nomencladores.value + 1;
+  //     // Kgest_nomencladores.value = Kgest_nomencladores.value + 1;
 
   //   }).catch((error) => {
   //     if (error.response.status === 500) {
   //       errors.value = error.response.status;
   //     }
   //   })
+
   // Medidas
   // await axios.get(`https://` + ipPublica.value + `/fullstack/public/medidas`)
   //   .then((response) => {
@@ -1061,71 +1127,13 @@ const consultarPrincipal = async () => {
   //     almacenDatosUnidades(listadoMedidas.value);
   //     // cargado.value = true;
   //     localStorage.setItem("Carg_datMe", '1');
-  //     Kgest_nomencladores.value = Kgest_nomencladores.value + 1;
+  //     // Kgest_nomencladores.value = Kgest_nomencladores.value + 1;
   //   }).catch((error) => {
   //     if (error.response.status === 500) {
   //       errors.value = error.response.status;
   //     }
   //     // loading.value = false
   //   });
-
-  // Departamentos
-  // await axios.get(`https://` + ipPublica.value + `/fullstack/public/departamentos`)
-  //   .then((response) => {
-  //     listadoDepartamentos.value = response.data.data;
-  //     almacenDatosDepartamentos(listadoDepartamentos.value);
-  //     localStorage.setItem("Carg_datD", '1');
-  //     Kcategorias.value = Kcategorias.value + 1;
-
-  //   }).catch((error) => {
-  //     // console.log(error)
-  //     if (error.response.status === 500) {
-  //       errors.value = error.response.status;
-  //     }
-  //   })
-
-  // Articulos
-  // await axios.get(`https://` + ipPublica.value + `/fullstack/public/articulos`)
-  //   .then((response) => {
-  //     listadoArticulos.value = response.data.data;
-  //     almacenDatosArticulos(listadoArticulos.value);
-  //     // cargado.value = true;
-  //     localStorage.setItem("Carg_datA", '1');
-  //     Kcategorias.value = Kcategorias.value + 1;
-  //   }).catch((error) => {
-  //     if (error.response.status === 500) {
-  //       errors.value = error.response.status;
-  //     }
-  //     // loading.value = false
-  //   });
-
-  // Sucursales
-  await axios.get(`http://` + ipPublica.value + `/fullstack/public/sucursales`)
-    .then((response1) => {
-      listadoSucursales.value = response1.data.data;
-      almacenDatosSucursales(listadoSucursales.value);
-      esperando.value = false;
-      // console.log("Cargado TODOO")
-      localStorage.setItem("Carg_dat", '1');
-      localStorage.setItem("Wait", '0');
-      successFull("Datos cargados.", "top-end")
-      Kinicio.value = Kinicio.value + 1;
-      // listadoSucursales = obtenerListadoLimpioSucursales();
-
-    }).catch((error) => {
-      if (error.response.status === 500) {
-        // errors.value = error.response.status;
-        ErrorFull("Problemas de conexión, verificaremos en otro momento.", "top-end");
-        // Swal.fire({
-        //   icon: "danger",
-        //   title: "Problemas de conexión, verificaremos en otro momento."
-        // })
-        esperando.value = false;
-        // localStorage.setItem('Wait', '5');
-        localStorage.setItem("Carg_dat", '0');
-      }
-    });
-
 }
 
 const consultar = async (n) => {
@@ -1310,15 +1318,16 @@ const consultar = async (n) => {
 
 onMounted(async () => {
   if (localStorage.getItem('userName')) {
+    ipPublica.value = localStorage.getItem('Host_back');
     // if (localStorage.getItem('Wait') == '0') {
-    if (localStorage.getItem('Carg_dat') == '0') {
+    if (localStorage.getItem('Carg_datP') == '0') {
       Ctoggled.value = 'toggled';
       esperando.value = true;
       // console.log("Cargando datos...")
       await consultarPrincipal()
     } else if (localStorage.getItem('Wait') != '0') {
-      localStorage.removeItem('Carg_dat');
-      localStorage.setItem('Carg_dat', '0');
+      localStorage.removeItem('Carg_datP');
+      localStorage.setItem('Carg_datP', '0');
       // console.log('Repitiendo las consultas')
       onMounted();
     }
@@ -1421,6 +1430,7 @@ const salir = () => {
       localStorage.removeItem('Carg_datP'); // Productos
       localStorage.removeItem('Carg_datS'); // Sucursales
       localStorage.removeItem('Carg_datU'); // Ubicaciones
+      localStorage.removeItem('Host_back'); // IPPublica
       localStorage.clear();
       router.push('/login')
     }

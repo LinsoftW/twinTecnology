@@ -14,7 +14,7 @@
     <div class="row">
 
       <!-- Cantidad de Moneda nacional -->
-      <div class="col-xl-2 col-md-6 mb-4">
+      <div class="col-xl-4 col-md-6 mb-4">
         <div class="card border-left-primary border-bottom-primary shadow h-100 py-2">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
@@ -37,15 +37,15 @@
           </div>
         </div>
       </div>
-      <!-- total de compras -->
-      <div class="col-xl-2 col-md-6 mb-4">
+      <!-- Departamentos -->
+      <div class="col-xl-4 col-md-6 mb-4">
         <div class="card border-left-success shadow h-100 py-2">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
-                <div class="h5 mb-0 font-weight-bold text-gray-800">S./ 109.15</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ cantidadDepartamentos }}</div>
                 <div class="text-md font-weight-bold text-success mb-1">
-                  Total de compras</div>
+                  Departamentos</div>
               </div>
               <div class="col-auto">
                 <i class="fas fa-shopping-bag fa-3x text-gray-300"></i>
@@ -58,15 +58,15 @@
                   class="far fa-arrow-alt-circle-right"></i></label></a></div>
         </div>
       </div>
-      <!-- Total de ventas  -->
-      <div class="col-xl-2 col-md-6 mb-4">
+      <!-- Tipos de articulos  -->
+      <div class="col-xl-4 col-md-6 mb-4">
         <div class="card border-left-warning border-bottom-warning shadow h-100 py-2">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
-                <div class="h5 mb-0 font-weight-bold text-gray-800">100</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ cantidadArticulos }}</div>
                 <div class="text-md font-weight-bold text-warning mb-1">
-                  Total de ventas</div>
+                  Tipos de artículos</div>
               </div>
               <div class="col-auto">
                 <i class="fas fa-cart-plus fa-3x text-gray-300"></i>
@@ -81,7 +81,7 @@
       </div>
 
       <!-- Ganancias -->
-      <div class="col-xl-2 col-md-6 mb-4">
+      <!-- <div class="col-xl-2 col-md-6 mb-4">
         <div class="card border-left-danger border-bottom-danger shadow h-100 py-2">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
@@ -100,10 +100,10 @@
           <div class="card-footer"><a href="#"><label>Más información <i
                   class="far fa-arrow-alt-circle-right"></i></label></a></div>
         </div>
-      </div>
+      </div> -->
 
       <!-- productos poco en stock  -->
-      <div class="col-xl-2 col-md-6 mb-4">
+      <!-- <div class="col-xl-2 col-md-6 mb-4">
         <div class="card border-left-info border-bottom-info shadow h-100 py-2">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
@@ -122,10 +122,10 @@
           <div class="card-footer"><a href="#"><label>Más información <i
                   class="far fa-arrow-alt-circle-right"></i></label></a></div>
         </div>
-      </div>
+      </div> -->
 
       <!-- Ventas del dia  -->
-      <div class="col-xl-2 col-md-6 mb-4">
+      <!-- <div class="col-xl-2 col-md-6 mb-4">
         <div class="card border-left-secondary border-bottom-secondary shadow h-100 py-2">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
@@ -144,7 +144,7 @@
           <div class="card-footer"><a href="#"><label>Más información <i
                   class="far fa-arrow-alt-circle-right"></i></label></a></div>
         </div>
-      </div>
+      </div> -->
 
     </div>
 
@@ -156,7 +156,7 @@
       <div class="col-xl-12 col-lg-12">
 
         <!-- Area Chart -->
-        <div class="card shadow mb-4">
+        <!-- <div class="card shadow mb-4">
           <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">TOTAL DE VENTAS DEL MES</h6>
           </div>
@@ -165,7 +165,7 @@
             <BarChart ref="doughnutRef" :chartData="testData" :options="options" />
 
           </div>
-        </div>
+        </div> -->
 
       </div>
 
@@ -173,44 +173,22 @@
     </div>
 
     <div class="row">
-
       <!-- Usuarios -->
-      <div class="col-md-5 col-lg-6">
+      <!-- <div class="col-md-5 col-lg-6">
         <div class="card shadow mb-4">
-          <!-- Card Header - Dropdown -->
+
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-info">LOS 10 PRODUCTOS MÁS VENDIDOS</h6>
-            <!-- <div class="dropdown no-arrow">
-              <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-              </a>
-              <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                aria-labelledby="dropdownMenuLink">
-                <div class="dropdown-header">Acciones:</div>
-                <a class="dropdown-item" href="#"><span class="fa fa-phone"></span> Llamar</a>
-                <a class="dropdown-item" href="#"><span class="fa fa-comments"></span> Enviar mensaje</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Otras</a>
-              </div>
-            </div> -->
           </div>
-          <!-- Card Body -->
+
           <div class="card-body">
-            <!-- <div class="col-md-3 col-xl-3 col-lg-3">
-                <span class="text-info">Filtrar por columna: </span>
-                <select v-model="searchField" class="form-control form-control-user">
-                  <option>type</option>
-                  <option>attributes.codigo</option>
-                </select>
-              </div> -->
             <div class="row">
               <div class="col-md-6 col-xl-6 col-lg-12">
                 <div class="justify-content-between">
-                  <!-- <router-link class="button" to="/gest_inventario"> -->
+
                   <a @click="abrirModalAddProd()" href="#" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm"
                     v-b-tooltip.hover title="Agregar producto"><i class="fas fa-print fa-sm "></i> Imprimir </a>
-                  <!-- </router-link> -->
+
                   <a @click="ExportExcel()" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
                     v-b-tooltip.hover title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a>
                 </div>
@@ -229,52 +207,34 @@
                 <div class="operation-wrapper">
                   <button class="btn btn-primary btn-sm btn-circle" @click="editarU(item.id)" v-b-tooltip.hover
                     title="Modificar"><span class="fas fa-eye"></span></button>
-                  <!-- <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
-                    title="Aumentar"><span class="fas fa-plus"></span></button>
-                  <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
-                    title="Restar"><span class="fas fa-minus"></span></button>
-                  <button class="btn btn-danger btn-sm btn-circle ml-1"
-                    @click="borrarU(item.id, item.attributes.codigo)" v-b-tooltip.hover title="Eliminar"><span
-                      class="fas fas fa-trash-alt"></span></button> -->
+
                 </div>
               </template>
-              <!-- <template #loading>
+<template #loading>
                 <img src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
                   style="width: 100px; height: 80px;" />
-              </template> -->
-            </EasyDataTable>
+              </template>
+</EasyDataTable>
+</div>
+</div>
+</div> -->
 
-            <!-- <div class="mt-4 text-center small">
-              <span class="mr-2">
-                <i class="fas fa-circle text-primary"></i> Activo
-              </span>
-              <span class="mr-2">
-                <i class="fas fa-circle text-success"></i> En espera
-              </span>
-              <span class="mr-2">
-                <i class="fas fa-circle text-info"></i> Baja
-              </span>
-            </div> -->
-          </div>
-        </div>
-      </div>
 
-      <!--Listado de productos -->
-      <div class="col-md-6 col-lg-6">
+      <!-- <div class="col-md-6 col-lg-6">
         <div class="card shadow mb-4">
-          <!-- Card Header - Dropdown -->
+
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-info">PRODUCTOS POCO EN STOCK</h6>
           </div>
-          <!-- Card Body -->
+
           <div class="card-body">
             <div class="row">
               <div class="col-md-6 col-xl-6 col-lg-12">
                 <div class="justify-content-between">
-                  <!-- <router-link class="button" to="/gest_inventario"> -->
+
                   <a @click="abrirModalAddProd()" href="#" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm"
                     v-b-tooltip.hover title="Agregar producto"><i class="fas fa-print fa-sm "></i> Imprimir </a>
-                  <!-- </router-link> -->
+
                   <a @click="ExportExcel()" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
                     v-b-tooltip.hover title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a>
                 </div>
@@ -292,28 +252,19 @@
                 <div class="operation-wrapper">
                   <button class="btn btn-primary btn-sm btn-circle" @click="editarU(item.id)" v-b-tooltip.hover
                     title="Modificar"><span class="fas fa-eye"></span></button>
-                  <!-- <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
-                    title="Aumentar"><span class="fas fa-plus"></span></button>
-                  <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
-                    title="Restar"><span class="fas fa-minus"></span></button>
-                  <button class="btn btn-danger btn-sm btn-circle ml-1"
-                    @click="borrarU(item.id, item.attributes.codigo)" v-b-tooltip.hover title="Eliminar"><span
-                      class="fas fas fa-trash-alt"></span></button> -->
+
                 </div>
               </template>
-              <!-- <template #loading>
+              <template #loading>
                 <img src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
                   style="width: 100px; height: 80px;" />
-              </template> -->
+              </template>
             </EasyDataTable>
 
           </div>
         </div>
-      </div>
+      </div> -->
       <!-- FIN -->
-
-
-
     </div>
   </div>
   <template v-if="esperando">
@@ -475,34 +426,38 @@ const almacenDatosSucursales = (Lista) => {
 
 onMounted(async () => {
   if (localStorage.getItem('userName')) {
-    // if (localStorage.getItem('Carg_dat') == '0') {
-    // if (localStorage.getItem('Wait') == '0') {
-    //   // console.log("Cargar ahora")
-    //   bodyLogin.classList.remove('bg-gradient-info');
-    //   listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
-    //   obtenerListadoLimpio();
-    // }
+    if (localStorage.getItem('Carg_datP') == '1') {
+      if (localStorage.getItem('Wait') == '0') {
+        // console.log("Cargar ahora")
+        bodyLogin.classList.remove('bg-gradient-info');
+        listado.value = JSON.parse(localStorage.getItem('ListadoCacheProductos'));
+        // obtenerListadoLimpio();
+        cantidad.value = listado.value.length;
+        listadoArticulos.value = JSON.parse(localStorage.getItem('ListadoCacheArticulos'));
+        cantidadArticulos.value = listadoArticulos.value.length;
+        listadoDepartamentos.value = JSON.parse(localStorage.getItem('ListadoCacheDepartamentos'));
+        cantidadDepartamentos.value = listadoDepartamentos.value.length;
+      }
+      } else {
+        console.log("Sigo esperando")
+      }
+      // esperando.value = true;
+      // EsperarTiempo()
+      // cargado.value = false;
+      // await consultar();
+      // await consultarSucursales();
+      // await consultarSucursales();
+      // bodyLogin.classList.add('sidebar-toggled');
+      // console.log("INICIO")
+      // }
+      // Cosc_Clar.value = localStorage.getItem('background');
+      // consultar();
 
-    // } else {
-    //   console.log("Sigo esperando")
-    // }
-    // esperando.value = true;
-    // EsperarTiempo()
-    // cargado.value = false;
-    // await consultar();
-    // await consultarSucursales();
-    // await consultarSucursales();
-    // bodyLogin.classList.add('sidebar-toggled');
-    // console.log("INICIO")
-    // }
-    // Cosc_Clar.value = localStorage.getItem('background');
-    // consultar();
+    } else {
+      router.push('/login');
+    }
 
-  } else {
-    router.push('/login');
-  }
-
-})
+  })
 
 // const cambiarLimite = () => {
 //   let i = 0;
@@ -525,6 +480,10 @@ let errors = ref([]);
 
 let listado = ref([]);
 
+let listadoDepartamentos = ref([])
+
+let listadoArticulos = ref([])
+
 // let listadoSucursales = ref([]);
 
 let datosPaginados = ref([]);
@@ -538,6 +497,10 @@ let editar = ref(false);
 let id = ref('');
 
 let cantidad = ref(0);
+
+let cantidadDepartamentos = ref(0);
+
+let cantidadArticulos = ref(0);
 
 let elementPagina = ref(5);
 
@@ -725,34 +688,32 @@ let newListado = ref([]);
 
 const obtenerListadoLimpio = () => {
   let i = 0;
-  if (cargado.value == false) {
-    newListado.value = [];
-    for (let index = 0; index < listado.value.length; index++) {
-      const element = listado.value[index];
-      if (element.attributes.deleted_at == null) {
-        newListado.value[i] = element;
-        i++;
-      }
-    }
-    datosSinPaginar.value = newListado.value;
-    cantidad.value = Math.ceil(newListado.value.length / elementPagina.value);
-    obtenerPagina(1);
-    cargado.value = true;
-  } else {
-    newListado.value = []
-    for (let index = 0; index < listado.value.length; index++) {
-      const element = listado.value[index];
-      if (element.attributes.deleted_at == null) {
-        newListado.value[i] = element;
-        i++;
-      }
-    }
-    datosSinPaginar.value = newListado.value;
-    cantidad.value = Math.ceil(newListado.value.length / elementPagina.value);
-    obtenerPagina(1);
-  }
-  cantidad.value = newListado.value.length;
-
+  // if (cargado.value == false) {
+  //   newListado.value = [];
+  //   for (let index = 0; index < listado.value.length; index++) {
+  //     const element = listado.value[index];
+  //     if (element.attributes.deleted_at == null) {
+  //       newListado.value[i] = element;
+  //       i++;
+  //     }
+  //   }
+  //   datosSinPaginar.value = newListado.value;
+  //   cantidad.value = Math.ceil(newListado.value.length / elementPagina.value);
+  //   obtenerPagina(1);
+  //   cargado.value = true;
+  // } else {
+  //   newListado.value = []
+  //   for (let index = 0; index < listado.value.length; index++) {
+  //     const element = listado.value[index];
+  //     if (element.attributes.deleted_at == null) {
+  //       newListado.value[i] = element;
+  //       i++;
+  //     }
+  //   }
+  //   datosSinPaginar.value = newListado.value;
+  //   cantidad.value = Math.ceil(newListado.value.length / elementPagina.value);
+  //   obtenerPagina(1);
+  // }
   items.value = [];
   for (let index = 0; index < listado.value.length; index++) {
     items.value.push(listado.value[index])

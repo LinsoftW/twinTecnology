@@ -2,7 +2,7 @@
   <div>
     <div class="container-fluid">
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">CATEGORÍAS </h1>
+        <h1 class="h3 mb-0 text-gray-800">DEPARTAMENTOS Y TIPOS DE ARTÍCULOS </h1>
       </div>
 
       <!-- Datos del producto a agregar -->
@@ -76,8 +76,7 @@
                     </div>
                   </template>
                   <template #loading>
-                    <img src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
-                      style="width: 100px; height: 80px;" />
+                    <img src="/cargando4.gif" style="width: 100px; height: 80px;" />
                   </template>
                   <template #empty-message>
                     <a>No hay datos que mostrar</a>
@@ -770,7 +769,7 @@ let setTiempoBusca = '';
 
 const datos_archivados = ref([]);
 
-const ipPublica = ref('localhost');
+const ipPublica = ref('192.168.121.154');
 
 const formDepartamentos = reactive({
   data: {
@@ -1102,7 +1101,7 @@ const editarUModel = async () => {
 
 const consultarSucursales = async () => {
   // if (cargado.value == false) {
-  let response = await axios.get(`http://` + ipPublica.value + `/fullstack/public/sucursals`)
+  let response = await axios.get(`http://` + ipPublica.value + `/fullstack/public/sucursales`)
     .then((response) => {
       listadoSucursales.value = response.data.data;
       // console.log(response.data)
@@ -1193,7 +1192,7 @@ const editarU = () => {
   esperando.value = true;
   btnModificar.value = 'Actualizando...'
   btnModificarClass.value = 'disabled'
-  axios.put(`http://${ipPublica.value}/fullstack/public/departamentos/${id.value}`, formDepartamentos)
+  axios.put(`https://${ipPublica.value}/fullstack/public/departamentos/${id.value}`, formDepartamentos)
     .then((response) => {
       // console.log(response.data.data)
       esperando.value = false;
@@ -1238,7 +1237,7 @@ const editarUArticulo = () => {
   esperando.value = true;
   btnModificar.value = 'Actualizando...'
   btnModificarClass.value = 'disabled'
-  axios.put(`http://${ipPublica.value}/fullstack/public/articulos/${id.value}`, formArticulo)
+  axios.put(`https://${ipPublica.value}/fullstack/public/articulos/${id.value}`, formArticulo)
     .then((response) => {
       // console.log(response.data.data)
       esperando.value = false;
@@ -1517,7 +1516,7 @@ function ExportExcelArticulos() {
 
 onMounted(async () => {
   if (localStorage.getItem('userName')) {
-
+    ipPublica.value = localStorage.getItem('Host_back');
     if (localStorage.getItem('Carg_datD') == '0') {
       // DEPARTAMENTOS
       loadingD.value = true;
@@ -1596,6 +1595,22 @@ onMounted(async () => {
       obtenerArticulos();
       loading.value = false;
       disabledArticulo.value = '';
+      if (localStorage.getItem("Carg_datMe") == "1") {
+        listadoMedida.value = JSON.parse(localStorage.getItem('ListadoCacheUnidades'));
+      } else {
+        await axios.get(`https://` + ipPublica.value + `/fullstack/public/medidas`)
+          .then((response) => {
+            listadoMedida.value = response.data.data;
+            almacenDatosMedida(listadoMedida.value);
+            // Kcategorias.value = Kcategorias.value + 1;
+
+          }).catch((error) => {
+            if (error.response.status === 500) {
+              errors.value = error.response.status;
+            }
+          })
+      }
+
       // listadoMedida.value = JSON.parse(localStorage.getItem('ListadoCacheUnidades'));
     }
 

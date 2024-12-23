@@ -19,18 +19,18 @@
                   <div class="text-center">
                     <div class="sidebar-brand-icon rotate-n-15"><img src="/clipboard-list.png" alt=""
                         style="width: 35px; height:35px"></div>
-                    <h1 class="h2 text-gray-900 mb-4"> MyInventario </h1>
-                    <!-- <h4 class="h6 text-gray-900 mb-4">Sistema para el registro y control de los productos del almacen
-                    </h4> -->
+                    <h1 class="h1 text-gray-900 mb-1"> MyInventary </h1>
+                    <h4 class="h6 text-gray-900 mb-4">Todos detalles
+                    </h4>
 
                   </div>
                   <form class="">
                     <div class="form-group text-left">
                       <label style="color: black;"><i class="fa fa-user-circle"></i> Correo
                         electrónico:</label>
-                      <input type="text" class="form-control form-control-user" id="correo"
-                        aria-describedby="" v-model="form.nombre"
-                        placeholder="Correo electrónico" @change="ValidacionEmail()" @keyup="ValidacionEmail()" style="text-transform:lowercase;" value="admin@admin.co">
+                      <input type="text" class="form-control form-control-user" id="correo" aria-describedby=""
+                        v-model="form.nombre" placeholder="Correo electrónico" @change="ValidacionEmail()"
+                        @keyup="ValidacionEmail()" style="text-transform:lowercase;" value="admin@admin.co">
                       <div class="text-center"><label v-if="emailError" :style="'color: ' + color">{{ emailError
                           }}</label></div>
 
@@ -39,9 +39,9 @@
                     </div>
                     <div class="form-group text-left">
                       <label style="color: black;"><i class="fa fa-key"></i> Contraseña:</label>
-                      <input type="password" v-model="form.passw" class="form-control form-control-user"
-                        id="contras" placeholder="Contraseña" @keyup="ValidarPassWord()" @change="ValidarPassWord()" value="123">
-                        <div class="text-center"><label v-if="passwError" :style="'color: ' + colorP">{{ passwError
+                      <input type="password" v-model="form.passw" class="form-control form-control-user" id="contras"
+                        placeholder="Contraseña" @keyup="ValidarPassWord()" @change="ValidarPassWord()" value="123">
+                      <div class="text-center"><label v-if="passwError" :style="'color: ' + colorP">{{ passwError
                           }}</label></div>
                     </div>
                     <!-- <div class="form-group">
@@ -50,18 +50,25 @@
                         <label class="custom-control-label" for="customCheck">Recuerdáme</label>
                       </div>
                     </div> -->
-                    <hr>
+                    <!-- <hr> -->
                     <a @click="autenticate" class="btn btn-info btn-user btn-block">
                       <i class="fa fa-check"></i> Continuar
                     </a>
                   </form>
                   <hr>
+                   <!-- <br> -->
                   <div class="text-center">
                     <router-link to="/"><a class="small">Registrarse en el sistema</a></router-link>
 
                   </div>
                   <div class="text-center">
                     <router-link to="/"><a class="small">¿Olvidaste la contraseña?</a></router-link>
+                  </div>
+                  <hr>
+                  <div class="text-center">
+                    <label class="text-center" style="">@TwinTecnology</label><br>
+                    <!-- <label class="text-center small" style="color: black;">Copyright © Todos los derechos reservados.
+                      2024</label> -->
                   </div>
 
                 </div>
@@ -71,10 +78,11 @@
         </div>
 
       </div>
-
     </div>
-    <div class="text-center"><label class="text-center" style="color: black;">Copyright © Todos los derechos reservados.
-        2024</label></div>
+    <!-- <div class="text-center">
+      <label class="text-center" style="color: black;">Copyright © Todos los derechos reservados.
+        2024</label>
+    </div> -->
 
   </div>
   <template v-if="esperando">
@@ -88,11 +96,11 @@
 <script setup>
 import router from '@/router';
 import { onMounted, reactive, ref } from 'vue';
-import axios from 'axios';
+// import axios from 'axios';
 import Swal from 'sweetalert2';
 // import ModalApp from './ModalApp.vue';
 
-const ipPublica = ref('192.168.121.123');
+const ipPublica = ref('');
 
 let listado = ref([]);
 
@@ -165,6 +173,8 @@ onMounted(async () => {
   localStorage.setItem('Carg_datP', '0'); // Productos
   localStorage.setItem('Carg_datS', '0'); // Sucursales
   localStorage.setItem('Carg_datU', '0'); // Ubicaciones
+  localStorage.setItem('Host_back', 'localhost'); // IPPublica
+  localStorage.setItem('Wait', '1'); // Esperar para cargar el inicio
   bodyLogin1.classList.add('bg-gradient-info');
   bodyLogin1.classList.remove('sidebar-toggled');
   // await consultar();
@@ -199,24 +209,24 @@ function ValidarArroba(params) {
   return regExp1.test(params);
 }
 
-function ValidarPassWord(){
+function ValidarPassWord() {
   // console.log('OKk')
-  if (form.passw.length === 0){
+  if (form.passw.length === 0) {
     // console.log("Vacio")
     passwError.value = 'Debe llenar el campo';
     colorP.value = 'red';
-  }else{
+  } else {
     passwError.value = '';
   }
 }
 
 function ValidacionEmail() {
   // console.log(form.nombre.length)
-  if (form.nombre.length === 0){
+  if (form.nombre.length === 0) {
     // console.log("Vacio")
     emailError.value = 'Debe llenar el campo';
     color.value = 'red';
-  }else if (!ValidarEmail(form.nombre)) {
+  } else if (!ValidarEmail(form.nombre)) {
     emailError.value = 'Email no válido';
     color.value = 'red';
     // console.error('Email no valido')
@@ -224,7 +234,7 @@ function ValidacionEmail() {
     // console.error('Doble arroba')
     emailError.value = 'Tiene repetido el arroba';
     color.value = 'red';
-  }else {
+  } else {
     emailError.value = 'Email válido';
     color.value = 'green';
     return 'OKKK';
@@ -263,8 +273,8 @@ const autenticate = async () => {
       // await consultar();
       // await consultarSucursales();
       // if (esperando.value == false) {
-        successFull('Bienvenido al sistema', 'top-end');
-        router.push('/inicio');
+      successFull('Bienvenido al sistema', 'top-end');
+      router.push('/inicio');
       // }
       // console.log(esperando.value)
       // const end = new Date();

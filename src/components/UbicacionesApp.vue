@@ -135,7 +135,7 @@
                     </div>
                   </template>
                   <template #loading>
-                    <img src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
+                    <img src="/cargando4.gif"
                       style="width: 100px; height: 80px;" />
                   </template>
                 </EasyDataTable>
@@ -273,7 +273,7 @@
                     </div>
                   </template>
                   <template #loading>
-                    <img src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
+                    <img src="/cargando4.gif"
                       style="width: 100px; height: 80px;" />
                   </template>
                 </EasyDataTable>
@@ -1122,7 +1122,7 @@ let setTiempoBusca = '';
 
 const datos_archivados = ref([]);
 
-const ipPublica = ref('localhost');
+const ipPublica = ref('192.168.121.154');
 
 const formSucursal = reactive({
   data: {
@@ -1843,6 +1843,7 @@ const almacenDatosSucursales = (Lista) => {
 
 onMounted(async () => {
   if (localStorage.getItem('userName')) {
+    ipPublica.value = localStorage.getItem('Host_back');
     if (localStorage.getItem('Carg_datS') == '0') {
       // MAGNITUDES
       loading.value = true;
