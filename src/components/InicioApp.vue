@@ -54,8 +54,11 @@
 
             </div>
           </div>
-          <div class="card-footer"><a href="#"><label>Más información <i
-                  class="far fa-arrow-alt-circle-right"></i></label></a></div>
+          <div class="card-footer">
+            <router-link to="/categorias">
+              <a href="#"><label>Más información <i class="far fa-arrow-alt-circle-right"></i></label></a>
+            </router-link>
+          </div>
         </div>
       </div>
       <!-- Tipos de articulos  -->
@@ -75,8 +78,11 @@
 
             </div>
           </div>
-          <div class="card-footer"><a href="#"><label>Más información <i
-                  class="far fa-arrow-alt-circle-right"></i></label></a></div>
+          <div class="card-footer">
+            <router-link to="/categorias">
+              <a href="#"><label>Más información <i class="far fa-arrow-alt-circle-right"></i></label></a>
+            </router-link>
+          </div>
         </div>
       </div>
 
@@ -438,26 +444,26 @@ onMounted(async () => {
         listadoDepartamentos.value = JSON.parse(localStorage.getItem('ListadoCacheDepartamentos'));
         cantidadDepartamentos.value = listadoDepartamentos.value.length;
       }
-      } else {
-        console.log("Sigo esperando")
-      }
-      // esperando.value = true;
-      // EsperarTiempo()
-      // cargado.value = false;
-      // await consultar();
-      // await consultarSucursales();
-      // await consultarSucursales();
-      // bodyLogin.classList.add('sidebar-toggled');
-      // console.log("INICIO")
-      // }
-      // Cosc_Clar.value = localStorage.getItem('background');
-      // consultar();
-
     } else {
-      router.push('/login');
+      console.log("Sigo esperando")
     }
+    // esperando.value = true;
+    // EsperarTiempo()
+    // cargado.value = false;
+    // await consultar();
+    // await consultarSucursales();
+    // await consultarSucursales();
+    // bodyLogin.classList.add('sidebar-toggled');
+    // console.log("INICIO")
+    // }
+    // Cosc_Clar.value = localStorage.getItem('background');
+    // consultar();
 
-  })
+  } else {
+    router.push('/login');
+  }
+
+})
 
 // const cambiarLimite = () => {
 //   let i = 0;

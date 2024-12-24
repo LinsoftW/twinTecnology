@@ -249,16 +249,19 @@
                   <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
                     title="Restar"><span class="fas fa-minus"></span></button>
                   <button class="btn btn-danger btn-sm btn-circle ml-1"
-                    @click="borrarU(item.id, item.attributes.codigo, 1)" v-b-tooltip.hover title="Eliminar"><span
+                    @click="borrarU(item.id, item.attributes.descripcion, 1)" v-b-tooltip.hover title="Eliminar"><span
                       class="fas fas fa-trash-alt"></span></button>
                   <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode"
-                    @click="generarCodeBar(item.relationships.departamento.data.id,item.relationships.departamento.data.id,item.id)" v-b-tooltip.hover title="Código de barra"><span
-                      class="fas fas fa-barcode"></span></button>
+                    @click="generarCodeBar(item.relationships.departamento.data.id, item.relationships.departamento.data.id, item.id)"
+                    v-b-tooltip.hover title="Código de barra"><span class="fas fas fa-barcode"></span></button>
 
                 </div>
               </template>
               <template #item-codigo="item">
-                 {{ item.relationships.departamento.data.id }}{{ item.relationships.articulo.data.id }}{{ item.id }}
+                {{ item.relationships.departamento.data.id }}{{ item.relationships.articulo.data.id }}{{ item.id }}
+              </template>
+              <template #item-unidad="item">
+                {{ obtenMedida(item.relationships.medida.data.id) }} <!-- item.relationships.medida.data.id -->
               </template>
               <template #loadingP>
                 <img src="/cargando4.gif" style="width: 100px; height: 80px;" />
@@ -575,10 +578,10 @@
                   &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;
                   &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;
                   &nbsp;&nbsp; &nbsp; &nbsp;
-                  <router-link class="button" to="/categorias">
+                  <!-- <router-link class="button" to="/categorias">
                     <button class="btn btn-danger" v-b-tooltip.hover title="Agregar artículo"><span
                         class="fa fa-plus"></span></button>
-                  </router-link>
+                  </router-link> -->
                 </label>
                 <select name="articulo" id="articulo" @change="verificar_error(3)"
                   style="width: 100%; text-align:center" placeholder="Artículo" class="text-gray-900 form-control"
@@ -881,6 +884,21 @@ const agrega = () => {
   editar.value = false
 }
 
+let y = 0;
+
+const obtenMedida = (id) => {
+  const val = ref('')
+
+  // console.log(id)
+  // console.log(listadoMedida.value)
+  for (let index = 0; index < listadoMedida.value.length; index++) {
+    if (id == listadoMedida.value[index].id) {
+      // console.log(listadoMedida.value[index].id)
+      return listadoMedida.value[index].attributes.medida
+    }
+  }
+}
+
 const verificar_error = (n) => {
   switch (n) {
     case 1:
@@ -943,7 +961,7 @@ const errores = ref({ descripcion: "", observacion: "", articulo_id: "", ubicaci
 
 const agregarUProducto = () => {
   esperando.value = true;
-  console.log(formProductos.data)
+  // console.log(formProductos.data)
   if (formProductos.data.attributes.descripcion != '' && formProductos.data.attributes.articulo_id != 0 && formProductos.data.attributes.observacion != '' && formProductos.data.attributes.ubicacion_id != 0) {
     // console.log("OKKKK")
     GuardarProducto.value = 'Guardando...'
@@ -955,16 +973,18 @@ const agregarUProducto = () => {
         } else {
           cargado.value = false;
           esperando.value = false;
-          formProductos.data.attributes.observacion = ''
+          formProductos.data.attributes.observacion = '';
+          formProductos.data.attributes.cantidad = '';
           formProductos.data.attributes.descripcion = '';
           loadingU.value = true;
           // emit('actualiza', 7)
           // emit('actualiza', 8)
-          if (listadoProductos.value.length == 0) {
-            listadoProductos.value.push(response.data.data)
-          } else {
-            listadoProductos.value.push(response.data.data)
-          }
+          // if (listadoProductos.value.length == 0) {
+          //   listadoProductos.value.push(response.data.data)
+          // } else {
+          listadoProductos.value.push(response.data.data)
+          // }
+          console.log(listadoProductos.value)
           almacenDatosProductos(listadoProductos.value);
           listadoProductos.value = JSON.parse(localStorage.getItem('ListadoCacheProductos'));
           obtenerProductos()
@@ -975,13 +995,14 @@ const agregarUProducto = () => {
         }
       })
       .catch((error) => {
-        if (error.response.status === 400) {
-          errors.value = error.response.data.message;
-        }
+        // if (error.response.status === 400) {
+        //   errors.value = error.response.data.message;
+        // }
+        console.log("Error")
         esperando.value = false;
-        GuardarMedida.value = 'Agregar';
+        GuardarProducto.value = 'Agregar';
         disabledProductoBtn.value = ''
-        ErrorFull(error.response.data.message, "top-start")
+        // ErrorFull(error.response.data.message, "top-start")
       })
   } else {
     if (formProductos.data.attributes.descripcion == '') {
@@ -1144,21 +1165,23 @@ function ExportExcel() {
   // emit('consultar', 2);
   // console.log(items.value)
 
-  for (let index = 0; index < items.value.length; index++) {
-    elementos.value.type = items.value[index].type;
-    elementos.value.codigo = items.value[index].attributes.codigo;
-    elementos.value.descripcion = items.value[index].attributes.descripcion;
-    elementos.value.observacion = items.value[index].attributes.observacion;
+  for (let index = 0; index < listadoProductos.value.length; index++) {
+    elementos.value.type = listadoProductos.value[index].type;
+    elementos.value.cantidad = listadoProductos.value[index].attributes.cantidad;
+    elementos.value.descripcion = listadoProductos.value[index].attributes.descripcion;
+    elementos.value.observacion = listadoProductos.value[index].attributes.observacion;
+    elementos.value.codigo = listadoProductos.value[index].relationships.departamento.data.id.toString() + listadoProductos.value[index].relationships.articulo.data.id.toString() + listadoProductos.value[index].id.toString()
     nuevoArreglo.value.push(elementos.value)
     elementos.value = []
   }
   // console.log(nuevoArreglo)
   const worksheet = XLSX.utils.json_to_sheet(nuevoArreglo.value);
+  // console.log(worksheet)
   const workbook = XLSX.utils.book_new();
   // // Abriendo el excel
   XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
   // // Generar el archivo
-  const fileName = 'table_data.xlsx';
+  const fileName = 'Productos.xlsx';
   // // Guardar el archivo execl
   XLSX.writeFile(workbook, fileName);
 }
@@ -1320,7 +1343,7 @@ const headers = [
   { text: "P.COMPRA", value: "precioC", sortable: true },
   { text: "P.VENTA", value: "precioV", sortable: true },
   { text: "UNIDAD", value: "unidad" },
-  { text: "STOCK", value: "stock", sortable: true },
+  { text: "STOCK", value: "attributes.cantidad", sortable: true },
   { text: "VENTAS", value: "cantV", sortable: true },
   { text: "OPCIONES", value: "opciones" }
 ];
@@ -1385,7 +1408,7 @@ const seleccionaProducto = (prod) => {
 }
 
 const generarCodeBar = (codig, cod2, cod3) => {
-  cod.value = codig.toString()+cod2.toString()+cod3.toString();
+  cod.value = codig.toString() + cod2.toString() + cod3.toString();
   // console.log(typeof codig, typeof cod2, typeof cod3)
   // abrirModalBarCode(codig);
   //   Swal.fire({
@@ -1592,6 +1615,8 @@ let listadoArticulos = ref([]);
 
 let listadoUbicaciones = ref([]);
 
+let listadoMedida = ref([])
+
 // let listadoSucursales = ref([]);
 
 // let datosPaginados = ref([]);
@@ -1712,6 +1737,12 @@ const almacenDatosProductos = (Lista) => {
   localStorage.removeItem('ListadoCacheProductos');
   const parsed = JSON.stringify(Lista);
   localStorage.setItem('ListadoCacheProductos', parsed);
+}
+
+const almacenDatosMedida = (Lista) => {
+  localStorage.removeItem('ListadoCacheUnidades');
+  const parsed = JSON.stringify(Lista);
+  localStorage.setItem('ListadoCacheUnidades', parsed);
 }
 
 const consultar = async () => {
@@ -1916,7 +1947,7 @@ onMounted(async () => {
     ipPublica.value = localStorage.getItem('Host_back');
     if (localStorage.getItem('Carg_datP') == '0') {
       loadingP.value = true;
-      disabledProductos.value = 'disabled'
+      disabledProductos.value = 'disabled';
       await axios.get(`https://` + ipPublica.value + `/fullstack/public/productos`)
         .then((response) => {
           if (response.data.data == null) {
@@ -1939,7 +1970,7 @@ onMounted(async () => {
                   } else {
                     listadoArticulos.value = response.data.data;
                     almacenDatosArticulos(listadoArticulos.value);
-                    loadingP.value = false;
+                    // loadingP.value = false;
                     disabledProductos.value = '';
                     localStorage.setItem('Carg_datA', '1')
                     // loading.value = false
@@ -1955,7 +1986,7 @@ onMounted(async () => {
             } else {
               listadoArticulos.value = JSON.parse(localStorage.getItem('ListadoCacheArticulos'));
               obtenerArticulos();
-              loadingP.value = false;
+              // loadingP.value = false;
               disabledProductos.value = '';
             }
             // Cargar Ubicaciones
@@ -1969,10 +2000,29 @@ onMounted(async () => {
                   } else {
                     listadoUbicaciones.value = response.data.data;
                     almacenDatosUbicaciones(listadoUbicaciones.value);
-                    loadingP.value = false;
+                    // loadingP.value = false;
                     disabledProductos.value = '';
                     localStorage.setItem('Carg_datA', '1')
-                    // loading.value = false
+
+                    if (localStorage.getItem("Carg_datMe" == '0')) {
+                      axios.get(`https://` + ipPublica.value + `/fullstack/public/medidas`)
+                        .then((response) => {
+                          if (response.data.data == null) {
+
+                          } else {
+                            listadoMedida.value = response.data.data;
+                            almacenDatosMedida(listadoMedida.value);
+                            localStorage.setItem('Carg_datMe', '1')
+                            // Kcategorias.value = Kcategorias.value + 1;
+                          }
+
+
+                        }).catch((error) => {
+                          if (error.response.status === 500) {
+                            errors.value = error.response.status;
+                          }
+                        })
+                    }
                   }
 
                 }).catch((error) => {
@@ -2008,6 +2058,7 @@ onMounted(async () => {
       listadoArticulos.value = JSON.parse(localStorage.getItem('ListadoCacheArticulos'));
       obtenerArticulos();
       listadoUbicaciones.value = JSON.parse(localStorage.getItem('ListadoCacheUbicaciones'));
+      listadoMedida.value = JSON.parse(localStorage.getItem('ListadoCacheUnidades'));
       disabledProductos.value = '';
       loadingP.value = false;
     }

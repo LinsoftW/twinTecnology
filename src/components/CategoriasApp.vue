@@ -815,7 +815,7 @@ const agregarU = () => {
         if (response.data.data == null) {
           ErrorFull("Está intentando agregar un dato que ya existe en la base datos.", "top-start")
           disabledDepartamentodBtn.value = '';
-          GuardarDep.value = 'Agregar departamento'
+          GuardarDep.value = 'Agregar'
         } else {
           formDepartamentos.data.attributes.observacion = ''
           formDepartamentos.data.attributes.descripcion = '';
