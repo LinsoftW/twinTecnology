@@ -175,6 +175,8 @@ onMounted(async () => {
   localStorage.setItem('Carg_datU', '0'); // Ubicaciones
   localStorage.setItem('Host_back', 'localhost'); // IPPublica
   localStorage.setItem('Wait', '1'); // Esperar para cargar el inicio
+  localStorage.setItem('Wait2', '1'); // Esperar para cargar el inicio
+  localStorage.setItem('Wait3', '1'); // Esperar para cargar el inicio
   bodyLogin1.classList.add('bg-gradient-info');
   bodyLogin1.classList.remove('sidebar-toggled');
   // await consultar();

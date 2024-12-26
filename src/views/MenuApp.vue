@@ -683,6 +683,7 @@ import emailjs from 'emailjs-com';
 import * as XLSX from 'xlsx';
 import { useAlertsStore } from '@/components/ComunicacionApp';
 import UbicacionesApp from '@/components/UbicacionesApp.vue';
+import { obtenerDatos } from '@/components/service/servicio';
 // import { Input, TextArea } from "@progress/kendo-vue-inputs";
 // import { Button } from "@progress/kendo-vue-buttons";
 
@@ -1037,73 +1038,97 @@ comunicador.$onAction(() => {
 
 const consultarPrincipal = async () => {
   // if (cargado.value == false) {
+  esperando.value = true;
   // PRODUCTOS
   await axios.get(`https://` + ipPublica.value + `/fullstack/public/productos`)
     .then((response) => {
+
       if (response.data.data == null) {
 
       } else {
+        // console.log(response.data.data.meta.count_data)
         listado.value = response.data.data;
         almacenDatosProductos(listado.value);
         localStorage.setItem("Carg_datP", '1');
+        localStorage.setItem("Wait", '0');
+        esperando.value = false;
+        Kinicio.value = Kinicio.value + 1;
         // localStorage.setItem("Wait", '0');
-
-        // Departamentos
-        axios.get(`https://` + ipPublica.value + `/fullstack/public/departamentos`)
-          .then((response) => {
-            if (response.data.data == null) {
-
-            } else {
-              listadoDepartamentos.value = response.data.data;
-              almacenDatosDepartamentos(listadoDepartamentos.value);
-              localStorage.setItem("Carg_datD", '1');
-
-              // Articulos
-              axios.get(`https://` + ipPublica.value + `/fullstack/public/articulos`)
-                .then((response) => {
-                  if (response.data.data == null) {
-
-                  } else {
-                    listadoArticulos.value = response.data.data;
-                    almacenDatosArticulos(listadoArticulos.value);
-                    localStorage.setItem("Carg_datA", '1');
-
-                    // Sucursales
-                    axios.get(`https://` + ipPublica.value + `/fullstack/public/sucursales`)
-                      .then((response1) => {
-                        listadoSucursales.value = response1.data.data;
-                        almacenDatosSucursales(listadoSucursales.value);
-                        esperando.value = false;
-                        localStorage.setItem("Carg_datS", '1');
-                        localStorage.setItem("Wait", '0');
-                        Kinicio.value = Kinicio.value + 1;
-                        successFull("Datos cargados.", "top-end")
-                      }).catch((error) => {
-                        if (error.response.status === 500) {
-                          ErrorFull("Problemas de conexión, verificaremos en otro momento.", "top-end");
-                          esperando.value = false;
-                          localStorage.setItem("Carg_dat", '0');
-                        }
-                      });
-                  }
-
-                }).catch((error) => {
-                  if (error.response.status === 500) {
-                    errors.value = error.response.status;
-                  }
-                });
-            }
-          }).catch((error) => {
-            if (error.response.status === 500) {
-              errors.value = error.response.status;
-            }
-          })
       }
     }).catch((error) => {
       if (error.response.status === 500) {
         errors.value = error.response.status;
       }
+      esperando.value = false;
     })
+
+  // Departamentos
+  axios.get(`https://` + ipPublica.value + `/fullstack/public/departamentos`)
+    .then((response) => {
+      if (response.data.data == null) {
+
+      } else {
+        esperando.value = true;
+        listadoDepartamentos.value = response.data.data;
+        almacenDatosDepartamentos(listadoDepartamentos.value);
+        localStorage.setItem("Carg_datD", '1');
+        localStorage.setItem("Wait2", '0');
+        esperando.value = false;
+        Kinicio.value = Kinicio.value + 1;
+      }
+    }).catch((error) => {
+      if (error.response.status === 500) {
+        errors.value = error.response.status;
+      }
+      esperando.value = false;
+    })
+
+  // Articulos
+  axios.get(`https://` + ipPublica.value + `/fullstack/public/articulos`)
+    .then((response) => {
+      if (response.data.data == null) {
+
+      } else {
+        esperando.value = true;
+        listadoArticulos.value = response.data.data;
+        almacenDatosArticulos(listadoArticulos.value);
+        localStorage.setItem("Carg_datA", '1');
+        localStorage.setItem("Wait3", '0');
+        esperando.value = false;
+        Kinicio.value = Kinicio.value + 1;
+      }
+
+    }).catch((error) => {
+      if (error.response.status === 500) {
+        errors.value = error.response.status;
+      }
+      esperando.value = false;
+    });
+
+  // Sucursales
+  axios.get(`https://` + ipPublica.value + `/fullstack/public/sucursales`)
+    .then((response1) => {
+      if (response1.data.data == null) {
+
+      } else {
+        esperando.value = true;
+        listadoSucursales.value = response1.data.data;
+        almacenDatosSucursales(listadoSucursales.value);
+        localStorage.setItem("Carg_datS", '1');
+        localStorage.setItem("Wait", '0');
+        // Kinicio.value = Kinicio.value + 1;
+        successFull("Datos cargados satisfactoriamente.", "top-end")
+        esperando.value = false;
+      }
+
+    }).catch((error) => {
+      if (error.response.status === 500) {
+        ErrorFull("Problemas de conexión, verificaremos en otro momento.", "top-end");
+        esperando.value = false;
+        localStorage.setItem("Carg_dat", '0');
+      }
+      esperando.value = false;
+    });
 
   // MAGNITUDES
   // await axios.get(`https://` + ipPublica.value + `/fullstack/public/magnitudes`)
@@ -1317,28 +1342,41 @@ const consultar = async (n) => {
 // })
 
 onMounted(async () => {
+  // console.log("Montado")
   if (localStorage.getItem('userName')) {
     ipPublica.value = localStorage.getItem('Host_back');
     // if (localStorage.getItem('Wait') == '0') {
     if (localStorage.getItem('Carg_datP') == '0') {
       Ctoggled.value = 'toggled';
+      // await consultarPrincipal()
+      // PRODUCTOS
       esperando.value = true;
-      // console.log("Cargando datos...")
-      await consultarPrincipal()
+      listado.value = await obtenerDatos(1);
+      console.log(listado.value)
+      almacenDatosProductos(listado.value);
+      localStorage.setItem("Carg_datP", '1');
+      localStorage.setItem("Wait", '0');
+      // DEPARTAMENTOS
+      listadoDepartamentos.value = await obtenerDatos(6);
+      almacenDatosDepartamentos(listadoDepartamentos.value);
+      localStorage.setItem("Carg_datD", '1');
+      localStorage.setItem("Wait2", '0');
+      //ARTICULOS
+      listadoArticulos.value = await obtenerDatos(5);
+      almacenDatosArticulos(listadoArticulos.value);
+      localStorage.setItem("Carg_datA", '1');
+      localStorage.setItem("Wait3", '0');
+      esperando.value = false;
+      Kinicio.value = Kinicio.value + 1;
     } else if (localStorage.getItem('Wait') != '0') {
       localStorage.removeItem('Carg_datP');
       localStorage.setItem('Carg_datP', '0');
-      // console.log('Repitiendo las consultas')
       onMounted();
     }
-    // } else {
-
-    // }
     Ctoggled.value = 'toggled';
   } else {
     router.push('/login');
   }
-  // consultar();
 })
 
 // const Cambia_Color = () => {

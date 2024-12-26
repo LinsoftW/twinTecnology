@@ -282,7 +282,7 @@
 
 <script setup>
 
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, onUnmounted, reactive, ref } from 'vue';
 // import { useRoute } from 'vue-router';
 import axios from 'axios';
 import router from '@/router';
@@ -432,6 +432,40 @@ const almacenDatosSucursales = (Lista) => {
 
 onMounted(async () => {
   if (localStorage.getItem('userName')) {
+    if (localStorage.getItem('Carg_datP') == '1' || localStorage.getItem('Carg_datD') == '1' || localStorage.getItem('Carg_datA') == '1') {
+      if (localStorage.getItem('Wait') == '0') {
+        // console.log("Cargar ahora")
+        bodyLogin.classList.remove('bg-gradient-info');
+        listado.value = JSON.parse(localStorage.getItem('ListadoCacheProductos'));
+        cantidad.value = listado.value.length;
+        listadoArticulos.value = JSON.parse(localStorage.getItem('ListadoCacheArticulos'));
+        cantidadArticulos.value = listadoArticulos.value.length;
+        listadoDepartamentos.value = JSON.parse(localStorage.getItem('ListadoCacheDepartamentos'));
+        cantidadDepartamentos.value = listadoDepartamentos.value.length;
+      }
+    } else {
+      console.log("Sigo esperando")
+    }
+    // esperando.value = true;
+    // EsperarTiempo()
+    // cargado.value = false;
+    // await consultar();
+    // await consultarSucursales();
+    // await consultarSucursales();
+    // bodyLogin.classList.add('sidebar-toggled');
+    // console.log("INICIO")
+    // }
+    // Cosc_Clar.value = localStorage.getItem('background');
+    // consultar();
+
+  } else {
+    router.push('/login');
+  }
+
+})
+
+onUnmounted(async () => {
+  if (localStorage.getItem('userName')) {
     if (localStorage.getItem('Carg_datP') == '1') {
       if (localStorage.getItem('Wait') == '0') {
         // console.log("Cargar ahora")
@@ -439,8 +473,12 @@ onMounted(async () => {
         listado.value = JSON.parse(localStorage.getItem('ListadoCacheProductos'));
         // obtenerListadoLimpio();
         cantidad.value = listado.value.length;
+      }
+      if (localStorage.getItem("Wait2") == '0') {
         listadoArticulos.value = JSON.parse(localStorage.getItem('ListadoCacheArticulos'));
         cantidadArticulos.value = listadoArticulos.value.length;
+      }
+      if (localStorage.getItem("Wait3") == '0') {
         listadoDepartamentos.value = JSON.parse(localStorage.getItem('ListadoCacheDepartamentos'));
         cantidadDepartamentos.value = listadoDepartamentos.value.length;
       }

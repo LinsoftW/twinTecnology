@@ -603,11 +603,7 @@
               </div> -->
             <div class="row">
               <div class="form-group col-lg-12 text-left">
-                <label class="text-info">Seleccione la ubicación: <label style="color: red;">*</label>&nbsp; &nbsp;
-                  &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;
-                  &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;
-                  &nbsp;&nbsp; &nbsp;<button class="btn btn-danger" v-b-tooltip.hover title="Agregar ubicación"><span
-                      class="fa fa-plus"></span></button></label>
+                <label class="text-info">Seleccione la ubicación: <label style="color: red;">*</label></label>
                 <select name="articulo" id="articulo" @change="verificar_error(4)"
                   style="width: 100%; text-align:center" placeholder="Artículo" class="text-gray-900 form-control"
                   v-model="formProductos.data.attributes.ubicacion_id">
@@ -690,6 +686,7 @@
       </div>
     </div>
   </div>
+  <!-- Logout Modal-->
   <div :class="'modal fade ' + showModal1" id="editaProducto" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
     <div class="modal-dialog" role="document">
@@ -736,10 +733,10 @@
                   &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;
                   &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;
                   &nbsp;&nbsp; &nbsp; &nbsp;
-                  <router-link class="button" to="/categorias">
+                  <!-- <router-link class="button" to="/categorias">
                     <button class="btn btn-danger" v-b-tooltip.hover title="Agregar artículo"><span
                         class="fa fa-plus"></span></button>
-                  </router-link>
+                  </router-link> -->
                 </label>
                 <select name="articulo" id="articulo" @change="verificar_error(3)"
                   style="width: 100%; text-align:center" placeholder="Artículo" class="text-gray-900 form-control"
@@ -761,11 +758,7 @@
               </div> -->
             <div class="row">
               <div class="form-group col-lg-12 text-left">
-                <label class="text-info">Seleccione la ubicación: <label style="color: red;">*</label>&nbsp; &nbsp;
-                  &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;
-                  &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;
-                  &nbsp;&nbsp; &nbsp;<button class="btn btn-danger" v-b-tooltip.hover title="Agregar ubicación"><span
-                      class="fa fa-plus"></span></button></label>
+                <label class="text-info">Seleccione la ubicación: <label style="color: red;">*</label></label>
                 <select name="articulo" id="articulo" @change="verificar_error(4)"
                   style="width: 100%; text-align:center" placeholder="Artículo" class="text-gray-900 form-control"
                   v-model="formProductos.data.attributes.ubicacion_id">
@@ -859,7 +852,7 @@
   <!-- <div :class="showModBack2" @click="cerrarModal()"></div> -->
 </template>
 <script setup>
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted, onUnmounted } from 'vue';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 // import AddProducto from './modal/AddProducto.vue';
@@ -867,6 +860,7 @@ import axios from 'axios';
 import '@vuepic/vue-datepicker/dist/main.css';
 import * as XLSX from 'xlsx';
 import Quagga from 'quagga';
+import { obtenerDatos } from './service/servicio';
 
 const prueba = () => {
   successFull("Okkk", "top-center")
@@ -888,15 +882,15 @@ let y = 0;
 
 const obtenMedida = (id) => {
   const val = ref('')
-
-  // console.log(id)
-  // console.log(listadoMedida.value)
-  for (let index = 0; index < listadoMedida.value.length; index++) {
-    if (id == listadoMedida.value[index].id) {
-      // console.log(listadoMedida.value[index].id)
-      return listadoMedida.value[index].attributes.medida
+  if (localStorage.getItem("Carg_datMe") != '0') {
+    for (let index = 0; index < listadoMedida.value.length; index++) {
+      if (id == listadoMedida.value[index].id) {
+        // console.log(listadoMedida.value[index].id)
+        return listadoMedida.value[index].attributes.medida
+      }
     }
   }
+
 }
 
 const verificar_error = (n) => {
@@ -1948,6 +1942,156 @@ onMounted(async () => {
     if (localStorage.getItem('Carg_datP') == '0') {
       loadingP.value = true;
       disabledProductos.value = 'disabled';
+      listadoProductos.value = obtenerDatos(1);
+      almacenDatosProductos(listadoProductos.value);
+      obtenerProductos();
+      localStorage.setItem("Carg_datP", "1")
+      if (localStorage.getItem('Carg_datA') == '0') {
+        listadoArticulos.value = obtenerDatos(5);
+        almacenDatosArticulos(listadoArticulos.value);
+        disabledProductos.value = '';
+        localStorage.setItem('Carg_datA', '1')
+      }
+      if (localStorage.getItem('Carg_datU') == '0') {
+        listadoUbicaciones.value = obtenerDatos(7);
+        almacenDatosUbicaciones(listadoUbicaciones.value);
+        disabledProductos.value = '';
+        localStorage.setItem('Carg_datU', '1')
+      }
+      if (localStorage.getItem('Carg_datMe') == '0') {
+        listadoMedida.value = obtenerDatos(3);
+        almacenDatosMedida(listadoMedida.value);
+        localStorage.setItem('Carg_datMe', '1')
+      }
+      // await axios.get(`https://` + ipPublica.value + `/fullstack/public/productos`)
+      //   .then((response) => {
+      //     if (response.data.data == null) {
+      //       disabledProductos.value = '';
+      //       ErrorFull('Error realizando la operación.', "top-start")
+      //     } else {
+      //       listadoProductos.value = response.data.data;
+      //       almacenDatosProductos(listadoProductos.value);
+      //       obtenerProductos();
+      //       localStorage.setItem("Carg_datP", "1")
+      //       // Cargar Articulos
+      //       if (localStorage.getItem('Carg_datA') == '0') {
+      //         // ARTICULOS
+      //         axios.get(`https://` + ipPublica.value + `/fullstack/public/articulos`)
+      //           .then((response) => {
+      //             // console.log(response.data.data)
+      //             if (response.data.data == null) {
+      //               disabledArticulo.value = ''
+      //               ErrorFull("Error realizando la operación.", "top-start")
+      //             } else {
+      //               listadoArticulos.value = response.data.data;
+      //               almacenDatosArticulos(listadoArticulos.value);
+      //               // loadingP.value = false;
+      //               disabledProductos.value = '';
+      //               localStorage.setItem('Carg_datA', '1')
+      //               // loading.value = false
+      //             }
+
+      //           }).catch((error) => {
+      //             if (error.response.status === 500) {
+      //               errors.value = error.response.status;
+      //             }
+      //             ErrorFull("Error realizando la operación.", "top-start")
+      //           })
+
+      //       } else {
+      //         listadoArticulos.value = JSON.parse(localStorage.getItem('ListadoCacheArticulos'));
+      //         obtenerArticulos();
+      //         // loadingP.value = false;
+      //         disabledProductos.value = '';
+      //       }
+      //       // Cargar Ubicaciones
+      //       if (localStorage.getItem('Carg_datU') == '0') {
+      //         // UBICACIONES
+      //         axios.get(`https://` + ipPublica.value + `/fullstack/public/ubicaciones`)
+      //           .then((response) => {
+      //             if (response.data.data == null) {
+      //               disabledArticulo.value = ''
+      //               ErrorFull("Error realizando la operación.", "top-start")
+      //             } else {
+      //               listadoUbicaciones.value = response.data.data;
+      //               almacenDatosUbicaciones(listadoUbicaciones.value);
+      //               // loadingP.value = false;
+      //               disabledProductos.value = '';
+      //               localStorage.setItem('Carg_datA', '1')
+
+      //               if (localStorage.getItem("Carg_datMe" == '0')) {
+      //                 axios.get(`https://` + ipPublica.value + `/fullstack/public/medidas`)
+      //                   .then((response) => {
+      //                     if (response.data.data == null) {
+
+      //                     } else {
+      //                       listadoMedida.value = response.data.data;
+      //                       almacenDatosMedida(listadoMedida.value);
+      //                       localStorage.setItem('Carg_datMe', '1')
+      //                       // Kcategorias.value = Kcategorias.value + 1;
+      //                     }
+
+
+      //                   }).catch((error) => {
+      //                     if (error.response.status === 500) {
+      //                       errors.value = error.response.status;
+      //                     }
+      //                   })
+      //               }
+      //             }
+
+      //           }).catch((error) => {
+      //             if (error.response.status === 500) {
+      //               errors.value = error.response.status;
+      //             }
+      //             ErrorFull("Error realizando la operación.", "top-start")
+      //           })
+
+      //       } else {
+      //         listadoUbicaciones.value = JSON.parse(localStorage.getItem('ListadoCacheUbicaciones'));
+      //         // obtenerUbicaciones();
+      //         loadingP.value = false;
+      //         disabledProductos.value = '';
+      //       }
+      //     }
+
+      //   }).catch((error) => {
+      //     if (error.response.status === 500) {
+      //       errors.value = error.response.status;
+      //     }
+      //     loadingP.value = false;
+      //     disabledProductos.value = '';
+      //     ErrorFull('Error realizando la operación.', "top-start")
+      //   })
+    }
+    else {
+      disabledProductos.value = 'disabled';
+      loadingP.value = true;
+      listadoProductos.value = JSON.parse(localStorage.getItem('ListadoCacheProductos'));
+      obtenerProductos();
+      // console.log(listadoProductos.value)
+      listadoArticulos.value = JSON.parse(localStorage.getItem('ListadoCacheArticulos'));
+      obtenerArticulos();
+      listadoUbicaciones.value = JSON.parse(localStorage.getItem('ListadoCacheUbicaciones'));
+      listadoMedida.value = JSON.parse(localStorage.getItem('ListadoCacheUnidades'));
+      disabledProductos.value = '';
+      loadingP.value = false;
+    }
+
+  } else {
+    router.push('/login');
+  }
+})
+
+// const yu = ref(0)
+onUnmounted(async () => {
+  // console.log("Desmontado :" + yu.value)
+  // yu.value++;
+  if (localStorage.getItem('userName')) {
+    ipPublica.value = localStorage.getItem('Host_back');
+    if (localStorage.getItem('Carg_datP') == '0') {
+      loadingP.value = true;
+      disabledProductos.value = 'disabled';
       await axios.get(`https://` + ipPublica.value + `/fullstack/public/productos`)
         .then((response) => {
           if (response.data.data == null) {
@@ -2063,10 +2207,7 @@ onMounted(async () => {
       loadingP.value = false;
     }
 
-  } else {
-    router.push('/login');
   }
-  // consultar();
 })
 
 

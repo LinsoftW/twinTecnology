@@ -36,9 +36,9 @@
                       <a @click="abrirModalAddProd()" class="btn btn-secondary btn-sm btn-icon-split m-2"
                         :class="disabledDepartamento">
                         <span class="icon text-white-50">
-                          <i class="fas fa-print"></i>
+                          <i class="fas fa-file-pdf"></i>
                         </span>
-                        <span class="text">Imprimir</span>
+                        <span class="text">PDF</span>
                       </a>
                       <a @click="ExportExcel()" class="btn btn-primary btn-sm btn-icon-split"
                         :class="disabledDepartamento">
@@ -117,9 +117,9 @@
                       <a @click="abrirModalAddProd()" class="btn btn-secondary btn-sm btn-icon-split m-2"
                         :class="disabledArticulo">
                         <span class="icon text-white-50">
-                          <i class="fas fa-print"></i>
+                          <i class="fas fa-file-pdf"></i>
                         </span>
-                        <span class="text">Imprimir</span>
+                        <span class="text">PDF</span>
                       </a>
                       <a @click="ExportExcelArticulos()" class="btn btn-primary btn-sm btn-icon-split"
                         :class="disabledArticulo">
@@ -206,26 +206,23 @@
 
             <div class="col-lg-12">
               <div class="">
-                <div class="text-center">
-                  <h1 class="h6 text-gray-900 mb-4"><i>CAMPOS OBLIGATORIOS</i> (<label style="color: red;">*</label>)
-                  </h1>
-                </div>
+
                 <form class="">
 
-                  <div class="row">
-                    <div class="form-group col-lg-12">
+                  <div class="row text-left">
+                    <div class="form-group col-lg-12 ">
                       <label class="text-info">Nombre del departamento: <label style="color: red;">*</label></label>
                       <input type="text" class="form-control" id="departamentos"
-                        v-model="formDepartamentos.data.attributes.departamento" placeholder="Nombre del departamento"
-                        required>
-                      <span v-if="errores.cod" style="color: red;">Campo en blanco</span>
+                        v-model="formDepartamentos.data.attributes.departamento" placeholder="Ej: Departamento 1"
+                        required @change="verificar_error(5)">
+                      <span style="color: red;">{{ errores.departamento }}</span>
                     </div>
                     <div class="form-group col-lg-12">
                       <label class="text-info">Descripción: <label style="color: red;">*</label></label>
                       <input type="text" class="form-control" id="descripcion" aria-describedby="emailHelp"
                         v-model="formDepartamentos.data.attributes.descripcion"
-                        placeholder="Descripción del departamento">
-                      <span v-if="errores.descripcion" style="color: red;">Campo en blanco</span>
+                        placeholder="Departamento donde se guardan los artículos" @change="verificar_error(6)">
+                      <span style="color: red;">{{ errores.descripcionDepatamento }}</span>
                     </div>
                     <div class="form-group col-lg-12">
                       <label class="text-info">Observaciones:</label>
@@ -236,6 +233,10 @@
                     </div>
                   </div>
                 </form>
+              </div>
+              <div class="text-center">
+                <h1 class="h6 text-gray-900 mb-4"><i>CAMPOS OBLIGATORIOS</i> (<label style="color: red;">*</label>)
+                </h1>
               </div>
               <div class="row">
 
@@ -373,24 +374,21 @@
 
             <div class="col-lg-12">
               <div class="">
-                <div class="text-center">
-                  <h1 class="h6 text-gray-900 mb-4"><i>CAMPOS OBLIGATORIOS</i> (<label style="color: red;">*</label>)
-                  </h1>
-                </div>
+
                 <form class="">
 
-                  <div class="row">
+                  <div class="row text-left">
                     <div class="form-group col-lg-12">
                       <label class="text-info">Nombre del artículo: <label style="color: red;">*</label></label>
                       <input type="text" class="form-control" id="articulo"
-                        v-model="formArticulo.data.attributes.articulo" placeholder="Nombre del artículo" required>
-                      <span v-if="errores.cod" style="color: red;">Campo en blanco</span>
+                        v-model="formArticulo.data.attributes.articulo" placeholder="Ej: Tablet" required @change="verificar_error(1)">
+                      <span style="color: red;">{{ errores.articulo }}</span>
                     </div>
                     <div class="form-group col-lg-12">
                       <label class="text-info">Descripción: <label style="color: red;">*</label></label>
                       <input type="text" class="form-control" id="descripcionA" aria-describedby="emailHelp"
-                        v-model="formArticulo.data.attributes.descripcion" placeholder="Descripción del artículo">
-                      <span v-if="errores.descripcion" style="color: red;">Campo en blanco</span>
+                        v-model="formArticulo.data.attributes.descripcion" placeholder="Para entretenimiento" @change="verificar_error(2)">
+                      <span style="color: red;">{{ errores.descripcion }}</span>
                     </div>
                     <div class="form-group col-lg-12">
                       <label class="text-info">Observaciones:</label>
@@ -408,6 +406,7 @@
                         <option v-for="dato in listadoDepartamentos" :key="dato.id" :value="dato.id">{{
                           dato.attributes.departamento }}</option>
                       </select>
+                      <span style="color: red;">{{ errores.departamento_id }}</span>
                     </div>
                     <div class="form-group col-lg-6">
                       <label class="text-info">Seleccione la unidad de medida: <label
@@ -417,9 +416,14 @@
                         <option v-for="dato in listadoMedida" :key="dato.id" :value="dato.id">{{
                           dato.attributes.medida }}</option>
                       </select>
+                      <span style="color: red;">{{ errores.medida_id }}</span>
                     </div>
                   </div>
                 </form>
+              </div>
+              <div class="text-center">
+                <h1 class="h6 text-gray-900 mb-4"><i>CAMPOS OBLIGATORIOS</i> (<label style="color: red;">*</label>)
+                </h1>
               </div>
               <div class="row">
 
@@ -789,9 +793,9 @@ let btnModificarClass = ref('')
 
 const btnModificar = ref('Modificar')
 
-let GuardarDep = ref('Agregar departamento')
+let GuardarDep = ref('Agregar')
 
-let GuardarArt = ref('Agregar artículo')
+let GuardarArt = ref('Agregar')
 
 const disabledDepartamentodBtn = ref('')
 
@@ -799,7 +803,7 @@ const disabledDepartamento = ref('')
 
 const disabledArticulo = ref('')
 
-const errores = ref({ cod: "", descripcion: "" })
+const errores = ref({ articulo: "", descripcion: "", departamento_id: 0, medida_id: 0, departamento: "", descripcionDepatamento: "" })
 
 const agregarU = () => {
 
@@ -853,7 +857,7 @@ const agregarU = () => {
 
 const agregarUArticulo = () => {
 
-  if (formArticulo.data.attributes.descripcion != '' && formArticulo.data.attributes.articulo != '') {
+  if (formArticulo.data.attributes.descripcion != '' && formArticulo.data.attributes.articulo != '' && formArticulo.data.attributes.medida_id != 0 && formArticulo.data.attributes.departamento_id != 0) {
     // console.log(formDepartamentos)
     esperando.value = true;
     disabledDepartamentodBtn.value = 'disabled';
@@ -865,11 +869,11 @@ const agregarUArticulo = () => {
         if (response.data.data == null) {
           ErrorFull("Está intentando agregar un dato que ya existe en la base datos.", "top-start")
           disabledDepartamentodBtn.value = '';
-          GuardarArt.value = 'Agregar artículo';
+          GuardarArt.value = 'Agregar';
         } else {
-          formDepartamentos.data.attributes.observacion = '';
-          formDepartamentos.data.attributes.descripcion = '';
-          formDepartamentos.data.attributes.departamento = '';
+          formArticulo.data.attributes.observacion = '';
+          formArticulo.data.attributes.descripcion = '';
+          formArticulo.data.attributes.articulo = '';
           loadingD.value = true;
           listadoArticulos.value.push(response.data.data)
           almacenDatosArticulos(listadoArticulos.value);
@@ -877,7 +881,7 @@ const agregarUArticulo = () => {
           obtenerArticulos();
           successFull("Artículo agregado satisfactoriamente.", "top-end")
           disabledDepartamentodBtn.value = '';
-          GuardarArt.value = 'Agregar artículo'
+          GuardarArt.value = 'Agregar'
           loadingD.value = false;
         }
       })
@@ -889,10 +893,95 @@ const agregarUArticulo = () => {
         ErrorFull("Error realizando la operación.", "top-start")
       })
   } else {
-    errores.value.cod = "Campo requerido";
-    errores.value.descripcion = "Campo requerido";
+    if (formArticulo.data.attributes.articulo == '') {
+      errores.value.articulo = "Este campo es obligatorio.";
+    }else{
+      errores.value.articulo = "";
+    }
+    if (formArticulo.data.attributes.descripcion == '') {
+      errores.value.descripcion = "Este campo es obligatorio.";
+    }else{
+      errores.value.descripcion = "";
+    }
+    if (formArticulo.data.attributes.departamento_id == 0) {
+      errores.value.departamento_id = "Este campo es obligatorio.";
+    }else{
+      errores.value.departamento_id = "";
+    }
+    if (formArticulo.data.attributes.medida_id == 0) {
+      errores.value.medida_id = "Este campo es obligatorio.";
+    }else{
+      errores.value.medida_id = "";
+    }
+
+    // errores.value.descripcion = "Campo requerido";
     // console.log(errores.value.cod)
   }
+}
+
+const verificar_error = (n) => {
+  switch (n) {
+    case 1:
+      if (formArticulo.data.attributes.articulo != '') {
+        errores.value.articulo = "";
+      } else {
+        errores.value.articulo = "Este campo es obligatorio"
+      }
+      break;
+    case 2:
+      if (formArticulo.data.attributes.descripcion != '') {
+        errores.value.descripcion = "";
+      } else {
+        errores.value.descripcion = "Este campo es obligatorio"
+      }
+      break;
+    case 3:
+      if (formArticulo.data.attributes.departamento_id != 0) {
+        errores.value.departamento_id = "";
+      } else {
+        errores.value.departamento_id = "Este campo es obligatorio"
+      }
+      break;
+    case 4:
+      if (formArticulo.data.attributes.medida_id != 0) {
+        errores.value.medida_id = "";
+      } else {
+        errores.value.medida_id = "Este campo es obligatorio"
+      }
+      break;
+    case 5:
+      if (formDepartamentos.data.attributes.departamento != "") {
+        errores.value.departamento = "";
+      } else {
+        errores.value.departamento = "Este campo es obligatorio"
+      }
+      break;
+    case 6:
+      if (formDepartamentos.data.attributes.descripcionDepatamento != "") {
+        errores.value.descripcionDepatamento = "";
+      } else {
+        errores.value.descripcionDepatamento = "Este campo es obligatorio"
+      }
+      break;
+
+    default:
+      break;
+  }
+  // if (formProductos.data.attributes.descripcion != '') {
+  //   errores.value.descripcion = "";
+  // }
+  // if (formProductos.data.attributes.observacion != '') {
+  //   errores.value.observacion = "";
+  // }
+  // if (formProductos.data.attributes.articulo_id != 0) {
+  //   errores.value.articulo_id = -1;
+  // }
+  // if (formProductos.data.attributes.ubicacion_id != 0) {
+  //   errores.value.ubicacion_id = -1;
+  // }
+  // if (formProductos.data.attributes.cantidad != 0) {
+  //   errores.value.cantidad = -1;
+  // }
 }
 // Paginado
 const obtenerPagina = (nopage) => {
