@@ -102,7 +102,7 @@ import Swal from 'sweetalert2';
 
 const ipPublica = ref('');
 
-let listado = ref([]);
+// let listado = ref([]);
 
 let color = ref('red');
 

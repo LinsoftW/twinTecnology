@@ -19,12 +19,16 @@
           <div class="card-body">
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
-                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ cantidad }}</div>
+                <!-- <div class="topbar-divider d-none d-sm-block" v-if="esperandoProductos"></div> -->
+
+                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ store.cantidadProductos }}</div>
                 <div class="text-md font-weight-bold text-primary mb-1">
                   Productos registrados</div>
               </div>
               <div class="col-auto">
-                <i class="fas fa-poll-h fa-3x text-gray-300"></i>
+                <i class="fas fa-poll-h fa-3x text-gray-300" v-if="!store.esperandoProductos"></i>
+                <img src="/cargando2.gif" style="width: 40px; height:40px" v-if="store.esperandoProductos"
+                  class="img-profile rounded-circle">
               </div>
               <hr>
 
@@ -32,7 +36,9 @@
           </div>
           <div class="card-footer">
             <router-link to="/inventario">
-              <a href="#"><label>Más información <i class="far fa-arrow-alt-circle-right"></i></label></a>
+              <a href="#"><label>Más información <i class="far fa-arrow-alt-circle-right"></i></label>
+
+              </a>
             </router-link>
           </div>
         </div>
@@ -43,12 +49,16 @@
           <div class="card-body">
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
-                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ cantidadDepartamentos }}</div>
+                <!-- <div class="topbar-divider d-none d-sm-block" v-if="esperandoDepartamentos"></div>
+                <img src="/cargando2.gif" style="width: 40px; height:40px" v-if="esperandoDepartamentos"
+                  class="img-profile rounded-circle"> -->
+                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ store.cantidadDepartamentos }}</div>
                 <div class="text-md font-weight-bold text-success mb-1">
                   Departamentos</div>
               </div>
               <div class="col-auto">
-                <i class="fas fa-shopping-bag fa-3x text-gray-300"></i>
+                <i class="fas fa-shopping-bag fa-3x text-gray-300" v-if="!store.esperandoDepartamentos"></i>
+                <img src="/cargando2.gif" style="width: 40px; height:40px" v-if="store.esperandoDepartamentos">
               </div>
               <hr>
 
@@ -67,12 +77,13 @@
           <div class="card-body">
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
-                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ cantidadArticulos }}</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ store.cantidadArticulos }}</div>
                 <div class="text-md font-weight-bold text-warning mb-1">
                   Tipos de artículos</div>
               </div>
               <div class="col-auto">
-                <i class="fas fa-cart-plus fa-3x text-gray-300"></i>
+                <i class="fas fa-cart-plus fa-3x text-gray-300" v-if="!store.esperandoArticulos"></i>
+                <img src="/cargando2.gif" style="width: 40px; height:40px" v-if="store.esperandoArticulos">
               </div>
               <hr>
 
@@ -282,14 +293,16 @@
 
 <script setup>
 
-import { onMounted, onUnmounted, reactive, ref } from 'vue';
+import { reactive, ref } from 'vue';
 // import { useRoute } from 'vue-router';
 import axios from 'axios';
 import router from '@/router';
 import Swal from 'sweetalert2';
 import { BarChart } from 'vue-chart-3';
 import { Chart, registerables } from "chart.js";
+import { useStoreAxios } from '../store/AxiosStore';
 
+const store = useStoreAxios();
 const emit = defineEmits(['esperar'])
 
 Chart.register(...registerables);
@@ -402,18 +415,6 @@ const bodyLogin = document.getElementById('page-top');
 
 // }
 
-const almacenDatosSucursales = (Lista) => {
-  if (localStorage.getItem('ListadoCacheSucursal')) {
-    localStorage.removeItem('ListadoCacheSucursal');
-    const parsed = JSON.stringify(Lista);
-    localStorage.setItem('ListadoCacheSucursal', parsed);
-  } else {
-    const parsed = JSON.stringify(Lista);
-    localStorage.setItem('ListadoCacheSucursal', parsed);
-    // dataCache.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
-  }
-}
-
 // const obtenerListadoLimpioSucursales = () => {
 //   let i = 0;
 //   // if (cargado.value = false) {
@@ -430,78 +431,6 @@ const almacenDatosSucursales = (Lista) => {
 
 // }
 
-onMounted(async () => {
-  if (localStorage.getItem('userName')) {
-    if (localStorage.getItem('Carg_datP') == '1' || localStorage.getItem('Carg_datD') == '1' || localStorage.getItem('Carg_datA') == '1') {
-      if (localStorage.getItem('Wait') == '0') {
-        // console.log("Cargar ahora")
-        bodyLogin.classList.remove('bg-gradient-info');
-        listado.value = JSON.parse(localStorage.getItem('ListadoCacheProductos'));
-        cantidad.value = listado.value.length;
-        listadoArticulos.value = JSON.parse(localStorage.getItem('ListadoCacheArticulos'));
-        cantidadArticulos.value = listadoArticulos.value.length;
-        listadoDepartamentos.value = JSON.parse(localStorage.getItem('ListadoCacheDepartamentos'));
-        cantidadDepartamentos.value = listadoDepartamentos.value.length;
-      }
-    } else {
-      console.log("Sigo esperando")
-    }
-    // esperando.value = true;
-    // EsperarTiempo()
-    // cargado.value = false;
-    // await consultar();
-    // await consultarSucursales();
-    // await consultarSucursales();
-    // bodyLogin.classList.add('sidebar-toggled');
-    // console.log("INICIO")
-    // }
-    // Cosc_Clar.value = localStorage.getItem('background');
-    // consultar();
-
-  } else {
-    router.push('/login');
-  }
-
-})
-
-onUnmounted(async () => {
-  if (localStorage.getItem('userName')) {
-    if (localStorage.getItem('Carg_datP') == '1') {
-      if (localStorage.getItem('Wait') == '0') {
-        // console.log("Cargar ahora")
-        bodyLogin.classList.remove('bg-gradient-info');
-        listado.value = JSON.parse(localStorage.getItem('ListadoCacheProductos'));
-        // obtenerListadoLimpio();
-        cantidad.value = listado.value.length;
-      }
-      if (localStorage.getItem("Wait2") == '0') {
-        listadoArticulos.value = JSON.parse(localStorage.getItem('ListadoCacheArticulos'));
-        cantidadArticulos.value = listadoArticulos.value.length;
-      }
-      if (localStorage.getItem("Wait3") == '0') {
-        listadoDepartamentos.value = JSON.parse(localStorage.getItem('ListadoCacheDepartamentos'));
-        cantidadDepartamentos.value = listadoDepartamentos.value.length;
-      }
-    } else {
-      console.log("Sigo esperando")
-    }
-    // esperando.value = true;
-    // EsperarTiempo()
-    // cargado.value = false;
-    // await consultar();
-    // await consultarSucursales();
-    // await consultarSucursales();
-    // bodyLogin.classList.add('sidebar-toggled');
-    // console.log("INICIO")
-    // }
-    // Cosc_Clar.value = localStorage.getItem('background');
-    // consultar();
-
-  } else {
-    router.push('/login');
-  }
-
-})
 
 // const cambiarLimite = () => {
 //   let i = 0;
@@ -522,11 +451,11 @@ onUnmounted(async () => {
 
 let errors = ref([]);
 
-let listado = ref([]);
+// let listado = ref([]);
 
-let listadoDepartamentos = ref([])
+// let listadoDepartamentos = ref([])
 
-let listadoArticulos = ref([])
+// let listadoArticulos = ref([])
 
 // let listadoSucursales = ref([]);
 
@@ -540,11 +469,11 @@ let editar = ref(false);
 
 let id = ref('');
 
-let cantidad = ref(0);
+// let cantidad = ref(0);
 
-let cantidadDepartamentos = ref(0);
+// let cantidadDepartamentos = ref(0);
 
-let cantidadArticulos = ref(0);
+// let cantidadArticulos = ref(0);
 
 let elementPagina = ref(5);
 
@@ -560,14 +489,6 @@ let paginaActual = ref(1);
 // let setTiempoBusca = '';
 
 let cargado = ref(false);
-
-const ipPublica = ref('192.168.121.123');
-
-const formProductos = reactive({
-  codigo: "",
-  descripcion: "",
-  observacion: "",
-})
 
 // const clickEditar = async (idSelect) => {
 //   editar.value = true;
@@ -805,6 +726,7 @@ const almacenDatosProductos = (Lista) => {
 
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { cantidadArticulos, cantidadDepartamentos, cantidadProductos, esperandoArticulos, esperandoDepartamentos, esperandoProductos, listadoArticulos, listadoDepartamentos, listadoProductos } from './controler/ControlerApp';
 
 const generar_pdf = async () => {
 

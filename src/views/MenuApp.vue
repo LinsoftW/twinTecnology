@@ -415,9 +415,9 @@
 
                 <img v-if="imgPerfil" class="img-profile rounded-circle" v-bind:src="imgPerfil">
                 <img v-else class="img-profile rounded-circle" src="/src/assets/new/img/undraw_profile.svg">
-                <div class="topbar-divider d-none d-sm-block" v-if="esperando"></div>
+                <!-- <div class="topbar-divider d-none d-sm-block" v-if="esperando"></div>
                 <img src="/cargando2.gif" style="width: 40px; height:40px" v-if="esperando"
-                  class="img-profile rounded-circle">
+                  class="img-profile rounded-circle"> -->
               </a>
               <!-- Dropdown - User Information -->
               <div :class="'dropdown-menu dropdown-menu-right shadow animated--grow-in ' + showUser"
@@ -683,9 +683,15 @@ import emailjs from 'emailjs-com';
 import * as XLSX from 'xlsx';
 import { useAlertsStore } from '@/components/ComunicacionApp';
 import UbicacionesApp from '@/components/UbicacionesApp.vue';
-import { obtenerDatos } from '@/components/service/servicio';
+import { useStoreAxios } from '@/store/AxiosStore';
+import { obtenerDatos } from '../components/helper/useAxios'
+// import { almacenDatosArticulos, almacenDatosDepartamentos, almacenDatosProductos, obtenerDatos } from '@/components/service/servicio';
+// import { cantidadArticulos, cantidadDepartamentos, cantidadProductos, esperandoArticulos, esperandoDepartamentos, esperandoProductos, listadoArticulos, listadoDepartamentos, listadoMagnitudes, listadoProductos } from '@/components/controler/ControlerApp';
 // import { Input, TextArea } from "@progress/kendo-vue-inputs";
 // import { Button } from "@progress/kendo-vue-buttons";
+
+const Store = useStoreAxios();
+// const obj = ObjControl;
 
 const Kinicio = ref(0);
 const Kpedidos = ref(0);
@@ -698,7 +704,7 @@ const tiempoEspera = async () => {
   // console.log(n)
 }
 
-const esperando = ref(false);
+// const esperando = ref(false);
 
 // const activalo = ref('');
 
@@ -739,13 +745,13 @@ const enviarEmail = async () => {
 
 // const datosPrueba = ref([]);
 
-const listado = ref([]);
+// const listado = ref([]);
 
-const listadoArticulos = ref([])
+// const listadoArticulos = ref([])
 
-const listadoDepartamentos = ref([])
+// const listadoDepartamentos = ref([])
 
-let listadoSucursales = ref([]);
+// let listadoSucursales = ref([]);
 
 // const newListado = ref([])
 
@@ -777,7 +783,7 @@ const activaNot = ref(false);
 
 const showNot = ref('');
 
-const ipPublica = ref('192.168.121.154');
+// const ipPublica = ref('192.168.121.154');
 
 // let cargado = ref(false);
 
@@ -981,41 +987,41 @@ const ActivaLink = (valor) => {
 //   Kinicio.value += 1;
 // })
 
-const almacenDatosProductos = (Lista) => {
-  localStorage.removeItem('ListadoCacheProductos');
-  const parsed = JSON.stringify(Lista);
-  localStorage.setItem('ListadoCacheProductos', parsed);
-}
+// const almacenDatosProductos = (Lista) => {
+//   localStorage.removeItem('ListadoCacheProductos');
+//   const parsed = JSON.stringify(Lista);
+//   localStorage.setItem('ListadoCacheProductos', parsed);
+// }
 
-const almacenDatosSucursales = (Lista) => {
-  localStorage.removeItem('ListadoCacheSucursal');
-  const parsed = JSON.stringify(Lista);
-  localStorage.setItem('ListadoCacheSucursal', parsed);
-}
+// const almacenDatosSucursales = (Lista) => {
+//   localStorage.removeItem('ListadoCacheSucursal');
+//   const parsed = JSON.stringify(Lista);
+//   localStorage.setItem('ListadoCacheSucursal', parsed);
+// }
 
-const almacenDatosDepartamentos = (Lista) => {
-  localStorage.removeItem('ListadoCacheDepartamentos');
-  const parsed = JSON.stringify(Lista);
-  localStorage.setItem('ListadoCacheDepartamentos', parsed);
-}
+// const almacenDatosDepartamentos = (Lista) => {
+//   localStorage.removeItem('ListadoCacheDepartamentos');
+//   const parsed = JSON.stringify(Lista);
+//   localStorage.setItem('ListadoCacheDepartamentos', parsed);
+// }
 
-const almacenDatosArticulos = (Lista) => {
-  localStorage.removeItem('ListadoCacheArticulos');
-  const parsed = JSON.stringify(Lista);
-  localStorage.setItem('ListadoCacheArticulos', parsed);
-}
+// const almacenDatosArticulos = (Lista) => {
+//   localStorage.removeItem('ListadoCacheArticulos');
+//   const parsed = JSON.stringify(Lista);
+//   localStorage.setItem('ListadoCacheArticulos', parsed);
+// }
 
-const almacenDatosMagnitudes = (Lista) => {
-  localStorage.removeItem('ListadoCacheMagnitudes');
-  const parsed = JSON.stringify(Lista);
-  localStorage.setItem('ListadoCacheMagnitudes', parsed);
-}
+// const almacenDatosMagnitudes = (Lista) => {
+//   localStorage.removeItem('ListadoCacheMagnitudes');
+//   const parsed = JSON.stringify(Lista);
+//   localStorage.setItem('ListadoCacheMagnitudes', parsed);
+// }
 
-const almacenDatosUnidades = (Lista) => {
-  localStorage.removeItem('ListadoCacheUnidades');
-  const parsed = JSON.stringify(Lista);
-  localStorage.setItem('ListadoCacheUnidades', parsed);
-}
+// const almacenDatosUnidades = (Lista) => {
+//   localStorage.removeItem('ListadoCacheUnidades');
+//   const parsed = JSON.stringify(Lista);
+//   localStorage.setItem('ListadoCacheUnidades', parsed);
+// }
 
 const almacenDatosCodigos = (Lista) => {
   localStorage.removeItem('ListadoCacheCodigos');
@@ -1344,34 +1350,58 @@ const consultar = async (n) => {
 onMounted(async () => {
   // console.log("Montado")
   if (localStorage.getItem('userName')) {
-    ipPublica.value = localStorage.getItem('Host_back');
-    // if (localStorage.getItem('Wait') == '0') {
     if (localStorage.getItem('Carg_datP') == '0') {
-      Ctoggled.value = 'toggled';
-      // await consultarPrincipal()
-      // PRODUCTOS
-      esperando.value = true;
-      listado.value = await obtenerDatos(1);
-      console.log(listado.value)
-      almacenDatosProductos(listado.value);
-      localStorage.setItem("Carg_datP", '1');
-      localStorage.setItem("Wait", '0');
-      // DEPARTAMENTOS
-      listadoDepartamentos.value = await obtenerDatos(6);
-      almacenDatosDepartamentos(listadoDepartamentos.value);
-      localStorage.setItem("Carg_datD", '1');
-      localStorage.setItem("Wait2", '0');
-      //ARTICULOS
-      listadoArticulos.value = await obtenerDatos(5);
-      almacenDatosArticulos(listadoArticulos.value);
-      localStorage.setItem("Carg_datA", '1');
-      localStorage.setItem("Wait3", '0');
-      esperando.value = false;
-      Kinicio.value = Kinicio.value + 1;
-    } else if (localStorage.getItem('Wait') != '0') {
-      localStorage.removeItem('Carg_datP');
-      localStorage.setItem('Carg_datP', '0');
-      onMounted();
+      // cargando los productos
+      Store.esperandoProductos = true;
+      Store.loadingP = true;
+      const response = await obtenerDatos(1);
+      if (!response) {
+        ErrorFull("Error de red, intente más tarde.", "top-start")
+      } else {
+        Store.setCantidadProductos(response.length)
+        if (response.length > 0) {
+          Store.setListadoProductos(response)
+        }
+        localStorage.setItem("Carg_datP", "1");
+        Store.esperandoProductos = false;
+        Store.loadingP = false;
+      }
+    }
+    if (localStorage.getItem('Carg_datD') == '0') {
+      // cargando los departamentos
+      Store.esperandoDepartamentos = true;
+      Store.loadingD = true;
+      const response = await obtenerDatos(6);
+      if (!response) {
+        // ErrorFull("Error de red, intente más tarde.", "top-start")
+      } else {
+        Store.setCantidadDepartamentos(response.length)
+        if (response.length > 0) {
+          Store.setListadoDepartamentos(response)
+        }
+        localStorage.setItem("Carg_datD", "1");
+        Store.esperandoDepartamentos = false;
+        Store.loadingD = false;
+      }
+
+    }
+
+    if (localStorage.getItem('Carg_datA') == '0') {
+      // cargando los articulos
+      Store.esperandoArticulos = true;
+      Store.loadingA = true;
+      const response = await obtenerDatos(5);
+      if (!response) {
+        ErrorFull("Error de red, intente más tarde.", "top-start")
+      } else {
+        Store.setCantidadArticulos(response.length)
+        if (response.length > 0) {
+          Store.setListadoArticulos(response)
+        }
+        localStorage.setItem("Carg_datA", "1");
+        Store.esperandoArticulos = false;
+        Store.loadingA = false;
+      }
     }
     Ctoggled.value = 'toggled';
   } else {

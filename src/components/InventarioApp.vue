@@ -231,7 +231,7 @@
             </DataTable> -->
             <!-- Fin -->
 
-            <EasyDataTable :headers="headers" :items="itemsProductos" buttons-pagination border-cell
+            <EasyDataTable :headers="headers" :items="Store.itemsProductos" buttons-pagination border-cell
               v-model:items-selected="itemsSelected" header-text-direction="center" body-text-direction="center"
               :search-field="searchField1" :search-value="searchValue" @click-row="showRow" :rows-per-page="5"
               :loading="loadingP">
@@ -408,7 +408,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title text-info" id="exampleModalLabel">Datos del producto: " <i>{{
-              formProductos.data.attributes.descripcion }}</i> "
+              Store.formProductos.data.attributes.descripcion }}</i> "
             </h5>
             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true" class="text-info">×</span>
@@ -440,17 +440,17 @@
                   <div class="form-group col-lg-12">
                     <label class="text-info">Código: <label style="color: red;">*</label></label>
                     <input type="text" class="form-control" id="codigo" aria-describedby="emailHelp"
-                      v-model="formProductos.data.attributes.codigo" placeholder="Código" required>
+                      v-model="Store.formProductos.data.attributes.codigo" placeholder="Código" required>
                   </div>
                   <div class="form-group col-lg-12">
                     <label class="text-info">Descripción: <label style="color: red;">*</label></label>
                     <input type="text" class="form-control" id="descripcion" aria-describedby="emailHelp"
-                      v-model="formProductos.data.attributes.descripcion" placeholder="Descripción del producto">
+                      v-model="Store.formProductos.data.attributes.descripcion" placeholder="Descripción del producto">
                   </div>
                   <div class="form-group col-lg-12">
                     <label class="text-info">Observaciones: <label style="color: red;">*</label></label>
                     <input type="text" class="form-control" id="descripcion" aria-describedby="emailHelp"
-                      v-model="formProductos.data.attributes.observacion" placeholder="Observaciones del producto">
+                      v-model="Store.formProductos.data.attributes.observacion" placeholder="Observaciones del producto">
                   </div>
                   <div class="form-group col-lg-12">
                     <label class="text-info">Unidad de medida:</label>
@@ -541,7 +541,7 @@
           <h5 class="modal-title text-info text-center" id="exampleModalLabel" v-if="editar == true"><span
               class="fa fa-edit"></span>
             MODIFICAR LOS DATOS DEL PRODUCTO <br>(<label style="color: red;">{{
-              formProductos.data.attributes.descripcion
+              Store.formProductos.data.attributes.descripcion
             }}</label>)</h5>
 
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
@@ -559,14 +559,14 @@
               <div class="form-group col-lg-12 text-left">
                 <label class="text-info">Descripción del producto: <label style="color: red;">*</label></label>
                 <input type="text" class="form-control" id="descripcionP" @change="verificar_error(1)"
-                  aria-describedby="emailHelp" v-model="formProductos.data.attributes.descripcion"
+                  aria-describedby="emailHelp" v-model="Store.formProductos.data.attributes.descripcion"
                   placeholder="Ej: Blusa" required>
                 <span style="color: red;">{{ errores.descripcion }}</span>
               </div>
               <div class="form-group col-lg-12 text-left">
                 <label class="text-info">Observaciones: <label style="color: red;">*</label></label>
                 <input type="text" class="form-control" id="observacionP" @change="verificar_error(2)"
-                  aria-describedby="emailHelp" v-model="formProductos.data.attributes.observacion"
+                  aria-describedby="emailHelp" v-model="Store.formProductos.data.attributes.observacion"
                   placeholder="Ej: La blusa es para la playa">
                 <span style="color: red;">{{ errores.observacion }}</span>
               </div>
@@ -585,7 +585,7 @@
                 </label>
                 <select name="articulo" id="articulo" @change="verificar_error(3)"
                   style="width: 100%; text-align:center" placeholder="Artículo" class="text-gray-900 form-control"
-                  v-model="formProductos.data.attributes.articulo_id">
+                  v-model="Store.formProductos.data.attributes.articulo_id">
                   <option v-for="dato in listadoArticulos" :key="dato.id" :value="dato.id">{{
                     dato.attributes.articulo }}</option>
                 </select>
@@ -606,7 +606,7 @@
                 <label class="text-info">Seleccione la ubicación: <label style="color: red;">*</label></label>
                 <select name="articulo" id="articulo" @change="verificar_error(4)"
                   style="width: 100%; text-align:center" placeholder="Artículo" class="text-gray-900 form-control"
-                  v-model="formProductos.data.attributes.ubicacion_id">
+                  v-model="Store.formProductos.data.attributes.ubicacion_id">
                   <option v-for="dato in listadoUbicaciones" :key="dato.id" :value="dato.id">{{
                     dato.attributes.ubicacion }}</option>
                 </select>
@@ -616,7 +616,7 @@
               <div class="form-group col-lg-12 text-left">
                 <label class="text-info">Cantidad: <label style="color: red;">*</label></label>
                 <input type="text" class="form-control" id="cantidadP" @change="verificar_error(5)"
-                  aria-describedby="emailHelp" v-model="formProductos.data.attributes.cantidad" placeholder="Ej: 5"
+                  aria-describedby="emailHelp" v-model="Store.formProductos.data.attributes.cantidad" placeholder="Ej: 5"
                   required>
                 <span style="color: red;">{{ errores.cantidad }}</span>
                 <!-- <select name="cantidad" id="cantidad" @change="verificar_error(5)" style="width: 100%; text-align:center"
@@ -696,7 +696,7 @@
           <h5 class="modal-title text-info text-center" id="exampleModalLabel" v-if="editar == true"><span
               class="fa fa-edit"></span>
             MODIFICAR LOS DATOS DEL PRODUCTO <br>(<label style="color: red;">{{
-              formProductos.data.attributes.descripcion
+              Store.formProductos.data.attributes.descripcion
             }}</label>)</h5>
 
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
@@ -714,14 +714,14 @@
               <div class="form-group col-lg-12 text-left">
                 <label class="text-info">Descripción del producto: <label style="color: red;">*</label></label>
                 <input type="text" class="form-control" id="descripcionP" @change="verificar_error(1)"
-                  aria-describedby="emailHelp" v-model="formProductos.data.attributes.descripcion"
+                  aria-describedby="emailHelp" v-model="Store.formProductos.data.attributes.descripcion"
                   placeholder="Ej: Blusa" required>
                 <span style="color: red;">{{ errores.descripcion }}</span>
               </div>
               <div class="form-group col-lg-12 text-left">
                 <label class="text-info">Observaciones: <label style="color: red;">*</label></label>
                 <input type="text" class="form-control" id="observacionP" @change="verificar_error(2)"
-                  aria-describedby="emailHelp" v-model="formProductos.data.attributes.observacion"
+                  aria-describedby="emailHelp" v-model="Store.formProductos.data.attributes.observacion"
                   placeholder="Ej: La blusa es para la playa">
                 <span style="color: red;">{{ errores.observacion }}</span>
               </div>
@@ -740,7 +740,7 @@
                 </label>
                 <select name="articulo" id="articulo" @change="verificar_error(3)"
                   style="width: 100%; text-align:center" placeholder="Artículo" class="text-gray-900 form-control"
-                  v-model="formProductos.data.attributes.articulo_id">
+                  v-model="Store.formProductos.data.attributes.articulo_id">
                   <option v-for="dato in listadoArticulos" :key="dato.id" :value="dato.id">{{
                     dato.attributes.articulo }}</option>
                 </select>
@@ -761,7 +761,7 @@
                 <label class="text-info">Seleccione la ubicación: <label style="color: red;">*</label></label>
                 <select name="articulo" id="articulo" @change="verificar_error(4)"
                   style="width: 100%; text-align:center" placeholder="Artículo" class="text-gray-900 form-control"
-                  v-model="formProductos.data.attributes.ubicacion_id">
+                  v-model="Store.formProductos.data.attributes.ubicacion_id">
                   <option v-for="dato in listadoUbicaciones" :key="dato.id" :value="dato.id">{{
                     dato.attributes.ubicacion }}</option>
                 </select>
@@ -771,7 +771,7 @@
               <div class="form-group col-lg-12 text-left">
                 <label class="text-info">Cantidad: <label style="color: red;">*</label></label>
                 <input type="text" class="form-control" id="cantidadP" @change="verificar_error(5)"
-                  aria-describedby="emailHelp" v-model="formProductos.data.attributes.cantidad" placeholder="Ej: 5"
+                  aria-describedby="emailHelp" v-model="Store.formProductos.data.attributes.cantidad" placeholder="Ej: 5"
                   required>
                 <span style="color: red;">{{ errores.cantidad }}</span>
                 <!-- <select name="cantidad" id="cantidad" @change="verificar_error(5)" style="width: 100%; text-align:center"
@@ -852,16 +852,17 @@
   <!-- <div :class="showModBack2" @click="cerrarModal()"></div> -->
 </template>
 <script setup>
-import { ref, reactive, onMounted, onUnmounted } from 'vue';
+import { ref, reactive, onMounted, onUnmounted, watchEffect } from 'vue';
 import Swal from 'sweetalert2';
-import axios from 'axios';
 // import AddProducto from './modal/AddProducto.vue';
 // import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import * as XLSX from 'xlsx';
 import Quagga from 'quagga';
-import { obtenerDatos } from './service/servicio';
-
+import { useStoreAxios } from '@/store/AxiosStore';
+// import { almacenDatosProductos, GuardarDatos, obtenerArticulos, obtenerProductos, obtenerUbicaciones } from './service/servicio';
+// import { disabledProductos, esperandoProductos, formProductos, itemsProductos, listadoArticulos, listadoMedida, listadoProductos, listadoUbicaciones, loadingP } from './controler/ControlerApp';
+const Store = useStoreAxios()
 const prueba = () => {
   successFull("Okkk", "top-center")
 }
@@ -953,51 +954,55 @@ const verificar_error = (n) => {
 
 const errores = ref({ descripcion: "", observacion: "", articulo_id: "", ubicacion_id: "", cantidad: "" })
 
-const agregarUProducto = () => {
+const agregarUProducto = async () => {
   esperando.value = true;
   // console.log(formProductos.data)
   if (formProductos.data.attributes.descripcion != '' && formProductos.data.attributes.articulo_id != 0 && formProductos.data.attributes.observacion != '' && formProductos.data.attributes.ubicacion_id != 0) {
     // console.log("OKKKK")
-    GuardarProducto.value = 'Guardando...'
-    disabledProductoBtn.value = 'disabled'
-    axios.post(`https://` + ipPublica.value + `/fullstack/public/productos`, formProductos)
+    GuardarProducto.value = 'Guardando...';
+    disabledProductoBtn.value = 'disabled';
+    await GuardarDatos(formProductos, 1)
       .then((response) => {
-        if (response.data.data == null) {
-          ErrorFull(response.data.data)
-        } else {
-          cargado.value = false;
-          esperando.value = false;
-          formProductos.data.attributes.observacion = '';
-          formProductos.data.attributes.cantidad = '';
-          formProductos.data.attributes.descripcion = '';
-          loadingU.value = true;
-          // emit('actualiza', 7)
-          // emit('actualiza', 8)
-          // if (listadoProductos.value.length == 0) {
-          //   listadoProductos.value.push(response.data.data)
-          // } else {
-          listadoProductos.value.push(response.data.data)
-          // }
-          console.log(listadoProductos.value)
-          almacenDatosProductos(listadoProductos.value);
-          listadoProductos.value = JSON.parse(localStorage.getItem('ListadoCacheProductos'));
-          obtenerProductos()
-          loadingU.value = false;
-          GuardarMedida.value = 'Agregar';
-          disabledProductoBtn.value = ''
-          successFull("Producto agregado satisfactoriamente.", "top-end")
-        }
+        console.log(response);
       })
-      .catch((error) => {
-        // if (error.response.status === 400) {
-        //   errors.value = error.response.data.message;
-        // }
-        console.log("Error")
-        esperando.value = false;
-        GuardarProducto.value = 'Agregar';
-        disabledProductoBtn.value = ''
-        // ErrorFull(error.response.data.message, "top-start")
-      })
+    // axios.post(`https://` + ipPublica.value + `/fullstack/public/productos`, formProductos)
+    //   .then((response) => {
+    //     if (response.data.data == null) {
+    //       ErrorFull(response.data.data)
+    //     } else {
+    //       cargado.value = false;
+    //       esperandoProductos.value = false;
+    //       formProductos.data.attributes.observacion = '';
+    //       formProductos.data.attributes.cantidad = '';
+    //       formProductos.data.attributes.descripcion = '';
+    //       loadingP.value = true;
+    //       // emit('actualiza', 7)
+    //       // emit('actualiza', 8)
+    //       // if (listadoProductos.value.length == 0) {
+    //       //   listadoProductos.value.push(response.data.data)
+    //       // } else {
+    //       listadoProductos.value.push(response.data.data)
+    //       // }
+    //       // console.log(listadoProductos.value)
+    //       almacenDatosProductos(listadoProductos.value);
+    //       listadoProductos.value = JSON.parse(localStorage.getItem('ListadoCacheProductos'));
+    //       obtenerProductos()
+    //       loadingP.value = false;
+    //       GuardarMedida.value = 'Agregar';
+    //       disabledProductoBtn.value = ''
+    //       successFull("Producto agregado satisfactoriamente.", "top-end")
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     // if (error.response.status === 400) {
+    //     //   errors.value = error.response.data.message;
+    //     // }
+    //     console.log("Error")
+    //     esperando.value = false;
+    //     GuardarProducto.value = 'Agregar';
+    //     disabledProductoBtn.value = ''
+    //     // ErrorFull(error.response.data.message, "top-start")
+    //   })
   } else {
     if (formProductos.data.attributes.descripcion == '') {
       errores.value.descripcion = "Este campo es obligatorio";
@@ -1348,7 +1353,7 @@ const esperando = ref(false);
 
 const loading = ref(false)
 
-const loadingP = ref(false)
+// const loadingP = ref(false)
 
 const loadingA = (texto) => {
   Swal.fire({
@@ -1603,13 +1608,13 @@ const quitaracciones = () => {
 // CRUD
 let errors = ref([]);
 
-let listadoProductos = ref([]);
+// let listadoProductos = ref([]);
 
-let listadoArticulos = ref([]);
+// let listadoArticulos = ref([]);
 
-let listadoUbicaciones = ref([]);
+// let listadoUbicaciones = ref([]);
 
-let listadoMedida = ref([])
+// let listadoMedida = ref([])
 
 // let listadoSucursales = ref([]);
 
@@ -1639,20 +1644,6 @@ let cargado = ref(false);
 // let disableS = ref('');
 
 // let setTiempoBusca = '';
-
-const ipPublica = ref('192.168.121.154');
-
-const formProductos = reactive({
-  data: {
-    attributes: {
-      descripcion: "",
-      observacion: "",
-      cantidad: 0,
-      articulo_id: 99,
-      ubicacion_id: 0
-    }
-  }
-})
 
 // Paginado
 // const obtenerPagina = (nopage) => {
@@ -1715,30 +1706,6 @@ const formProductos = reactive({
 
 // let newListadoSucursal = ref([]);
 
-const obtenerListadoLimpio = async () => {
-  items.value = [];
-  // cargar datos en tabla-vue
-  // console.log('Actualizando 1...')
-  for (let index = 0; index < listado.value.length; index++) {
-    items.value.push(listado.value[index])
-  }
-  //  console.log(items)
-  return await items;
-
-}
-
-const almacenDatosProductos = (Lista) => {
-  localStorage.removeItem('ListadoCacheProductos');
-  const parsed = JSON.stringify(Lista);
-  localStorage.setItem('ListadoCacheProductos', parsed);
-}
-
-const almacenDatosMedida = (Lista) => {
-  localStorage.removeItem('ListadoCacheUnidades');
-  const parsed = JSON.stringify(Lista);
-  localStorage.setItem('ListadoCacheUnidades', parsed);
-}
-
 const consultar = async () => {
   if (cargado.value == false) {
     let response = await axios.get(`http://${ipPublica.value}/fullstack/public/productos`)
@@ -1769,36 +1736,6 @@ const cancelarU = () => {
   formProductos.data.attributes.descripcion = '';
   formProductos.data.attributes.codigo = '';
   formProductos.data.attributes.observacion = '';
-}
-
-const successFull = (mensaje, posicion) => {
-
-  const toast = Swal.mixin({
-    toast: true,
-    position: posicion,
-    showConfirmButton: false,
-    timer: 1500,
-    //timerProgressBar: true,
-  })
-  toast.fire({
-    icon: "success",
-    title: mensaje
-  })
-}
-
-const ErrorFull = (mensaje, posicion) => {
-
-  const toast = Swal.mixin({
-    toast: true,
-    position: posicion,
-    showConfirmButton: false,
-    timer: 2800,
-    //timerProgressBar: true,
-  })
-  toast.fire({
-    icon: "error",
-    title: mensaje
-  })
 }
 
 const borrarU = async (id, correo, caso) => {
@@ -1898,317 +1835,74 @@ const borrarU = async (id, correo, caso) => {
 //   // console.log(`El viejo listado es ${oldQuestion}`)
 // })
 
-const itemsProductos = ref([])
+// const itemsProductos = ref(listadoProductos)
+// onMounted(async () => {
+//   if (localStorage.getItem('userName')) {
+//     // ipPublica.value = localStorage.getItem('Host_back');
+//     if (localStorage.getItem('Carg_datP') != '0') {
+//       disabledProductos.value = 'disabled';
+//       loadingP.value = true;
+//       listadoProductos.value = JSON.parse(localStorage.getItem('ListadoCacheProductos'));
+//       obtenerProductos();
+//     }
 
-const disabledProductos = ref('')
+//     if (localStorage.getItem('Carg_datA') != '0') {
+//       // console.log
+//       listadoArticulos.value = JSON.parse(localStorage.getItem('ListadoCacheArticulos'));
+//       obtenerArticulos();
+//     }
 
-const obtenerProductos = () => {
-  let i = 0;
-  // console.log(listadoDepartamentos)
-  itemsProductos.value = [];
-  for (let index = 0; index < listadoProductos.value.length; index++) {
-    itemsProductos.value.push(listadoProductos.value[index])
-  }
+//     if (localStorage.getItem("Carg_datU") != '0') {
+//       listadoUbicaciones.value = JSON.parse(localStorage.getItem('ListadoCacheUbicaciones'));
+//       obtenerUbicaciones();
 
-}
+//     }
+//     disabledProductos.value = '';
+//     loadingP.value = false;
+//     // loadingP.value = true;
+//     // disabledProductos.value = 'disabled';
+//     // listadoProductos.value = await obtenerDatos(1);
+//     // almacenDatosProductos(listadoProductos.value);
+//     // obtenerProductos();
+//     // localStorage.setItem("Carg_datP", "1")
+//     // if (localStorage.getItem('Carg_datA') == '0') {
+//     //   listadoArticulos.value = obtenerDatos(5);
+//     //   almacenDatosArticulos(listadoArticulos.value);
+//     //   disabledProductos.value = '';
+//     //   localStorage.setItem('Carg_datA', '1')
+//     // }
+//     // if (localStorage.getItem('Carg_datU') == '0') {
+//     //   listadoUbicaciones.value = obtenerDatos(7);
+//     //   almacenDatosUbicaciones(listadoUbicaciones.value);
+//     //   disabledProductos.value = '';
+//     //   localStorage.setItem('Carg_datU', '1')
+//     // }
+//     // if (localStorage.getItem('Carg_datMe') == '0') {
+//     //   listadoMedida.value = obtenerDatos(3);
+//     //   almacenDatosMedida(listadoMedida.value);
+//     //   localStorage.setItem('Carg_datMe', '1')
+//     // }
+//     // }
+//     // else {
+//     //   disabledProductos.value = 'disabled';
+//     //   listadoProductos.value = await obtenerDatos(1);
+//     // disabledProductos.value = 'disabled';
+//     // loadingP.value = true;
+//     // listadoProductos.value = JSON.parse(localStorage.getItem('ListadoCacheProductos'));
+//     // obtenerProductos();
+//     // // console.log(listadoProductos.value)
+//     // listadoArticulos.value = JSON.parse(localStorage.getItem('ListadoCacheArticulos'));
+//     // obtenerArticulos();
+//     // listadoUbicaciones.value = JSON.parse(localStorage.getItem('ListadoCacheUbicaciones'));
+//     // listadoMedida.value = JSON.parse(localStorage.getItem('ListadoCacheUnidades'));
+//     // disabledProductos.value = '';
+//     // loadingP.value = false;
+//     // }
 
-const almacenDatosArticulos = (Lista) => {
-  localStorage.removeItem('ListadoCacheArticulos');
-  const parsed = JSON.stringify(Lista);
-  localStorage.setItem('ListadoCacheArticulos', parsed);
-}
-
-const itemsarticulos = ref([])
-
-const obtenerArticulos = () => {
-  let i = 0;
-
-  itemsarticulos.value = [];
-  for (let index = 0; index < listadoArticulos.value.length; index++) {
-    itemsarticulos.value.push(listadoArticulos.value[index])
-  }
-
-}
-
-const almacenDatosUbicaciones = (Lista) => {
-  localStorage.removeItem('ListadoCacheUbicaciones');
-  const parsed = JSON.stringify(Lista);
-  localStorage.setItem('ListadoCacheUbicaciones', parsed);
-}
-
-onMounted(async () => {
-  if (localStorage.getItem('userName')) {
-    ipPublica.value = localStorage.getItem('Host_back');
-    if (localStorage.getItem('Carg_datP') == '0') {
-      loadingP.value = true;
-      disabledProductos.value = 'disabled';
-      listadoProductos.value = obtenerDatos(1);
-      almacenDatosProductos(listadoProductos.value);
-      obtenerProductos();
-      localStorage.setItem("Carg_datP", "1")
-      if (localStorage.getItem('Carg_datA') == '0') {
-        listadoArticulos.value = obtenerDatos(5);
-        almacenDatosArticulos(listadoArticulos.value);
-        disabledProductos.value = '';
-        localStorage.setItem('Carg_datA', '1')
-      }
-      if (localStorage.getItem('Carg_datU') == '0') {
-        listadoUbicaciones.value = obtenerDatos(7);
-        almacenDatosUbicaciones(listadoUbicaciones.value);
-        disabledProductos.value = '';
-        localStorage.setItem('Carg_datU', '1')
-      }
-      if (localStorage.getItem('Carg_datMe') == '0') {
-        listadoMedida.value = obtenerDatos(3);
-        almacenDatosMedida(listadoMedida.value);
-        localStorage.setItem('Carg_datMe', '1')
-      }
-      // await axios.get(`https://` + ipPublica.value + `/fullstack/public/productos`)
-      //   .then((response) => {
-      //     if (response.data.data == null) {
-      //       disabledProductos.value = '';
-      //       ErrorFull('Error realizando la operación.', "top-start")
-      //     } else {
-      //       listadoProductos.value = response.data.data;
-      //       almacenDatosProductos(listadoProductos.value);
-      //       obtenerProductos();
-      //       localStorage.setItem("Carg_datP", "1")
-      //       // Cargar Articulos
-      //       if (localStorage.getItem('Carg_datA') == '0') {
-      //         // ARTICULOS
-      //         axios.get(`https://` + ipPublica.value + `/fullstack/public/articulos`)
-      //           .then((response) => {
-      //             // console.log(response.data.data)
-      //             if (response.data.data == null) {
-      //               disabledArticulo.value = ''
-      //               ErrorFull("Error realizando la operación.", "top-start")
-      //             } else {
-      //               listadoArticulos.value = response.data.data;
-      //               almacenDatosArticulos(listadoArticulos.value);
-      //               // loadingP.value = false;
-      //               disabledProductos.value = '';
-      //               localStorage.setItem('Carg_datA', '1')
-      //               // loading.value = false
-      //             }
-
-      //           }).catch((error) => {
-      //             if (error.response.status === 500) {
-      //               errors.value = error.response.status;
-      //             }
-      //             ErrorFull("Error realizando la operación.", "top-start")
-      //           })
-
-      //       } else {
-      //         listadoArticulos.value = JSON.parse(localStorage.getItem('ListadoCacheArticulos'));
-      //         obtenerArticulos();
-      //         // loadingP.value = false;
-      //         disabledProductos.value = '';
-      //       }
-      //       // Cargar Ubicaciones
-      //       if (localStorage.getItem('Carg_datU') == '0') {
-      //         // UBICACIONES
-      //         axios.get(`https://` + ipPublica.value + `/fullstack/public/ubicaciones`)
-      //           .then((response) => {
-      //             if (response.data.data == null) {
-      //               disabledArticulo.value = ''
-      //               ErrorFull("Error realizando la operación.", "top-start")
-      //             } else {
-      //               listadoUbicaciones.value = response.data.data;
-      //               almacenDatosUbicaciones(listadoUbicaciones.value);
-      //               // loadingP.value = false;
-      //               disabledProductos.value = '';
-      //               localStorage.setItem('Carg_datA', '1')
-
-      //               if (localStorage.getItem("Carg_datMe" == '0')) {
-      //                 axios.get(`https://` + ipPublica.value + `/fullstack/public/medidas`)
-      //                   .then((response) => {
-      //                     if (response.data.data == null) {
-
-      //                     } else {
-      //                       listadoMedida.value = response.data.data;
-      //                       almacenDatosMedida(listadoMedida.value);
-      //                       localStorage.setItem('Carg_datMe', '1')
-      //                       // Kcategorias.value = Kcategorias.value + 1;
-      //                     }
-
-
-      //                   }).catch((error) => {
-      //                     if (error.response.status === 500) {
-      //                       errors.value = error.response.status;
-      //                     }
-      //                   })
-      //               }
-      //             }
-
-      //           }).catch((error) => {
-      //             if (error.response.status === 500) {
-      //               errors.value = error.response.status;
-      //             }
-      //             ErrorFull("Error realizando la operación.", "top-start")
-      //           })
-
-      //       } else {
-      //         listadoUbicaciones.value = JSON.parse(localStorage.getItem('ListadoCacheUbicaciones'));
-      //         // obtenerUbicaciones();
-      //         loadingP.value = false;
-      //         disabledProductos.value = '';
-      //       }
-      //     }
-
-      //   }).catch((error) => {
-      //     if (error.response.status === 500) {
-      //       errors.value = error.response.status;
-      //     }
-      //     loadingP.value = false;
-      //     disabledProductos.value = '';
-      //     ErrorFull('Error realizando la operación.', "top-start")
-      //   })
-    }
-    else {
-      disabledProductos.value = 'disabled';
-      loadingP.value = true;
-      listadoProductos.value = JSON.parse(localStorage.getItem('ListadoCacheProductos'));
-      obtenerProductos();
-      // console.log(listadoProductos.value)
-      listadoArticulos.value = JSON.parse(localStorage.getItem('ListadoCacheArticulos'));
-      obtenerArticulos();
-      listadoUbicaciones.value = JSON.parse(localStorage.getItem('ListadoCacheUbicaciones'));
-      listadoMedida.value = JSON.parse(localStorage.getItem('ListadoCacheUnidades'));
-      disabledProductos.value = '';
-      loadingP.value = false;
-    }
-
-  } else {
-    router.push('/login');
-  }
-})
-
-// const yu = ref(0)
-onUnmounted(async () => {
-  // console.log("Desmontado :" + yu.value)
-  // yu.value++;
-  if (localStorage.getItem('userName')) {
-    ipPublica.value = localStorage.getItem('Host_back');
-    if (localStorage.getItem('Carg_datP') == '0') {
-      loadingP.value = true;
-      disabledProductos.value = 'disabled';
-      await axios.get(`https://` + ipPublica.value + `/fullstack/public/productos`)
-        .then((response) => {
-          if (response.data.data == null) {
-            disabledProductos.value = '';
-            ErrorFull('Error realizando la operación.', "top-start")
-          } else {
-            listadoProductos.value = response.data.data;
-            almacenDatosProductos(listadoProductos.value);
-            obtenerProductos();
-            localStorage.setItem("Carg_datP", "1")
-            // Cargar Articulos
-            if (localStorage.getItem('Carg_datA') == '0') {
-              // ARTICULOS
-              axios.get(`https://` + ipPublica.value + `/fullstack/public/articulos`)
-                .then((response) => {
-                  // console.log(response.data.data)
-                  if (response.data.data == null) {
-                    disabledArticulo.value = ''
-                    ErrorFull("Error realizando la operación.", "top-start")
-                  } else {
-                    listadoArticulos.value = response.data.data;
-                    almacenDatosArticulos(listadoArticulos.value);
-                    // loadingP.value = false;
-                    disabledProductos.value = '';
-                    localStorage.setItem('Carg_datA', '1')
-                    // loading.value = false
-                  }
-
-                }).catch((error) => {
-                  if (error.response.status === 500) {
-                    errors.value = error.response.status;
-                  }
-                  ErrorFull("Error realizando la operación.", "top-start")
-                })
-
-            } else {
-              listadoArticulos.value = JSON.parse(localStorage.getItem('ListadoCacheArticulos'));
-              obtenerArticulos();
-              // loadingP.value = false;
-              disabledProductos.value = '';
-            }
-            // Cargar Ubicaciones
-            if (localStorage.getItem('Carg_datU') == '0') {
-              // UBICACIONES
-              axios.get(`https://` + ipPublica.value + `/fullstack/public/ubicaciones`)
-                .then((response) => {
-                  if (response.data.data == null) {
-                    disabledArticulo.value = ''
-                    ErrorFull("Error realizando la operación.", "top-start")
-                  } else {
-                    listadoUbicaciones.value = response.data.data;
-                    almacenDatosUbicaciones(listadoUbicaciones.value);
-                    // loadingP.value = false;
-                    disabledProductos.value = '';
-                    localStorage.setItem('Carg_datA', '1')
-
-                    if (localStorage.getItem("Carg_datMe" == '0')) {
-                      axios.get(`https://` + ipPublica.value + `/fullstack/public/medidas`)
-                        .then((response) => {
-                          if (response.data.data == null) {
-
-                          } else {
-                            listadoMedida.value = response.data.data;
-                            almacenDatosMedida(listadoMedida.value);
-                            localStorage.setItem('Carg_datMe', '1')
-                            // Kcategorias.value = Kcategorias.value + 1;
-                          }
-
-
-                        }).catch((error) => {
-                          if (error.response.status === 500) {
-                            errors.value = error.response.status;
-                          }
-                        })
-                    }
-                  }
-
-                }).catch((error) => {
-                  if (error.response.status === 500) {
-                    errors.value = error.response.status;
-                  }
-                  ErrorFull("Error realizando la operación.", "top-start")
-                })
-
-            } else {
-              listadoUbicaciones.value = JSON.parse(localStorage.getItem('ListadoCacheUbicaciones'));
-              // obtenerUbicaciones();
-              loadingP.value = false;
-              disabledProductos.value = '';
-            }
-          }
-
-        }).catch((error) => {
-          if (error.response.status === 500) {
-            errors.value = error.response.status;
-          }
-          loadingP.value = false;
-          disabledProductos.value = '';
-          ErrorFull('Error realizando la operación.', "top-start")
-        })
-    }
-    else {
-      disabledProductos.value = 'disabled';
-      loadingP.value = true;
-      listadoProductos.value = JSON.parse(localStorage.getItem('ListadoCacheProductos'));
-      obtenerProductos();
-      // console.log(listadoProductos.value)
-      listadoArticulos.value = JSON.parse(localStorage.getItem('ListadoCacheArticulos'));
-      obtenerArticulos();
-      listadoUbicaciones.value = JSON.parse(localStorage.getItem('ListadoCacheUbicaciones'));
-      listadoMedida.value = JSON.parse(localStorage.getItem('ListadoCacheUnidades'));
-      disabledProductos.value = '';
-      loadingP.value = false;
-    }
-
-  }
-})
+//   } else {
+//     router.push('/login');
+//   }
+// })
 
 
 </script>

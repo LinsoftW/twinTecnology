@@ -57,14 +57,14 @@
                 </div>
                 <br>
 
-                <EasyDataTable table-class-name="customize-table" :headers="headers" :items="itemsdepartamentos"
+                <EasyDataTable table-class-name="customize-table" :headers="headers" :items="itemsDeparta1"
                   buttons-pagination border-cell header-text-direction="center" body-text-direction="center"
-                  :search-field="searchField" :search-value="searchValue" :rows-per-page="5" :loading="loadingD"
-                  show-index>
+                  :search-field="searchField" :search-value="searchValue" :rows-per-page="5"
+                  :loading="store.esperandoDepartamentos" show-index>
                   <template #item-opciones="item">
                     <div class="operation-wrapper">
                       <button class="btn btn-success btn-sm btn-circle" @click="clickEditar(item.id)" v-b-tooltip.hover
-                        title="Editar" data-toggle="modal" data-target="#editaDepartamento"><span
+                        title="Editar" data-toggle="modal" data-target="#agregaDepartamento"><span
                           class="fas fa-edit"></span></button>
                       <!-- <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
                     title="Aumentar"><span class="fas fa-plus"></span></button>
@@ -138,10 +138,10 @@
                 </div>
                 <br>
 
-                <EasyDataTable table-class-name="customize-table" :headers="headersArticulos" :items="itemsarticulos"
+                <EasyDataTable table-class-name="customize-table" :headers="headersArticulos" :items="itemsArticulos1"
                   buttons-pagination border-cell header-text-direction="center" body-text-direction="center"
                   :search-field="searchFieldArticulo" :search-value="searchValueArticulo" :rows-per-page="5"
-                  :loading="loading" show-index>
+                  :loading="store.esperandoArticulos" show-index>
                   <template #item-opciones="item">
                     <div class="operation-wrapper">
                       <button class="btn btn-success btn-sm btn-circle" data-toggle="modal"
@@ -193,7 +193,7 @@
             <h5 class="modal-title text-info text-center" id="exampleModalLabel" v-if="editar == true"><span
                 class="fa fa-edit"></span>
               MODIFICAR LOS DATOS DEL DEPARTAMENTO <br>(<label style="color: red;">{{
-                formDepartamentos.data.attributes.departamento
+                store.formDepartamentos.data.attributes.departamento
               }}</label>)</h5>
 
             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
@@ -213,21 +213,21 @@
                     <div class="form-group col-lg-12 ">
                       <label class="text-info">Nombre del departamento: <label style="color: red;">*</label></label>
                       <input type="text" class="form-control" id="departamentos"
-                        v-model="formDepartamentos.data.attributes.departamento" placeholder="Ej: Departamento 1"
+                        v-model="store.formDepartamentos.data.attributes.departamento" placeholder="Ej: Departamento 1"
                         required @change="verificar_error(5)">
                       <span style="color: red;">{{ errores.departamento }}</span>
                     </div>
                     <div class="form-group col-lg-12">
                       <label class="text-info">Descripción: <label style="color: red;">*</label></label>
                       <input type="text" class="form-control" id="descripcion" aria-describedby="emailHelp"
-                        v-model="formDepartamentos.data.attributes.descripcion"
+                        v-model="store.formDepartamentos.data.attributes.descripcion"
                         placeholder="Departamento donde se guardan los artículos" @change="verificar_error(6)">
                       <span style="color: red;">{{ errores.descripcionDepatamento }}</span>
                     </div>
                     <div class="form-group col-lg-12">
                       <label class="text-info">Observaciones:</label>
                       <textarea class="form-control" id="observacion"
-                        v-model="formDepartamentos.data.attributes.observacion"
+                        v-model="store.formDepartamentos.data.attributes.observacion"
                         placeholder="Observaciones del departamento"></textarea>
 
                     </div>
@@ -237,89 +237,6 @@
               <div class="text-center">
                 <h1 class="h6 text-gray-900 mb-4"><i>CAMPOS OBLIGATORIOS</i> (<label style="color: red;">*</label>)
                 </h1>
-              </div>
-              <div class="row">
-
-                <div v-if="editar == false" class="form-group h4 col-lg-3">
-
-                </div>
-                <div v-if="editar == false" class="form-group h4 col-lg-6">
-                  <a @click="agregarU()" class="btn btn-info btn-block" :class="disabledDepartamentodBtn">
-                    {{ GuardarDep }}
-                  </a>
-                </div>
-                <div v-if="editar" class="form-group h4 col-lg-6">
-                  <a @click="editarU" class="btn btn-info btn-block" :class="btnModificarClass">
-                    {{ btnModificar }}
-                  </a>
-                </div>
-                <div v-if="editar" class="form-group h4 col-lg-6">
-                  <a @click="cancelarU()" class="btn btn-danger btn-block" :class="btnModificarClass"
-                    data-dismiss="modal" aria-label="Close">
-                    Cancelar
-                  </a>
-                </div>
-              </div>
-            </div>
-            <!-- </form> -->
-          </div>
-
-        </div>
-      </div>
-    </div>
-    <!-- Logout Editar Departamentos-->
-    <div :class="'modal fade ' + showModal1" id="editaDepartamento" tabindex="-1" role="dialog"
-      aria-labelledby="exampleModalLabel" :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title text-info" id="exampleModalLabel" v-if="editar == false">NUEVO DEPARTAMENTO </h5>
-            <h5 class="modal-title text-info text-center" id="exampleModalLabel" v-if="editar == true"><span
-                class="fa fa-edit"></span>
-              MODIFICAR LOS DATOS DEL DEPARTAMENTO <br>(<label style="color: red;">{{
-                formDepartamentos.data.attributes.departamento
-              }}</label>)</h5>
-
-            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true" class="text-info">×</span>
-            </button>
-          </div>
-          <div class="modal-body text-center">
-
-            <!-- <form id="form"> -->
-
-            <div class="col-lg-12">
-              <div class="">
-                <div class="text-center">
-                  <h1 class="h6 text-gray-900 mb-4"><i>CAMPOS OBLIGATORIOS</i> (<label style="color: red;">*</label>)
-                  </h1>
-                </div>
-                <form class="">
-
-                  <div class="row">
-                    <div class="form-group col-lg-12">
-                      <label class="text-info">Nombre del departamento: <label style="color: red;">*</label></label>
-                      <input type="text" class="form-control" id="departamentos"
-                        v-model="formDepartamentos.data.attributes.departamento" placeholder="Nombre del departamento"
-                        required>
-                      <span v-if="errores.cod" style="color: red;">Campo en blanco</span>
-                    </div>
-                    <div class="form-group col-lg-12">
-                      <label class="text-info">Descripción: <label style="color: red;">*</label></label>
-                      <input type="text" class="form-control" id="descripcion" aria-describedby="emailHelp"
-                        v-model="formDepartamentos.data.attributes.descripcion"
-                        placeholder="Descripción del departamento">
-                      <span v-if="errores.descripcion" style="color: red;">Campo en blanco</span>
-                    </div>
-                    <div class="form-group col-lg-12">
-                      <label class="text-info">Observaciones:</label>
-                      <textarea class="form-control" id="observacion"
-                        v-model="formDepartamentos.data.attributes.observacion"
-                        placeholder="Observaciones del departamento"></textarea>
-
-                    </div>
-                  </div>
-                </form>
               </div>
               <div class="row">
 
@@ -361,7 +278,7 @@
             <h5 class="modal-title text-info text-center" id="exampleModalLabel" v-if="editar == true"><span
                 class="fa fa-edit"></span>
               MODIFICAR LOS DATOS DEL ARTÍCULO <br>(<label style="color: red;">{{
-                formArticulo.data.attributes.articulo
+                store.formArticulo.data.attributes.articulo
               }}</label>)</h5>
 
             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
@@ -381,19 +298,21 @@
                     <div class="form-group col-lg-12">
                       <label class="text-info">Nombre del artículo: <label style="color: red;">*</label></label>
                       <input type="text" class="form-control" id="articulo"
-                        v-model="formArticulo.data.attributes.articulo" placeholder="Ej: Tablet" required @change="verificar_error(1)">
+                        v-model="store.formArticulo.data.attributes.articulo" placeholder="Ej: Tablet" required
+                        @change="verificar_error(1)">
                       <span style="color: red;">{{ errores.articulo }}</span>
                     </div>
                     <div class="form-group col-lg-12">
                       <label class="text-info">Descripción: <label style="color: red;">*</label></label>
                       <input type="text" class="form-control" id="descripcionA" aria-describedby="emailHelp"
-                        v-model="formArticulo.data.attributes.descripcion" placeholder="Para entretenimiento" @change="verificar_error(2)">
+                        v-model="store.formArticulo.data.attributes.descripcion" placeholder="Para entretenimiento"
+                        @change="verificar_error(2)">
                       <span style="color: red;">{{ errores.descripcion }}</span>
                     </div>
                     <div class="form-group col-lg-12">
                       <label class="text-info">Observaciones:</label>
                       <textarea class="form-control" id="observacionA"
-                        v-model="formArticulo.data.attributes.observacion"
+                        v-model="store.formArticulo.data.attributes.observacion"
                         placeholder="Observaciones del artículo"></textarea>
 
                     </div>
@@ -402,7 +321,7 @@
                     <div class="form-group col-lg-6">
                       <label class="text-info">Seleccione el departamento: <label style="color: red;">*</label></label>
                       <select name="rol" id="rol" style="width: 100%; text-align:center" placeholder="Sucursal"
-                        class="text-gray-900 form-control" v-model="formArticulo.data.attributes.departamento_id">
+                        class="text-gray-900 form-control" v-model="store.formArticulo.data.attributes.departamento_id">
                         <option v-for="dato in listadoDepartamentos" :key="dato.id" :value="dato.id">{{
                           dato.attributes.departamento }}</option>
                       </select>
@@ -412,7 +331,7 @@
                       <label class="text-info">Seleccione la unidad de medida: <label
                           style="color: red;">*</label></label>
                       <select name="rol" id="rol" style="width: 100%; text-align:center" placeholder="Sucursal"
-                        class="text-gray-900 form-control" v-model="formArticulo.data.attributes.medida_id">
+                        class="text-gray-900 form-control" v-model="store.formArticulo.data.attributes.medida_id">
                         <option v-for="dato in listadoMedida" :key="dato.id" :value="dato.id">{{
                           dato.attributes.medida }}</option>
                       </select>
@@ -464,7 +383,7 @@
             <h5 class="modal-title text-info text-center" id="exampleModalLabel" v-if="editar == true"><span
                 class="fa fa-edit"></span>
               MODIFICAR LOS DATOS DEL ARTÍCULO <br>(<label style="color: red;">{{
-                formArticulo.data.attributes.articulo
+                store.formArticulo.data.attributes.articulo
               }}</label>)</h5>
 
             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
@@ -487,19 +406,20 @@
                     <div class="form-group col-lg-12">
                       <label class="text-info">Nombre del artículo: <label style="color: red;">*</label></label>
                       <input type="text" class="form-control" id="articulo"
-                        v-model="formArticulo.data.attributes.articulo" placeholder="Nombre del artículo" required>
+                        v-model="store.formArticulo.data.attributes.articulo" placeholder="Nombre del artículo"
+                        required>
                       <span v-if="errores.cod" style="color: red;">Campo en blanco</span>
                     </div>
                     <div class="form-group col-lg-12">
                       <label class="text-info">Descripción: <label style="color: red;">*</label></label>
                       <input type="text" class="form-control" id="descripcionA" aria-describedby="emailHelp"
-                        v-model="formArticulo.data.attributes.descripcion" placeholder="Descripción del artículo">
+                        v-model="store.formArticulo.data.attributes.descripcion" placeholder="Descripción del artículo">
                       <span v-if="errores.descripcion" style="color: red;">Campo en blanco</span>
                     </div>
                     <div class="form-group col-lg-12">
                       <label class="text-info">Observaciones:</label>
                       <textarea class="form-control" id="observacionA"
-                        v-model="formArticulo.data.attributes.observacion"
+                        v-model="store.formArticulo.data.attributes.observacion"
                         placeholder="Observaciones del artículo"></textarea>
 
                     </div>
@@ -508,7 +428,7 @@
                     <div class="form-group col-lg-6">
                       <label class="text-info">Seleccione el departamento: <label style="color: red;">*</label></label>
                       <select name="rol" id="rol" style="width: 100%; text-align:center" placeholder="Sucursal"
-                        class="text-gray-900 form-control" v-model="formArticulo.data.attributes.departamento_id">
+                        class="text-gray-900 form-control" v-model="store.formArticulo.data.attributes.departamento_id">
                         <option v-for="dato in listadoDepartamentos" :key="dato.id" :value="dato.id">{{
                           dato.attributes.departamento }}</option>
                       </select>
@@ -517,7 +437,7 @@
                       <label class="text-info">Seleccione la unidad de medida: <label
                           style="color: red;">*</label></label>
                       <select name="rol" id="rol" style="width: 100%; text-align:center" placeholder="Sucursal"
-                        class="text-gray-900 form-control" v-model="formArticulo.data.attributes.medida_id">
+                        class="text-gray-900 form-control" v-model="store.formArticulo.data.attributes.medida_id">
                         <option v-for="dato in listadoMedida" :key="dato.id" :value="dato.id">{{
                           dato.attributes.medida }}</option>
                       </select>
@@ -564,16 +484,25 @@
   </template> -->
 </template>
 <script setup>
-
-import axios from 'axios';
 import router from '@/router';
 import Swal from 'sweetalert2';
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 // import AddDepartamento from './modal/AddDepartamento.vue';
-import 'vue3-easy-data-table/dist/style.css';
+// import 'vue3-easy-data-table/dist/style.css';
 // import AddArticulo from './modal/AddArticulo.vue';
 // import { load } from '@progress/kendo-vue-intl';
 import * as XLSX from 'xlsx';
+import { useStoreAxios } from '@/store/AxiosStore';
+import { EditarDatos, EliminarDatos, GuardarDatos, obtenerDatos } from './helper/useAxios';
+import { ErrorFull, successFull } from './controler/ControlerApp';
+
+const store = useStoreAxios();
+
+const itemsArticulos1 = ref([])
+
+const itemsDeparta1 = ref([])
+
+const itemsMedida1 = ref([])
 
 const esperando = ref(false);
 
@@ -597,17 +526,16 @@ const abrirModalAddProd = () => {
 
 }
 
-const formArticulo = reactive({
-  data: {
-    attributes: {
-      articulo: "",
-      descripcion: "",
-      observacion: "",
-      departamento_id: 0, //ID del departamento con el cual se relaciona, números de 2 dítios comenzando en 10, ej. 10
-      medida_id: 0 //IP de la medida en que se contabiliza el artículo
-    }
-  }
-})
+// const itemsDepartamentos = ref([]);
+
+// const obtenerDepartamentos = () => {
+//   let i = 0;
+//   itemsDepartamentos.value = [];
+//   for (let index = 0; index < listadoDepartamentos.value.length; index++) {
+//     itemsDepartamentos.value.push(listadoDepartamentos.value[index])
+//   }
+
+// }
 
 const actualiza = () => {
   popup.value = !popup.value;
@@ -663,19 +591,19 @@ const abrirModalAddArti = () => {
 
 const loading = ref(false);
 
-const loadingD = ref(false);
+// const loadingD = ref(false);
 
-const loadingA = (texto) => {
-  Swal.fire({
-    // title: "Sweet!",
-    text: texto,
-    imageUrl: "/cargando2.gif",
-    imageWidth: 100,
-    imageHeight: 100,
-    imageAlt: "Custom image",
-    showConfirmButton: false
-  });
-}
+// const loadingA = (texto) => {
+//   Swal.fire({
+//     // title: "Sweet!",
+//     text: texto,
+//     imageUrl: "/cargando2.gif",
+//     imageWidth: 100,
+//     imageHeight: 100,
+//     imageAlt: "Custom image",
+//     showConfirmButton: false
+//   });
+// }
 
 const cerrarAlert = () => {
   Swal.close();
@@ -713,12 +641,6 @@ const headersArticulos = [
   { text: "OPCIONES", value: "opciones" }
 ];
 
-const items = ref([]);
-
-const itemsdepartamentos = ref([]);
-
-const itemsarticulos = ref([]);
-
 // Definicion de props
 // defineProps({
 //  datosPaginados1 : {
@@ -733,16 +655,6 @@ const itemsarticulos = ref([]);
 // CRUD completo
 
 let errors = ref([]);
-
-let listado = ref([]);
-
-let listadoDepartamentos = ref([]);
-
-let listadoMedida = ref([])
-
-let listadoArticulos = ref([]);
-
-let listadoSucursales = ref([]);
 
 let datosPaginados = ref([]);
 
@@ -773,18 +685,6 @@ let setTiempoBusca = '';
 
 const datos_archivados = ref([]);
 
-const ipPublica = ref('192.168.121.154');
-
-const formDepartamentos = reactive({
-  data: {
-    attributes: {
-      departamento: "",
-      descripcion: "",
-      observacion: "",
-    }
-  }
-})
-
 const agrega = () => {
   editar.value = false
 }
@@ -805,52 +705,77 @@ const disabledArticulo = ref('')
 
 const errores = ref({ articulo: "", descripcion: "", departamento_id: 0, medida_id: 0, departamento: "", descripcionDepatamento: "" })
 
-const agregarU = () => {
+const agregarU = async () => {
 
-  if (formDepartamentos.data.attributes.descripcion != '' && formDepartamentos.data.attributes.departamento != '') {
+  if (store.formDepartamentos.data.attributes.descripcion != '' && store.formDepartamentos.data.attributes.departamento != '') {
     // console.log(formDepartamentos)
-    esperando.value = true;
+    store.cambiaEstado(2)
     disabledDepartamentodBtn.value = 'disabled';
-    GuardarDep.value = 'Gardando...'
+    GuardarDep.value = 'Gardando...';
+    const response = await GuardarDatos(store.formDepartamentos, 6);
+    if (!response) {
+      store.cambiaEstado(2)
+    } else {
+      disabledDepartamentodBtn.value = '';
+      GuardarDep.value = 'Agregar'
+      // console.log(response)
+      store.formDepartamentos.data.attributes.observacion = ''
+      store.formDepartamentos.data.attributes.descripcion = '';
+      store.formDepartamentos.data.attributes.departamento = '';
+      store.AddDepartamento(response)
+      itemsDeparta1.value = store.itemsDepartamentos;
+      successFull("Departamento agregado satisfactoriamente.", "top-end")
+      disabledDepartamentodBtn.value = '';
+      GuardarDep.value = 'Agregar'
+      store.cambiaEstado(2)
+    }
+
     // datos_archivados.value.push(formDepartamentos);
-    axios.post(`https://` + ipPublica.value + `/fullstack/public/departamentos`, formDepartamentos)
-      .then((response) => {
-        esperando.value = false;
-        if (response.data.data == null) {
-          ErrorFull("Está intentando agregar un dato que ya existe en la base datos.", "top-start")
-          disabledDepartamentodBtn.value = '';
-          GuardarDep.value = 'Agregar'
-        } else {
-          formDepartamentos.data.attributes.observacion = ''
-          formDepartamentos.data.attributes.descripcion = '';
-          formDepartamentos.data.attributes.departamento = '';
-          loadingD.value = true;
-          listadoDepartamentos.value.push(response.data.data)
-          almacenDatosDepartamentos(listadoDepartamentos.value);
-          listadoDepartamentos.value = JSON.parse(localStorage.getItem('ListadoCacheDepartamentos'));
-          obtenerDepartamentos();
-          successFull("Departamento agregado satisfactoriamente.", "top-end")
-          disabledDepartamentodBtn.value = '';
-          GuardarDep.value = 'Agregar departamento'
-          loadingD.value = false;
-        }
-      })
-      .catch((error) => {
-        if (error.response.status === 500) {
-          errors.value = error.response.data.message;
-        }
-        esperando.value = false;
-        ErrorFull("Error realizando la operación.", "top-start")
-        // cerrarAlert();
-        // Swal.fire({
-        //   icon: "error",
-        //   title: error.response.data.message
-        // })
-      })
+    // axios.post(`https://` + ipPublica.value + `/fullstack/public/departamentos`, formDepartamentos)
+    //   .then((response) => {
+    //     esperando.value = false;
+    //     if (response.data.data == null) {
+    //       ErrorFull("Está intentando agregar un dato que ya existe en la base datos.", "top-start")
+    //       disabledDepartamentodBtn.value = '';
+    //       GuardarDep.value = 'Agregar'
+    //     } else {
+    //       formDepartamentos.data.attributes.observacion = ''
+    //       formDepartamentos.data.attributes.descripcion = '';
+    //       formDepartamentos.data.attributes.departamento = '';
+    //       loadingD.value = true;
+    //       listadoDepartamentos.value.push(response.data.data)
+    //       almacenDatosDepartamentos(listadoDepartamentos.value);
+    //       listadoDepartamentos.value = JSON.parse(localStorage.getItem('ListadoCacheDepartamentos'));
+    //       obtenerDepartamentos();
+    //       successFull("Departamento agregado satisfactoriamente.", "top-end")
+    //       disabledDepartamentodBtn.value = '';
+    //       GuardarDep.value = 'Agregar departamento'
+    //       loadingD.value = false;
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     if (error.response.status === 500) {
+    //       errors.value = error.response.data.message;
+    //     }
+    //     esperando.value = false;
+    //     ErrorFull("Error realizando la operación.", "top-start")
+    //     // cerrarAlert();
+    //     // Swal.fire({
+    //     //   icon: "error",
+    //     //   title: error.response.data.message
+    //     // })
+    //   })
     // console.log(datos_archivados.value);
   } else {
-    errores.value.cod = "Campo requerido";
-    errores.value.descripcion = "Campo requerido";
+    if (store.formDepartamentos.data.attributes.departamento == "") {
+      errores.departamento = "Este campo es obligatorio"
+    }
+
+    if (store.formDepartamentos.data.attributes.descripcion == "") {
+      errores.descripcion = "Este campo es obligatorio"
+    }
+    ErrorFull("Debe llenar todos los campos obligatorios", "top-start")
+    store.cambiaEstado(2);
     // console.log(errores.value.cod)
   }
 }
@@ -859,58 +784,59 @@ const agregarUArticulo = () => {
 
   if (formArticulo.data.attributes.descripcion != '' && formArticulo.data.attributes.articulo != '' && formArticulo.data.attributes.medida_id != 0 && formArticulo.data.attributes.departamento_id != 0) {
     // console.log(formDepartamentos)
-    esperando.value = true;
+    // esperando.value = true;
+    store.cambiaEstado(3)
     disabledDepartamentodBtn.value = 'disabled';
     GuardarArt.value = 'Gardando...'
     // console.log(formArticulo.data)
-    axios.post(`https://` + ipPublica.value + `/fullstack/public/articulos`, formArticulo)
-      .then((response) => {
-        esperando.value = false;
-        if (response.data.data == null) {
-          ErrorFull("Está intentando agregar un dato que ya existe en la base datos.", "top-start")
-          disabledDepartamentodBtn.value = '';
-          GuardarArt.value = 'Agregar';
-        } else {
-          formArticulo.data.attributes.observacion = '';
-          formArticulo.data.attributes.descripcion = '';
-          formArticulo.data.attributes.articulo = '';
-          loadingD.value = true;
-          listadoArticulos.value.push(response.data.data)
-          almacenDatosArticulos(listadoArticulos.value);
-          listadoArticulos.value = JSON.parse(localStorage.getItem('ListadoCacheArticulos'));
-          obtenerArticulos();
-          successFull("Artículo agregado satisfactoriamente.", "top-end")
-          disabledDepartamentodBtn.value = '';
-          GuardarArt.value = 'Agregar'
-          loadingD.value = false;
-        }
-      })
-      .catch((error) => {
-        if (error.response.status === 400) {
-          errors.value = error.response.data.message;
-        }
-        esperando.value = false;
-        ErrorFull("Error realizando la operación.", "top-start")
-      })
+    // axios.post(`https://` + ipPublica.value + `/fullstack/public/articulos`, formArticulo)
+    //   .then((response) => {
+    //     esperando.value = false;
+    //     if (response.data.data == null) {
+    //       ErrorFull("Está intentando agregar un dato que ya existe en la base datos.", "top-start")
+    //       disabledDepartamentodBtn.value = '';
+    //       GuardarArt.value = 'Agregar';
+    //     } else {
+    //       formArticulo.data.attributes.observacion = '';
+    //       formArticulo.data.attributes.descripcion = '';
+    //       formArticulo.data.attributes.articulo = '';
+    //       loadingD.value = true;
+    //       listadoArticulos.value.push(response.data.data)
+    //       almacenDatosArticulos(listadoArticulos.value);
+    //       listadoArticulos.value = JSON.parse(localStorage.getItem('ListadoCacheArticulos'));
+    //       obtenerArticulos();
+    //       successFull("Artículo agregado satisfactoriamente.", "top-end")
+    //       disabledDepartamentodBtn.value = '';
+    //       GuardarArt.value = 'Agregar'
+    //       loadingD.value = false;
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     if (error.response.status === 400) {
+    //       errors.value = error.response.data.message;
+    //     }
+    //     esperando.value = false;
+    //     ErrorFull("Error realizando la operación.", "top-start")
+    //   })
   } else {
-    if (formArticulo.data.attributes.articulo == '') {
+    if (store.formArticulo.data.attributes.articulo == '') {
       errores.value.articulo = "Este campo es obligatorio.";
-    }else{
+    } else {
       errores.value.articulo = "";
     }
-    if (formArticulo.data.attributes.descripcion == '') {
+    if (store.formArticulo.data.attributes.descripcion == '') {
       errores.value.descripcion = "Este campo es obligatorio.";
-    }else{
+    } else {
       errores.value.descripcion = "";
     }
-    if (formArticulo.data.attributes.departamento_id == 0) {
+    if (fstore.ormArticulo.data.attributes.departamento_id == 0) {
       errores.value.departamento_id = "Este campo es obligatorio.";
-    }else{
+    } else {
       errores.value.departamento_id = "";
     }
-    if (formArticulo.data.attributes.medida_id == 0) {
+    if (store.formArticulo.data.attributes.medida_id == 0) {
       errores.value.medida_id = "Este campo es obligatorio.";
-    }else{
+    } else {
       errores.value.medida_id = "";
     }
 
@@ -922,42 +848,42 @@ const agregarUArticulo = () => {
 const verificar_error = (n) => {
   switch (n) {
     case 1:
-      if (formArticulo.data.attributes.articulo != '') {
+      if (store.formArticulo.data.attributes.articulo != '') {
         errores.value.articulo = "";
       } else {
         errores.value.articulo = "Este campo es obligatorio"
       }
       break;
     case 2:
-      if (formArticulo.data.attributes.descripcion != '') {
+      if (store.formArticulo.data.attributes.descripcion != '') {
         errores.value.descripcion = "";
       } else {
         errores.value.descripcion = "Este campo es obligatorio"
       }
       break;
     case 3:
-      if (formArticulo.data.attributes.departamento_id != 0) {
+      if (store.formArticulo.data.attributes.departamento_id != 0) {
         errores.value.departamento_id = "";
       } else {
         errores.value.departamento_id = "Este campo es obligatorio"
       }
       break;
     case 4:
-      if (formArticulo.data.attributes.medida_id != 0) {
+      if (store.formArticulo.data.attributes.medida_id != 0) {
         errores.value.medida_id = "";
       } else {
         errores.value.medida_id = "Este campo es obligatorio"
       }
       break;
     case 5:
-      if (formDepartamentos.data.attributes.departamento != "") {
+      if (store.formDepartamentos.data.attributes.departamento != "") {
         errores.value.departamento = "";
       } else {
         errores.value.departamento = "Este campo es obligatorio"
       }
       break;
     case 6:
-      if (formDepartamentos.data.attributes.descripcionDepatamento != "") {
+      if (store.formDepartamentos.data.attributes.descripcionDepatamento != "") {
         errores.value.descripcionDepatamento = "";
       } else {
         errores.value.descripcionDepatamento = "Este campo es obligatorio"
@@ -1059,88 +985,88 @@ const cambiarLimite = () => {
   obtenerPagina(1);
 }
 
-const obtenerListadoLimpio = () => {
-  let i = 0;
-  // if (cargado.value = false) {
-  //   newListado.value = [];
-  //   for (let index = 0; index < listado.value.length; index++) {
-  //     const element = listado.value[index];
-  //     if (element.attributes.deleted_at == null) {
-  //       newListado.value[i] = element;
-  //       i++;
-  //     }
-  //   }
-  //   datosSinPaginar.value = newListado.value;
-  //   cantidad.value = Math.ceil(newListado.value.length / elementPagina.value);
-  //   obtenerPagina(1);
-  //   cargado.value = true;
-  // } else {
-  //   newListado.value = []
-  //   for (let index = 0; index < listado.value.length; index++) {
-  //     const element = listado.value[index];
-  //     if (element.attributes.deleted_at == null) {
-  //       newListado.value[i] = element;
-  //       i++;
-  //     }
-  //   }
-  //   datosSinPaginar.value = newListado.value;
-  //   cantidad.value = Math.ceil(newListado.value.length / elementPagina.value);
-  //   obtenerPagina(1);
-  // }
+// const obtenerListadoLimpio = () => {
+//   let i = 0;
+//   // if (cargado.value = false) {
+//   //   newListado.value = [];
+//   //   for (let index = 0; index < listado.value.length; index++) {
+//   //     const element = listado.value[index];
+//   //     if (element.attributes.deleted_at == null) {
+//   //       newListado.value[i] = element;
+//   //       i++;
+//   //     }
+//   //   }
+//   //   datosSinPaginar.value = newListado.value;
+//   //   cantidad.value = Math.ceil(newListado.value.length / elementPagina.value);
+//   //   obtenerPagina(1);
+//   //   cargado.value = true;
+//   // } else {
+//   //   newListado.value = []
+//   //   for (let index = 0; index < listado.value.length; index++) {
+//   //     const element = listado.value[index];
+//   //     if (element.attributes.deleted_at == null) {
+//   //       newListado.value[i] = element;
+//   //       i++;
+//   //     }
+//   //   }
+//   //   datosSinPaginar.value = newListado.value;
+//   //   cantidad.value = Math.ceil(newListado.value.length / elementPagina.value);
+//   //   obtenerPagina(1);
+//   // }
 
-  items.value = [];
-  for (let index = 0; index < listado.value.length; index++) {
-    items.value.push(listado.value[index])
-  }
+//   items.value = [];
+//   for (let index = 0; index < listado.value.length; index++) {
+//     items.value.push(listado.value[index])
+//   }
 
-}
+// }
 
-const obtenerDepartamentos = () => {
-  let i = 0;
-  // console.log(listadoDepartamentos)
-  itemsdepartamentos.value = [];
-  for (let index = 0; index < listadoDepartamentos.value.length; index++) {
-    itemsdepartamentos.value.push(listadoDepartamentos.value[index])
-  }
+// const obtenerDepartamentos = () => {
+//   let i = 0;
+//   // console.log(listadoDepartamentos)
+//   itemsdepartamentos.value = [];
+//   for (let index = 0; index < listadoDepartamentos.value.length; index++) {
+//     itemsdepartamentos.value.push(listadoDepartamentos.value[index])
+//   }
 
-}
+// }
 
-const obtenerArticulos = () => {
-  let i = 0;
+// const obtenerArticulos = () => {
+//   let i = 0;
 
-  itemsarticulos.value = [];
-  for (let index = 0; index < listadoArticulos.value.length; index++) {
-    itemsarticulos.value.push(listadoArticulos.value[index])
-  }
+//   itemsarticulos.value = [];
+//   for (let index = 0; index < listadoArticulos.value.length; index++) {
+//     itemsarticulos.value.push(listadoArticulos.value[index])
+//   }
 
-}
+// }
 
-const obtenerListadoLimpioSucursales = () => {
-  let i = 0;
-  // if (cargado.value = false) {
-  newListadoSucursal.value = [];
-  for (let index = 0; index < listadoSucursales.value.length; index++) {
-    const element = listadoSucursales.value[index];
-    if (element.attributes.deleted_at == null) {
-      newListadoSucursal.value[i] = element;
-      i++;
-    }
-  }
-  return newListadoSucursal;
-  // }
+// const obtenerListadoLimpioSucursales = () => {
+//   let i = 0;
+//   // if (cargado.value = false) {
+//   newListadoSucursal.value = [];
+//   for (let index = 0; index < listadoSucursales.value.length; index++) {
+//     const element = listadoSucursales.value[index];
+//     if (element.attributes.deleted_at == null) {
+//       newListadoSucursal.value[i] = element;
+//       i++;
+//     }
+//   }
+//   return newListadoSucursal;
+//   // }
 
-}
+// }
 
-const almacenDatosProductos = (Lista) => {
-  // if (localStorage.getItem('ListadoCache')) {
-  //datos_archivados.value.push(Lista);
-  localStorage.removeItem('ListadoCache');
-  //   }else{
-  const parsed = JSON.stringify(Lista);
-  localStorage.setItem('ListadoCache', parsed);
-  // dataCache.value = JSON.parse(localStorage.getItem('ListadoCache'));
-  // }
-}
+// const almacenDatosProductos = (Lista) => {
+//   // if (localStorage.getItem('ListadoCache')) {
+//   //datos_archivados.value.push(Lista);
+//   localStorage.removeItem('ListadoCache');
+//   //   }else{
+//   const parsed = JSON.stringify(Lista);
+//   localStorage.setItem('ListadoCache', parsed);
+//   // dataCache.value = JSON.parse(localStorage.getItem('ListadoCache'));
+//   // }
+// }
 
 const consultar = async () => {
   if (cargado.value == false) {
@@ -1211,36 +1137,6 @@ const buscandoElemento = () => {
   setTiempoBusca = setTimeout(consultar, 360);
 }
 
-const successFull = (mensaje, posicion) => {
-
-  const toast = Swal.mixin({
-    toast: true,
-    position: posicion,
-    showConfirmButton: false,
-    timer: 1500,
-    //timerProgressBar: true,
-  })
-  toast.fire({
-    icon: "success",
-    title: mensaje
-  })
-}
-
-const ErrorFull = (mensaje, posicion) => {
-
-  const toast = Swal.mixin({
-    toast: true,
-    position: posicion,
-    showConfirmButton: false,
-    timer: 2800,
-    //timerProgressBar: true,
-  })
-  toast.fire({
-    icon: "error",
-    title: mensaje
-  })
-}
-
 const EditarListadoDepartamentos = async (newdato) => {
   let i = 0;
   itemsdepartamentos.value = [];
@@ -1277,94 +1173,113 @@ const EditarListadoArticulos = async (newdato) => {
 
 }
 
-const editarU = () => {
+const editarU = async () => {
   esperando.value = true;
   btnModificar.value = 'Actualizando...'
   btnModificarClass.value = 'disabled'
-  axios.put(`https://${ipPublica.value}/fullstack/public/departamentos/${id.value}`, formDepartamentos)
-    .then((response) => {
-      // console.log(response.data.data)
-      esperando.value = false;
-      cargado.value = false;
+  store.cambiaEstado(2);
+  const response = await EditarDatos(id.value, store.formDepartamentos, 6);
+  if (!response) {
+    store.cambiaEstado(2);
+  } else {
+    // console.log(response)
+    editar.value = false;
+    store.formMagnitud.data.attributes.descripcion = ''
+    store.formMagnitud.data.attributes.observacion = '';
+    store.formMagnitud.data.attributes.magnitud = '';
 
-      editar.value = false;
-      formDepartamentos.data.attributes.descripcion = ''
-      formDepartamentos.data.attributes.observacion = '';
-      formDepartamentos.data.attributes.departamento = '';
-      loadingD.value = true;
-      // listadoDepartamentos.value.push(response.data.data)
-      // almacenDatosDepartamentos(listadoDepartamentos.value);
-      // listadoDepartamentos.value = JSON.parse(localStorage.getItem('ListadoCacheDepartamentos'));
-      // obtenerDepartamentos();
-      EditarListadoDepartamentos(response.data.data)
-      loadingD.value = false;
-      successFull("Categoría modificada satisfactoriamente.", "top-end")
-      btnModificar.value = 'Modificar'
-      btnModificarClass.value = ''
-      // Swal.fire({
-      //   icon: "success",
-      //   title: "Editado satisfactoriamente."
-      // })
-      // editar.value = false;
-      // localStorage.setItem("editar", editar.value);
-    })
-    .catch((error) => {
-      if (error.response.status === 500) {
-        errors.value = error.response.data;
-      }
-      esperando.value = false;
-      ErrorFull("Error realizando operación.", "top-start")
-      // cerrarAlert();
-      // Swal.fire({
-      //   icon: "danger",
-      //   title: "Error realizando operación."
-      // })
-    })
+    store.EditDepartamento(response)
+    itemsDeparta1.value = store.itemsDepartamentos;
+    btnModificar.value = 'Modificar'
+    btnModificarClass.value = ''
+    successFull("Departamento agregado satisfactoriamente.", "top-end")
+    store.cambiaEstado(2);
+  }
+
+  // axios.put(`https://${ipPublica.value}/fullstack/public/departamentos/${id.value}`, formDepartamentos)
+  //   .then((response) => {
+  //     // console.log(response.data.data)
+  //     esperando.value = false;
+  //     cargado.value = false;
+
+  //     editar.value = false;
+  //     formDepartamentos.data.attributes.descripcion = ''
+  //     formDepartamentos.data.attributes.observacion = '';
+  //     formDepartamentos.data.attributes.departamento = '';
+  //     loadingD.value = true;
+  //     // listadoDepartamentos.value.push(response.data.data)
+  //     // almacenDatosDepartamentos(listadoDepartamentos.value);
+  //     // listadoDepartamentos.value = JSON.parse(localStorage.getItem('ListadoCacheDepartamentos'));
+  //     // obtenerDepartamentos();
+  //     EditarListadoDepartamentos(response.data.data)
+  //     loadingD.value = false;
+  //     successFull("Categoría modificada satisfactoriamente.", "top-end")
+  //     btnModificar.value = 'Modificar'
+  //     btnModificarClass.value = ''
+  //     // Swal.fire({
+  //     //   icon: "success",
+  //     //   title: "Editado satisfactoriamente."
+  //     // })
+  //     // editar.value = false;
+  //     // localStorage.setItem("editar", editar.value);
+  //   })
+  //   .catch((error) => {
+  //     if (error.response.status === 500) {
+  //       errors.value = error.response.data;
+  //     }
+  //     esperando.value = false;
+  //     ErrorFull("Error realizando operación.", "top-start")
+  //     // cerrarAlert();
+  //     // Swal.fire({
+  //     //   icon: "danger",
+  //     //   title: "Error realizando operación."
+  //     // })
+  //   })
 }
 
 const editarUArticulo = () => {
   esperando.value = true;
   btnModificar.value = 'Actualizando...'
   btnModificarClass.value = 'disabled'
-  axios.put(`https://${ipPublica.value}/fullstack/public/articulos/${id.value}`, formArticulo)
-    .then((response) => {
-      // console.log(response.data.data)
-      esperando.value = false;
-      cargado.value = false;
+  // axios.put(`https://${ipPublica.value}/fullstack/public/articulos/${id.value}`, formArticulo)
+  //   .then((response) => {
+  //     // console.log(response.data.data)
+  //     esperando.value = false;
+  //     cargado.value = false;
 
-      editar.value = false;
-      formArticulo.data.attributes.descripcion = ''
-      formArticulo.data.attributes.observacion = '';
-      formArticulo.data.attributes.articulo = '';
-      loadingD.value = true;
-      // listadoDepartamentos.value.push(response.data.data)
-      // almacenDatosDepartamentos(listadoDepartamentos.value);
-      // listadoDepartamentos.value = JSON.parse(localStorage.getItem('ListadoCacheDepartamentos'));
-      // obtenerDepartamentos();
-      EditarListadoArticulos(response.data.data)
-      loadingD.value = false;
-      successFull("Artículo modificado satisfactoriamente.", "top-end")
-      btnModificar.value = 'Modificar'
-      btnModificarClass.value = ''
-      // Swal.fire({
-      //   icon: "success",
-      //   title: "Editado satisfactoriamente."
-      // })
-      // editar.value = false;
-      // localStorage.setItem("editar", editar.value);
-    })
-    .catch((error) => {
-      if (error.response.status === 500) {
-        errors.value = error.response.data;
-      }
-      esperando.value = false;
-      ErrorFull("Error realizando operación.", "top-start")
-      // cerrarAlert();
-      // Swal.fire({
-      //   icon: "danger",
-      //   title: "Error realizando operación."
-      // })
-    })
+  //     editar.value = false;
+  //     formArticulo.data.attributes.descripcion = ''
+  //     formArticulo.data.attributes.observacion = '';
+  //     formArticulo.data.attributes.articulo = '';
+  //     loadingD.value = true;
+  //     // listadoDepartamentos.value.push(response.data.data)
+  //     // almacenDatosDepartamentos(listadoDepartamentos.value);
+  //     // listadoDepartamentos.value = JSON.parse(localStorage.getItem('ListadoCacheDepartamentos'));
+  //     // obtenerDepartamentos();
+  //     EditarListadoArticulos(response.data.data)
+  //     loadingD.value = false;
+  //     successFull("Artículo modificado satisfactoriamente.", "top-end")
+  //     btnModificar.value = 'Modificar'
+  //     btnModificarClass.value = ''
+  //     // Swal.fire({
+  //     //   icon: "success",
+  //     //   title: "Editado satisfactoriamente."
+  //     // })
+  //     // editar.value = false;
+  //     // localStorage.setItem("editar", editar.value);
+  //   })
+  //   .catch((error) => {
+  //     if (error.response.status === 500) {
+  //       errors.value = error.response.data;
+  //     }
+  //     esperando.value = false;
+  //     ErrorFull("Error realizando operación.", "top-start")
+  //     // cerrarAlert();
+  //     // Swal.fire({
+  //     //   icon: "danger",
+  //     //   title: "Error realizando operación."
+  //     // })
+  //   })
 }
 
 const EliminarListadoDepartamentos = async (newdato) => {
@@ -1409,40 +1324,55 @@ const borrarU = (id, correo) => {
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
     confirmButtonText: "Sí, eliminar"
-  }).then((result) => {
+  }).then(async (result) => {
     if (result.isConfirmed) {
-      esperando.value = true;
-      // Eliminar //
-      axios.delete(`https://${ipPublica.value}/fullstack/public/departamentos/${id}`)
-        .then((response) => {
-          esperando.value = false;
-          // consultar();
-          // // cancelarU();
-          // cerrarAlert();
-          loadingD.value = true;
-          EliminarListadoDepartamentos(response.data.data)
-          loadingD.value = false;
-          successFull("Departamento eliminado satisfactoriamente.", "top-end")
-          // Swal.fire({
-          //   title: "Eliminado",
-          //   text: "Producto eliminado satisfactoriamente.",
-          //   icon: "success"
-          // });
-          cargado.value = false;
-        })
+      store.cambiaEstado(2);
+      const response = await EliminarDatos(id, 6);
+      if (!response) {
+        store.cambiaEstado(2);
+      } else {
+        store.DeleteDepartamento(response);
+        itemsDeparta1.value = store.itemsDepartamentos;
+        successFull("Departamento eliminada satisfactoriamente.", "top-end")
+        store.cambiaEstado(2);
+      }
+
     }
-  }).catch((error) => {
-    if (error.response.status === 500) {
-      errors.value = error.response.data;
-    }
-    esperando.value = false;
-    // cerrarAlert();
-    ErrorFull("Error realizando operación.", "top-start")
-    // Swal.fire({
-    //   icon: "danger",
-    //   title: "Error realizando operación."
-    // })
-  });
+  })
+  // .then((result) => {
+  //   if (result.isConfirmed) {
+  //     esperando.value = true;
+  //     // Eliminar //
+  //     axios.delete(`https://${ipPublica.value}/fullstack/public/departamentos/${id}`)
+  //       .then((response) => {
+  //         esperando.value = false;
+  //         // consultar();
+  //         // // cancelarU();
+  //         // cerrarAlert();
+  //         loadingD.value = true;
+  //         EliminarListadoDepartamentos(response.data.data)
+  //         loadingD.value = false;
+  //         successFull("Departamento eliminado satisfactoriamente.", "top-end")
+  //         // Swal.fire({
+  //         //   title: "Eliminado",
+  //         //   text: "Producto eliminado satisfactoriamente.",
+  //         //   icon: "success"
+  //         // });
+  //         cargado.value = false;
+  //       })
+  //   }
+  // }).catch((error) => {
+  //   if (error.response.status === 500) {
+  //     errors.value = error.response.data;
+  //   }
+  //   esperando.value = false;
+  //   // cerrarAlert();
+  //   ErrorFull("Error realizando operación.", "top-start")
+  //   // Swal.fire({
+  //   //   icon: "danger",
+  //   //   title: "Error realizando operación."
+  //   // })
+  // });
 }
 
 const borrarUArticulo = (id, correo) => {
@@ -1489,12 +1419,12 @@ const clickEditar = async (idSelect) => {
   // localStorage.setItem("editar", editar.value);
   id.value = idSelect;
 
-  for (let index = 0; index < listadoDepartamentos.value.length; index++) {
-    const element = listadoDepartamentos.value[index].id;
+  for (let index = 0; index < itemsDeparta1.value.length; index++) {
+    const element = itemsDeparta1.value[index].id;
     if (element == idSelect) {
-      formDepartamentos.data.attributes.descripcion = listadoDepartamentos.value[index].attributes.descripcion;
-      formDepartamentos.data.attributes.departamento = listadoDepartamentos.value[index].attributes.departamento;
-      formDepartamentos.data.attributes.observacion = listadoDepartamentos.value[index].attributes.observacion;
+      store.formDepartamentos.data.attributes.descripcion = itemsDeparta1.value[index].attributes.descripcion;
+      store.formDepartamentos.data.attributes.departamento = itemsDeparta1.value[index].attributes.departamento;
+      store.formDepartamentos.data.attributes.observacion = itemsDeparta1.value[index].attributes.observacion;
       break;
     }
   }
@@ -1506,14 +1436,14 @@ const clickEditarArticulo = async (idSelect) => {
   // localStorage.setItem("editar", editar.value);
   id.value = idSelect;
 
-  for (let index = 0; index < listadoArticulos.value.length; index++) {
-    const element = listadoArticulos.value[index].id;
+  for (let index = 0; index < itemsArticulos1.value.length; index++) {
+    const element = itemsArticulos1.value[index].id;
     if (element == idSelect) {
-      formArticulo.data.attributes.descripcion = listadoArticulos.value[index].attributes.descripcion;
-      formArticulo.data.attributes.articulo = listadoArticulos.value[index].attributes.articulo;
-      formArticulo.data.attributes.observacion = listadoArticulos.value[index].attributes.observacion;
-      formArticulo.data.attributes.departamento_id = listadoArticulos.value[index].relationships.departamento.data.id;
-      formArticulo.data.attributes.medida_id = listadoArticulos.value[index].relationships.medida.data.id;
+      formArticulo.data.attributes.descripcion = itemsArticulos1.value[index].attributes.descripcion;
+      formArticulo.data.attributes.articulo = itemsArticulos1.value[index].attributes.articulo;
+      formArticulo.data.attributes.observacion = itemsArticulos1.value[index].attributes.observacion;
+      formArticulo.data.attributes.departamento_id = itemsArticulos1.value[index].relationships.departamento.data.id;
+      formArticulo.data.attributes.medida_id = itemsArticulos1.value[index].relationships.medida.data.id;
       break;
     }
   }
@@ -1533,25 +1463,6 @@ const actualizar_datos = () => {
   // listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
   // listadoSucursales = obtenerListadoLimpioSucursales();
 }
-
-const almacenDatosDepartamentos = (Lista) => {
-  localStorage.removeItem('ListadoCacheDepartamentos');
-  const parsed = JSON.stringify(Lista);
-  localStorage.setItem('ListadoCacheDepartamentos', parsed);
-}
-
-const almacenDatosArticulos = (Lista) => {
-  localStorage.removeItem('ListadoCacheArticulos');
-  const parsed = JSON.stringify(Lista);
-  localStorage.setItem('ListadoCacheArticulos', parsed);
-}
-
-const almacenDatosMedida = (Lista) => {
-  localStorage.removeItem('ListadoCacheUnidades');
-  const parsed = JSON.stringify(Lista);
-  localStorage.setItem('ListadoCacheUnidades', parsed);
-}
-
 // Excel
 
 const nuevoArreglo = ref([]);
@@ -1605,104 +1516,58 @@ function ExportExcelArticulos() {
 
 onMounted(async () => {
   if (localStorage.getItem('userName')) {
-    ipPublica.value = localStorage.getItem('Host_back');
     if (localStorage.getItem('Carg_datD') == '0') {
-      // DEPARTAMENTOS
-      loadingD.value = true;
-      disabledDepartamento.value = 'disabled'
-      await axios.get(`https://` + ipPublica.value + `/fullstack/public/departamentos`)
-        .then((response) => {
-          listadoDepartamentos.value = response.data.data;
-          almacenDatosDepartamentos(listadoDepartamentos.value);
-          listadoDepartamentos.value = JSON.parse(localStorage.getItem('ListadoCacheDepartamentos'));
-          obtenerDepartamentos();
-          disabledDepartamento.value = '';
-          loadingD.value = false;
-          localStorage.setItem("Carg_datD", "1")
-          // Kcategorias.value = Kcategorias.value + 1;
-
-        }).catch((error) => {
-          // console.log(error)
-          if (error.response.status === 500) {
-            errors.value = error.response.status;
-          }
-          loadingD.value = false;
-        })
+      store.cambiaEstado(2);
+      const response = await obtenerDatos(6);
+      if (!response) {
+        store.cambiaEstado(2);
+      } else {
+        if (response.length > 0) {
+          store.setListadoDepartamentos(response)
+        }
+        localStorage.setItem("Carg_datD", "1");
+        itemsDeparta1.value = store.itemsDepartamentos;
+        store.cambiaEstado(2);
+      }
     } else {
-      loadingD.value = true;
-      disabledDepartamento.value = 'disabled';
-      listadoDepartamentos.value = await JSON.parse(localStorage.getItem('ListadoCacheDepartamentos'));
-      obtenerDepartamentos();
-      loadingD.value = false;
-      disabledDepartamento.value = '';
+      store.cambiaEstado(2);
+      itemsDeparta1.value = store.itemsDepartamentos;
+      store.cambiaEstado(2);
     }
     if (localStorage.getItem('Carg_datA') == '0') {
-      loading.value = true;
-      // UNIDADES DE MEDIDA
-      disabledArticulo.value = 'disabled'
-      await axios.get(`https://` + ipPublica.value + `/fullstack/public/medidas`)
-        .then((response) => {
-          listadoMedida.value = response.data.data;
-          almacenDatosMedida(listadoMedida.value);
-          // Kcategorias.value = Kcategorias.value + 1;
-
-        }).catch((error) => {
-          if (error.response.status === 500) {
-            errors.value = error.response.status;
-          }
-        })
-
-      // ARTICULOS
-      await axios.get(`https://` + ipPublica.value + `/fullstack/public/articulos`)
-        .then((response) => {
-          if (response.data.data == null) {
-            disabledArticulo.value = ''
-            ErrorFull("Error realizando la operación.", "top-start")
-          } else {
-            listadoArticulos.value = response.data.data;
-            almacenDatosArticulos(listadoArticulos.value);
-            disabledArticulo.value = ''
-            // Kcategorias.value = Kcategorias.value + 1;
-            listadoArticulos.value = JSON.parse(localStorage.getItem('ListadoCacheArticulos'));
-            obtenerArticulos();
-            listadoMedida.value = JSON.parse(localStorage.getItem('ListadoCacheUnidades'));
-            localStorage.setItem('Carg_datA', '1')
-            loading.value = false
-          }
-
-        }).catch((error) => {
-          if (error.response.status === 500) {
-            errors.value = error.response.status;
-          }
-          ErrorFull("Error realizando la operación.", "top-start")
-        })
-
-    } else {
-      loading.value = true;
-      disabledArticulo.value = 'disabled';
-      listadoArticulos.value = JSON.parse(localStorage.getItem('ListadoCacheArticulos'));
-      obtenerArticulos();
-      loading.value = false;
-      disabledArticulo.value = '';
-      if (localStorage.getItem("Carg_datMe") == "1") {
-        listadoMedida.value = JSON.parse(localStorage.getItem('ListadoCacheUnidades'));
+      store.cambiaEstado(3);
+      const response = await obtenerDatos(5);
+      if (!response) {
+        store.cambiaEstado(3);
       } else {
-        await axios.get(`https://` + ipPublica.value + `/fullstack/public/medidas`)
-          .then((response) => {
-            listadoMedida.value = response.data.data;
-            almacenDatosMedida(listadoMedida.value);
-            // Kcategorias.value = Kcategorias.value + 1;
+        if (response.length > 0) {
+          store.setListadoArticulos(response)
+        }
+        localStorage.setItem("Carg_datA", "1");
+        itemsArticulos1.value = store.itemsArticulos;
+        store.cambiaEstado(3);
+      }
+    } else {
+      store.cambiaEstado(3);
+      itemsArticulos1.value = store.itemsArticulos;
+      store.cambiaEstado(3);
+    }
+    if (localStorage.getItem("Carg_datMe") == "0") {
 
-          }).catch((error) => {
-            if (error.response.status === 500) {
-              errors.value = error.response.status;
-            }
-          })
+      const response = await obtenerDatos(3);
+      if (!response) {
+
+      } else {
+        if (response.length > 0) {
+          store.setListadoMedidas(response)
+        }
+        localStorage.setItem("Carg_datMe", "1");
+        itemsMedida1.value = store.itemsMedidas;
       }
 
-      // listadoMedida.value = JSON.parse(localStorage.getItem('ListadoCacheUnidades'));
+    } else {
+      itemsMedida1.value = store.itemsMedidas;
     }
-
   } else {
     router.push('/login');
   }
