@@ -2,7 +2,7 @@
   <div>
     <div class="container-fluid">
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">DEPARTAMENTOS Y TIPOS DE ARTÍCULOS </h1>
+        <h1 class="h3 mb-0 text-gray-800">DEPARTAMENTOS, TIPOS DE ARTÍCULOS Y ETIQUETAS </h1>
       </div>
 
       <!-- Datos del producto a agregar -->
@@ -144,7 +144,7 @@
                   <template #item-opciones="item">
                     <div class="operation-wrapper">
                       <button class="btn btn-success btn-sm btn-circle" data-toggle="modal"
-                        data-target="#editaArticulos" @click="clickEditarArticulo(item.id)" v-b-tooltip.hover
+                        data-target="#agregaArticulos" @click="clickEditarArticulo(item.id)" v-b-tooltip.hover
                         title="Editar"><span class="fas fa-edit"></span></button>
                       <!-- <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
                     title="Aumentar"><span class="fas fa-plus"></span></button>
@@ -375,7 +375,7 @@
 
                   <div class="row text-left">
                     <div class="form-group col-lg-12">
-                      <label class="text-info">Nombre del artículo: <label style="color: red;">*</label></label>
+                      <label class="text-info">Nombre: <label style="color: red;">*</label></label>
                       <input type="text" class="form-control" id="articulo"
                         v-model="store.formArticulo.data.attributes.articulo" placeholder="Ej: Tablet" required
                         @change="verificar_error(1)">
@@ -434,7 +434,7 @@
                   </a>
                 </div>
                 <div v-if="editar" class="form-group h4 col-lg-6">
-                  <a @click="editarU" class="btn btn-info btn-block" :class="btnModificarClass">
+                  <a @click="editarUArticulo" class="btn btn-info btn-block" :class="btnModificarClass">
                     {{ btnModificar }}
                   </a>
                 </div>
@@ -1362,91 +1362,31 @@ const editarUEtiqueta = async () => {
     successFull("Etiqueta modificada satisfactoriamente.", "top-end")
     store.cambiaEstado(5);
   }
-
-  // axios.put(`https://${ipPublica.value}/fullstack/public/departamentos/${id.value}`, formDepartamentos)
-  //   .then((response) => {
-  //     // console.log(response.data.data)
-  //     esperando.value = false;
-  //     cargado.value = false;
-
-  //     editar.value = false;
-  //     formDepartamentos.data.attributes.descripcion = ''
-  //     formDepartamentos.data.attributes.observacion = '';
-  //     formDepartamentos.data.attributes.departamento = '';
-  //     loadingD.value = true;
-  //     // listadoDepartamentos.value.push(response.data.data)
-  //     // almacenDatosDepartamentos(listadoDepartamentos.value);
-  //     // listadoDepartamentos.value = JSON.parse(localStorage.getItem('ListadoCacheDepartamentos'));
-  //     // obtenerDepartamentos();
-  //     EditarListadoDepartamentos(response.data.data)
-  //     loadingD.value = false;
-  //     successFull("Categoría modificada satisfactoriamente.", "top-end")
-  //     btnModificar.value = 'Modificar'
-  //     btnModificarClass.value = ''
-  //     // Swal.fire({
-  //     //   icon: "success",
-  //     //   title: "Editado satisfactoriamente."
-  //     // })
-  //     // editar.value = false;
-  //     // localStorage.setItem("editar", editar.value);
-  //   })
-  //   .catch((error) => {
-  //     if (error.response.status === 500) {
-  //       errors.value = error.response.data;
-  //     }
-  //     esperando.value = false;
-  //     ErrorFull("Error realizando operación.", "top-start")
-  //     // cerrarAlert();
-  //     // Swal.fire({
-  //     //   icon: "danger",
-  //     //   title: "Error realizando operación."
-  //     // })
-  //   })
 }
 
-const editarUArticulo = () => {
-  esperando.value = true;
+const editarUArticulo =async () => {
   btnModificar.value = 'Actualizando...'
   btnModificarClass.value = 'disabled'
-  // axios.put(`https://${ipPublica.value}/fullstack/public/articulos/${id.value}`, formArticulo)
-  //   .then((response) => {
-  //     // console.log(response.data.data)
-  //     esperando.value = false;
-  //     cargado.value = false;
+  store.cambiaEstado(3);
+  const response = await EditarDatos(id.value, store.formArticulo, 5);
+  if (!response) {
+    store.cambiaEstado(3);
+  } else {
+    // console.log(response)
+    editar.value = false;
+    store.formArticulo.data.attributes.descripcion = ''
+    store.formArticulo.data.attributes.observacion = '';
+    store.formArticulo.data.attributes.articulo = '';
+    store.formArticulo.data.attributes.departamento_id = '';
+    store.formArticulo.data.attributes.medida_id = '';
 
-  //     editar.value = false;
-  //     formArticulo.data.attributes.descripcion = ''
-  //     formArticulo.data.attributes.observacion = '';
-  //     formArticulo.data.attributes.articulo = '';
-  //     loadingD.value = true;
-  //     // listadoDepartamentos.value.push(response.data.data)
-  //     // almacenDatosDepartamentos(listadoDepartamentos.value);
-  //     // listadoDepartamentos.value = JSON.parse(localStorage.getItem('ListadoCacheDepartamentos'));
-  //     // obtenerDepartamentos();
-  //     EditarListadoArticulos(response.data.data)
-  //     loadingD.value = false;
-  //     successFull("Artículo modificado satisfactoriamente.", "top-end")
-  //     btnModificar.value = 'Modificar'
-  //     btnModificarClass.value = ''
-  //     // Swal.fire({
-  //     //   icon: "success",
-  //     //   title: "Editado satisfactoriamente."
-  //     // })
-  //     // editar.value = false;
-  //     // localStorage.setItem("editar", editar.value);
-  //   })
-  //   .catch((error) => {
-  //     if (error.response.status === 500) {
-  //       errors.value = error.response.data;
-  //     }
-  //     esperando.value = false;
-  //     ErrorFull("Error realizando operación.", "top-start")
-  //     // cerrarAlert();
-  //     // Swal.fire({
-  //     //   icon: "danger",
-  //     //   title: "Error realizando operación."
-  //     // })
-  //   })
+    store.EditArticulo(response)
+    itemsArticulos1.value = store.itemsArticulos;
+    btnModificar.value = 'Modificar'
+    btnModificarClass.value = ''
+    successFull("Artículo modificado satisfactoriamente.", "top-end")
+    store.cambiaEstado(3);
+  }
 }
 
 const EliminarListadoDepartamentos = async (newdato) => {
@@ -1512,7 +1452,7 @@ const borrarUArticulo = (id, correo) => {
   // console.log(correo)
   Swal.fire({
     title: "Confirmación",
-    text: `Está a punto de eliminar el articulo: ${correo}`,
+    text: `Está a punto de eliminar el artículo: ${correo}`,
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
@@ -1533,31 +1473,6 @@ const borrarUArticulo = (id, correo) => {
 
     }
   })
-  // .then((result) => {
-  //   if (result.isConfirmed) {
-  //     esperando.value = true;
-  //     // Eliminar //
-  //     axios.delete(`https://${ipPublica.value}/fullstack/public/articulos/${id}`)
-  //       .then((response) => {
-  //         if (response.data.data == null) {
-  //           ErrorFull("Error realizando operación.", "top-start");
-  //         } else {
-  //           esperando.value = false;
-  //           loading.value = true;
-  //           EliminarListadoArticulos(response.data.data)
-  //           loading.value = false;
-  //           successFull("Artículo eliminado satisfactoriamente.", "top-end")
-  //         }
-
-  //       })
-  //   }
-  // }).catch((error) => {
-  //   if (error.response.status === 500) {
-  //     errors.value = error.response.data;
-  //   }
-  //   esperando.value = false;
-  //   ErrorFull("Error realizando operación.", "top-start")
-  // });
 }
 
 const borrarUEtiqueta = (id, correo) => {
@@ -1640,11 +1555,11 @@ const clickEditarArticulo = async (idSelect) => {
   for (let index = 0; index < itemsArticulos1.value.length; index++) {
     const element = itemsArticulos1.value[index].id;
     if (element == idSelect) {
-      formArticulo.data.attributes.descripcion = itemsArticulos1.value[index].attributes.descripcion;
-      formArticulo.data.attributes.articulo = itemsArticulos1.value[index].attributes.articulo;
-      formArticulo.data.attributes.observacion = itemsArticulos1.value[index].attributes.observacion;
-      formArticulo.data.attributes.departamento_id = itemsArticulos1.value[index].relationships.departamento.data.id;
-      formArticulo.data.attributes.medida_id = itemsArticulos1.value[index].relationships.medida.data.id;
+      store.formArticulo.data.attributes.descripcion = itemsArticulos1.value[index].attributes.descripcion;
+      store.formArticulo.data.attributes.articulo = itemsArticulos1.value[index].attributes.articulo;
+      store.formArticulo.data.attributes.observacion = itemsArticulos1.value[index].attributes.observacion;
+      store.formArticulo.data.attributes.departamento_id = itemsArticulos1.value[index].relationships.departamento.data.id;
+      store.formArticulo.data.attributes.medida_id = itemsArticulos1.value[index].relationships.medida.data.id;
       break;
     }
   }

@@ -56,11 +56,11 @@
             <a class="collapse-item" @click="click_pedidos">Pedidos</a> -->
             <router-link class="button" to="/inventario" @click="obtenerLinkA(1)">
               <a class="collapse-item" v-bind:class="ActivaLink(1)" :key="1"><i
-                  class="far fa-check-circle"></i> Productos</a>
+                  class="fa fa-list-ul"></i> Productos</a>
             </router-link>
             <router-link class="button" to="/categorias" @click="obtenerLinkA(2)">
               <a class="collapse-item" v-bind:class="ActivaLink(2)" :key="2"> <i
-                  class="far fa-check-circle"></i>
+                  class="fa fa-list-alt"></i>
                 Clasificación</a>
             </router-link>
             <!-- <router-link class="button" to="/categorias" @click="obtenerLinkA(3)">
@@ -70,12 +70,12 @@
             </router-link> -->
             <router-link class="button" to="/gest_nomencladores" @click="obtenerLinkA(9)">
               <a class="collapse-item" v-bind:class="ActivaLink(9)" :key="9" > <i
-                  class="far fa-check-circle"></i> Magnitudes</a>
+                  class="fa fa-ruler-horizontal"></i> Magnitudes</a>
             </router-link>
             <!-- <hr class="sidebar-divider"> -->
             <router-link class="button" to="/auditoria" @click="obtenerLinkA(10)">
               <a class="collapse-item" v-bind:class="ActivaLink(10)" :key="10"> <i
-                  class="far fa-check-circle"></i> Auditoría</a>
+                  class="fa fa-history"></i> Auditoría</a>
             </router-link>
             <!-- <router-link class="button" to="/pedidos">
               <a class="collapse-item" v-bind:class="ActivaLink(3)" :key="3" @click="obtenerLinkA(3)"> <i
@@ -145,7 +145,7 @@
             </router-link>-->
             <router-link class="button" to="/ubicaciones" @click="obtenerLinkA(8)">
               <a class="collapse-item" v-bind:class="ActivaLink(8)" :key="8"> <i
-                  class="fas fa-fw fa-cogs"></i> Ubicaciones</a>
+                  class="fa fa-map-marker-alt"></i> Ubicaciones</a>
             </router-link>
 
             <!-- <router-link class="button" to="/gest_inventario">

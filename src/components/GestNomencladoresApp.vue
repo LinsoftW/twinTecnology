@@ -1403,34 +1403,6 @@ const editarUMedida = async () => {
   deactiva.value = '';
   successFull("Unidad de medida modificada satisfactoriamente.", "top-end")
   store.cambiaEstado(6);
-  // await axios.put(`https://${ipPublica.value}/fullstack/public/medidas/${id.value}`, store.formMedida)
-  //   .then((response) => {
-  //     if (response.data.data == null) {
-  //       btnModificarM.value = "Modificar"
-  //       deactiva.value = ''
-  //       ErrorFull("Error realizando operación.", "top-start")
-  //     } else {
-  //       editar.value = false;
-  //       store.formMedida.data.attributes.descripcion = ''
-  //       store.formMedida.data.attributes.observacion = '';
-  //       store.formMedida.data.attributes.medida = '';
-  //       store.formMedida.data.attributes.magnitud_id = '';
-  //       loading.value = true;
-  //       EditarlistadoMedida(response.data.data)
-  //       successFull("Unidad de medida editada satisfactoriamente.", "top-end")
-  //       loading.value = false;
-  //       esperando.value = false;
-  //       btnModificarM.value = "Modificar"
-  //       deactiva.value = ''
-  //     }
-  //   })
-  //   .catch((error) => {
-  //     if (error.response.status === 400) {
-  //       errors.value = error.response.data;
-  //     }
-  //     esperando.value = false;
-  //     ErrorFull("Error realizando operación.", "top-start")
-  //   })
 }
 
 const borrarU = (id, correo) => {
@@ -1446,10 +1418,15 @@ const borrarU = (id, correo) => {
     if (result.isConfirmed) {
       store.cambiaEstado(8);
       const response = await EliminarDatos(id, 4);
-      store.DeleteMagnitud(response);
-      itemsMagnitud1.value = store.itemsMagnitudes;
-      successFull("Magnitud eliminada satisfactoriamente.", "top-end")
-      store.cambiaEstado(8);
+      if (!response) {
+        store.cambiaEstado(8);
+      } else {
+        store.DeleteMagnitud(response);
+        itemsMagnitud1.value = store.itemsMagnitudes;
+        successFull("Magnitud eliminada satisfactoriamente.", "top-end")
+        store.cambiaEstado(8);
+      }
+
     }
   })
 }
@@ -1467,10 +1444,15 @@ const borrarUMedida = (id, correo) => {
     if (result.isConfirmed) {
       store.cambiaEstado(6);
       const response = await EliminarDatos(id, 3);
-      store.DeleteMedida(response);
-      itemsMedida1.value = store.itemsMedidas;
-      successFull("Unidad de medida eliminada satisfactoriamente.", "top-end")
-      store.cambiaEstado(6);
+      if (!response) {
+        store.cambiaEstado(6);
+      } else {
+        store.DeleteMedida(response);
+        itemsMedida1.value = store.itemsMedidas;
+        successFull("Unidad de medida eliminada satisfactoriamente.", "top-end")
+        store.cambiaEstado(6);
+      }
+
     }
   })
 }

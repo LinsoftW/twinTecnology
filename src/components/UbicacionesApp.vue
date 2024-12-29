@@ -1515,10 +1515,15 @@ const borrarU = (id, correo) => {
     if (result.isConfirmed) {
       store.cambiaEstado(4);
       const response = await EliminarDatos(id, 2);
-      store.DeleteSucursal(response);
-      itemsSucursales1.value = store.itemsSucursales;
-      successFull("Sucursal eliminada satisfactoriamente.", "top-end")
-      store.cambiaEstado(4);
+      if (!response) {
+        store.cambiaEstado(4);
+      } else {
+        store.DeleteSucursal(response);
+        itemsSucursales1.value = store.itemsSucursales;
+        successFull("Sucursal eliminada satisfactoriamente.", "top-end")
+        store.cambiaEstado(4);
+      }
+
     }
   })
 }
@@ -1536,10 +1541,15 @@ const borrarUMedida = (id, correo) => {
     if (result.isConfirmed) {
       store.cambiaEstado(7);
       const response = await EliminarDatos(id, 7);
-      store.DeleteUbicaciones(response);
-      itemsUbicaciones1.value = store.itemsUbicaciones;
-      successFull("Ubicación eliminada satisfactoriamente.", "top-end")
-      store.cambiaEstado(7);
+      if (!response) {
+        store.cambiaEstado(7);
+      } else {
+        store.DeleteUbicaciones(response);
+        itemsUbicaciones1.value = store.itemsUbicaciones;
+        successFull("Ubicación eliminada satisfactoriamente.", "top-end")
+        store.cambiaEstado(7);
+      }
+
     }
   })
 }
@@ -1547,6 +1557,14 @@ const borrarUMedida = (id, correo) => {
 
 const clickEditar = async (idSelect) => {
   editar.value = true;
+  errores.value.sucursal = "";
+  errores.value.descripcion = "";
+  errores.value.observacion = "";
+  errores.value.abreviatura = "";
+  errores.value.ubicacion = "";
+  errores.value.descripcionUbica = "";
+  errores.value.obserUbica = "";
+  errores.value.sucursal_id = "";
   // localStorage.setItem("editar", editar.value);
   id.value = idSelect;
 
@@ -1565,6 +1583,14 @@ const clickEditar = async (idSelect) => {
 
 const clickEditarMedidas = async (idSelect) => {
   editar.value = true;
+  errores.value.sucursal = "";
+  errores.value.descripcion = "";
+  errores.value.observacion = "";
+  errores.value.abreviatura = "";
+  errores.value.ubicacion = "";
+  errores.value.descripcionUbica = "";
+  errores.value.obserUbica = "";
+  errores.value.sucursal_id = "";
   id.value = idSelect;
   // console.log(id.value)
   for (let index = 0; index < itemsUbicaciones1.value.length; index++) {

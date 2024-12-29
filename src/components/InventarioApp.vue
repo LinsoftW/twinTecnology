@@ -137,7 +137,7 @@
         <div class="card shadow mb-4">
           <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button"
             aria-expanded="true" aria-controls="collapseCardExample">
-            <h6 class="m-0 font-weight-bold text-info"><i class="fa fa-list-alt"></i> PRODUCTOS EN STOCK</h6>
+            <h6 class="m-0 font-weight-bold text-info"><i class="fa fa-list-ul"></i> PRODUCTOS EN STOCK</h6>
           </a>
           <!-- <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
               <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-edit"></i> DEPARTAMENTOS</h6>
@@ -171,6 +171,25 @@
                       </span>
                       <span class="text">Excel</span>
                     </a>
+                    <button class="btn btn-danger btn-sm dropdown-toggle m-2" type="button" id="dropdownMenuButton"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                      </span>
+                      <span class="text"> Agregar</span>
+                    </button>
+                    <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
+                      <router-link class="button" to="/categorias">
+                        <a class="dropdown-item" href="#"><span class="fa fa-list-alt"></span> Clasificaciones</a>
+                      </router-link>
+                      <router-link class="button" to="/gest_nomencladores">
+                        <a class="dropdown-item" href="#"><span class="fas fa-ruler-horizontal"></span> Magnitudes</a>
+                      </router-link>
+                      <router-link class="button" to="/ubicaciones">
+                        <a class="dropdown-item" href="#"><span class="fa fa-map-marker-alt"></span> Ubicaciones</a>
+                      </router-link>
+
+                    </div>
                     <!-- <a @click="abrirModalAddProd()" href="#" class="d-sm-inline-block btn btn-sm btn-info shadow-sm"
                     v-b-tooltip.hover title="Agregar producto"><i class="fas fa-plus fa-sm "></i> Agregar productos </a> -->
                     <!-- <a @click="EliminarSelecc()" href="#" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm m-2"
@@ -224,7 +243,8 @@
                     <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode"
                       @click="generarCodeBar(item.relationships.departamento.data.id, item.relationships.articulo.data.id, item.id)"
                       v-b-tooltip.hover title="Código de barra"><span class="fas fas fa-barcode"></span></button>
-
+                    <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Detalles(item)" v-b-tooltip.hover
+                    title="Detalles"><span class="fa fa-eye"></span></button>
                   </div>
                 </template>
                 <template #item-codigo="item">
@@ -836,11 +856,15 @@ const formCantidad = reactive({
   }
 })
 
+const Detalles = (dato) => {
+  console.log(dato)
+}
+
 const Aumentar = async (dato) => {
   const { value: formValues } = await Swal.fire({
     title: `Cantidad actual en Stock: ${dato.attributes.cantidad} `,
     html: `
-    <label> Aumentar: Ej: 5 / Disminuir: Ej: -5 </label><input id="swal-input2" class="swal2-input">
+    <label> Aumentar: Ej: 5 / Disminuir: Ej: -5 </label><input id="swal-input2" class="swal2-input" placeholder="Ej: 5 ó -5">
   `,
     focusConfirm: false,
     showCancelButton: true,
@@ -888,6 +912,11 @@ const agrega = () => {
   errores.value.descripcion = "";
   errores.value.observacion = "";
   errores.value.cantidad = "";
+  Store.formProductos.data.attributes.articulo_id = "";
+  Store.formProductos.data.attributes.descripcion = "";
+  Store.formProductos.data.attributes.ubicacion_id = "";
+  Store.formProductos.data.attributes.observacion = "";
+  Store.formProductos.data.attributes.cantidad = "";
 }
 
 let y = 0;
@@ -965,15 +994,20 @@ const verificar_error = (n) => {
 const errores = ref({ descripcion: "", observacion: "", articulo_id: "", ubicacion_id: "", cantidad: "" })
 
 const agregarUProducto = async () => {
-  Store.cambiaEstado(1);
   // console.log(formProductos.data)
   if (Store.formProductos.data.attributes.descripcion != '' && Store.formProductos.data.attributes.articulo_id != 0 && Store.formProductos.data.attributes.observacion != '' && Store.formProductos.data.attributes.ubicacion_id != 0) {
     // console.log("OKKKK")
+    Store.cambiaEstado(1);
     GuardarProducto.value = 'Guardando...';
     disabledProductoBtn.value = 'disabled';
     const response = await GuardarDatos(Store.formProductos, 1);
-    if (!response) {
+
+    if (response == null) {
       Store.cambiaEstado(1)
+      disabledProductoBtn.value = '';
+      GuardarProducto.value = 'Agregar';
+      errores.value.descripcion = "Este dato ya existe en el sistema";
+      ErrorFull("Descripción de producto ya existente.", "top-start")
     } else {
       disabledProductoBtn.value = '';
       GuardarProducto.value = 'Agregar'
@@ -1019,7 +1053,7 @@ const agregarUProducto = async () => {
     }
     GuardarProducto.value = 'Agregar';
     disabledProductoBtn.value = ''
-    Store.cambiaEstado(1)
+    // Store.cambiaEstado(1)
     ErrorFull("Debe llenar todos los campos obligatorios", "top-start")
   }
 
@@ -1314,16 +1348,16 @@ const cuandoCambie = () => {
 //     paginate: { first: 'Primero', previous: 'Anterior', next: 'Siguiente', last: 'Último' }
 //   }
 // };
-const p = ref("10-100-1001")
+// const p = ref("10-100-1001")
 const headers = [
   { text: "NO", value: "id", width: 50, sortable: true },
   { text: "IMAGEN", value: "image" },
-  { text: "CODIGO", value: "codigo", sortable: true },
-  { text: "DESCRIPCIÓN", value: "attributes.descripcion" },
-  { text: "OBSERVACIONES", value: "attributes.observacion" },
+  { text: "CODIGO", value: "codigo" },
+  { text: "DESCRIPCIÓN", value: "attributes.descripcion", width: 250 },
+  // { text: "OBSERVACIONES", value: "attributes.observacion", width: 50 },
   { text: "P.COMPRA", value: "precioC", sortable: true },
   { text: "P.VENTA", value: "precioV", sortable: true },
-  { text: "UNIDAD", value: "unidad" },
+  { text: "U_MEDIDA", value: "unidad" },
   { text: "STOCK", value: "attributes.cantidad", sortable: true },
   { text: "VENTAS", value: "cantV", sortable: true },
   { text: "OPCIONES", value: "opciones" }
@@ -1363,6 +1397,11 @@ const cod = ref();
 
 const clickEditarProducto = async (idSelect) => {
   editar.value = true;
+  errores.value.articulo_id = "";
+  errores.value.ubicacion_id = "";
+  errores.value.descripcion = "";
+  errores.value.observacion = "";
+  errores.value.cantidad = "";
   // console.log(idSelect)
   // localStorage.setItem("editar", editar.value);
   id.value = idSelect;
