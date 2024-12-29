@@ -889,7 +889,13 @@ let descripVacio = ref(false)
 
 const agrega = () => {
   editar.value = false
-
+errores.value.descripcion = "";
+errores.value.obserMedida = "";
+errores.value.observacion = "";
+errores.value.magnitud = "";
+errores.value.medida = "";
+errores.value.magnitud_id = "";
+errores.value.descripMedida = "";
 }
 
 const errores = ref({ descripcion: "", observacion: "", magnitud: "", descripMedida: "", obserMedida: "", medida: "", magnitud_id: "" })
@@ -987,11 +993,15 @@ const agregarU = async () => {
     successFull("Magnitud agregada satisfactoriamente.", "top-end")
   } else {
     if (store.formMagnitud.data.attributes.magnitud == "") {
-      errores.magnitud = "Este campo es obligatorio"
+      errores.value.magnitud = "Este campo es obligatorio"
+    }else{
+      errores.value.magnitud = ""
     }
 
     if (store.formMagnitud.data.attributes.descripcion == "") {
-      errores.descripcion = "Este campo es obligatorio"
+      errores.value.descripcion = "Este campo es obligatorio"
+    }else{
+      errores.value.descripcion = ""
     }
     ErrorFull("Debe llenar todos los campos obligatorios", "top-start")
     store.cambiaEstado(8);
@@ -1293,10 +1303,7 @@ const editarU = async () => {
   store.cambiaEstado(8);
   btnModificar.value = 'Actualizando...'
   btnModificarClass.value = 'disabled';
-  // console.log(id.value)
-  // console.log(store.formMagnitud)
   const response = await EditarDatos(id.value, store.formMagnitud, 4);
-  // console.log(response)
   editar.value = false;
   store.formMagnitud.data.attributes.descripcion = ''
   store.formMagnitud.data.attributes.observacion = '';
@@ -1525,43 +1532,35 @@ onMounted(async () => {
     // ipPublica.value = localStorage.getItem('Host_back');
     if (localStorage.getItem('Carg_datM') == '0') {
       // MAGNITUDES
-      store.esperandoMagnitudes = true;
-      store.loadingM = true;
+      store.cambiaEstado(8)
       const response = await obtenerDatos(4);
       if (response.length > 0) {
         store.setListadoMagnitud(response)
       }
       localStorage.setItem("Carg_datM", "1");
       itemsMagnitud1.value = store.itemsMagnitudes;
-      store.esperandoMagnitudes = false;
-      store.loadingM = false;
+      store.cambiaEstado(8)
 
     } else {
-      store.esperandoMagnitudes = true;
-      store.loadingM = true;
+      store.cambiaEstado(8)
       itemsMagnitud1.value = store.itemsMagnitudes;
-      store.esperandoMagnitudes = false;
-      store.loadingM = false;
+      store.cambiaEstado(8)
     }
 
     if (localStorage.getItem('Carg_datMe') == '0') {
-      store.esperandoMedidas = true;
-      store.loadingMe = true;
+      store.cambiaEstado(6)
       const response = await obtenerDatos(3);
       if (response.length > 0) {
         store.setListadoMedidas(response)
       }
       localStorage.setItem("Carg_datMe", "1");
       itemsMedida1.value = store.itemsMedidas;
-      store.esperandoMedidas = false;
-      store.loadingMe = false;
+      store.cambiaEstado(6)
 
     } else {
-      store.esperandoMedidas = true;
-      store.loadingMe = true;
+      store.cambiaEstado(6)
       itemsMedida1.value = store.itemsMedidas;
-      store.esperandoMedidas = false;
-      store.loadingMe = false;
+      store.cambiaEstado(6)
     }
 
   } else {

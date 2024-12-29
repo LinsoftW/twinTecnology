@@ -52,7 +52,7 @@
                   <div class="col-md-6 col-xl-6 col-lg-12 ">
                     <span class="text-info">Buscar: </span>
                     <input class="form-control" type="text" v-model="searchValue"
-                      placeholder="Teclee el nombre del departamento a buscar..." />
+                      placeholder="Qué desea buscar..." />
                   </div>
                 </div>
                 <br>
@@ -132,8 +132,8 @@
                   </div>
                   <div class="col-md-6 col-xl-6 col-lg-12 ">
                     <span class="text-info">Buscar: </span>
-                    <input class="form-control" type="text" v-model="searchValue"
-                      placeholder="Teclee el nombre del artículo a buscar..." />
+                    <input class="form-control" type="text" v-model="searchValueArticulo"
+                      placeholder="Qué desea buscar..." />
                   </div>
                 </div>
                 <br>
@@ -211,7 +211,7 @@
 
                   <div class="row text-left">
                     <div class="form-group col-lg-12 ">
-                      <label class="text-info">Nombre del departamento: <label style="color: red;">*</label></label>
+                      <label class="text-info">Nombre: <label style="color: red;">*</label></label>
                       <input type="text" class="form-control" id="departamentos"
                         v-model="store.formDepartamentos.data.attributes.departamento" placeholder="Ej: Departamento 1"
                         required @change="verificar_error(5)">
@@ -305,7 +305,7 @@
                     <div class="form-group col-lg-12">
                       <label class="text-info">Descripción: <label style="color: red;">*</label></label>
                       <input type="text" class="form-control" id="descripcionA" aria-describedby="emailHelp"
-                        v-model="store.formArticulo.data.attributes.descripcion" placeholder="Para entretenimiento"
+                        v-model="store.formArticulo.data.attributes.descripcion" placeholder="Ej: Para entretenimiento"
                         @change="verificar_error(2)">
                       <span style="color: red;">{{ errores.descripcion }}</span>
                     </div>
@@ -313,7 +313,7 @@
                       <label class="text-info">Observaciones:</label>
                       <textarea class="form-control" id="observacionA"
                         v-model="store.formArticulo.data.attributes.observacion"
-                        placeholder="Observaciones del artículo"></textarea>
+                        placeholder="Ej: Observaciones del artículo"></textarea>
 
                     </div>
                   </div>
@@ -322,7 +322,7 @@
                       <label class="text-info">Seleccione el departamento: <label style="color: red;">*</label></label>
                       <select name="rol" id="rol" style="width: 100%; text-align:center" placeholder="Sucursal"
                         class="text-gray-900 form-control" v-model="store.formArticulo.data.attributes.departamento_id">
-                        <option v-for="dato in listadoDepartamentos" :key="dato.id" :value="dato.id">{{
+                        <option v-for="dato in itemsDeparta1" :key="dato.id" :value="dato.id">{{
                           dato.attributes.departamento }}</option>
                       </select>
                       <span style="color: red;">{{ errores.departamento_id }}</span>
@@ -332,7 +332,7 @@
                           style="color: red;">*</label></label>
                       <select name="rol" id="rol" style="width: 100%; text-align:center" placeholder="Sucursal"
                         class="text-gray-900 form-control" v-model="store.formArticulo.data.attributes.medida_id">
-                        <option v-for="dato in listadoMedida" :key="dato.id" :value="dato.id">{{
+                        <option v-for="dato in itemsMedida1" :key="dato.id" :value="dato.id">{{
                           dato.attributes.medida }}</option>
                       </select>
                       <span style="color: red;">{{ errores.medida_id }}</span>
@@ -356,107 +356,6 @@
                 </div>
                 <div v-if="editar" class="form-group h4 col-lg-6">
                   <a @click="editarU" class="btn btn-info btn-block" :class="btnModificarClass">
-                    {{ btnModificar }}
-                  </a>
-                </div>
-                <div v-if="editar" class="form-group h4 col-lg-6">
-                  <a @click="cancelarU()" class="btn btn-danger btn-block" :class="btnModificarClass"
-                    data-dismiss="modal" aria-label="Close">
-                    Cancelar
-                  </a>
-                </div>
-              </div>
-            </div>
-            <!-- </form> -->
-          </div>
-
-        </div>
-      </div>
-    </div>
-    <!-- Logout Editar articulos-->
-    <div :class="'modal fade ' + showModal1" id="editaArticulos" tabindex="-1" role="dialog"
-      aria-labelledby="exampleModalLabel" :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title text-info" id="exampleModalLabel" v-if="editar == false">NUEVO ARTÍCULO </h5>
-            <h5 class="modal-title text-info text-center" id="exampleModalLabel" v-if="editar == true"><span
-                class="fa fa-edit"></span>
-              MODIFICAR LOS DATOS DEL ARTÍCULO <br>(<label style="color: red;">{{
-                store.formArticulo.data.attributes.articulo
-              }}</label>)</h5>
-
-            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true" class="text-info">×</span>
-            </button>
-          </div>
-          <div class="modal-body text-center">
-
-            <!-- <form id="form"> -->
-
-            <div class="col-lg-12">
-              <div class="">
-                <div class="text-center">
-                  <h1 class="h6 text-gray-900 mb-4"><i>CAMPOS OBLIGATORIOS</i> (<label style="color: red;">*</label>)
-                  </h1>
-                </div>
-                <form class="">
-
-                  <div class="row">
-                    <div class="form-group col-lg-12">
-                      <label class="text-info">Nombre del artículo: <label style="color: red;">*</label></label>
-                      <input type="text" class="form-control" id="articulo"
-                        v-model="store.formArticulo.data.attributes.articulo" placeholder="Nombre del artículo"
-                        required>
-                      <span v-if="errores.cod" style="color: red;">Campo en blanco</span>
-                    </div>
-                    <div class="form-group col-lg-12">
-                      <label class="text-info">Descripción: <label style="color: red;">*</label></label>
-                      <input type="text" class="form-control" id="descripcionA" aria-describedby="emailHelp"
-                        v-model="store.formArticulo.data.attributes.descripcion" placeholder="Descripción del artículo">
-                      <span v-if="errores.descripcion" style="color: red;">Campo en blanco</span>
-                    </div>
-                    <div class="form-group col-lg-12">
-                      <label class="text-info">Observaciones:</label>
-                      <textarea class="form-control" id="observacionA"
-                        v-model="store.formArticulo.data.attributes.observacion"
-                        placeholder="Observaciones del artículo"></textarea>
-
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="form-group col-lg-6">
-                      <label class="text-info">Seleccione el departamento: <label style="color: red;">*</label></label>
-                      <select name="rol" id="rol" style="width: 100%; text-align:center" placeholder="Sucursal"
-                        class="text-gray-900 form-control" v-model="store.formArticulo.data.attributes.departamento_id">
-                        <option v-for="dato in listadoDepartamentos" :key="dato.id" :value="dato.id">{{
-                          dato.attributes.departamento }}</option>
-                      </select>
-                    </div>
-                    <div class="form-group col-lg-6">
-                      <label class="text-info">Seleccione la unidad de medida: <label
-                          style="color: red;">*</label></label>
-                      <select name="rol" id="rol" style="width: 100%; text-align:center" placeholder="Sucursal"
-                        class="text-gray-900 form-control" v-model="store.formArticulo.data.attributes.medida_id">
-                        <option v-for="dato in listadoMedida" :key="dato.id" :value="dato.id">{{
-                          dato.attributes.medida }}</option>
-                      </select>
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <div class="row">
-
-                <div v-if="editar == false" class="form-group h4 col-lg-3">
-
-                </div>
-                <div v-if="editar == false" class="form-group h4 col-lg-6">
-                  <a @click="agregarUArticulo()" class="btn btn-info btn-block" :class="disabledDepartamentodBtn">
-                    {{ GuardarDep }}
-                  </a>
-                </div>
-                <div v-if="editar" class="form-group h4 col-lg-6">
-                  <a @click="editarUArticulo()" class="btn btn-info btn-block" :class="btnModificarClass">
                     {{ btnModificar }}
                   </a>
                 </div>
@@ -611,9 +510,9 @@ const cerrarAlert = () => {
 
 const itemsSelected = ref([]);
 
-const searchField = ref(["attributes.departamento"]);
+const searchField = ref(["attributes.departamento","attributes.descripcion","attributes.observacion"]);
 
-const searchFieldArticulo = ref(["attributes.articulo"]);
+const searchFieldArticulo = ref(["attributes.articulo","attributes.descripcion","attributes.observacion"]);
 
 const searchValue = ref("");
 
@@ -687,6 +586,13 @@ const datos_archivados = ref([]);
 
 const agrega = () => {
   editar.value = false
+  errores.value.departamento = "";
+  errores.value.descripcion = "";
+  errores.value.descripcionDepatamento = "";
+  errores.value.observacion = "";
+  errores.value.articulo = "";
+  errores.value.departamento_id = "";
+  errores.value.medida_id = "";
 }
 
 let btnModificarClass = ref('')
@@ -703,7 +609,7 @@ const disabledDepartamento = ref('')
 
 const disabledArticulo = ref('')
 
-const errores = ref({ articulo: "", descripcion: "", departamento_id: 0, medida_id: 0, departamento: "", descripcionDepatamento: "" })
+const errores = ref({ articulo: "", descripcion: "", departamento_id: "", medida_id: "", departamento: "", descripcionDepatamento: "" })
 
 const agregarU = async () => {
 
@@ -730,94 +636,49 @@ const agregarU = async () => {
       store.cambiaEstado(2)
     }
 
-    // datos_archivados.value.push(formDepartamentos);
-    // axios.post(`https://` + ipPublica.value + `/fullstack/public/departamentos`, formDepartamentos)
-    //   .then((response) => {
-    //     esperando.value = false;
-    //     if (response.data.data == null) {
-    //       ErrorFull("Está intentando agregar un dato que ya existe en la base datos.", "top-start")
-    //       disabledDepartamentodBtn.value = '';
-    //       GuardarDep.value = 'Agregar'
-    //     } else {
-    //       formDepartamentos.data.attributes.observacion = ''
-    //       formDepartamentos.data.attributes.descripcion = '';
-    //       formDepartamentos.data.attributes.departamento = '';
-    //       loadingD.value = true;
-    //       listadoDepartamentos.value.push(response.data.data)
-    //       almacenDatosDepartamentos(listadoDepartamentos.value);
-    //       listadoDepartamentos.value = JSON.parse(localStorage.getItem('ListadoCacheDepartamentos'));
-    //       obtenerDepartamentos();
-    //       successFull("Departamento agregado satisfactoriamente.", "top-end")
-    //       disabledDepartamentodBtn.value = '';
-    //       GuardarDep.value = 'Agregar departamento'
-    //       loadingD.value = false;
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     if (error.response.status === 500) {
-    //       errors.value = error.response.data.message;
-    //     }
-    //     esperando.value = false;
-    //     ErrorFull("Error realizando la operación.", "top-start")
-    //     // cerrarAlert();
-    //     // Swal.fire({
-    //     //   icon: "error",
-    //     //   title: error.response.data.message
-    //     // })
-    //   })
-    // console.log(datos_archivados.value);
   } else {
     if (store.formDepartamentos.data.attributes.departamento == "") {
-      errores.departamento = "Este campo es obligatorio"
+      errores.value.departamento = "Este campo es obligatorio"
+    }else{
+      errores.value.departamento = ""
     }
 
     if (store.formDepartamentos.data.attributes.descripcion == "") {
-      errores.descripcion = "Este campo es obligatorio"
+      errores.value.descripcionDepatamento = "Este campo es obligatorio"
+    }else{
+      errores.value.descripcionDepatamento = ""
     }
     ErrorFull("Debe llenar todos los campos obligatorios", "top-start")
-    store.cambiaEstado(2);
+    // store.cambiaEstado(2);
     // console.log(errores.value.cod)
   }
 }
 
-const agregarUArticulo = () => {
+const agregarUArticulo = async () => {
 
-  if (formArticulo.data.attributes.descripcion != '' && formArticulo.data.attributes.articulo != '' && formArticulo.data.attributes.medida_id != 0 && formArticulo.data.attributes.departamento_id != 0) {
+  if (store.formArticulo.data.attributes.descripcion != '' && store.formArticulo.data.attributes.articulo != '' && store.formArticulo.data.attributes.medida_id != 0 && store.formArticulo.data.attributes.departamento_id != 0) {
     // console.log(formDepartamentos)
     // esperando.value = true;
     store.cambiaEstado(3)
     disabledDepartamentodBtn.value = 'disabled';
     GuardarArt.value = 'Gardando...'
-    // console.log(formArticulo.data)
-    // axios.post(`https://` + ipPublica.value + `/fullstack/public/articulos`, formArticulo)
-    //   .then((response) => {
-    //     esperando.value = false;
-    //     if (response.data.data == null) {
-    //       ErrorFull("Está intentando agregar un dato que ya existe en la base datos.", "top-start")
-    //       disabledDepartamentodBtn.value = '';
-    //       GuardarArt.value = 'Agregar';
-    //     } else {
-    //       formArticulo.data.attributes.observacion = '';
-    //       formArticulo.data.attributes.descripcion = '';
-    //       formArticulo.data.attributes.articulo = '';
-    //       loadingD.value = true;
-    //       listadoArticulos.value.push(response.data.data)
-    //       almacenDatosArticulos(listadoArticulos.value);
-    //       listadoArticulos.value = JSON.parse(localStorage.getItem('ListadoCacheArticulos'));
-    //       obtenerArticulos();
-    //       successFull("Artículo agregado satisfactoriamente.", "top-end")
-    //       disabledDepartamentodBtn.value = '';
-    //       GuardarArt.value = 'Agregar'
-    //       loadingD.value = false;
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     if (error.response.status === 400) {
-    //       errors.value = error.response.data.message;
-    //     }
-    //     esperando.value = false;
-    //     ErrorFull("Error realizando la operación.", "top-start")
-    //   })
+    const response = await GuardarDatos(store.formArticulo, 5);
+    if (!response) {
+      store.cambiaEstado(3)
+    } else {
+      disabledDepartamentodBtn.value = '';
+      GuardarArt.value = 'Agregar'
+      // console.log(response)
+      store.formArticulo.data.attributes.observacion = ''
+      store.formArticulo.data.attributes.descripcion = '';
+      store.formArticulo.data.attributes.articulo = '';
+      store.AddArticulo(response)
+      itemsArticulos1.value = store.itemsArticulos;
+      successFull("Artículo agregado satisfactoriamente.", "top-end")
+      disabledDepartamentodBtn.value = '';
+      GuardarArt.value = 'Agregar'
+      store.cambiaEstado(3)
+    }
   } else {
     if (store.formArticulo.data.attributes.articulo == '') {
       errores.value.articulo = "Este campo es obligatorio.";
@@ -829,12 +690,12 @@ const agregarUArticulo = () => {
     } else {
       errores.value.descripcion = "";
     }
-    if (fstore.ormArticulo.data.attributes.departamento_id == 0) {
+    if (store.formArticulo.data.attributes.departamento_id == "") {
       errores.value.departamento_id = "Este campo es obligatorio.";
     } else {
       errores.value.departamento_id = "";
     }
-    if (store.formArticulo.data.attributes.medida_id == 0) {
+    if (store.formArticulo.data.attributes.medida_id == "") {
       errores.value.medida_id = "Este campo es obligatorio.";
     } else {
       errores.value.medida_id = "";
@@ -883,7 +744,7 @@ const verificar_error = (n) => {
       }
       break;
     case 6:
-      if (store.formDepartamentos.data.attributes.descripcionDepatamento != "") {
+      if (store.formDepartamentos.data.attributes.descripcion != "") {
         errores.value.descripcionDepatamento = "";
       } else {
         errores.value.descripcionDepatamento = "Este campo es obligatorio"
@@ -1339,40 +1200,6 @@ const borrarU = (id, correo) => {
 
     }
   })
-  // .then((result) => {
-  //   if (result.isConfirmed) {
-  //     esperando.value = true;
-  //     // Eliminar //
-  //     axios.delete(`https://${ipPublica.value}/fullstack/public/departamentos/${id}`)
-  //       .then((response) => {
-  //         esperando.value = false;
-  //         // consultar();
-  //         // // cancelarU();
-  //         // cerrarAlert();
-  //         loadingD.value = true;
-  //         EliminarListadoDepartamentos(response.data.data)
-  //         loadingD.value = false;
-  //         successFull("Departamento eliminado satisfactoriamente.", "top-end")
-  //         // Swal.fire({
-  //         //   title: "Eliminado",
-  //         //   text: "Producto eliminado satisfactoriamente.",
-  //         //   icon: "success"
-  //         // });
-  //         cargado.value = false;
-  //       })
-  //   }
-  // }).catch((error) => {
-  //   if (error.response.status === 500) {
-  //     errors.value = error.response.data;
-  //   }
-  //   esperando.value = false;
-  //   // cerrarAlert();
-  //   ErrorFull("Error realizando operación.", "top-start")
-  //   // Swal.fire({
-  //   //   icon: "danger",
-  //   //   title: "Error realizando operación."
-  //   // })
-  // });
 }
 
 const borrarUArticulo = (id, correo) => {
@@ -1385,31 +1212,46 @@ const borrarUArticulo = (id, correo) => {
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
     confirmButtonText: "Sí, eliminar"
-  }).then((result) => {
+  }).then(async (result) => {
     if (result.isConfirmed) {
-      esperando.value = true;
-      // Eliminar //
-      axios.delete(`https://${ipPublica.value}/fullstack/public/articulos/${id}`)
-        .then((response) => {
-          if (response.data.data == null) {
-            ErrorFull("Error realizando operación.", "top-start");
-          } else {
-            esperando.value = false;
-            loading.value = true;
-            EliminarListadoArticulos(response.data.data)
-            loading.value = false;
-            successFull("Artículo eliminado satisfactoriamente.", "top-end")
-          }
+      store.cambiaEstado(3);
+      const response = await EliminarDatos(id, 5);
+      if (!response) {
+        store.cambiaEstado(3);
+      } else {
+        store.DeleteArticulo(response);
+        itemsArticulos1.value = store.itemsArticulos;
+        successFull("Artículo eliminado satisfactoriamente.", "top-end")
+        store.cambiaEstado(3);
+      }
 
-        })
     }
-  }).catch((error) => {
-    if (error.response.status === 500) {
-      errors.value = error.response.data;
-    }
-    esperando.value = false;
-    ErrorFull("Error realizando operación.", "top-start")
-  });
+  })
+  // .then((result) => {
+  //   if (result.isConfirmed) {
+  //     esperando.value = true;
+  //     // Eliminar //
+  //     axios.delete(`https://${ipPublica.value}/fullstack/public/articulos/${id}`)
+  //       .then((response) => {
+  //         if (response.data.data == null) {
+  //           ErrorFull("Error realizando operación.", "top-start");
+  //         } else {
+  //           esperando.value = false;
+  //           loading.value = true;
+  //           EliminarListadoArticulos(response.data.data)
+  //           loading.value = false;
+  //           successFull("Artículo eliminado satisfactoriamente.", "top-end")
+  //         }
+
+  //       })
+  //   }
+  // }).catch((error) => {
+  //   if (error.response.status === 500) {
+  //     errors.value = error.response.data;
+  //   }
+  //   esperando.value = false;
+  //   ErrorFull("Error realizando operación.", "top-start")
+  // });
 }
 // Fin CRUD
 
@@ -1469,13 +1311,13 @@ const nuevoArreglo = ref([]);
 const elementos = ref([]);
 function ExportExcel() {
 
-  for (let index = 0; index < itemsdepartamentos.value.length; index++) {
-    elementos.value.type = itemsdepartamentos.value[index].type;
-    elementos.value.departamento = itemsdepartamentos.value[index].attributes.departamento;
-    elementos.value.descripcion = itemsdepartamentos.value[index].attributes.descripcion;
-    elementos.value.observacion = itemsdepartamentos.value[index].attributes.observacion;
-    elementos.value.created_at = itemsdepartamentos.value[index].attributes.timestamps.created_at;
-    elementos.value.updated_at = itemsdepartamentos.value[index].attributes.timestamps.updated_at;
+  for (let index = 0; index < itemsDeparta1.value.length; index++) {
+    elementos.value.type = itemsDeparta1.value[index].type;
+    elementos.value.departamento = itemsDeparta1.value[index].attributes.departamento;
+    elementos.value.descripcion = itemsDeparta1.value[index].attributes.descripcion;
+    elementos.value.observacion = itemsDeparta1.value[index].attributes.observacion;
+    elementos.value.created_at = itemsDeparta1.value[index].attributes.timestamps.created_at;
+    elementos.value.updated_at = itemsDeparta1.value[index].attributes.timestamps.updated_at;
     nuevoArreglo.value.push(elementos.value)
     elementos.value = []
   }
@@ -1488,17 +1330,18 @@ function ExportExcel() {
   const fileName = 'Departamentos.xlsx';
   // // Guardar el archivo execl
   XLSX.writeFile(workbook, fileName);
+  successFull("Documento creado satisfactoriamente.", "top-end")
 }
 
 function ExportExcelArticulos() {
 
-  for (let index = 0; index < itemsarticulos.value.length; index++) {
-    elementos.value.type = itemsarticulos.value[index].type;
-    elementos.value.articulo = itemsarticulos.value[index].attributes.articulo;
-    elementos.value.descripcion = itemsarticulos.value[index].attributes.descripcion;
-    elementos.value.observacion = itemsarticulos.value[index].attributes.observacion;
-    elementos.value.created_at = itemsarticulos.value[index].attributes.timestamps.created_at;
-    elementos.value.updated_at = itemsarticulos.value[index].attributes.timestamps.updated_at;
+  for (let index = 0; index < itemsArticulos1.value.length; index++) {
+    elementos.value.type = itemsArticulos1.value[index].type;
+    elementos.value.articulo = itemsArticulos1.value[index].attributes.articulo;
+    elementos.value.descripcion = itemsArticulos1.value[index].attributes.descripcion;
+    elementos.value.observacion = itemsArticulos1.value[index].attributes.observacion;
+    elementos.value.created_at = itemsArticulos1.value[index].attributes.timestamps.created_at;
+    elementos.value.updated_at = itemsArticulos1.value[index].attributes.timestamps.updated_at;
     nuevoArreglo.value.push(elementos.value)
     elementos.value = []
   }
@@ -1511,6 +1354,7 @@ function ExportExcelArticulos() {
   const fileName = 'Articulos.xlsx';
   // // Guardar el archivo execl
   XLSX.writeFile(workbook, fileName);
+  successFull("Documento creado satisfactoriamente.", "top-end")
 }
 // Fin
 

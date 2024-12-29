@@ -146,25 +146,30 @@
           <!-- Card Header - Dropdown -->
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-info">PRODUCTOS EN STOCK</h6>
-            <!-- <div :class="'dropdown no-arrow ' + show">
+            <div :class="'dropdown no-arrow ' + show">
               <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                aria-haspopup="true" :aria-expanded="activaShow" @click="Exp_3Ptos()">
+                aria-haspopup="true" :aria-expanded="activaShow">
                 <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
               </a>
               <div :class="'dropdown-menu dropdown-menu-right shadow animated--fade-in ' + show"
                 aria-labelledby="dropdownMenuLink">
-                <div class="dropdown-header">Acciones:</div>
-                <a class="dropdown-item" href="#" @click="Exp_3Ptos()"><span class="fa fa-cog"></span> Administrar</a>
-                <a class="dropdown-item" href="#" @click="Exp_3Ptos()"><span class="fa fa-check"></span> Conformar
-                  pedidos</a>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#filasColumnas"
+                <div class="dropdown-header">Agregar:</div>
+                <a class="dropdown-item" href="#"><span class="fa fa-plus"></span> Departamento</a>
+                <a class="dropdown-item" href="#"><span class="fa fa-plus"></span> Tipo de artículo</a>
+                <a class="dropdown-item" href="#"><span class="fa fa-plus"></span> Etiqueta</a>
+                <a class="dropdown-item" href="#"><span class="fa fa-plus"></span> Magnitud</a>
+                <a class="dropdown-item" href="#"><span class="fa fa-plus"></span> Unidad de medida</a>
+                <a class="dropdown-item" href="#"><span class="fa fa-plus"></span> Ubicación</a>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#agregaSucursales"><span
+                    class="fa fa-plus"></span> Sucursal</a>
+                <!-- <a class="dropdown-item" href="#" data-toggle="modal" data-target="#filasColumnas"
                   @click="abrirModal()">
                   <span class="fa fa-bars"></span> Agregar o quitar columnas
-                </a>
+                </a> -->
 
-                <a class="dropdown-item" href="#">Otros</a>
+                <!-- <a class="dropdown-item" href="#">Otros</a> -->
               </div>
-            </div> -->
+            </div>
             <!-- <a class="dropdown-item" href="#" data-toggle="modal" data-target="#filasColumnas"
                   >
                   <span class="fa fa-bars"></span> Agregar o quitar columnas
@@ -209,17 +214,17 @@
                 </div>
                 <!-- </div> -->
               </div>
-              <div class="col-md-3 col-xl-3 col-lg-3">
+              <!-- <div class="col-md-3 col-xl-3 col-lg-3">
                 <span class="text-info">Filtrar por columna: </span>
                 <select v-model="searchField" @change="cuandoCambie()" class="form-control form-control-user">
                   <option>Tipo</option>
                   <option>Código</option>
                 </select>
-              </div>
-              <div class="col-md-3 col-xl-3 col-lg-3">
+              </div> -->
+              <div class="col-md-6 col-xl-6 col-lg-12">
                 <span class="text-info">Buscar: </span>
                 <input class="form-control form-control-user" type="text" v-model="searchValue"
-                  :placeholder="'Teclee el ' + searchField1 + ' a buscar ...'" />
+                  placeholder="Qué desea buscar" />
               </div>
             </div>
             <br>
@@ -231,17 +236,17 @@
             </DataTable> -->
             <!-- Fin -->
 
-            <EasyDataTable :headers="headers" :items="Store.itemsProductos" buttons-pagination border-cell
+            <EasyDataTable :headers="headers" :items="itemsProductos1" buttons-pagination border-cell
               v-model:items-selected="itemsSelected" header-text-direction="center" body-text-direction="center"
-              :search-field="searchField1" :search-value="searchValue" @click-row="showRow" :rows-per-page="5"
-              :loading="loadingP">
+              :search-field="searchField" :search-value="searchValue" @click-row="showRow" :rows-per-page="5"
+              :loading="Store.esperandoProductos">
               <template #item-image="item">
                 <img src="/inventario.jpg" alt="No image" class="img img-thumbnail"
                   style="width: 70px; height: 70px;" />
               </template>
               <template #item-opciones="item">
                 <div class="operation-wrapper">
-                  <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal" data-target="#editaProducto"
+                  <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal" data-target="#agregaProducto"
                     @click="clickEditarProducto(item.id)" v-b-tooltip.hover title="Modificar"><span
                       class="fas fa-edit"></span></button>
                   <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
@@ -252,7 +257,7 @@
                     @click="borrarU(item.id, item.attributes.descripcion, 1)" v-b-tooltip.hover title="Eliminar"><span
                       class="fas fas fa-trash-alt"></span></button>
                   <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode"
-                    @click="generarCodeBar(item.relationships.departamento.data.id, item.relationships.departamento.data.id, item.id)"
+                    @click="generarCodeBar(item.relationships.departamento.data.id, item.relationships.articulo.data.id, item.id)"
                     v-b-tooltip.hover title="Código de barra"><span class="fas fas fa-barcode"></span></button>
 
                 </div>
@@ -263,7 +268,7 @@
               <template #item-unidad="item">
                 {{ obtenMedida(item.relationships.medida.data.id) }} <!-- item.relationships.medida.data.id -->
               </template>
-              <template #loadingP>
+              <template #loading>
                 <img src="/cargando4.gif" style="width: 100px; height: 80px;" />
               </template>
               <template #empty-message>
@@ -401,82 +406,6 @@
       </div>
     </div>
 
-    <!-- Editar producto Modal-->
-    <div :class="'modal fade ' + showModal2" id="editaProductoss" tabindex="-1" role="dialog"
-      aria-labelledby="exampleModalLabel" :aria-hidden="activaHide2" :arial-modal="activaModal2" :style="displayModal2">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title text-info" id="exampleModalLabel">Datos del producto: " <i>{{
-              Store.formProductos.data.attributes.descripcion }}</i> "
-            </h5>
-            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true" class="text-info">×</span>
-            </button>
-          </div>
-          <div class="modal-body text-center">
-            <!-- <vue-barcode :value="cod" tag="svg"></vue-barcode> -->
-            <div class="col-lg-12">
-              <div class="">
-                <div class="text-center">
-                  <h1 class="h6 text-gray-900 mb-4">CAMPOS OBLIGATORIOS (<label style="color: red;">*</label>)</h1>
-                </div>
-                <form class="user">
-
-                  <div class="">
-                    <div class="text-center">
-                      <img v-if="image1 == ''" src="/inventario.jpg" style="width: 160px; height:160px"
-                        class="img img-thumbnail" alt="No image">
-                      <img v-if="image1 != ''" :src="image1" class="img img-thumbnail"
-                        style="width: 160px; height:160px" alt="No image">
-                      <br><br>
-                      <input type="file" id="avatar1" name="avatar1" accept="image/png, image/jpeg"
-                        @change="selecImagenO()" />
-                    </div>
-                  </div><br>
-                  <!-- <div class="row"> -->
-                  <!-- <FormKit label="Username" type="text" help="Pick a new username"
-                        validation="required|matches:/^@[a-zA-Z]+$/|length:5" value="@FormKit" /> -->
-                  <div class="form-group col-lg-12">
-                    <label class="text-info">Código: <label style="color: red;">*</label></label>
-                    <input type="text" class="form-control" id="codigo" aria-describedby="emailHelp"
-                      v-model="Store.formProductos.data.attributes.codigo" placeholder="Código" required>
-                  </div>
-                  <div class="form-group col-lg-12">
-                    <label class="text-info">Descripción: <label style="color: red;">*</label></label>
-                    <input type="text" class="form-control" id="descripcion" aria-describedby="emailHelp"
-                      v-model="Store.formProductos.data.attributes.descripcion" placeholder="Descripción del producto">
-                  </div>
-                  <div class="form-group col-lg-12">
-                    <label class="text-info">Observaciones: <label style="color: red;">*</label></label>
-                    <input type="text" class="form-control" id="descripcion" aria-describedby="emailHelp"
-                      v-model="Store.formProductos.data.attributes.observacion" placeholder="Observaciones del producto">
-                  </div>
-                  <div class="form-group col-lg-12">
-                    <label class="text-info">Unidad de medida:</label>
-                    <select class="form-group form-control">
-                      <option value="">Und(s)</option>
-                      <option value="">Kg(s)</option>
-                      <option value="">Lts(s)</option>
-                    </select>
-                  </div>
-                  <!-- </div> -->
-                  <!-- <div class="form-group">
-                      <label class="text-info">Imagen:</label>
-                      <input type="file" class="form-control" id="foto"> Seleccione una foto para el producto...
-                    </div> -->
-                </form>
-              </div>
-            </div>
-
-          </div>
-          <div class="modal-footer">
-            <a class="btn btn-info btn-sm" @click="editarU()" data-dismiss="modal">Modificar</a>
-            <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cerrar</button>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- Editar producto Modal-->
     <div @click="beforeDestroy()" :class="'modal fade ' + showModal2" id="escanearCode" tabindex="-1" role="dialog"
@@ -586,7 +515,7 @@
                 <select name="articulo" id="articulo" @change="verificar_error(3)"
                   style="width: 100%; text-align:center" placeholder="Artículo" class="text-gray-900 form-control"
                   v-model="Store.formProductos.data.attributes.articulo_id">
-                  <option v-for="dato in listadoArticulos" :key="dato.id" :value="dato.id">{{
+                  <option v-for="dato in itemsArticulos1" :key="dato.id" :value="dato.id">{{
                     dato.attributes.articulo }}</option>
                 </select>
                 <span style="color: red;">{{ errores.articulo_id }}</span>
@@ -607,7 +536,7 @@
                 <select name="articulo" id="articulo" @change="verificar_error(4)"
                   style="width: 100%; text-align:center" placeholder="Artículo" class="text-gray-900 form-control"
                   v-model="Store.formProductos.data.attributes.ubicacion_id">
-                  <option v-for="dato in listadoUbicaciones" :key="dato.id" :value="dato.id">{{
+                  <option v-for="dato in itemsUbicaciones1" :key="dato.id" :value="dato.id">{{
                     dato.attributes.ubicacion }}</option>
                 </select>
                 <span style="color: red;">{{ errores.ubicacion_id }}</span>
@@ -616,8 +545,8 @@
               <div class="form-group col-lg-12 text-left">
                 <label class="text-info">Cantidad: <label style="color: red;">*</label></label>
                 <input type="text" class="form-control" id="cantidadP" @change="verificar_error(5)"
-                  aria-describedby="emailHelp" v-model="Store.formProductos.data.attributes.cantidad" placeholder="Ej: 5"
-                  required>
+                  aria-describedby="emailHelp" v-model="Store.formProductos.data.attributes.cantidad"
+                  placeholder="Ej: 5" required>
                 <span style="color: red;">{{ errores.cantidad }}</span>
                 <!-- <select name="cantidad" id="cantidad" @change="verificar_error(5)" style="width: 100%; text-align:center"
                   placeholder="Artículo" class="text-gray-900 form-control"
@@ -644,12 +573,13 @@
                 </a>
               </div>
               <div v-if="editar" class="form-group h4 col-lg-6">
-                <a @click="editarUMedida()" class="btn btn-info btn-block" :class="deactiva">
+                <a @click="editarU()" class="btn btn-info btn-block" :class="deactiva">
                   {{ btnModificarM }}
                 </a>
               </div>
               <div v-if="editar" class="form-group h4 col-lg-6">
-                <a class="btn btn-danger btn-block" data-dismiss="modal" aria-label="close" :class="deactiva">
+                <a class="btn btn-danger btn-block" data-dismiss="modal" aria-label="close" @click="cancelarU"
+                  :class="deactiva">
                   Cancelar
                 </a>
               </div>
@@ -686,106 +616,227 @@
       </div>
     </div>
   </div>
-  <!-- Logout Modal-->
-  <div :class="'modal fade ' + showModal1" id="editaProducto" tabindex="-1" role="dialog"
+
+  <div :class="'modal fade ' + showModal1" id="agregaSucursales" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title text-info" id="exampleModalLabel" v-if="editar == false">NUEVO PRODUCTO</h5>
+          <h5 class="modal-title text-info" id="exampleModalLabel" v-if="editar == false">NUEVA SUCURSAL</h5>
           <h5 class="modal-title text-info text-center" id="exampleModalLabel" v-if="editar == true"><span
               class="fa fa-edit"></span>
-            MODIFICAR LOS DATOS DEL PRODUCTO <br>(<label style="color: red;">{{
-              Store.formProductos.data.attributes.descripcion
+            MODIFICAR LOS DATOS DE LA SUCURSAL <br>(<label style="color: red;">{{
+              Store.formSucursal.data.attributes.sucursal
             }}</label>)</h5>
-
+          <!-- <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+            style="text-align: center;">
+            <h6 class="m-0 font-weight-bold text-info" v-if="editar == false"><span class="fa fa-plus"></span>
+              AGREGAR
+              NUEVA MAGNITUD / <i style="color: red;">CAMPOS OBLIGATORIOS</i> (<label style="color: red;">*</label>)
+            </h6>
+            <h6 class="m-0 font-weight-bold text-info" v-if="editar == true"><span class="fa fa-edit"></span>
+              MODIFICAR LOS DATOS DE LA MAGNITUD <br>(<label style="color: red;">{{
+                formSucursal.data.attributes.magnitud
+              }}</label>)</h6>
+          </div> -->
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true" class="text-info">×</span>
           </button>
         </div>
         <div class="modal-body text-center">
-          <!-- <div class="text-center">
-            <h1 class="h6 text-gray-900 mb-4"><i>CAMPOS OBLIGATORIOS</i> (<label style="color: red;">*</label>)
-            </h1>
+
+          <form id="form">
+
+            <div class="col-lg-12">
+              <div class="">
+
+                <form class="user">
+
+                  <div class="row">
+                    <div class="form-group col-lg-12 text-left">
+                      <label class="text-info">Nombre: <label style="color: red;">*</label></label>
+                      <input type="text" class="form-control" id="sucursal" aria-describedby="emailHelp"
+                        v-model="Store.formSucursal.data.attributes.sucursal" placeholder="Ej: La Habana" required>
+                      <span style="color: red;">{{ errores.sucursal }}</span>
+                    </div>
+                    <div class="form-group col-lg-12 text-left">
+                      <label class="text-info">Abreviatura: <label style="color: red;">*</label></label>
+                      <input type="text" class="form-control" id="abreviatura" aria-describedby="emailHelp"
+                        v-model="Store.formSucursal.data.attributes.abreviatura" placeholder="Ej: HAB">
+                      <span style="color: red;">{{ errores.abreviatura }}</span>
+                    </div>
+                    <div class="form-group col-lg-12 text-left">
+                      <label class="text-info">Descripción: <label style="color: red;">*</label></label>
+                      <input type="text" class="form-control" id="descripcion" aria-describedby="emailHelp"
+                        v-model="Store.formSucursal.data.attributes.descripcion" placeholder="Ej: La bella Habana">
+                      <span style="color: red;">{{ errores.descripcion }}</span>
+                    </div>
+                    <div class="form-group col-lg-12 text-left">
+                      <label class="text-info">Observaciones:</label>
+                      <textarea class="form-control" id="observaciones"
+                        v-model="Store.formSucursal.data.attributes.observacion"
+                        placeholder="Ej: Observaciones de la Habana"></textarea>
+
+                    </div>
+                  </div>
+                  <!-- <div class="row">
+
+                      </div> -->
+
+
+                </form>
+              </div>
+              <div class="text-center">
+                <h1 class="h6 text-gray-900 mb-4"><i>CAMPOS OBLIGATORIOS</i> (<label style="color: red;">*</label>)
+                </h1>
+              </div>
+              <div class="row">
+
+                <div v-if="editar == false" class="form-group h4 col-lg-3">
+
+                </div>
+                <div v-if="editar == false" class="form-group h4 col-lg-6">
+                  <a @click="agregarU" class="btn btn-info btn-block" :class="disabledMagnitudBtn">
+                    {{ GuardarMag }}
+                  </a>
+                </div>
+                <div v-if="editar" class="form-group h4 col-lg-6">
+                  <a @click="editarU" class="btn btn-info btn-block" :class="btnModificarClass">
+                    {{ btnModificar }}
+                  </a>
+                </div>
+                <div v-if="editar" class="form-group h4 col-lg-6">
+                  <a @click="cancelarU()" class="btn btn-danger btn-block" :class="btnModificarClass"
+                    data-dismiss="modal" aria-label="Close">
+                    Cancelar
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="modal-footer" style="text-align: center;"> -->
+            <!-- <a class="btn btn-info" @click="AColumnas">Aceptar</a> -->
+            <!-- <button class="btn btn-secondary btn-sm" type="submit" id="button" @click="enviarEmail()">Enviar</button> -->
+            <!-- <div class="row">
+
+              <div v-if="editar == false" class="form-group h4 col-lg-1">
+
+              </div>
+              <div v-if="editar == false" class="form-group h4 col-lg-6">
+                <a @click="agregarU" class="btn btn-info btn-block">
+                  Guardar datos
+                </a>
+              </div>
+              <div v-if="editar" class="form-group h4 col-lg-6">
+                <a @click="editarU" class="btn btn-info btn-block">
+                  {{ btnModificar }}
+                </a>
+              </div>
+              <div v-if="editar" class="form-group h4 col-lg-6">
+                <a @click="cancelarU()" class="btn btn-danger btn-block" data-dismiss="modal" aria-label="Close">
+                  Cancelar
+                </a>
+              </div>
+              </div> -->
+            <!-- </div> -->
+          </form>
+
+          <!-- <div>
+            <card class="card-section" style="width: 450px; margin: auto">
+              <h1>Contact Form</h1>
+              <form ref="values" @submit.prevent="sendEmail">
+                <div class="form-group">
+                  <KInput class="form-input" :style="{ width: '290px' }" name="name" v-model="user_name"
+                    placeholder="Name"></KInput>
+                </div>
+                <div class="form-group">
+                  <KInput class="form-input" :style="{ width: '290px' }" name="email" v-model="user_email"
+                    placeholder="email address"></KInput>
+                </div>
+                <div class="form-group">
+                  <kTextarea class="form-input" :style="{ width: '290px' }" name="message" v-model="user_message"
+                    placeholder="Message" :rows="4" />
+                </div>
+                <div class="example-col">
+                  <kButton :style="{ width: '100px' }" id="submit-btn">Submit form</kButton>
+                </div>
+              </form>
+            </card>
           </div> -->
+          <!-- <vue-barcode :value="cod" tag="svg"></vue-barcode> -->
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Logout Modal-->
+  <div :class="'modal fade ' + showModal1" id="agregaUbicaciones" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-info" id="exampleModalLabel" v-if="editar == false">NUEVA UBICACIÓN</h5>
+          <h5 class="modal-title text-info text-center" id="exampleModalLabel" v-if="editar == true"><span
+              class="fa fa-edit"></span>
+            MODIFICAR LOS DATOS DE LA UBICACIÓN <br>(<label style="color: red;">{{
+              Store.formUbicaciones.data.attributes.ubicacion
+            }}</label>)</h5>
+
+          <!-- <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+            style="text-align: center;">
+            <h6 class="m-0 font-weight-bold text-info" v-if="editar == false"><span class="fa fa-plus"></span>
+              AGREGAR
+              NUEVA MAGNITUD / <i style="color: red;">CAMPOS OBLIGATORIOS</i> (<label style="color: red;">*</label>)
+            </h6>
+            <h6 class="m-0 font-weight-bold text-info" v-if="editar == true"><span class="fa fa-edit"></span>
+              MODIFICAR LOS DATOS DE LA MAGNITUD <br>(<label style="color: red;">{{
+                formSucursal.data.attributes.magnitud
+              }}</label>)</h6>
+          </div> -->
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="text-info">×</span>
+          </button>
+        </div>
+        <div class="modal-body text-center">
+
           <form class="user">
 
             <div class="row">
               <div class="form-group col-lg-12 text-left">
-                <label class="text-info">Descripción del producto: <label style="color: red;">*</label></label>
-                <input type="text" class="form-control" id="descripcionP" @change="verificar_error(1)"
-                  aria-describedby="emailHelp" v-model="Store.formProductos.data.attributes.descripcion"
-                  placeholder="Ej: Blusa" required>
-                <span style="color: red;">{{ errores.descripcion }}</span>
+                <label class="text-info">Nombre: <label style="color: red;">*</label></label>
+                <input type="text" class="form-control" id="ubicacion" aria-describedby="emailHelp"
+                  v-model="Store.formUbicaciones.data.attributes.ubicacion" placeholder="Ej: Casa de Pepe" required>
+                <span style="color: red;">{{ errores.ubicacion }}</span>
               </div>
               <div class="form-group col-lg-12 text-left">
-                <label class="text-info">Observaciones: <label style="color: red;">*</label></label>
-                <input type="text" class="form-control" id="observacionP" @change="verificar_error(2)"
-                  aria-describedby="emailHelp" v-model="Store.formProductos.data.attributes.observacion"
-                  placeholder="Ej: La blusa es para la playa">
-                <span style="color: red;">{{ errores.observacion }}</span>
+                <label class="text-info">Descripción: <label style="color: red;">*</label></label>
+                <input type="text" class="form-control" id="descripcionUbic" aria-describedby="emailHelp"
+                  v-model="Store.formUbicaciones.data.attributes.descripcion" placeholder="Ej: La casa de Pepe">
+                <span style="color: red;">{{ errores.descripcionUbica }}</span>
               </div>
 
             </div>
-            <div class="row">
-              <div class="form-group col-lg-12 text-left">
-                <label class="text-info ">Seleccione el artículo: <label style="color: red;">*</label>&nbsp; &nbsp;
-                  &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;
-                  &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;
-                  &nbsp;&nbsp; &nbsp; &nbsp;
-                  <!-- <router-link class="button" to="/categorias">
-                    <button class="btn btn-danger" v-b-tooltip.hover title="Agregar artículo"><span
-                        class="fa fa-plus"></span></button>
-                  </router-link> -->
-                </label>
-                <select name="articulo" id="articulo" @change="verificar_error(3)"
-                  style="width: 100%; text-align:center" placeholder="Artículo" class="text-gray-900 form-control"
-                  v-model="Store.formProductos.data.attributes.articulo_id">
-                  <option v-for="dato in listadoArticulos" :key="dato.id" :value="dato.id">{{
-                    dato.attributes.articulo }}</option>
-                </select>
-                <span style="color: red;">{{ errores.articulo_id }}</span>
-              </div>
+            <div class="form-group text-left">
+              <label class="text-info">Observaciones:</label>
+              <textarea class="form-control" id="observacionesUbi"
+                v-model="Store.formUbicaciones.data.attributes.observacion"
+                placeholder="Observaciones de la ubicación"></textarea>
 
             </div>
-            <!-- <div class="row">
-                <div class="col-lg-11 text-left">
-                  <label for="d" class="text-info">Seleccione el artículo:</label>
-                </div>
-                <div class="col-lg-1">
-                  <label for="d" class="text-left"><button class="btn btn-danger"><span class="fa fa-plus"></span></button></label>
-                </div>
-              </div> -->
-            <div class="row">
-              <div class="form-group col-lg-12 text-left">
-                <label class="text-info">Seleccione la ubicación: <label style="color: red;">*</label></label>
-                <select name="articulo" id="articulo" @change="verificar_error(4)"
-                  style="width: 100%; text-align:center" placeholder="Artículo" class="text-gray-900 form-control"
-                  v-model="Store.formProductos.data.attributes.ubicacion_id">
-                  <option v-for="dato in listadoUbicaciones" :key="dato.id" :value="dato.id">{{
-                    dato.attributes.ubicacion }}</option>
-                </select>
-                <span style="color: red;">{{ errores.ubicacion_id }}</span>
-              </div>
-
-              <div class="form-group col-lg-12 text-left">
-                <label class="text-info">Cantidad: <label style="color: red;">*</label></label>
-                <input type="text" class="form-control" id="cantidadP" @change="verificar_error(5)"
-                  aria-describedby="emailHelp" v-model="Store.formProductos.data.attributes.cantidad" placeholder="Ej: 5"
-                  required>
-                <span style="color: red;">{{ errores.cantidad }}</span>
-                <!-- <select name="cantidad" id="cantidad" @change="verificar_error(5)" style="width: 100%; text-align:center"
-                  placeholder="Artículo" class="text-gray-900 form-control"
-                  v-model="formProductos.data.attributes.cantidad">
-                  <option value="1"> 1 </option>
-                  <option value="10"> 10 </option>
-                </select> -->
-                <!-- <span v-if="errores.ubicacion_id == 0" style="color: red;">Este campo es obligatorio</span> -->
-              </div>
+            <div class="form-group col-lg-12 text-left">
+              <label class="text-info">Seleccione una Sucursal: <label style="color: red;">*</label></label>
+              <select name="IDmagnitud" id="IDmagnitud" style="width: 100%; text-align:center"
+                placeholder="Unidad de medida" class="text-gray-900 form-control"
+                v-model="Store.formUbicaciones.data.attributes.sucursal_id">
+                <option v-for="dato in itemsSucursales1" :key="dato.id" :value="dato.id">{{
+                  dato.attributes.sucursal }}</option>
+              </select>
+              <span style="color: red;">{{ errores.sucursal_id }}</span>
             </div>
-
             <div class="text-center">
-              <h1 class="h6 text-gray-900 mb-3">CAMPOS OBLIGATORIOS (<label style="color: red;">*</label>)
+              <h1 class="h6 text-gray-900 mb-4"><i>CAMPOS OBLIGATORIOS</i> (<label style="color: red;">*</label>)
               </h1>
             </div>
 
@@ -794,8 +845,8 @@
 
               </div>
               <div v-if="editar == false" class="form-group h4 col-lg-6">
-                <a @click="agregarUProducto()" class="btn btn-info btn-block" :class="disabledProductoBtn">
-                  {{ GuardarProducto }}
+                <a @click="agregarUMedida" class="btn btn-info btn-block" :class="disabledMedidaBtn">
+                  {{ GuardarMedida }}
                 </a>
               </div>
               <div v-if="editar" class="form-group h4 col-lg-6">
@@ -804,7 +855,8 @@
                 </a>
               </div>
               <div v-if="editar" class="form-group h4 col-lg-6">
-                <a class="btn btn-danger btn-block" data-dismiss="modal" aria-label="close" :class="deactiva">
+                <a class="btn btn-danger btn-block" data-dismiss="modal" aria-label="close" :class="deactiva"
+                  @click="cancelarUMedida()">
                   Cancelar
                 </a>
               </div>
@@ -860,9 +912,14 @@ import '@vuepic/vue-datepicker/dist/main.css';
 import * as XLSX from 'xlsx';
 import Quagga from 'quagga';
 import { useStoreAxios } from '@/store/AxiosStore';
+import { ErrorFull, itemsMedidas, itemsUbicaciones, successFull } from './controler/ControlerApp';
+import { EditarDatos, EliminarDatos, GuardarDatos, obtenerDatos } from './helper/useAxios';
 // import { almacenDatosProductos, GuardarDatos, obtenerArticulos, obtenerProductos, obtenerUbicaciones } from './service/servicio';
 // import { disabledProductos, esperandoProductos, formProductos, itemsProductos, listadoArticulos, listadoMedida, listadoProductos, listadoUbicaciones, loadingP } from './controler/ControlerApp';
 const Store = useStoreAxios()
+
+const disabledProductos = ref('')
+
 const prueba = () => {
   successFull("Okkk", "top-center")
 }
@@ -875,20 +932,32 @@ let btnModificarM = ref('Modificar');
 
 const disabledProductoBtn = ref('')
 
+const itemsMedidas1 = ref([])
+
+const itemsProductos1 = ref([])
+
+const itemsArticulos1 = ref([])
+
+const itemsUbicaciones1 = ref([])
+
 const agrega = () => {
   editar.value = false
+  errores.value.articulo_id = "";
+  errores.value.ubicacion_id = "";
+  errores.value.descripcion = "";
+  errores.value.observacion = "";
+  errores.value.cantidad = "";
 }
 
 let y = 0;
 
 const obtenMedida = (id) => {
   const val = ref('')
-  if (localStorage.getItem("Carg_datMe") != '0') {
-    for (let index = 0; index < listadoMedida.value.length; index++) {
-      if (id == listadoMedida.value[index].id) {
-        // console.log(listadoMedida.value[index].id)
-        return listadoMedida.value[index].attributes.medida
-      }
+
+  for (let index = 0; index < itemsMedidas1.value.length; index++) {
+    if (id == itemsMedidas1.value[index].id) {
+      // console.log(listadoMedida.value[index].id)
+      return itemsMedidas1.value[index].attributes.medida
     }
   }
 
@@ -897,35 +966,35 @@ const obtenMedida = (id) => {
 const verificar_error = (n) => {
   switch (n) {
     case 1:
-      if (formProductos.data.attributes.descripcion != '') {
+      if (Store.formProductos.data.attributes.descripcion != '') {
         errores.value.descripcion = "";
       } else {
         errores.value.descripcion = "Este campo es obligatorio"
       }
       break;
     case 2:
-      if (formProductos.data.attributes.observacion != '') {
+      if (Store.formProductos.data.attributes.observacion != '') {
         errores.value.observacion = "";
       } else {
         errores.value.observacion = "Este campo es obligatorio"
       }
       break;
     case 3:
-      if (formProductos.data.attributes.articulo_id != 0) {
+      if (Store.formProductos.data.attributes.articulo_id != 0) {
         errores.value.articulo_id = "";
       } else {
         errores.value.articulo_id = "Este campo es obligatorio"
       }
       break;
     case 4:
-      if (formProductos.data.attributes.ubicacion_id != 0) {
+      if (Store.formProductos.data.attributes.ubicacion_id != 0) {
         errores.value.ubicacion_id = "";
       } else {
         errores.value.ubicacion_id = "Este campo es obligatorio"
       }
       break;
     case 5:
-      if (formProductos.data.attributes.cantidad != 0) {
+      if (Store.formProductos.data.attributes.cantidad != 0) {
         errores.value.cantidad = "";
       } else {
         errores.value.cantidad = "Este campo es obligatorio"
@@ -955,72 +1024,61 @@ const verificar_error = (n) => {
 const errores = ref({ descripcion: "", observacion: "", articulo_id: "", ubicacion_id: "", cantidad: "" })
 
 const agregarUProducto = async () => {
-  esperando.value = true;
+  Store.cambiaEstado(1);
   // console.log(formProductos.data)
-  if (formProductos.data.attributes.descripcion != '' && formProductos.data.attributes.articulo_id != 0 && formProductos.data.attributes.observacion != '' && formProductos.data.attributes.ubicacion_id != 0) {
+  if (Store.formProductos.data.attributes.descripcion != '' && Store.formProductos.data.attributes.articulo_id != 0 && Store.formProductos.data.attributes.observacion != '' && Store.formProductos.data.attributes.ubicacion_id != 0) {
     // console.log("OKKKK")
     GuardarProducto.value = 'Guardando...';
     disabledProductoBtn.value = 'disabled';
-    await GuardarDatos(formProductos, 1)
-      .then((response) => {
-        console.log(response);
-      })
-    // axios.post(`https://` + ipPublica.value + `/fullstack/public/productos`, formProductos)
-    //   .then((response) => {
-    //     if (response.data.data == null) {
-    //       ErrorFull(response.data.data)
-    //     } else {
-    //       cargado.value = false;
-    //       esperandoProductos.value = false;
-    //       formProductos.data.attributes.observacion = '';
-    //       formProductos.data.attributes.cantidad = '';
-    //       formProductos.data.attributes.descripcion = '';
-    //       loadingP.value = true;
-    //       // emit('actualiza', 7)
-    //       // emit('actualiza', 8)
-    //       // if (listadoProductos.value.length == 0) {
-    //       //   listadoProductos.value.push(response.data.data)
-    //       // } else {
-    //       listadoProductos.value.push(response.data.data)
-    //       // }
-    //       // console.log(listadoProductos.value)
-    //       almacenDatosProductos(listadoProductos.value);
-    //       listadoProductos.value = JSON.parse(localStorage.getItem('ListadoCacheProductos'));
-    //       obtenerProductos()
-    //       loadingP.value = false;
-    //       GuardarMedida.value = 'Agregar';
-    //       disabledProductoBtn.value = ''
-    //       successFull("Producto agregado satisfactoriamente.", "top-end")
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     // if (error.response.status === 400) {
-    //     //   errors.value = error.response.data.message;
-    //     // }
-    //     console.log("Error")
-    //     esperando.value = false;
-    //     GuardarProducto.value = 'Agregar';
-    //     disabledProductoBtn.value = ''
-    //     // ErrorFull(error.response.data.message, "top-start")
-    //   })
+    const response = await GuardarDatos(Store.formProductos, 1);
+    if (!response) {
+      Store.cambiaEstado(1)
+    } else {
+      disabledProductoBtn.value = '';
+      GuardarProducto.value = 'Agregar'
+      // console.log(response)
+      Store.formProductos.data.attributes.cantidad = '';
+      Store.formProductos.data.attributes.descripcion = '';
+      Store.formProductos.data.attributes.ubicacion_id = '';
+      Store.formProductos.data.attributes.articulo_id = '';
+      Store.formProductos.data.attributes.observacion = '';
+      Store.AddProductos(response)
+      itemsProductos1.value = Store.itemsProductos;
+      successFull("Producto agregado satisfactoriamente.", "top-end")
+      GuardarProducto.value = 'Agregar';
+      disabledProductoBtn.value = '';
+      Store.cambiaEstado(1)
+    }
   } else {
-    if (formProductos.data.attributes.descripcion == '') {
+    if (Store.formProductos.data.attributes.descripcion == '') {
       errores.value.descripcion = "Este campo es obligatorio";
+    } else {
+      errores.value.descripcion = "";
     }
-    if (formProductos.data.attributes.observacion == '') {
+
+    if (Store.formProductos.data.attributes.observacion == '') {
       errores.value.observacion = "Este campo es obligatorio";
+    } else {
+      errores.value.observacion = "";
     }
-    if (formProductos.data.attributes.articulo_id == '') {
+    if (Store.formProductos.data.attributes.articulo_id == '') {
       errores.value.articulo_id = 'Este campo es obligatorio';
+    } else {
+      errores.value.articulo_id = "";
     }
-    if (formProductos.data.attributes.ubicacion_id == '') {
+    if (Store.formProductos.data.attributes.ubicacion_id == '') {
       errores.value.ubicacion_id = 'Este campo es obligatorio';
+    } else {
+      errores.value.ubicacion_id = "";
     }
-    if (formProductos.data.attributes.cantidad == '') {
+    if (Store.formProductos.data.attributes.cantidad == '') {
       errores.value.cantidad = 'Este campo es obligatorio';
+    } else {
+      errores.value.cantidad = "";
     }
-    GuardarMedida.value = 'Agregar';
+    GuardarProducto.value = 'Agregar';
     disabledProductoBtn.value = ''
+    Store.cambiaEstado(1)
     ErrorFull("Debe llenar todos los campos obligatorios", "top-start")
   }
 
@@ -1164,12 +1222,13 @@ function ExportExcel() {
   // emit('consultar', 2);
   // console.log(items.value)
 
-  for (let index = 0; index < listadoProductos.value.length; index++) {
-    elementos.value.type = listadoProductos.value[index].type;
-    elementos.value.cantidad = listadoProductos.value[index].attributes.cantidad;
-    elementos.value.descripcion = listadoProductos.value[index].attributes.descripcion;
-    elementos.value.observacion = listadoProductos.value[index].attributes.observacion;
-    elementos.value.codigo = listadoProductos.value[index].relationships.departamento.data.id.toString() + listadoProductos.value[index].relationships.articulo.data.id.toString() + listadoProductos.value[index].id.toString()
+  for (let index = 0; index < itemsProductos1.value.length; index++) {
+    elementos.value.type = itemsProductos1.value[index].type;
+    elementos.value.cantidad = itemsProductos1.value[index].attributes.cantidad;
+    elementos.value.descripcion = itemsProductos1.value[index].attributes.descripcion;
+    elementos.value.observacion = itemsProductos1.value[index].attributes.observacion;
+    elementos.value.unidad = obtenMedida(itemsProductos1.value[index].relationships.medida.data.id)
+    elementos.value.codigo = itemsProductos1.value[index].relationships.departamento.data.id.toString() + itemsProductos1.value[index].relationships.articulo.data.id.toString() + itemsProductos1.value[index].id.toString()
     nuevoArreglo.value.push(elementos.value)
     elementos.value = []
   }
@@ -1183,6 +1242,7 @@ function ExportExcel() {
   const fileName = 'Productos.xlsx';
   // // Guardar el archivo execl
   XLSX.writeFile(workbook, fileName);
+  successFull("Documento creado satisfactoriamente.", "top-end")
 }
 
 function ImprimirDoc() {
@@ -1218,49 +1278,27 @@ const abrirModalAddProd = () => {
 
 }
 
-const editarU = () => {
-  esperando.value = true;
-  axios.put(`http://${ipPublica.value}/fullstack/public/productos/${id.value}`, formProductos)
-    .then(() => {
-      // console.log(response)
-      esperando.value = false;
-      cerrarAlert();
-      cargado.value = false;
-      consultar();
-      editar.value = false;
-      formProductos.data.attributes.descripcion = ''
-      formProductos.data.attributes.observacion = '';
-      formProductos.data.attributes.codigo = '';
-      successFull("Producto editado satisfactoriamente.", "top-end")
-      // showModal2.value = '';
-      // activaModal2.value = false;
-      // show2.value = '';
-      // activaShow2.value = false;
-      // activaHide2.value = true;
-      // displayModal2.value = 'display: none;';
-      // showModBack.value = '';
-      // cerrarModal()
+const deactiva = ref('')
 
-      // Swal.fire({
-      //   icon: "success",
-      //   title: "Editado satisfactoriamente."
-      // })
-      // editar.value = false;
-      // localStorage.setItem("editar", editar.value);
-    })
-    .catch((error) => {
-      // console.log(error)
-      if (error.response.status === 500) {
-        errors.value = error.response.data;
-      }
-      esperando.value = false;
-      ErrorFull(error.response.data.message, "top-start")
-      // cerrarAlert();
-      // Swal.fire({
-      //   icon: "danger",
-      //   title: "Error realizando operación."
-      // })
-    })
+const editarU = async () => {
+  Store.cambiaEstado(1);
+  btnModificarM.value = 'Actualizando...'
+  deactiva.value = 'disabled';
+  const response = await EditarDatos(id.value, Store.formProductos, 1);
+
+  // console.log(response)
+  editar.value = false;
+  Store.formProductos.data.attributes.descripcion = ''
+  Store.formProductos.data.attributes.ubicacion_id = ''
+  Store.formProductos.data.attributes.observacion = '';
+  Store.formProductos.data.attributes.articulo_id = ''
+  Store.formProductos.data.attributes.cantidad = '';
+  Store.EditProductos(response)
+  itemsProductos1.value = Store.itemsProductos;
+  btnModificarM.value = 'Modificar'
+  deactiva.value = ''
+  successFull("Producto modificado satisfactoriamente.", "top-end")
+  Store.cambiaEstado(1);
 }
 
 const showRow = () => {
@@ -1291,7 +1329,7 @@ const showRow = () => {
 //   }
 // }
 
-const searchField = ref("attributes.codigo");
+const searchField = ref(["id", "attributes.descripcion", "attributes.observacion", "attributes.cantidad"]);
 
 const searchField1 = ref('')
 
@@ -1384,14 +1422,14 @@ const clickEditarProducto = async (idSelect) => {
   // console.log(idSelect)
   // localStorage.setItem("editar", editar.value);
   id.value = idSelect;
-  for (let index = 0; index < listadoProductos.value.length; index++) {
-    const element = listadoProductos.value[index].id;
+  for (let index = 0; index < itemsProductos1.value.length; index++) {
+    const element = itemsProductos1.value[index].id;
     if (element == idSelect) {
-      formProductos.data.attributes.descripcion = listadoProductos.value[index].attributes.descripcion;
-      formProductos.data.attributes.cantidad = listadoProductos.value[index].attributes.cantidad;
-      formProductos.data.attributes.observacion = listadoProductos.value[index].attributes.observacion;
-      formProductos.data.attributes.articulo_id = listadoProductos.value[index].relationships.articulo.data.id;
-      formProductos.data.attributes.ubicacion_id = listadoProductos.value[index].relationships.ubicacion.data.id;
+      Store.formProductos.data.attributes.descripcion = itemsProductos1.value[index].attributes.descripcion;
+      Store.formProductos.data.attributes.cantidad = itemsProductos1.value[index].attributes.cantidad;
+      Store.formProductos.data.attributes.observacion = itemsProductos1.value[index].attributes.observacion;
+      Store.formProductos.data.attributes.articulo_id = itemsProductos1.value[index].relationships.articulo.data.id;
+      Store.formProductos.data.attributes.ubicacion_id = itemsProductos1.value[index].relationships.ubicacion.data.id;
       break;
     }
   }
@@ -1733,9 +1771,11 @@ const consultar = async () => {
 
 const cancelarU = () => {
   editar.value = false;
-  formProductos.data.attributes.descripcion = '';
-  formProductos.data.attributes.codigo = '';
-  formProductos.data.attributes.observacion = '';
+  Store.formProductos.data.attributes.descripcion = '';
+  Store.formProductos.data.attributes.cantidad = '';
+  Store.formProductos.data.attributes.articulo_id = '';
+  Store.formProductos.data.attributes.ubicacion_id = '';
+  Store.formProductos.data.attributes.observacion = '';
 }
 
 const borrarU = async (id, correo, caso) => {
@@ -1749,24 +1789,39 @@ const borrarU = async (id, correo, caso) => {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Sí, eliminar"
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        esperando.value = true;
-        cargado.value = false;
-        // Eliminar //
-        axios.delete(`http://${ipPublica.value}/fullstack/public/productos/${id}`)
-          .then(() => {
-            esperando.value = false;
-            consultar();
-            // cerrarAlert();
-            cancelarU();
-            successFull("Producto eliminado satisfactoriamente.", "top-start")
-          }).catch((error) => {
-            esperando.value = false;
-            ErrorFull(error.response.data.message, "top-start")
-          });
+        Store.cambiaEstado(1);
+        const response = await EliminarDatos(id, 1);
+        if (!response) {
+          Store.cambiaEstado(1);
+        } else {
+          Store.DeleteProducto(response);
+          itemsProductos1.value = Store.itemsProductos;
+          successFull("Producto eliminado satisfactoriamente.", "top-end")
+          Store.cambiaEstado(1);
+        }
+
       }
     })
+    // .then((result) => {
+    //   if (result.isConfirmed) {
+    //     esperando.value = true;
+    //     cargado.value = false;
+    //     // Eliminar //
+    //     axios.delete(`http://${ipPublica.value}/fullstack/public/productos/${id}`)
+    //       .then(() => {
+    //         esperando.value = false;
+    //         consultar();
+    //         // cerrarAlert();
+    //         cancelarU();
+    //         successFull("Producto eliminado satisfactoriamente.", "top-start")
+    //       }).catch((error) => {
+    //         esperando.value = false;
+    //         ErrorFull(error.response.data.message, "top-start")
+    //       });
+    //   }
+    // })
   } else {
     Swal.fire({
       title: "Confirmación",
@@ -1836,73 +1891,80 @@ const borrarU = async (id, correo, caso) => {
 // })
 
 // const itemsProductos = ref(listadoProductos)
-// onMounted(async () => {
-//   if (localStorage.getItem('userName')) {
-//     // ipPublica.value = localStorage.getItem('Host_back');
-//     if (localStorage.getItem('Carg_datP') != '0') {
-//       disabledProductos.value = 'disabled';
-//       loadingP.value = true;
-//       listadoProductos.value = JSON.parse(localStorage.getItem('ListadoCacheProductos'));
-//       obtenerProductos();
-//     }
+onMounted(async () => {
+  if (localStorage.getItem('userName')) {
+    // ipPublica.value = localStorage.getItem('Host_back');
+    if (localStorage.getItem('Carg_datP') == '0') {
+      disabledProductos.value = 'disabled';
+      Store.cambiaEstado(1)
+      const response = await obtenerDatos(1);
+      if (response.length > 0) {
+        Store.setListadoProductos(response)
+      }
+      localStorage.setItem("Carg_datP", "1");
+      itemsProductos1.value = Store.itemsProductos;
+      Store.cambiaEstado(1)
 
-//     if (localStorage.getItem('Carg_datA') != '0') {
-//       // console.log
-//       listadoArticulos.value = JSON.parse(localStorage.getItem('ListadoCacheArticulos'));
-//       obtenerArticulos();
-//     }
+    } else {
+      Store.cambiaEstado(1)
+      itemsProductos1.value = Store.itemsProductos;
+      Store.cambiaEstado(1)
+    }
 
-//     if (localStorage.getItem("Carg_datU") != '0') {
-//       listadoUbicaciones.value = JSON.parse(localStorage.getItem('ListadoCacheUbicaciones'));
-//       obtenerUbicaciones();
+    if (localStorage.getItem('Carg_datA') == '0') {
+      Store.cambiaEstado(3)
+      const response = await obtenerDatos(5);
+      if (response.length > 0) {
+        Store.setListadoArticulos(response)
+      }
+      localStorage.setItem("Carg_datA", "1");
+      itemsArticulos1.value = Store.itemsArticulos;
+      Store.cambiaEstado(3)
 
-//     }
-//     disabledProductos.value = '';
-//     loadingP.value = false;
-//     // loadingP.value = true;
-//     // disabledProductos.value = 'disabled';
-//     // listadoProductos.value = await obtenerDatos(1);
-//     // almacenDatosProductos(listadoProductos.value);
-//     // obtenerProductos();
-//     // localStorage.setItem("Carg_datP", "1")
-//     // if (localStorage.getItem('Carg_datA') == '0') {
-//     //   listadoArticulos.value = obtenerDatos(5);
-//     //   almacenDatosArticulos(listadoArticulos.value);
-//     //   disabledProductos.value = '';
-//     //   localStorage.setItem('Carg_datA', '1')
-//     // }
-//     // if (localStorage.getItem('Carg_datU') == '0') {
-//     //   listadoUbicaciones.value = obtenerDatos(7);
-//     //   almacenDatosUbicaciones(listadoUbicaciones.value);
-//     //   disabledProductos.value = '';
-//     //   localStorage.setItem('Carg_datU', '1')
-//     // }
-//     // if (localStorage.getItem('Carg_datMe') == '0') {
-//     //   listadoMedida.value = obtenerDatos(3);
-//     //   almacenDatosMedida(listadoMedida.value);
-//     //   localStorage.setItem('Carg_datMe', '1')
-//     // }
-//     // }
-//     // else {
-//     //   disabledProductos.value = 'disabled';
-//     //   listadoProductos.value = await obtenerDatos(1);
-//     // disabledProductos.value = 'disabled';
-//     // loadingP.value = true;
-//     // listadoProductos.value = JSON.parse(localStorage.getItem('ListadoCacheProductos'));
-//     // obtenerProductos();
-//     // // console.log(listadoProductos.value)
-//     // listadoArticulos.value = JSON.parse(localStorage.getItem('ListadoCacheArticulos'));
-//     // obtenerArticulos();
-//     // listadoUbicaciones.value = JSON.parse(localStorage.getItem('ListadoCacheUbicaciones'));
-//     // listadoMedida.value = JSON.parse(localStorage.getItem('ListadoCacheUnidades'));
-//     // disabledProductos.value = '';
-//     // loadingP.value = false;
-//     // }
+    } else {
+      Store.cambiaEstado(3)
+      itemsArticulos1.value = Store.itemsArticulos;
+      Store.cambiaEstado(3)
+    }
 
-//   } else {
-//     router.push('/login');
-//   }
-// })
+    if (localStorage.getItem("Carg_datU") == '0') {
+      Store.cambiaEstado(7)
+      const response = await obtenerDatos(7);
+      if (response.length > 0) {
+        Store.setListadoUbicaciones(response)
+        localStorage.setItem("Carg_datU", "1");
+        itemsUbicaciones1.value = Store.itemsUbicaciones;
+        Store.cambiaEstado(7)
+      }
+    } else {
+      Store.cambiaEstado(7)
+      itemsUbicaciones1.value = Store.itemsUbicaciones;
+      Store.cambiaEstado(7)
+
+    }
+
+    if (localStorage.getItem("Carg_datMe") == "0") {
+
+      const response = await obtenerDatos(3);
+      if (!response) {
+
+      } else {
+        if (response.length > 0) {
+          Store.setListadoMedidas(response)
+        }
+        localStorage.setItem("Carg_datMe", "1");
+        itemsMedidas1.value = Store.itemsMedidas;
+      }
+
+    } else {
+      itemsMedidas1.value = Store.itemsMedidas;
+    }
+    disabledProductos.value = '';
+
+  } else {
+    router.push('/login');
+  }
+})
 
 
 </script>

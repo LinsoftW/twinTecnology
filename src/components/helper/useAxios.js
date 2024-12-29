@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const url = "https://192.168.121.123/fullstack/public/inventario/";
+const url = "https://192.168.43.123/fullstack/public/inventario/";
 
 const apiService = axios.create({
   baseURL: url,
@@ -228,7 +228,7 @@ export async function EditarDatos(id, datos, n) {
   switch (n) {
     case 1:
       try {
-        const response = await axios.put(`${url}productos/${id}`, datos);
+        const response = await axios.patch(`${url}productos/${id}`, datos);
         return response.data.data;
       } catch (error) {
         throw error;
@@ -236,7 +236,7 @@ export async function EditarDatos(id, datos, n) {
       break;
     case 2:
       try {
-        const response = await axios.put(`${url}sucursales/${id}`, datos);
+        const response = await axios.patch(`${url}sucursales/${id}`, datos);
         return response.data.data;
       } catch (error) {
         throw error;
@@ -244,7 +244,7 @@ export async function EditarDatos(id, datos, n) {
       break;
     case 3:
       try {
-        const response = await axios.put(`${url}medidas/${id}`, datos);
+        const response = await axios.patch(`${url}medidas/${id}`, datos);
         return response.data.data;
       } catch (error) {
         throw error;
@@ -261,7 +261,7 @@ export async function EditarDatos(id, datos, n) {
       break;
     case 5:
       try {
-        const response = await axios.put(`${url}articulos/${id}`, datos);
+        const response = await axios.patch(`${url}articulos/${id}`, datos);
         return response.data.data;
       } catch (error) {
         throw error;
@@ -269,7 +269,7 @@ export async function EditarDatos(id, datos, n) {
       break;
     case 6:
       try {
-        const response = await axios.put(`${url}departamentos/${id}`, datos);
+        const response = await axios.patch(`${url}departamentos/${id}`, datos);
         return response.data.data;
       } catch (error) {
         throw error;
@@ -277,7 +277,7 @@ export async function EditarDatos(id, datos, n) {
       break;
     case 7:
       try {
-        const response = await axios.put(`${url}ubicaciones/${id}`, datos);
+        const response = await axios.patch(`${url}ubicaciones/${id}`, datos);
         return response.data.data;
       } catch (error) {
         throw error;
@@ -285,7 +285,7 @@ export async function EditarDatos(id, datos, n) {
       break;
     case 8:
       try {
-        const response = await axios.put(`${url}etiquetas/${id}`, datos);
+        const response = await axios.patch(`${url}etiquetas/${id}`, datos);
         return response.data.data;
       } catch (error) {
         throw error;

@@ -1483,14 +1483,12 @@ const salir = () => {
   }).then((result) => {
     if (result.isConfirmed) {
       localStorage.removeItem('userName');
-      localStorage.removeItem('ListadoCache');
-      localStorage.removeItem('ListadoCacheUnidades');
-      localStorage.removeItem('ListadoCacheMagnitudes');
-      // localStorage.removeItem('ListadoCacheMedidas');
-      localStorage.removeItem('ListadoCacheSucursal');
+      // localStorage.removeItem('ListadoCache');
+      // localStorage.removeItem('ListadoCacheUnidades');
+      // localStorage.removeItem('ListadoCacheMagnitudes');
+      // // localStorage.removeItem('ListadoCacheMedidas');
+      // localStorage.removeItem('ListadoCacheSucursal');
       localStorage.removeItem('Carg_dat');
-      // localStorage.setItem('ListadoCache', []);
-      // localStorage.setItem('ListadoCacheSucursal', []);
       localStorage.removeItem('Carg_datA'); // Articulos
       localStorage.removeItem('Carg_datD'); // Departamentos
       localStorage.removeItem('Carg_datMe'); // Unidades de medida

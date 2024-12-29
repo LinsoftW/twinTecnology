@@ -97,6 +97,28 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
     }
   })
 
+  const formSucursal = reactive({
+  data: {
+    attributes: {
+      sucursal: "",
+      abreviatura: "",
+      descripcion: "",
+      observacion: ""
+    }
+  }
+})
+
+const formUbicaciones = reactive({
+  data: {
+    attributes: {
+      ubicacion: "",
+      descripcion: "",
+      observacion: "",
+      sucursal_id: 0
+    }
+  }
+})
+
   //Magnitudes
   const formMagnitud = reactive({
     data: {
@@ -137,11 +159,12 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
 
   const AddProductos = (L) => {
     listadoProductos.value.push(L);
-    setCantidadProductos(cantidadProductos.value-1)
+    setCantidadProductos(cantidadProductos.value+1)
     setListadoProductos(listadoProductos.value);
   }
 
   const DeleteProducto = (newdato) => {
+    itemsProductos.value = []
     setCantidadProductos(cantidadProductos.value-1)
     for (let index = 0; index < listadoProductos.value.length; index++) {
       if (newdato.id == listadoProductos.value[index].id) {
@@ -155,6 +178,16 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
     listadoDepartamentos.value.push(L);
     setCantidadDepartamentos(cantidadDepartamentos.value+1)
     setListadoDepartamentos(listadoDepartamentos.value);
+  }
+
+  const EditProductos = (newdato) => {
+  itemsProductos.value = [];
+    for (let index = 0; index < listadoProductos.value.length; index++) {
+      if (newdato.id == listadoProductos.value[index].id) {
+        listadoProductos.value[index] = newdato;
+      }
+      itemsProductos.value.push(listadoProductos.value[index])
+    }
   }
 
   const DeleteDepartamento = (newdato) => {
@@ -175,6 +208,60 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
         listadoDepartamentos.value[index] = newdato;
       }
       itemsDepartamentos.value.push(listadoDepartamentos.value[index])
+    }
+  }
+
+  const AddSucursal = (L) => {
+    listadoSucursales.value.push(L);
+    // setCantidadDepartamentos(cantidadDepartamentos.value+1)
+    setListadoSucursales(listadoSucursales.value);
+  }
+
+  const DeleteSucursal = (newdato) => {
+    itemsSucursales.value = []
+    // setCantidadDepartamentos(cantidadDepartamentos.value-1)
+    for (let index = 0; index < listadoSucursales.value.length; index++) {
+      if (newdato.id == listadoSucursales.value[index].id) {
+        listadoSucursales.value.splice(index, 1)
+      }
+      itemsSucursales.value.push(listadoSucursales.value[index])
+    }
+  }
+
+  const EditSucursal = (newdato) => {
+  itemsSucursales.value = [];
+    for (let index = 0; index < listadoSucursales.value.length; index++) {
+      if (newdato.id == listadoSucursales.value[index].id) {
+        listadoSucursales.value[index] = newdato;
+      }
+      itemsSucursales.value.push(listadoSucursales.value[index])
+    }
+  }
+
+  const AddUbicaciones = (L) => {
+    listadoUbicaciones.value.push(L);
+    // setCantidadDepartamentos(cantidadDepartamentos.value+1)
+    setListadoUbicaciones(listadoUbicaciones.value);
+  }
+
+  const DeleteUbicaciones = (newdato) => {
+    itemsUbicaciones.value = []
+    // setCantidadDepartamentos(cantidadDepartamentos.value-1)
+    for (let index = 0; index < listadoUbicaciones.value.length; index++) {
+      if (newdato.id == listadoUbicaciones.value[index].id) {
+        listadoUbicaciones.value.splice(index, 1)
+      }
+      itemsUbicaciones.value.push(listadoUbicaciones.value[index])
+    }
+  }
+
+  const EditUbicaciones = (newdato) => {
+  itemsUbicaciones.value = [];
+    for (let index = 0; index < listadoUbicaciones.value.length; index++) {
+      if (newdato.id == listadoUbicaciones.value[index].id) {
+        listadoUbicaciones.value[index] = newdato;
+      }
+      itemsUbicaciones.value.push(listadoUbicaciones.value[index])
     }
   }
 
@@ -403,7 +490,7 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
     getListadoMedidas, getListadoProductos, getListadoSucursales, getListadoUbicaciones,
     esperandoArticulos, esperandoDepartamentos, esperandoProductos, esperandoMedidas, esperandoEtiquetas, esperandoMagnitudes, esperandoSucursales, esperandoUbicaciones, loadingP, loadingA, loadingD, loadingE, loadingM, loadingMe, loadingS, loadingUb,
     itemsProductos, itemsDepartamentos, itemsMagnitudes, itemsArticulos, itemsEtiquetas, itemsUbicaciones, itemsMedidas, itemsSucursales,
-    cambiaEstado, AddMagnitud, AddProductos, DeleteMagnitud, DeleteProducto, AddMedida, DeleteMedida, EditMagnitud, EditMedida, AddDepartamento, DeleteDepartamento, EditDepartamento,
-    AddArticulo, DeleteArticulo, EditArticulo
+    cambiaEstado, AddMagnitud, AddProductos, EditProductos, DeleteMagnitud, DeleteProducto, AddMedida, DeleteMedida, EditMagnitud, EditMedida, AddDepartamento, DeleteDepartamento, EditDepartamento,
+    AddArticulo, DeleteArticulo, EditArticulo, AddSucursal, DeleteSucursal, EditSucursal, AddUbicaciones, DeleteUbicaciones, EditUbicaciones, formSucursal, formUbicaciones
   }
 })
