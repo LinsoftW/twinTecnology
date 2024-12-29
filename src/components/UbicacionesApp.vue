@@ -591,7 +591,7 @@ import { onMounted, reactive, ref } from 'vue';
 // import { load } from '@progress/kendo-vue-intl';
 import * as XLSX from 'xlsx';
 import { useStoreAxios } from '@/store/AxiosStore';
-import { EditarDatos, GuardarDatos, obtenerDatos } from './helper/useAxios';
+import { EditarDatos, EliminarDatos, GuardarDatos, obtenerDatos } from './helper/useAxios';
 
 const store = useStoreAxios();
 
@@ -649,15 +649,16 @@ const obtenSucursal = (id) => {
 const nuevoArreglo = ref([]);
 const elementos = ref([]);
 function ExportExcel() {
-
+  elementos.value = []
+  nuevoArreglo.value = []
   for (let index = 0; index < itemsSucursales1.value.length; index++) {
-    elementos.value.type = itemsSucursales1.value[index].type;
-    elementos.value.sucursal = itemsSucursales1.value[index].attributes.sucursal;
-    elementos.value.abreviatura = itemsSucursales1.value[index].attributes.abreviatura;
-    elementos.value.descripcion = itemsSucursales1.value[index].attributes.descripcion;
-    elementos.value.observacion = itemsSucursales1.value[index].attributes.observacion;
-    elementos.value.created_at = itemsSucursales1.value[index].attributes.timestamps.created_at;
-    elementos.value.updated_at = itemsSucursales1.value[index].attributes.timestamps.updated_at;
+    elementos.value.TIPO = itemsSucursales1.value[index].type;
+    elementos.value.SUCURSAL = itemsSucursales1.value[index].attributes.sucursal;
+    elementos.value.ABREVIATURA = itemsSucursales1.value[index].attributes.abreviatura;
+    elementos.value.DESCRIPCIÓN = itemsSucursales1.value[index].attributes.descripcion;
+    elementos.value.OBSERVACIÓN = itemsSucursales1.value[index].attributes.observacion;
+    elementos.value.CREADO = itemsSucursales1.value[index].attributes.timestamps.created_at;
+    elementos.value.MODIFICADO = itemsSucursales1.value[index].attributes.timestamps.updated_at;
     nuevoArreglo.value.push(elementos.value)
     elementos.value = []
   }
@@ -678,12 +679,12 @@ function ExportExcelMedidas() {
   elementos.value = []
   nuevoArreglo.value = []
   for (let index = 0; index < itemsUbicaciones1.value.length; index++) {
-    elementos.value.type = itemsUbicaciones1.value[index].type;
-    elementos.value.ubicacion = itemsUbicaciones1.value[index].attributes.ubicacion;
-    elementos.value.descripcion = itemsUbicaciones1.value[index].attributes.descripcion;
-    elementos.value.observacion = itemsUbicaciones1.value[index].attributes.observacion;
-    elementos.value.created_at = itemsUbicaciones1.value[index].attributes.timestamps.created_at;
-    elementos.value.updated_at = itemsUbicaciones1.value[index].attributes.timestamps.updated_at;
+    elementos.value.TIPO = itemsUbicaciones1.value[index].type;
+    elementos.value.UBICACIÓN = itemsUbicaciones1.value[index].attributes.ubicacion;
+    elementos.value.DESCRIPCIÓN = itemsUbicaciones1.value[index].attributes.descripcion;
+    elementos.value.OBSERVACIÓN = itemsUbicaciones1.value[index].attributes.observacion;
+    elementos.value.CREADO = itemsUbicaciones1.value[index].attributes.timestamps.created_at;
+    elementos.value.MODIFICADO = itemsUbicaciones1.value[index].attributes.timestamps.updated_at;
     nuevoArreglo.value.push(elementos.value)
     elementos.value = []
   }
@@ -1510,30 +1511,14 @@ const borrarU = (id, correo) => {
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
     confirmButtonText: "Sí, eliminar"
-  }).then((result) => {
+  }).then(async (result) => {
     if (result.isConfirmed) {
-      esperando.value = true;
-      // Eliminar //
-      axios.delete(`http://${ipPublica.value}/fullstack/public/sucursales/${id}`)
-        .then((response) => {
-
-          if (response.data.data == null) {
-
-          } else {
-            esperando.value = false;
-            loading.value = true;
-            EliminarListado(response.data.data)
-            loading.value = false;
-            successFull("Sucursal eliminada satisfactoriamente.", "top-end")
-          }
-        })
-        .catch((error) => {
-          if (error.response.status === 400) {
-            errors.value = error.response.data;
-          }
-          esperando.value = false;
-          ErrorFull("Error realizando la operación. Intente nuevamente.", "top-start")
-        });
+      store.cambiaEstado(4);
+      const response = await EliminarDatos(id, 2);
+      store.DeleteSucursal(response);
+      itemsSucursales1.value = store.itemsSucursales;
+      successFull("Sucursal eliminada satisfactoriamente.", "top-end")
+      store.cambiaEstado(4);
     }
   })
 }
@@ -1547,26 +1532,14 @@ const borrarUMedida = (id, correo) => {
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
     confirmButtonText: "Sí, eliminar"
-  }).then((result) => {
+  }).then(async (result) => {
     if (result.isConfirmed) {
-      esperando.value = true;
-      // Eliminar //
-      axios.delete(`https://${ipPublica.value}/fullstack/public/ubicaciones/${id}`)
-        .then((response) => {
-          esperando.value = false;
-          loading.value = true;
-          EliminarlistadoUbicaciones(response.data.data)
-          successFull("Ubicación eliminada satisfactoriamente.", "top-end")
-          loading.value = false;
-        })
-        .catch((error) => {
-          if (error.response.status === 400) {
-            errors.value = error.response.data;
-          }
-          esperando.value = false;
-          ErrorFull("Error realizando la operación. Intente nuevamente.", "top-start")
-          // cerrarAlert();
-        });
+      store.cambiaEstado(7);
+      const response = await EliminarDatos(id, 7);
+      store.DeleteUbicaciones(response);
+      itemsUbicaciones1.value = store.itemsUbicaciones;
+      successFull("Ubicación eliminada satisfactoriamente.", "top-end")
+      store.cambiaEstado(7);
     }
   })
 }

@@ -51,8 +51,7 @@
                   </div>
                   <div class="col-md-6 col-xl-6 col-lg-12 ">
                     <span class="text-info">Buscar: </span>
-                    <input class="form-control" type="text" v-model="searchValue"
-                      placeholder="Qué desea buscar..." />
+                    <input class="form-control" type="text" v-model="searchValue" placeholder="Qué desea buscar..." />
                   </div>
                 </div>
                 <br>
@@ -169,7 +168,87 @@
             </div>
           </div>
         </div>
+        <!-- FIN -->
+        <!--Listado de Etiquetas -->
+        <div class="col-xl-12 col-lg-12">
+          <div class="card shadow mb-4">
+            <a href="#collapseCardExample2" class="d-block card-header py-3" data-toggle="collapse" role="button"
+              aria-expanded="true" aria-controls="collapseCardExample">
+              <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-edit"></i> ETIQUETAS</h6>
+            </a>
+            <!-- <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-edit"></i> DEPARTAMENTOS</h6>
+              <button class="btn btn-info" @click="abrirModalAddProd()"> <span class="fa fa-plus"></span> Nuevo</button>
+            </div> -->
+            <!-- Card Body -->
+            <div class="collapse show" id="collapseCardExample2">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6 col-xl-6 col-lg-12">
+                    <div class="justify-content-between">
+                      <!-- <router-link class="button" to="/gest_inventario"> -->
+                      <a data-toggle="modal" @click="agrega()" data-target="#agregaEtiqueta"
+                        class="btn btn-info btn-sm btn-icon-split" :class="disabledArticulo">
+                        <span class="icon text-white-50">
+                          <i class="fas fa-plus"></i>
+                        </span>
+                        <span class="text">Nuevo</span>
+                      </a>
+                      <a @click="abrirModalAddProd()" class="btn btn-secondary btn-sm btn-icon-split m-2"
+                        :class="disabledArticulo">
+                        <span class="icon text-white-50">
+                          <i class="fas fa-file-pdf"></i>
+                        </span>
+                        <span class="text">PDF</span>
+                      </a>
+                      <a @click="ExportExcelEtiqueta()" class="btn btn-primary btn-sm btn-icon-split"
+                        :class="disabledArticulo">
+                        <span class="icon text-white-50">
+                          <i class="fas fa-download"></i>
+                        </span>
+                        <span class="text">Excel</span>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-xl-6 col-lg-12 ">
+                    <span class="text-info">Buscar: </span>
+                    <input class="form-control" type="text" v-model="searchValueEtiqueta"
+                      placeholder="Qué desea buscar..." />
+                  </div>
+                </div>
+                <br>
 
+                <EasyDataTable table-class-name="customize-table" :headers="headersEtiqueta" :items="itemsEtiqueta1"
+                  buttons-pagination border-cell header-text-direction="center" body-text-direction="center"
+                  :search-field="searchFieldEtiqueta" :search-value="searchValueEtiqueta" :rows-per-page="5"
+                  :loading="store.esperandoEtiquetas" show-index>
+                  <template #item-opciones="item">
+                    <div class="operation-wrapper">
+                      <button class="btn btn-success btn-sm btn-circle" data-toggle="modal"
+                        data-target="#agregaEtiqueta" @click="clickEditarEtiqueta(item.id)" v-b-tooltip.hover
+                        title="Editar"><span class="fas fa-edit"></span></button>
+                      <!-- <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
+                    title="Aumentar"><span class="fas fa-plus"></span></button>
+                  <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
+                    title="Restar"><span class="fas fa-minus"></span></button>-->
+                      <button class="btn btn-danger btn-sm btn-circle ml-1"
+                        @click="borrarUEtiqueta(item.id, item.attributes.etiqueta)" v-b-tooltip.hover
+                        title="Eliminar"><span class="fas fas fa-trash-alt"></span></button>
+                    </div>
+                  </template>
+                  <template #loading>
+                    <img src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
+                      style="width: 100px; height: 80px;" />
+                  </template>
+                  <template #empty-message>
+                    <a>No hay datos que mostrar</a>
+                  </template>
+                </EasyDataTable>
+
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- FIN -->
       </div>
 
@@ -373,6 +452,92 @@
         </div>
       </div>
     </div>
+
+    <!-- Logout etiquetas-->
+    <div :class="'modal fade ' + showModal1" id="agregaEtiqueta" tabindex="-1" role="dialog"
+      aria-labelledby="exampleModalLabel" :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-info" id="exampleModalLabel" v-if="editar == false">NUEVA ETIQUETA </h5>
+            <h5 class="modal-title text-info text-center" id="exampleModalLabel" v-if="editar == true"><span
+                class="fa fa-edit"></span>
+              MODIFICAR LOS DATOS DE LA ETIQUETA <br>(<label style="color: red;">{{
+                store.formEtiqueta.data.attributes.etiqueta
+              }}</label>)</h5>
+
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true" class="text-info">×</span>
+            </button>
+          </div>
+          <div class="modal-body text-center">
+
+            <!-- <form id="form"> -->
+
+            <div class="col-lg-12">
+              <div class="">
+
+                <form class="">
+
+                  <div class="row text-left">
+                    <div class="form-group col-lg-12">
+                      <label class="text-info">Nombre: <label style="color: red;">*</label></label>
+                      <input type="text" class="form-control" id="articulo"
+                        v-model="store.formEtiqueta.data.attributes.etiqueta" placeholder="Ej: Tablet" required
+                        @change="verificar_error(8)">
+                      <span style="color: red;">{{ errores.etiqueta }}</span>
+                    </div>
+                    <div class="form-group col-lg-12">
+                      <label class="text-info">Descripción: <label style="color: red;">*</label></label>
+                      <input type="text" class="form-control" id="descripcionA" aria-describedby="emailHelp"
+                        v-model="store.formEtiqueta.data.attributes.descripcion" placeholder="Ej: Para entretenimiento"
+                        @change="verificar_error(7)">
+                      <span style="color: red;">{{ errores.descripcionEtiqueta }}</span>
+                    </div>
+                    <div class="form-group col-lg-12">
+                      <label class="text-info">Observaciones:</label>
+                      <textarea class="form-control" id="observacionA"
+                        v-model="store.formEtiqueta.data.attributes.observacion"
+                        placeholder="Ej: Observaciones de la etiqueta"></textarea>
+
+                    </div>
+                  </div>
+
+                </form>
+              </div>
+              <div class="text-center">
+                <h1 class="h6 text-gray-900 mb-4"><i>CAMPOS OBLIGATORIOS</i> (<label style="color: red;">*</label>)
+                </h1>
+              </div>
+              <div class="row">
+
+                <div v-if="editar == false" class="form-group h4 col-lg-3">
+
+                </div>
+                <div v-if="editar == false" class="form-group h4 col-lg-6">
+                  <a @click="agregarUEtiqueta()" class="btn btn-info btn-block" :class="disabledDepartamentodBtn">
+                    {{ GuardarArt }}
+                  </a>
+                </div>
+                <div v-if="editar" class="form-group h4 col-lg-6">
+                  <a @click="editarUEtiqueta" class="btn btn-info btn-block" :class="btnModificarClass">
+                    {{ btnModificar }}
+                  </a>
+                </div>
+                <div v-if="editar" class="form-group h4 col-lg-6">
+                  <a @click="cancelarU()" class="btn btn-danger btn-block" :class="btnModificarClass"
+                    data-dismiss="modal" aria-label="Close">
+                    Cancelar
+                  </a>
+                </div>
+              </div>
+            </div>
+            <!-- </form> -->
+          </div>
+
+        </div>
+      </div>
+    </div>
     <!-- <AddDepartamento v-show="popup" @cerrar="abrirModalAddProd()" @consulta="actualiza()" />
     <AddArticulo v-show="popupArt" @cerrar="abrirModalAddArti()" @consulta="actualizaArt()" /> -->
   </div>
@@ -398,6 +563,8 @@ import { ErrorFull, successFull } from './controler/ControlerApp';
 const store = useStoreAxios();
 
 const itemsArticulos1 = ref([])
+
+const itemsEtiqueta1 = ref([])
 
 const itemsDeparta1 = ref([])
 
@@ -510,13 +677,17 @@ const cerrarAlert = () => {
 
 const itemsSelected = ref([]);
 
-const searchField = ref(["attributes.departamento","attributes.descripcion","attributes.observacion"]);
+const searchField = ref(["attributes.departamento", "attributes.descripcion", "attributes.observacion"]);
 
-const searchFieldArticulo = ref(["attributes.articulo","attributes.descripcion","attributes.observacion"]);
+const searchFieldArticulo = ref(["attributes.articulo", "attributes.descripcion", "attributes.observacion"]);
+
+const searchFieldEtiqueta = ref(["attributes.etiqueta", "attributes.descripcion", "attributes.observacion"]);
 
 const searchValue = ref("");
 
 const searchValueArticulo = ref("");
+
+const searchValueEtiqueta = ref("");
 
 const headers = [
   { text: "CÓDIGO", value: "id", width: 50, sortable: true },
@@ -533,6 +704,17 @@ const headersArticulos = [
   { text: "CÓDIGO", value: "id", width: 50, sortable: true },
   // { text: "CODIGO", value: "attributes.codigo", sortable: true },
   { text: "NOMBRE", value: "attributes.articulo" },
+  { text: "DESCRIPCIÓN", value: "attributes.descripcion", sortable: true },
+  { text: "OBSERVACIONES", value: "attributes.observacion", sortable: true },
+  { text: "FECHA CREACIÓN", value: "attributes.timestamps.created_at" },
+  { text: "FECHA ACTUALIZACIÓN", value: "attributes.timestamps.updated_at" },
+  { text: "OPCIONES", value: "opciones" }
+];
+
+const headersEtiqueta = [
+  { text: "CÓDIGO", value: "id", width: 50, sortable: true },
+  // { text: "CODIGO", value: "attributes.codigo", sortable: true },
+  { text: "NOMBRE", value: "attributes.etiqueta" },
   { text: "DESCRIPCIÓN", value: "attributes.descripcion", sortable: true },
   { text: "OBSERVACIONES", value: "attributes.observacion", sortable: true },
   { text: "FECHA CREACIÓN", value: "attributes.timestamps.created_at" },
@@ -593,6 +775,9 @@ const agrega = () => {
   errores.value.articulo = "";
   errores.value.departamento_id = "";
   errores.value.medida_id = "";
+  errores.value.etiqueta = "";
+  errores.value.descripcionEtiqueta = "";
+  errores.value.observEtiqueta = "";
 }
 
 let btnModificarClass = ref('')
@@ -609,7 +794,7 @@ const disabledDepartamento = ref('')
 
 const disabledArticulo = ref('')
 
-const errores = ref({ articulo: "", descripcion: "", departamento_id: "", medida_id: "", departamento: "", descripcionDepatamento: "" })
+const errores = ref({ articulo: "", descripcion: "", departamento_id: "", medida_id: "", departamento: "", descripcionDepatamento: "", etiqueta: "", descripcionEtiqueta: "", observEtiqueta: "" })
 
 const agregarU = async () => {
 
@@ -639,13 +824,13 @@ const agregarU = async () => {
   } else {
     if (store.formDepartamentos.data.attributes.departamento == "") {
       errores.value.departamento = "Este campo es obligatorio"
-    }else{
+    } else {
       errores.value.departamento = ""
     }
 
     if (store.formDepartamentos.data.attributes.descripcion == "") {
       errores.value.descripcionDepatamento = "Este campo es obligatorio"
-    }else{
+    } else {
       errores.value.descripcionDepatamento = ""
     }
     ErrorFull("Debe llenar todos los campos obligatorios", "top-start")
@@ -700,7 +885,49 @@ const agregarUArticulo = async () => {
     } else {
       errores.value.medida_id = "";
     }
+    ErrorFull("Debe llenar todos los campos obligatorios", "top-start")
+    // errores.value.descripcion = "Campo requerido";
+    // console.log(errores.value.cod)
+  }
+}
 
+const agregarUEtiqueta = async () => {
+
+  if (store.formEtiqueta.data.attributes.descripcion != '' && store.formEtiqueta.data.attributes.etiqueta != '') {
+    // console.log(formDepartamentos)
+    // esperando.value = true;
+    store.cambiaEstado(5)
+    disabledDepartamentodBtn.value = 'disabled';
+    GuardarArt.value = 'Gardando...'
+    const response = await GuardarDatos(store.formEtiqueta, 8);
+    if (!response) {
+      store.cambiaEstado(5)
+    } else {
+      disabledDepartamentodBtn.value = '';
+      GuardarArt.value = 'Agregar'
+      // console.log(response)
+      store.formEtiqueta.data.attributes.observacion = ''
+      store.formEtiqueta.data.attributes.descripcion = '';
+      store.formEtiqueta.data.attributes.etiqueta = '';
+      store.AddEtiqueta(response)
+      itemsEtiqueta1.value = store.itemsEtiquetas;
+      successFull("Etiqueta agregada satisfactoriamente.", "top-end")
+      disabledDepartamentodBtn.value = '';
+      GuardarArt.value = 'Agregar'
+      store.cambiaEstado(5)
+    }
+  } else {
+    if (store.formEtiqueta.data.attributes.etiqueta == '') {
+      errores.value.etiqueta = "Este campo es obligatorio.";
+    } else {
+      errores.value.etiqueta = "";
+    }
+    if (store.formEtiqueta.data.attributes.descripcion == '') {
+      errores.value.descripcionEtiqueta = "Este campo es obligatorio.";
+    } else {
+      errores.value.descripcionEtiqueta = "";
+    }
+    ErrorFull("Debe llenar todos los campos obligatorios", "top-start")
     // errores.value.descripcion = "Campo requerido";
     // console.log(errores.value.cod)
   }
@@ -748,6 +975,21 @@ const verificar_error = (n) => {
         errores.value.descripcionDepatamento = "";
       } else {
         errores.value.descripcionDepatamento = "Este campo es obligatorio"
+      }
+      break;
+    case 7:
+      if (store.formEtiqueta.data.attributes.descripcion != "") {
+        errores.value.descripcionEtiqueta = "";
+      } else {
+        errores.value.descripcionEtiqueta = "Este campo es obligatorio"
+      }
+      break;
+
+    case 8:
+      if (store.formEtiqueta.data.attributes.etiqueta != "") {
+        errores.value.etiqueta = "";
+      } else {
+        errores.value.etiqueta = "Este campo es obligatorio"
       }
       break;
 
@@ -1098,6 +1340,70 @@ const editarU = async () => {
   //   })
 }
 
+const editarUEtiqueta = async () => {
+  esperando.value = true;
+  btnModificar.value = 'Actualizando...'
+  btnModificarClass.value = 'disabled'
+  store.cambiaEstado(5);
+  const response = await EditarDatos(id.value, store.formEtiqueta, 8);
+  if (!response) {
+    store.cambiaEstado(5);
+  } else {
+    // console.log(response)
+    editar.value = false;
+    store.formEtiqueta.data.attributes.descripcion = ''
+    store.formEtiqueta.data.attributes.observacion = '';
+    store.formEtiqueta.data.attributes.etiqueta = '';
+
+    store.EditEtiqueta(response)
+    itemsEtiqueta1.value = store.itemsEtiquetas;
+    btnModificar.value = 'Modificar'
+    btnModificarClass.value = ''
+    successFull("Etiqueta modificada satisfactoriamente.", "top-end")
+    store.cambiaEstado(5);
+  }
+
+  // axios.put(`https://${ipPublica.value}/fullstack/public/departamentos/${id.value}`, formDepartamentos)
+  //   .then((response) => {
+  //     // console.log(response.data.data)
+  //     esperando.value = false;
+  //     cargado.value = false;
+
+  //     editar.value = false;
+  //     formDepartamentos.data.attributes.descripcion = ''
+  //     formDepartamentos.data.attributes.observacion = '';
+  //     formDepartamentos.data.attributes.departamento = '';
+  //     loadingD.value = true;
+  //     // listadoDepartamentos.value.push(response.data.data)
+  //     // almacenDatosDepartamentos(listadoDepartamentos.value);
+  //     // listadoDepartamentos.value = JSON.parse(localStorage.getItem('ListadoCacheDepartamentos'));
+  //     // obtenerDepartamentos();
+  //     EditarListadoDepartamentos(response.data.data)
+  //     loadingD.value = false;
+  //     successFull("Categoría modificada satisfactoriamente.", "top-end")
+  //     btnModificar.value = 'Modificar'
+  //     btnModificarClass.value = ''
+  //     // Swal.fire({
+  //     //   icon: "success",
+  //     //   title: "Editado satisfactoriamente."
+  //     // })
+  //     // editar.value = false;
+  //     // localStorage.setItem("editar", editar.value);
+  //   })
+  //   .catch((error) => {
+  //     if (error.response.status === 500) {
+  //       errors.value = error.response.data;
+  //     }
+  //     esperando.value = false;
+  //     ErrorFull("Error realizando operación.", "top-start")
+  //     // cerrarAlert();
+  //     // Swal.fire({
+  //     //   icon: "danger",
+  //     //   title: "Error realizando operación."
+  //     // })
+  //   })
+}
+
 const editarUArticulo = () => {
   esperando.value = true;
   btnModificar.value = 'Actualizando...'
@@ -1253,6 +1559,59 @@ const borrarUArticulo = (id, correo) => {
   //   ErrorFull("Error realizando operación.", "top-start")
   // });
 }
+
+const borrarUEtiqueta = (id, correo) => {
+  // console.log(correo)
+  Swal.fire({
+    title: "Confirmación",
+    text: `Está a punto de eliminar la etiqueta: ${correo}`,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar"
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      store.cambiaEstado(5);
+      const response = await EliminarDatos(id, 8);
+      if (!response) {
+        store.cambiaEstado(5);
+      } else {
+        store.DeleteEtiqueta(response);
+        itemsEtiqueta1.value = store.itemsEtiquetas;
+        successFull("Etiqueta eliminada satisfactoriamente.", "top-end")
+        store.cambiaEstado(5);
+      }
+
+    }
+  })
+  // .then((result) => {
+  //   if (result.isConfirmed) {
+  //     esperando.value = true;
+  //     // Eliminar //
+  //     axios.delete(`https://${ipPublica.value}/fullstack/public/articulos/${id}`)
+  //       .then((response) => {
+  //         if (response.data.data == null) {
+  //           ErrorFull("Error realizando operación.", "top-start");
+  //         } else {
+  //           esperando.value = false;
+  //           loading.value = true;
+  //           EliminarListadoArticulos(response.data.data)
+  //           loading.value = false;
+  //           successFull("Artículo eliminado satisfactoriamente.", "top-end")
+  //         }
+
+  //       })
+  //   }
+  // }).catch((error) => {
+  //   if (error.response.status === 500) {
+  //     errors.value = error.response.data;
+  //   }
+  //   esperando.value = false;
+  //   ErrorFull("Error realizando operación.", "top-start")
+  // });
+}
 // Fin CRUD
 
 const clickEditar = async (idSelect) => {
@@ -1291,6 +1650,23 @@ const clickEditarArticulo = async (idSelect) => {
   }
 }
 
+const clickEditarEtiqueta = async (idSelect) => {
+  editar.value = true;
+  // console.log(idSelect)
+  // localStorage.setItem("editar", editar.value);
+  id.value = idSelect;
+
+  for (let index = 0; index < itemsEtiqueta1.value.length; index++) {
+    const element = itemsEtiqueta1.value[index].id;
+    if (element == idSelect) {
+      store.formEtiqueta.data.attributes.descripcion = itemsEtiqueta1.value[index].attributes.descripcion;
+      store.formEtiqueta.data.attributes.etiqueta = itemsEtiqueta1.value[index].attributes.etiqueta;
+      store.formEtiqueta.data.attributes.observacion = itemsEtiqueta1.value[index].attributes.observacion;
+      break;
+    }
+  }
+}
+
 const cancelarU = () => {
   editar.value = false;
   formDepartamentos.data.attributes.descripcion = '';
@@ -1310,14 +1686,15 @@ const actualizar_datos = () => {
 const nuevoArreglo = ref([]);
 const elementos = ref([]);
 function ExportExcel() {
-
+  elementos.value = []
+  nuevoArreglo.value = []
   for (let index = 0; index < itemsDeparta1.value.length; index++) {
-    elementos.value.type = itemsDeparta1.value[index].type;
-    elementos.value.departamento = itemsDeparta1.value[index].attributes.departamento;
-    elementos.value.descripcion = itemsDeparta1.value[index].attributes.descripcion;
-    elementos.value.observacion = itemsDeparta1.value[index].attributes.observacion;
-    elementos.value.created_at = itemsDeparta1.value[index].attributes.timestamps.created_at;
-    elementos.value.updated_at = itemsDeparta1.value[index].attributes.timestamps.updated_at;
+    elementos.value.TIPO = itemsDeparta1.value[index].type;
+    elementos.value.DEPARTAMENTO = itemsDeparta1.value[index].attributes.departamento;
+    elementos.value.DESCRIPCIÓN = itemsDeparta1.value[index].attributes.descripcion;
+    elementos.value.OBSERVACIÓN = itemsDeparta1.value[index].attributes.observacion;
+    elementos.value.CREATED_AT = itemsDeparta1.value[index].attributes.timestamps.created_at;
+    elementos.value.UPDATE_AT = itemsDeparta1.value[index].attributes.timestamps.updated_at;
     nuevoArreglo.value.push(elementos.value)
     elementos.value = []
   }
@@ -1334,14 +1711,15 @@ function ExportExcel() {
 }
 
 function ExportExcelArticulos() {
-
+  elementos.value = []
+  nuevoArreglo.value = []
   for (let index = 0; index < itemsArticulos1.value.length; index++) {
-    elementos.value.type = itemsArticulos1.value[index].type;
-    elementos.value.articulo = itemsArticulos1.value[index].attributes.articulo;
-    elementos.value.descripcion = itemsArticulos1.value[index].attributes.descripcion;
-    elementos.value.observacion = itemsArticulos1.value[index].attributes.observacion;
-    elementos.value.created_at = itemsArticulos1.value[index].attributes.timestamps.created_at;
-    elementos.value.updated_at = itemsArticulos1.value[index].attributes.timestamps.updated_at;
+    elementos.value.TIPO = itemsArticulos1.value[index].type;
+    elementos.value.ARTÍCULO = itemsArticulos1.value[index].attributes.articulo;
+    elementos.value.DESCRIPCIÓN = itemsArticulos1.value[index].attributes.descripcion;
+    elementos.value.OBSERVACIÓN = itemsArticulos1.value[index].attributes.observacion;
+    elementos.value.CREADO = itemsArticulos1.value[index].attributes.timestamps.created_at;
+    elementos.value.MODIFICADO = itemsArticulos1.value[index].attributes.timestamps.updated_at;
     nuevoArreglo.value.push(elementos.value)
     elementos.value = []
   }
@@ -1352,6 +1730,31 @@ function ExportExcelArticulos() {
   XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
   // // Generar el archivo
   const fileName = 'Articulos.xlsx';
+  // // Guardar el archivo execl
+  XLSX.writeFile(workbook, fileName);
+  successFull("Documento creado satisfactoriamente.", "top-end")
+}
+
+function ExportExcelEtiqueta() {
+  elementos.value = []
+  nuevoArreglo.value = []
+  for (let index = 0; index < itemsEtiqueta1.value.length; index++) {
+    elementos.value.TIPO = itemsEtiqueta1.value[index].type;
+    elementos.value.ETIQUETA = itemsEtiqueta1.value[index].attributes.etiqueta;
+    elementos.value.DESCRIPCIÓN = itemsEtiqueta1.value[index].attributes.descripcion;
+    elementos.value.OBSERVACIÓN = itemsEtiqueta1.value[index].attributes.observacion;
+    elementos.value.CREATED_AT = itemsEtiqueta1.value[index].attributes.timestamps.created_at;
+    elementos.value.UPDATE_AT = itemsEtiqueta1.value[index].attributes.timestamps.updated_at;
+    nuevoArreglo.value.push(elementos.value)
+    elementos.value = []
+  }
+  // console.log(nuevoArreglo)
+  const worksheet = XLSX.utils.json_to_sheet(nuevoArreglo.value);
+  const workbook = XLSX.utils.book_new();
+  // // Abriendo el excel
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+  // // Generar el archivo
+  const fileName = 'Etiquetas.xlsx';
   // // Guardar el archivo execl
   XLSX.writeFile(workbook, fileName);
   successFull("Documento creado satisfactoriamente.", "top-end")
@@ -1411,6 +1814,25 @@ onMounted(async () => {
 
     } else {
       itemsMedida1.value = store.itemsMedidas;
+    }
+
+    if (localStorage.getItem('Carg_datE') == '0') {
+      store.cambiaEstado(5);
+      const response = await obtenerDatos(8);
+      if (!response) {
+        store.cambiaEstado(5);
+      } else {
+        if (response.length > 0) {
+          store.setListadoEtiquetas(response)
+        }
+        localStorage.setItem("Carg_datE", "1");
+        itemsEtiqueta1.value = store.itemsEtiquetas;
+        store.cambiaEstado(5);
+      }
+    } else {
+      store.cambiaEstado(5);
+      itemsEtiqueta1.value = store.itemsEtiquetas;
+      store.cambiaEstado(5);
     }
   } else {
     router.push('/login');

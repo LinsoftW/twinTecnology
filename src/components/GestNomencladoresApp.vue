@@ -216,6 +216,9 @@
                   <template #empty-message>
                     <a>No hay datos que mostrar</a>
                   </template>
+                  <template #item-magnitud="item">
+                    {{ obtenMagnitud(item.relationships.magnitud.data.id) }} <!-- item.relationships.medida.data.id -->
+                  </template>
                   <template #item-opciones="item">
                     <div class="operation-wrapper">
                       <!-- <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal"
@@ -646,14 +649,15 @@ const loadingA = (texto) => {
 const nuevoArreglo = ref([]);
 const elementos = ref([]);
 function ExportExcel() {
-
+  elementos.value = []
+  nuevoArreglo.value = []
   for (let index = 0; index < itemsMagnitud1.value.length; index++) {
-    elementos.value.type = itemsMagnitud1.value[index].type;
-    elementos.value.magnitud = itemsMagnitud1.value[index].attributes.magnitud;
-    elementos.value.descripcion = itemsMagnitud1.value[index].attributes.descripcion;
-    elementos.value.observacion = itemsMagnitud1.value[index].attributes.observacion;
-    elementos.value.created_at = itemsMagnitud1.value[index].attributes.timestamps.created_at;
-    elementos.value.updated_at = itemsMagnitud1.value[index].attributes.timestamps.updated_at;
+    elementos.value.TIPO = itemsMagnitud1.value[index].type;
+    elementos.value.MAGNITUD = itemsMagnitud1.value[index].attributes.magnitud;
+    elementos.value.DESCRIPCIÓN = itemsMagnitud1.value[index].attributes.descripcion;
+    elementos.value.OBSERVACIÓN = itemsMagnitud1.value[index].attributes.observacion;
+    elementos.value.CREADO = itemsMagnitud1.value[index].attributes.timestamps.created_at;
+    elementos.value.MODIFICADO = itemsMagnitud1.value[index].attributes.timestamps.updated_at;
     nuevoArreglo.value.push(elementos.value)
     elementos.value = []
   }
@@ -670,17 +674,29 @@ function ExportExcel() {
 }
 // Fin
 
+const obtenMagnitud = (id) => {
+  const val = ref('')
+
+  for (let index = 0; index < itemsMagnitud1.value.length; index++) {
+    if (id == itemsMagnitud1.value[index].id) {
+      // console.log(listadoMedida.value[index].id)
+      return itemsMagnitud1.value[index].attributes.magnitud
+    }
+  }
+
+}
+
 function ExportExcelMedidas() {
   elementos.value = []
   nuevoArreglo.value = []
   for (let index = 0; index < itemsMedida1.value.length; index++) {
-    elementos.value.type = itemsMedida1.value[index].type;
-    elementos.value.medida = itemsMedida1.value[index].attributes.medida;
-    elementos.value.descripcion = itemsMedida1.value[index].attributes.descripcion;
-    elementos.value.observacion = itemsMedida1.value[index].attributes.observacion;
-    elementos.value.magnitud_id = itemsMedida1.value[index].relationships.magnitud.data.id;
-    elementos.value.created_at = itemsMedida1.value[index].attributes.timestamps.created_at;
-    elementos.value.updated_at = itemsMedida1.value[index].attributes.timestamps.updated_at;
+    elementos.value.TIPO = itemsMedida1.value[index].type;
+    elementos.value.U_MEDIDA = itemsMedida1.value[index].attributes.medida;
+    elementos.value.DESCRIPCIÓN = itemsMedida1.value[index].attributes.descripcion;
+    elementos.value.OBSERVACIÓN = itemsMedida1.value[index].attributes.observacion;
+    elementos.value.MAGNITUD = obtenMagnitud(itemsMedida1.value[index].relationships.magnitud.data.id);
+    elementos.value.CREADO = itemsMedida1.value[index].attributes.timestamps.created_at;
+    elementos.value.MODIFCADO = itemsMedida1.value[index].attributes.timestamps.updated_at;
     nuevoArreglo.value.push(elementos.value)
     elementos.value = []
   }
@@ -889,13 +905,13 @@ let descripVacio = ref(false)
 
 const agrega = () => {
   editar.value = false
-errores.value.descripcion = "";
-errores.value.obserMedida = "";
-errores.value.observacion = "";
-errores.value.magnitud = "";
-errores.value.medida = "";
-errores.value.magnitud_id = "";
-errores.value.descripMedida = "";
+  errores.value.descripcion = "";
+  errores.value.obserMedida = "";
+  errores.value.observacion = "";
+  errores.value.magnitud = "";
+  errores.value.medida = "";
+  errores.value.magnitud_id = "";
+  errores.value.descripMedida = "";
 }
 
 const errores = ref({ descripcion: "", observacion: "", magnitud: "", descripMedida: "", obserMedida: "", medida: "", magnitud_id: "" })
@@ -994,13 +1010,13 @@ const agregarU = async () => {
   } else {
     if (store.formMagnitud.data.attributes.magnitud == "") {
       errores.value.magnitud = "Este campo es obligatorio"
-    }else{
+    } else {
       errores.value.magnitud = ""
     }
 
     if (store.formMagnitud.data.attributes.descripcion == "") {
       errores.value.descripcion = "Este campo es obligatorio"
-    }else{
+    } else {
       errores.value.descripcion = ""
     }
     ErrorFull("Debe llenar todos los campos obligatorios", "top-start")
@@ -1013,10 +1029,11 @@ const agregarU = async () => {
 let GuardarMedida = ref('Agregar');
 
 const agregarUMedida = async () => {
-  store.cambiaEstado(6);
+
   if (store.formMedida.data.attributes.medida != "" && store.formMedida.data.attributes.descripcion != "" && store.formMedida.data.attributes.magnitud_id != 0) {
     GuardarMedida.value = 'Guardando...'
     disabledMedidaBtn.value = 'disabled'
+    store.cambiaEstado(6);
     const response = await GuardarDatos(store.formMedida, 3)
     store.formMedida.data.attributes.observacion = ''
     store.formMedida.data.attributes.descripcion = '';
@@ -1371,7 +1388,6 @@ const EliminarlistadoMedida = async (newdato) => {
 }
 
 const editarUMedida = async () => {
-  esperando.value = true;
   btnModificarM.value = "Actualizando..."
   deactiva.value = 'disabled';
   store.cambiaEstado(6);
@@ -1379,7 +1395,7 @@ const editarUMedida = async () => {
   editar.value = false;
   store.formMedida.data.attributes.descripcion = ''
   store.formMedida.data.attributes.observacion = '';
-  store.formMedida.data.attributes.magnitud = '';
+  store.formMedida.data.attributes.medida = '';
   store.formMedida.data.attributes.magnitud_id = '';
   store.EditMedida(response)
   itemsMedida1.value = store.itemsMedidas;
@@ -1587,7 +1603,7 @@ const headersMedidas = [
   { text: "NOMBRE", value: "attributes.medida" },
   { text: "DESCRIPCIÓN", value: "attributes.descripcion" },
   { text: "OBSERVACIONES", value: "attributes.observacion" },
-  // { text: "UNIDAD", value: "unidad" },
+  { text: "MAGNITUD", value: "magnitud" },
   { text: "FECHA DE CREACIÓN", value: "attributes.timestamps.created_at", sortable: true },
   { text: "FECHA DE ACTUALIZACION", value: "attributes.timestamps.updated_at", sortable: true },
   // { text: "VENTAS", value: "cantV", sortable: true },

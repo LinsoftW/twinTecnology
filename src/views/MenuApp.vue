@@ -2,6 +2,7 @@
   <!-- Page Wrapper -->
 
   <div id="wrapper">
+
     <!-- Sidebar -->
     <ul :class="'navbar-nav bg-gradient-' + Cosc_Clar + ' sidebar sidebar-dark accordion ' + Ctoggled"
       id="accordionSidebar">
@@ -53,27 +54,27 @@
             <h6 class="collapse-header">Gestionar</h6>
             <!-- <a class="collapse-item" @click="click_inventario">Inventario</a>
             <a class="collapse-item" @click="click_pedidos">Pedidos</a> -->
-            <router-link class="button" to="/inventario">
-              <a class="collapse-item" v-bind:class="ActivaLink(1)" :key="1" @click="obtenerLinkA(1)"><i
+            <router-link class="button" to="/inventario" @click="obtenerLinkA(1)">
+              <a class="collapse-item" v-bind:class="ActivaLink(1)" :key="1"><i
                   class="far fa-check-circle"></i> Productos</a>
             </router-link>
-            <router-link class="button" to="/categorias">
-              <a class="collapse-item" v-bind:class="ActivaLink(2)" :key="2" @click="obtenerLinkA(2)"> <i
+            <router-link class="button" to="/categorias" @click="obtenerLinkA(2)">
+              <a class="collapse-item" v-bind:class="ActivaLink(2)" :key="2"> <i
                   class="far fa-check-circle"></i>
-                Departamentos</a>
+                Clasificación</a>
             </router-link>
-            <router-link class="button" to="/categorias">
-              <a class="collapse-item" v-bind:class="ActivaLink(3)" :key="3" @click="obtenerLinkA(3)"> <i
+            <!-- <router-link class="button" to="/categorias" @click="obtenerLinkA(3)">
+              <a class="collapse-item" v-bind:class="ActivaLink(3)" :key="3"> <i
                   class="far fa-check-circle"></i>
                 Etiquetas</a>
-            </router-link>
-            <router-link class="button" to="/gest_nomencladores">
-              <a class="collapse-item" v-bind:class="ActivaLink(9)" :key="9" @click="obtenerLinkA(9)"> <i
+            </router-link> -->
+            <router-link class="button" to="/gest_nomencladores" @click="obtenerLinkA(9)">
+              <a class="collapse-item" v-bind:class="ActivaLink(9)" :key="9" > <i
                   class="far fa-check-circle"></i> Magnitudes</a>
             </router-link>
             <!-- <hr class="sidebar-divider"> -->
-            <router-link class="button" to="/auditoria">
-              <a class="collapse-item" v-bind:class="ActivaLink(10)" :key="10" @click="obtenerLinkA(10)"> <i
+            <router-link class="button" to="/auditoria" @click="obtenerLinkA(10)">
+              <a class="collapse-item" v-bind:class="ActivaLink(10)" :key="10"> <i
                   class="far fa-check-circle"></i> Auditoría</a>
             </router-link>
             <!-- <router-link class="button" to="/pedidos">
@@ -142,8 +143,8 @@
               <a class="collapse-item" v-bind:class="ActivaLink(7)" :key="7" @click="obtenerLinkA(7)"> <i
                   class="fas fa-fw fa-cogs"></i> Datos empresa</a>
             </router-link>-->
-            <router-link class="button" to="/ubicaciones">
-              <a class="collapse-item" v-bind:class="ActivaLink(8)" :key="8" @click="obtenerLinkA(8)"> <i
+            <router-link class="button" to="/ubicaciones" @click="obtenerLinkA(8)">
+              <a class="collapse-item" v-bind:class="ActivaLink(8)" :key="8"> <i
                   class="fas fa-fw fa-cogs"></i> Ubicaciones</a>
             </router-link>
 
@@ -337,6 +338,10 @@
                 <a class="dropdown-item text-center small text-gray-500" href="#">Mostrar todas las alertas</a>
               </div>
             </li>
+            <!-- <button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="left"
+              data-bs-custom-class="custom-tooltip" data-bs-title="This top tooltip is themed via CSS variables.">
+              Custom tooltip
+            </button> -->
 
             <!-- Nav Item - Messages -->
             <!-- <li class="nav-item dropdown no-arrow mx-1">
@@ -424,7 +429,11 @@
                 aria-labelledby="userDropdown">
                 <a class="dropdown-item" href="#" @click="cargarImagen">
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Cambiar imagen de perfil
+                  Ajustes de perfil
+                </a>
+                <a class="dropdown-item" href="#">
+                  <i class="fas fa-cog fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Configurar sitio
                 </a>
                 <!-- <a class="dropdown-item" href="#" data-toggle="modal" data-target="#sendEmail">
                   <i class="fa fa-envelope fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -448,10 +457,14 @@
                                     Activity Log
                                 </a> -->
                 <div class="dropdown-divider"></div>
+                <!-- <div class="spinner-border text-success" role="status">
+                  <span class="visually-hidden"></span>
+                </div> -->
+
                 <!--<a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal" @click="salir">-->
                 <a class="dropdown-item" @click="salir">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Salir
+                  Cerrar sesión
                 </a>
               </div>
             </li>
@@ -828,6 +841,7 @@ const Exp_Not = () => {
 }
 
 const obtenerLinkA = (alink) => {
+  // console.log("OKKK")
   link.value = alink;
   collapsed.value = 'collapsed';
   activa.value = false;
@@ -954,6 +968,7 @@ const ActivaLink = (valor) => {
   // activa.value = false;
   // show.value = '';
   // }
+  // show.value = '';
   if (valor == link.value) {
     return 'active'
   } else {
@@ -1352,9 +1367,9 @@ onMounted(async () => {
   if (localStorage.getItem('userName')) {
     if (localStorage.getItem('Carg_datP') == '0') {
       // cargando los productos
-      Store.esperandoProductos = true;
-      Store.loadingP = true;
+      Store.cambiaEstado(1)
       const response = await obtenerDatos(1);
+
       if (!response) {
         ErrorFull("Error de red, intente más tarde.", "top-start")
       } else {
@@ -1363,14 +1378,12 @@ onMounted(async () => {
           Store.setListadoProductos(response)
         }
         localStorage.setItem("Carg_datP", "1");
-        Store.esperandoProductos = false;
-        Store.loadingP = false;
+        Store.cambiaEstado(1);
       }
     }
     if (localStorage.getItem('Carg_datD') == '0') {
       // cargando los departamentos
-      Store.esperandoDepartamentos = true;
-      Store.loadingD = true;
+      Store.cambiaEstado(2)
       const response = await obtenerDatos(6);
       if (!response) {
         // ErrorFull("Error de red, intente más tarde.", "top-start")
@@ -1380,16 +1393,14 @@ onMounted(async () => {
           Store.setListadoDepartamentos(response)
         }
         localStorage.setItem("Carg_datD", "1");
-        Store.esperandoDepartamentos = false;
-        Store.loadingD = false;
+        Store.cambiaEstado(2);
       }
 
     }
 
     if (localStorage.getItem('Carg_datA') == '0') {
       // cargando los articulos
-      Store.esperandoArticulos = true;
-      Store.loadingA = true;
+      Store.cambiaEstado(3)
       const response = await obtenerDatos(5);
       if (!response) {
         ErrorFull("Error de red, intente más tarde.", "top-start")
@@ -1399,8 +1410,7 @@ onMounted(async () => {
           Store.setListadoArticulos(response)
         }
         localStorage.setItem("Carg_datA", "1");
-        Store.esperandoArticulos = false;
-        Store.loadingA = false;
+        Store.cambiaEstado(3)
       }
     }
     Ctoggled.value = 'toggled';
@@ -1479,7 +1489,8 @@ const salir = () => {
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
-    confirmButtonText: "Salir"
+    confirmButtonText: "Salir",
+    cancelButtonText: "Cancelar"
   }).then((result) => {
     if (result.isConfirmed) {
       localStorage.removeItem('userName');

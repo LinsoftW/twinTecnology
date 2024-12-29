@@ -58,28 +58,21 @@
             <div class="container-fluid row">
               <div class="col-xl-4 col-lg-3">
 
-                <label>Por sucursal</label>
-                <select class="form-control form-control-sm" name="" id="" placeholder="Por Sucursales">
-                  <option value="">La Habana</option>
-                  <option value="">Matanzas</option>
-                </select>
+                <label>Sucursal</label>
+                <input type="text" class="form-control form-control-sm" placeholder="Ej: La Habana"
+                  v-model="critBusq[0]">
+
               </div>
               <div class="col-xl-4 col-lg-3">
-                <label>Por código</label>
-                <!-- <input class="form-control form-control-sm" type="text" v-model="searchValue" placeholder="Codigo a buscar"> -->
-                <select class="form-control form-control-sm" name="" id="" placeholder="Por codigos">
-                  <option value="">124263</option>
-                  <option value="">765849</option>
-                </select>
+                <label>Código</label>
+                <input type="text" class="form-control form-control-sm" placeholder="Ej: 0000" v-model="critBusq[1]">
               </div>
               <div class="col-xl-4 col-lg-3">
-                <label>Por producto</label>
-                <!-- <input class="form-control form-control-sm" type="text" v-model="searchNombre" placeholder="Nombre del producto"> -->
-                <select class="form-control form-control-sm" name="" id="" placeholder="Por cantidades">
-                  <option value="">5</option>
-                  <option value="">10</option>
-                </select>
+                <label>Producto</label>
+                <input type="text" class="form-control form-control-sm" placeholder="Ej: Producto 1"
+                  v-model="critBusq[2]">
               </div>
+              {{ critBusq }}
               <!-- <div class="col-xl-2 col-lg-3">
                 <label>Por categoría</label>
                 <select class="form-control form-control-sm" name="" id="" placeholder="Por cantidades">
@@ -139,211 +132,121 @@
         </div>
       </div> -->
       </div>
-
-      <!--Listado de productos -->
+      <!-- Nuevo Listado productos -->
       <div class="col-xl-12 col-lg-12">
         <div class="card shadow mb-4">
-          <!-- Card Header - Dropdown -->
-          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-info">PRODUCTOS EN STOCK</h6>
-            <div :class="'dropdown no-arrow ' + show">
-              <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                aria-haspopup="true" :aria-expanded="activaShow">
-                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-              </a>
-              <div :class="'dropdown-menu dropdown-menu-right shadow animated--fade-in ' + show"
-                aria-labelledby="dropdownMenuLink">
-                <div class="dropdown-header">Agregar:</div>
-                <a class="dropdown-item" href="#"><span class="fa fa-plus"></span> Departamento</a>
-                <a class="dropdown-item" href="#"><span class="fa fa-plus"></span> Tipo de artículo</a>
-                <a class="dropdown-item" href="#"><span class="fa fa-plus"></span> Etiqueta</a>
-                <a class="dropdown-item" href="#"><span class="fa fa-plus"></span> Magnitud</a>
-                <a class="dropdown-item" href="#"><span class="fa fa-plus"></span> Unidad de medida</a>
-                <a class="dropdown-item" href="#"><span class="fa fa-plus"></span> Ubicación</a>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#agregaSucursales"><span
-                    class="fa fa-plus"></span> Sucursal</a>
-                <!-- <a class="dropdown-item" href="#" data-toggle="modal" data-target="#filasColumnas"
-                  @click="abrirModal()">
-                  <span class="fa fa-bars"></span> Agregar o quitar columnas
-                </a> -->
-
-                <!-- <a class="dropdown-item" href="#">Otros</a> -->
-              </div>
-            </div>
-            <!-- <a class="dropdown-item" href="#" data-toggle="modal" data-target="#filasColumnas"
-                  >
-                  <span class="fa fa-bars"></span> Agregar o quitar columnas
-                </a> -->
-          </div>
+          <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button"
+            aria-expanded="true" aria-controls="collapseCardExample">
+            <h6 class="m-0 font-weight-bold text-info"><i class="fa fa-list-alt"></i> PRODUCTOS EN STOCK</h6>
+          </a>
+          <!-- <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-edit"></i> DEPARTAMENTOS</h6>
+              <button class="btn btn-info" @click="abrirModalAddProd()"> <span class="fa fa-plus"></span> Nuevo</button>
+            </div> -->
           <!-- Card Body -->
-          <div class="card-body">
-            <!-- Tabla de vue -->
-            <div class="row">
-              <div class="col-md-6 col-xl-6 col-lg-6">
-                <!-- <div class="row"> -->
-                <div class="justify-content-between">
-                  <!-- <router-link class="button" to="/gest_inventario"> -->
-                  <a data-toggle="modal" @click="agrega()" data-target="#agregaProducto"
-                    class="btn btn-info btn-sm btn-icon-split" :class="disabledProductos">
-                    <span class="icon text-white-50">
-                      <i class="fas fa-plus"></i>
-                    </span>
-                    <span class="text">Nuevo</span>
-                  </a>
-                  <a @click="abrirModalAddProd()" class="btn btn-secondary btn-sm btn-icon-split m-2"
-                    :class="disabledProductos">
-                    <span class="icon text-white-50">
-                      <i class="fas fa-file-pdf"></i>
-                    </span>
-                    <span class="text">PDF</span>
-                  </a>
-                  <a @click="ExportExcel()" class="btn btn-primary btn-sm btn-icon-split" :class="disabledProductos">
-                    <span class="icon text-white-50">
-                      <i class="fas fa-download"></i>
-                    </span>
-                    <span class="text">Excel</span>
-                  </a>
-                  <!-- <a @click="abrirModalAddProd()" href="#" class="d-sm-inline-block btn btn-sm btn-info shadow-sm"
+          <div class="collapse show" id="collapseCardExample">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6 col-xl-6 col-lg-6">
+                  <!-- <div class="row"> -->
+                  <div class="justify-content-between">
+                    <!-- <router-link class="button" to="/gest_inventario"> -->
+                    <a data-toggle="modal" @click="agrega()" data-target="#agregaProducto"
+                      class="btn btn-info btn-sm btn-icon-split" :class="disabledProductos">
+                      <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                      </span>
+                      <span class="text">Nuevo</span>
+                    </a>
+                    <a @click="abrirModalAddProd()" class="btn btn-secondary btn-sm btn-icon-split m-2"
+                      :class="disabledProductos">
+                      <span class="icon text-white-50">
+                        <i class="fas fa-file-pdf"></i>
+                      </span>
+                      <span class="text">PDF</span>
+                    </a>
+                    <a @click="ExportExcel()" class="btn btn-primary btn-sm btn-icon-split" :class="disabledProductos">
+                      <span class="icon text-white-50">
+                        <i class="fas fa-download"></i>
+                      </span>
+                      <span class="text">Excel</span>
+                    </a>
+                    <!-- <a @click="abrirModalAddProd()" href="#" class="d-sm-inline-block btn btn-sm btn-info shadow-sm"
                     v-b-tooltip.hover title="Agregar producto"><i class="fas fa-plus fa-sm "></i> Agregar productos </a> -->
-                  <!-- <a @click="EliminarSelecc()" href="#" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm m-2"
+                    <!-- <a @click="EliminarSelecc()" href="#" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm m-2"
                     v-b-tooltip.hover title="Eliminar seleccionados"><i class="fas fa-trash fa-sm "></i> Eliminar
                     seleccionados </a> -->
-                  <!-- </router-link> -->
-                  <!-- <a @click="ExportExcel()" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
+                    <!-- </router-link> -->
+                    <!-- <a @click="ExportExcel()" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
                     v-b-tooltip.hover title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a> -->
+                  </div>
+                  <!-- </div> -->
                 </div>
-                <!-- </div> -->
-              </div>
-              <!-- <div class="col-md-3 col-xl-3 col-lg-3">
+                <!-- <div class="col-md-3 col-xl-3 col-lg-3">
                 <span class="text-info">Filtrar por columna: </span>
                 <select v-model="searchField" @change="cuandoCambie()" class="form-control form-control-user">
                   <option>Tipo</option>
                   <option>Código</option>
                 </select>
               </div> -->
-              <div class="col-md-6 col-xl-6 col-lg-12">
-                <span class="text-info">Buscar: </span>
-                <input class="form-control form-control-user" type="text" v-model="searchValue"
-                  placeholder="Qué desea buscar" />
-              </div>
-            </div>
-            <br>
-
-            <!-- Aqui la tabla -->
-            <!-- <DataTable :columns="columnas" :data="items" :options="{ options }"
-              class="table table-striped table-bordered display">
-
-            </DataTable> -->
-            <!-- Fin -->
-
-            <EasyDataTable :headers="headers" :items="itemsProductos1" buttons-pagination border-cell
-              v-model:items-selected="itemsSelected" header-text-direction="center" body-text-direction="center"
-              :search-field="searchField" :search-value="searchValue" @click-row="showRow" :rows-per-page="5"
-              :loading="Store.esperandoProductos">
-              <template #item-image="item">
-                <img src="/inventario.jpg" alt="No image" class="img img-thumbnail"
-                  style="width: 70px; height: 70px;" />
-              </template>
-              <template #item-opciones="item">
-                <div class="operation-wrapper">
-                  <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal" data-target="#agregaProducto"
-                    @click="clickEditarProducto(item.id)" v-b-tooltip.hover title="Modificar"><span
-                      class="fas fa-edit"></span></button>
-                  <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
-                    title="Aumentar"><span class="fas fa-plus"></span></button>
-                  <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
-                    title="Restar"><span class="fas fa-minus"></span></button>
-                  <button class="btn btn-danger btn-sm btn-circle ml-1"
-                    @click="borrarU(item.id, item.attributes.descripcion, 1)" v-b-tooltip.hover title="Eliminar"><span
-                      class="fas fas fa-trash-alt"></span></button>
-                  <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode"
-                    @click="generarCodeBar(item.relationships.departamento.data.id, item.relationships.articulo.data.id, item.id)"
-                    v-b-tooltip.hover title="Código de barra"><span class="fas fas fa-barcode"></span></button>
-
+                <div class="col-md-6 col-xl-6 col-lg-12">
+                  <span class="text-info">Buscar: </span>
+                  <input class="form-control form-control-user" type="text" v-model="searchValue"
+                    placeholder="Qué desea buscar" />
                 </div>
-              </template>
-              <template #item-codigo="item">
-                {{ item.relationships.departamento.data.id }}{{ item.relationships.articulo.data.id }}{{ item.id }}
-              </template>
-              <template #item-unidad="item">
-                {{ obtenMedida(item.relationships.medida.data.id) }} <!-- item.relationships.medida.data.id -->
-              </template>
-              <template #loading>
-                <img src="/cargando4.gif" style="width: 100px; height: 80px;" />
-              </template>
-              <template #empty-message>
-                <a>No hay datos que mostrar</a>
-              </template>
-
-            </EasyDataTable>
-            <!-- Fin -->
-            <!-- <div class="table-responsive">
-              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <thead>
-                  <tr style="text-align: center;">
-                    <th>No</th>
-
-                    <th v-if="sicodigo">CÓDIGO</th>
-                    <th v-if="sisucursal">SUCURSAL</th>
-                    <th v-if="sidescripcion">DESCRIPCION</th>
-                    <th v-if="siobservaciones">OBSERVACIONES</th>
-                    <th v-if="siacciones">ACCIONES</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="datos in datosPaginados" :key="datos.id">
-                    <td v-if="datos.attributes.deleted_at == null">{{ datos.id }}</td>
-
-                    <td v-if="datos.attributes.deleted_at == null && sicodigo">{{ datos.attributes.codigo }}</td>
-                    <td v-if="datos.attributes.deleted_at == null && sisucursal">Sucursal</td>
-                    <td v-if="datos.attributes.deleted_at == null && sidescripcion">{{ datos.attributes.descripcion }}
-                    </td>
-                    <td v-if="datos.attributes.deleted_at == null && siobservaciones">{{ datos.attributes.observacion }}
-                    </td>
-                    <td v-if="datos.attributes.deleted_at == null && siacciones" style="text-align: center;">
-                      <button class="btn btn-info btn-sm btn-circle" v-b-tooltip.hover title="Conformar pedido"><span
-                          class="fas fa-check"></span></button>&nbsp;
-
-                      <button class="btn btn-danger btn-sm btn-circle"
-                        @click="borrarU(datos.id, datos.attributes.codigo)" v-b-tooltip.hover title="Eliminar"><span
-                          class="fas fa-trash"></span></button>
-                    </td>
-                  </tr>
-
-
-                </tbody>
-              </table>
-
-              <div class="text-center">
-                <nav aria-label="Page navigation example" style="text-align: center;">
-                  <label>Mostrando &nbsp;</label>
-                  <select style="width: 60px" @change="cambiarLimite()" v-model="elementPagina">
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                  </select>
-
-                  <label>&nbsp;registros </label>
-                  <ul class="pagination Mestilo btn-sm">
-
-                    <li class="page-item" :class="`${disableA}`" @click="obtenerAnterior"><a class="page-link"
-                        href="#">Anterior</a></li>
-                    <li v-for="pagina in cantidad" class="page-item" v-bind:class="isActivo(pagina)" :key="pagina"
-                      @click="obtenerPagina(pagina)"><a class="page-link" href="#">{{ pagina
-                        }}</a></li>
-                    <li class="page-item" :class="`${disableS}`" @click="obtenerSiguiente"><a class="page-link"
-                        href="#">Siguiente</a></li>
-                  </ul>
-                </nav>
               </div>
-            </div> -->
+              <br>
 
+              <EasyDataTable :headers="headers" :items="itemsProductos1" buttons-pagination border-cell
+                v-model:items-selected="itemsSelected" header-text-direction="center" body-text-direction="center"
+                :search-field="searchField" :search-value="searchValue" @click-row="showRow" :rows-per-page="5"
+                :loading="Store.esperandoProductos">
+                <template #item-image="item">
+                  <img src="/inventario.jpg" alt="No image" class="img img-thumbnail"
+                    style="width: 50px; height: 50px;" />
+                </template>
+                <!-- <template #item-rows>
+                <a>Filas por paginas</a>
+              </template> -->
+                <template #item-opciones="item">
+                  <div class="operation-wrapper">
+                    <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal" data-target="#agregaProducto"
+                      @click="clickEditarProducto(item.id)" v-b-tooltip.hover title="Modificar"><span
+                        class="fas fa-edit"></span></button>
+                    <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
+                      title="Aumentar / Disminuir"><span class="fas fa-plus"></span> / <span
+                        class="fas fa-minus"></span></button>
+                    <!-- <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
+                    title="Restar"><span class="fas fa-minus"></span></button> -->
+                    <button class="btn btn-danger btn-sm btn-circle ml-1"
+                      @click="borrarU(item.id, item.attributes.descripcion, 1)" v-b-tooltip.hover title="Eliminar"><span
+                        class="fas fas fa-trash-alt"></span></button>
+                    <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode"
+                      @click="generarCodeBar(item.relationships.departamento.data.id, item.relationships.articulo.data.id, item.id)"
+                      v-b-tooltip.hover title="Código de barra"><span class="fas fas fa-barcode"></span></button>
+
+                  </div>
+                </template>
+                <template #item-codigo="item">
+                  {{ item.relationships.departamento.data.id }}{{ item.relationships.articulo.data.id }}{{ item.id }}
+                </template>
+                <template #item-unidad="item">
+                  {{ obtenMedida(item.relationships.medida.data.id) }} <!-- item.relationships.medida.data.id -->
+                </template>
+                <template #loading>
+                  <img src="/cargando4.gif" style="width: 100px; height: 80px;" />
+                </template>
+                <template #empty-message>
+                  <a>No hay datos que mostrar</a>
+                </template>
+
+              </EasyDataTable>
+
+            </div>
           </div>
         </div>
       </div>
-      <!-- FIN -->
+
     </div>
     <!-- Logout Modal-->
     <div :class="'modal fade ' + showModal" id="filasColumnas" tabindex="-1" role="dialog"
@@ -914,6 +817,7 @@ import Quagga from 'quagga';
 import { useStoreAxios } from '@/store/AxiosStore';
 import { ErrorFull, itemsMedidas, itemsUbicaciones, successFull } from './controler/ControlerApp';
 import { EditarDatos, EliminarDatos, GuardarDatos, obtenerDatos } from './helper/useAxios';
+import { data } from 'jquery';
 // import { almacenDatosProductos, GuardarDatos, obtenerArticulos, obtenerProductos, obtenerUbicaciones } from './service/servicio';
 // import { disabledProductos, esperandoProductos, formProductos, itemsProductos, listadoArticulos, listadoMedida, listadoProductos, listadoUbicaciones, loadingP } from './controler/ControlerApp';
 const Store = useStoreAxios()
@@ -922,6 +826,43 @@ const disabledProductos = ref('')
 
 const prueba = () => {
   successFull("Okkk", "top-center")
+}
+
+const formCantidad = reactive({
+  data: {
+    attributes: {
+      cantidad: 0,
+    }
+  }
+})
+
+const Aumentar = async (dato) => {
+  const { value: formValues } = await Swal.fire({
+    title: `Cantidad actual en Stock: ${dato.attributes.cantidad} `,
+    html: `
+    <label> Aumentar: Ej: 5 / Disminuir: Ej: -5 </label><input id="swal-input2" class="swal2-input">
+  `,
+    focusConfirm: false,
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Modificar",
+    cancelButtonText: "Cancelar",
+    preConfirm: () => {
+      return [
+        document.getElementById("swal-input2").value
+      ];
+    }
+  });
+  if (formValues) {
+    Store.cambiaEstado(1);
+    formCantidad.data.attributes.cantidad = parseInt(dato.attributes.cantidad) + parseInt(formValues[0]);
+    const response = await EditarDatos(dato.id, formCantidad, 1);
+    Store.EditProductos(response)
+    itemsProductos1.value = Store.itemsProductos;
+    successFull("Cantidad modificada satisfactoriamente.", "top-end")
+    Store.cambiaEstado(1);
+  }
 }
 
 const barcode = ref();
@@ -1221,14 +1162,15 @@ const elementos = ref([]);
 function ExportExcel() {
   // emit('consultar', 2);
   // console.log(items.value)
-
+  elementos.value = []
+  nuevoArreglo.value = []
   for (let index = 0; index < itemsProductos1.value.length; index++) {
-    elementos.value.type = itemsProductos1.value[index].type;
-    elementos.value.cantidad = itemsProductos1.value[index].attributes.cantidad;
-    elementos.value.descripcion = itemsProductos1.value[index].attributes.descripcion;
-    elementos.value.observacion = itemsProductos1.value[index].attributes.observacion;
-    elementos.value.unidad = obtenMedida(itemsProductos1.value[index].relationships.medida.data.id)
-    elementos.value.codigo = itemsProductos1.value[index].relationships.departamento.data.id.toString() + itemsProductos1.value[index].relationships.articulo.data.id.toString() + itemsProductos1.value[index].id.toString()
+    elementos.value.TIPO = itemsProductos1.value[index].type;
+    elementos.value.CANTIDAD = itemsProductos1.value[index].attributes.cantidad;
+    elementos.value.DESCRIPCIÓN = itemsProductos1.value[index].attributes.descripcion;
+    elementos.value.OBSERVACIÓN = itemsProductos1.value[index].attributes.observacion;
+    elementos.value.U_MEDIDA = obtenMedida(itemsProductos1.value[index].relationships.medida.data.id)
+    elementos.value.CÓDIGO = itemsProductos1.value[index].relationships.departamento.data.id.toString() + itemsProductos1.value[index].relationships.articulo.data.id.toString() + itemsProductos1.value[index].id.toString()
     nuevoArreglo.value.push(elementos.value)
     elementos.value = []
   }
@@ -1334,6 +1276,8 @@ const searchField = ref(["id", "attributes.descripcion", "attributes.observacion
 const searchField1 = ref('')
 
 const searchValue = ref("");
+
+const critBusq = ref([], [], [])
 
 const cuandoCambie = () => {
   if (searchField.value == 'Código') {
@@ -1892,6 +1836,7 @@ const borrarU = async (id, correo, caso) => {
 
 // const itemsProductos = ref(listadoProductos)
 onMounted(async () => {
+
   if (localStorage.getItem('userName')) {
     // ipPublica.value = localStorage.getItem('Host_back');
     if (localStorage.getItem('Carg_datP') == '0') {

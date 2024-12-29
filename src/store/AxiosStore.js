@@ -108,6 +108,16 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
   }
 })
 
+const formEtiqueta = reactive({
+  data: {
+    attributes: {
+      etiqueta: "",
+      descripcion: "",
+      observacion: ""
+    }
+  }
+})
+
 const formUbicaciones = reactive({
   data: {
     attributes: {
@@ -235,6 +245,33 @@ const formUbicaciones = reactive({
         listadoSucursales.value[index] = newdato;
       }
       itemsSucursales.value.push(listadoSucursales.value[index])
+    }
+  }
+
+  const AddEtiqueta = (L) => {
+    listadoEtiquetas.value.push(L);
+    // setCantidadDepartamentos(cantidadDepartamentos.value+1)
+    setListadoEtiquetas(listadoEtiquetas.value);
+  }
+
+  const DeleteEtiqueta = (newdato) => {
+    itemsEtiquetas.value = []
+    // setCantidadDepartamentos(cantidadDepartamentos.value-1)
+    for (let index = 0; index < listadoEtiquetas.value.length; index++) {
+      if (newdato.id == listadoEtiquetas.value[index].id) {
+        listadoEtiquetas.value.splice(index, 1)
+      }
+      itemsEtiquetas.value.push(listadoEtiquetas.value[index])
+    }
+  }
+
+  const EditEtiqueta = (newdato) => {
+  itemsEtiquetas.value = [];
+    for (let index = 0; index < listadoEtiquetas.value.length; index++) {
+      if (newdato.id == listadoEtiquetas.value[index].id) {
+        listadoEtiquetas.value[index] = newdato;
+      }
+      itemsEtiquetas.value.push(listadoEtiquetas.value[index])
     }
   }
 
@@ -491,6 +528,7 @@ const formUbicaciones = reactive({
     esperandoArticulos, esperandoDepartamentos, esperandoProductos, esperandoMedidas, esperandoEtiquetas, esperandoMagnitudes, esperandoSucursales, esperandoUbicaciones, loadingP, loadingA, loadingD, loadingE, loadingM, loadingMe, loadingS, loadingUb,
     itemsProductos, itemsDepartamentos, itemsMagnitudes, itemsArticulos, itemsEtiquetas, itemsUbicaciones, itemsMedidas, itemsSucursales,
     cambiaEstado, AddMagnitud, AddProductos, EditProductos, DeleteMagnitud, DeleteProducto, AddMedida, DeleteMedida, EditMagnitud, EditMedida, AddDepartamento, DeleteDepartamento, EditDepartamento,
-    AddArticulo, DeleteArticulo, EditArticulo, AddSucursal, DeleteSucursal, EditSucursal, AddUbicaciones, DeleteUbicaciones, EditUbicaciones, formSucursal, formUbicaciones
+    AddArticulo, DeleteArticulo, EditArticulo, AddSucursal, DeleteSucursal, EditSucursal, AddUbicaciones, DeleteUbicaciones, EditUbicaciones, formSucursal, formUbicaciones,
+    AddEtiqueta, EditEtiqueta, DeleteEtiqueta, formEtiqueta, setListadoEtiquetas
   }
 })

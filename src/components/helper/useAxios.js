@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const url = "https://192.168.43.123/fullstack/public/inventario/";
+const url = "https://localhost/fullstack/public/inventario/";
 
 const apiService = axios.create({
   baseURL: url,
@@ -13,7 +13,7 @@ export async function obtenerDatos(n) {
     case 1:
       try {
         const response = await axios.get(url + 'productos');
-        // console.log(response.data.data)
+        // console.log(response)
         return response.data.data;
       } catch (error) {
         throw error;
@@ -62,6 +62,14 @@ export async function obtenerDatos(n) {
     case 7:
       try {
         const response = await axios.get(url + 'ubicaciones');
+        return response.data.data;
+      } catch (error) {
+        throw error;
+      }
+      break;
+    case 8:
+      try {
+        const response = await axios.get(url + 'etiquetas');
         return response.data.data;
       } catch (error) {
         throw error;
@@ -154,6 +162,14 @@ export async function GuardarDatos(datos, n) {
         throw error;
       }
       break;
+      case 8:
+      try {
+        const response = await axios.post(url + 'etiquetas', datos);
+        return response.data.data;
+      } catch (error) {
+        throw error;
+      }
+      break;
     default:
       break;
   }
@@ -213,6 +229,14 @@ export async function EliminarDatos(id, n) {
     case 7:
       try {
         const response = await axios.delete(`${url}ubicaciones/${id}`);
+        return response.data.data;
+      } catch (error) {
+        throw error;
+      }
+      break;
+    case 8:
+      try {
+        const response = await axios.delete(`${url}etiquetas/${id}`);
         return response.data.data;
       } catch (error) {
         throw error;

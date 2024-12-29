@@ -173,6 +173,7 @@ onMounted(async () => {
   localStorage.setItem('Carg_datP', '0'); // Productos
   localStorage.setItem('Carg_datS', '0'); // Sucursales
   localStorage.setItem('Carg_datU', '0'); // Ubicaciones
+  localStorage.setItem('Carg_datE', '0'); // Etiquetas
   localStorage.setItem('Host_back', 'localhost'); // IPPublica
   localStorage.setItem('Wait', '1'); // Esperar para cargar el inicio
   localStorage.setItem('Wait2', '1'); // Esperar para cargar el inicio
