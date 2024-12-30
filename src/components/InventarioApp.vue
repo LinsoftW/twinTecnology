@@ -995,7 +995,7 @@ const errores = ref({ descripcion: "", observacion: "", articulo_id: "", ubicaci
 
 const agregarUProducto = async () => {
   // console.log(formProductos.data)
-  if (Store.formProductos.data.attributes.descripcion != '' && Store.formProductos.data.attributes.articulo_id != 0 && Store.formProductos.data.attributes.observacion != '' && Store.formProductos.data.attributes.ubicacion_id != 0) {
+  if (Store.formProductos.data.attributes.descripcion != '' && Store.formProductos.data.attributes.articulo_id != 0 && Store.formProductos.data.attributes.observacion != '' && Store.formProductos.data.attributes.ubicacion_id != "" && Store.formProductos.data.attributes.cantidad != "") {
     // console.log("OKKKK")
     Store.cambiaEstado(1);
     GuardarProducto.value = 'Guardando...';

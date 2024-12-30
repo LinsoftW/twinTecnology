@@ -98,36 +98,36 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
   })
 
   const formSucursal = reactive({
-  data: {
-    attributes: {
-      sucursal: "",
-      abreviatura: "",
-      descripcion: "",
-      observacion: ""
+    data: {
+      attributes: {
+        sucursal: "",
+        abreviatura: "",
+        descripcion: "",
+        observacion: ""
+      }
     }
-  }
-})
+  })
 
-const formEtiqueta = reactive({
-  data: {
-    attributes: {
-      etiqueta: "",
-      descripcion: "",
-      observacion: ""
+  const formEtiqueta = reactive({
+    data: {
+      attributes: {
+        etiqueta: "",
+        descripcion: "",
+        observacion: ""
+      }
     }
-  }
-})
+  })
 
-const formUbicaciones = reactive({
-  data: {
-    attributes: {
-      ubicacion: "",
-      descripcion: "",
-      observacion: "",
-      sucursal_id: 0
+  const formUbicaciones = reactive({
+    data: {
+      attributes: {
+        ubicacion: "",
+        descripcion: "",
+        observacion: "",
+        sucursal_id: 0
+      }
     }
-  }
-})
+  })
 
   //Magnitudes
   const formMagnitud = reactive({
@@ -169,16 +169,21 @@ const formUbicaciones = reactive({
 
   const AddProductos = (L) => {
     listadoProductos.value.push(L);
-    setCantidadProductos(cantidadProductos.value+1)
+    setCantidadProductos(cantidadProductos.value + 1)
     setListadoProductos(listadoProductos.value);
   }
 
   const DeleteProducto = (newdato) => {
     itemsProductos.value = []
-    setCantidadProductos(cantidadProductos.value-1)
+    setCantidadProductos(cantidadProductos.value - 1);
     for (let index = 0; index < listadoProductos.value.length; index++) {
       if (newdato.id == listadoProductos.value[index].id) {
-        listadoProductos.value.splice(index, 1)
+        if (index == listadoProductos.value.length - 1) {
+          listadoProductos.value.pop();
+          break
+        } else {
+          listadoProductos.value.splice(index, 1)
+        }
       }
       itemsProductos.value.push(listadoProductos.value[index])
     }
@@ -186,12 +191,12 @@ const formUbicaciones = reactive({
 
   const AddDepartamento = (L) => {
     listadoDepartamentos.value.push(L);
-    setCantidadDepartamentos(cantidadDepartamentos.value+1)
+    setCantidadDepartamentos(cantidadDepartamentos.value + 1)
     setListadoDepartamentos(listadoDepartamentos.value);
   }
 
   const EditProductos = (newdato) => {
-  itemsProductos.value = [];
+    itemsProductos.value = [];
     for (let index = 0; index < listadoProductos.value.length; index++) {
       if (newdato.id == listadoProductos.value[index].id) {
         listadoProductos.value[index] = newdato;
@@ -202,17 +207,22 @@ const formUbicaciones = reactive({
 
   const DeleteDepartamento = (newdato) => {
     itemsDepartamentos.value = []
-    setCantidadDepartamentos(cantidadDepartamentos.value-1)
+    setCantidadDepartamentos(cantidadDepartamentos.value - 1)
     for (let index = 0; index < listadoDepartamentos.value.length; index++) {
       if (newdato.id == listadoDepartamentos.value[index].id) {
-        listadoDepartamentos.value.splice(index, 1)
+        if (index == listadoDepartamentos.value.length - 1) {
+          listadoDepartamentos.value.pop();
+          break
+        } else {
+          listadoDepartamentos.value.splice(index, 1)
+        }
       }
       itemsDepartamentos.value.push(listadoDepartamentos.value[index])
     }
   }
 
   const EditDepartamento = (newdato) => {
-  itemsDepartamentos.value = [];
+    itemsDepartamentos.value = [];
     for (let index = 0; index < listadoDepartamentos.value.length; index++) {
       if (newdato.id == listadoDepartamentos.value[index].id) {
         listadoDepartamentos.value[index] = newdato;
@@ -223,23 +233,27 @@ const formUbicaciones = reactive({
 
   const AddSucursal = (L) => {
     listadoSucursales.value.push(L);
-    // setCantidadDepartamentos(cantidadDepartamentos.value+1)
     setListadoSucursales(listadoSucursales.value);
   }
 
   const DeleteSucursal = (newdato) => {
     itemsSucursales.value = []
-    // setCantidadDepartamentos(cantidadDepartamentos.value-1)
     for (let index = 0; index < listadoSucursales.value.length; index++) {
       if (newdato.id == listadoSucursales.value[index].id) {
-        listadoSucursales.value.splice(index, 1)
+        if (index == listadoSucursales.value.length - 1) {
+          listadoSucursales.value.pop();
+          break
+        } else {
+          listadoSucursales.value.splice(index, 1)
+        }
       }
       itemsSucursales.value.push(listadoSucursales.value[index])
+
     }
   }
 
   const EditSucursal = (newdato) => {
-  itemsSucursales.value = [];
+    itemsSucursales.value = [];
     for (let index = 0; index < listadoSucursales.value.length; index++) {
       if (newdato.id == listadoSucursales.value[index].id) {
         listadoSucursales.value[index] = newdato;
@@ -250,23 +264,26 @@ const formUbicaciones = reactive({
 
   const AddEtiqueta = (L) => {
     listadoEtiquetas.value.push(L);
-    // setCantidadDepartamentos(cantidadDepartamentos.value+1)
     setListadoEtiquetas(listadoEtiquetas.value);
   }
 
   const DeleteEtiqueta = (newdato) => {
     itemsEtiquetas.value = []
-    // setCantidadDepartamentos(cantidadDepartamentos.value-1)
     for (let index = 0; index < listadoEtiquetas.value.length; index++) {
       if (newdato.id == listadoEtiquetas.value[index].id) {
-        listadoEtiquetas.value.splice(index, 1)
+        if (index == listadoEtiquetas.value.length - 1) {
+          listadoEtiquetas.value.pop();
+          break
+        } else {
+          listadoEtiquetas.value.splice(index, 1)
+        }
       }
       itemsEtiquetas.value.push(listadoEtiquetas.value[index])
     }
   }
 
   const EditEtiqueta = (newdato) => {
-  itemsEtiquetas.value = [];
+    itemsEtiquetas.value = [];
     for (let index = 0; index < listadoEtiquetas.value.length; index++) {
       if (newdato.id == listadoEtiquetas.value[index].id) {
         listadoEtiquetas.value[index] = newdato;
@@ -277,23 +294,26 @@ const formUbicaciones = reactive({
 
   const AddUbicaciones = (L) => {
     listadoUbicaciones.value.push(L);
-    // setCantidadDepartamentos(cantidadDepartamentos.value+1)
     setListadoUbicaciones(listadoUbicaciones.value);
   }
 
   const DeleteUbicaciones = (newdato) => {
     itemsUbicaciones.value = []
-    // setCantidadDepartamentos(cantidadDepartamentos.value-1)
     for (let index = 0; index < listadoUbicaciones.value.length; index++) {
       if (newdato.id == listadoUbicaciones.value[index].id) {
-        listadoUbicaciones.value.splice(index, 1)
+        if (index == listadoUbicaciones.value.length - 1) {
+          listadoUbicaciones.value.pop();
+          break
+        } else {
+          listadoUbicaciones.value.splice(index, 1)
+        }
       }
       itemsUbicaciones.value.push(listadoUbicaciones.value[index])
     }
   }
 
   const EditUbicaciones = (newdato) => {
-  itemsUbicaciones.value = [];
+    itemsUbicaciones.value = [];
     for (let index = 0; index < listadoUbicaciones.value.length; index++) {
       if (newdato.id == listadoUbicaciones.value[index].id) {
         listadoUbicaciones.value[index] = newdato;
@@ -304,23 +324,28 @@ const formUbicaciones = reactive({
 
   const AddArticulo = (L) => {
     listadoArticulos.value.push(L);
-    setCantidadArticulos(cantidadArticulos.value+1)
+    setCantidadArticulos(cantidadArticulos.value + 1)
     setListadoArticulos(listadoArticulos.value);
   }
 
   const DeleteArticulo = (newdato) => {
     itemsArticulos.value = []
-    setCantidadArticulos(cantidadArticulos.value-1)
+    setCantidadArticulos(cantidadArticulos.value - 1)
     for (let index = 0; index < listadoArticulos.value.length; index++) {
       if (newdato.id == listadoArticulos.value[index].id) {
-        listadoArticulos.value.splice(index, 1)
+        if (index == listadoArticulos.value.length - 1) {
+          listadoArticulos.value.pop();
+          break
+        } else {
+          listadoArticulos.value.splice(index, 1)
+        }
       }
       itemsArticulos.value.push(listadoArticulos.value[index])
     }
   }
 
   const EditArticulo = (newdato) => {
-  itemsArticulos.value = [];
+    itemsArticulos.value = [];
     for (let index = 0; index < listadoArticulos.value.length; index++) {
       if (newdato.id == listadoArticulos.value[index].id) {
         listadoArticulos.value[index] = newdato;
@@ -338,7 +363,12 @@ const formUbicaciones = reactive({
     itemsMagnitudes.value = []
     for (let index = 0; index < listadoMagnitudes.value.length; index++) {
       if (newdato.id == listadoMagnitudes.value[index].id) {
-        listadoMagnitudes.value.splice(index, 1)
+        if (index == listadoMagnitudes.value.length - 1) {
+          listadoMagnitudes.value.pop();
+          break
+        } else {
+          listadoMagnitudes.value.splice(index, 1)
+        }
       }
       itemsMagnitudes.value.push(listadoMagnitudes.value[index])
     }
@@ -373,7 +403,12 @@ const formUbicaciones = reactive({
     itemsMedidas.value = []
     for (let index = 0; index < listadoMedida.value.length; index++) {
       if (newdato.id == listadoMedida.value[index].id) {
-        listadoMedida.value.splice(index, 1)
+        if (index == listadoMedida.value.length-1) {
+          listadoMedida.value.pop();
+          break
+        } else {
+          listadoMedida.value.splice(index, 1)
+        }
       }
       itemsMedidas.value.push(listadoMedida.value[index])
     }

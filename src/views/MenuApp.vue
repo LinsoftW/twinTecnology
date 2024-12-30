@@ -55,12 +55,10 @@
             <!-- <a class="collapse-item" @click="click_inventario">Inventario</a>
             <a class="collapse-item" @click="click_pedidos">Pedidos</a> -->
             <router-link class="button" to="/inventario" @click="obtenerLinkA(1)">
-              <a class="collapse-item" v-bind:class="ActivaLink(1)" :key="1"><i
-                  class="fa fa-list-ul"></i> Productos</a>
+              <a class="collapse-item" v-bind:class="ActivaLink(1)" :key="1"><i class="fa fa-list-ul"></i> Productos</a>
             </router-link>
             <router-link class="button" to="/categorias" @click="obtenerLinkA(2)">
-              <a class="collapse-item" v-bind:class="ActivaLink(2)" :key="2"> <i
-                  class="fa fa-list-alt"></i>
+              <a class="collapse-item" v-bind:class="ActivaLink(2)" :key="2"> <i class="fa fa-list-alt"></i>
                 Clasificación</a>
             </router-link>
             <!-- <router-link class="button" to="/categorias" @click="obtenerLinkA(3)">
@@ -69,13 +67,13 @@
                 Etiquetas</a>
             </router-link> -->
             <router-link class="button" to="/gest_nomencladores" @click="obtenerLinkA(9)">
-              <a class="collapse-item" v-bind:class="ActivaLink(9)" :key="9" > <i
-                  class="fa fa-ruler-horizontal"></i> Magnitudes</a>
+              <a class="collapse-item" v-bind:class="ActivaLink(9)" :key="9"> <i class="fa fa-ruler-horizontal"></i>
+                Magnitudes</a>
             </router-link>
             <!-- <hr class="sidebar-divider"> -->
             <router-link class="button" to="/auditoria" @click="obtenerLinkA(10)">
-              <a class="collapse-item" v-bind:class="ActivaLink(10)" :key="10"> <i
-                  class="fa fa-history"></i> Auditoría</a>
+              <a class="collapse-item" v-bind:class="ActivaLink(10)" :key="10"> <i class="fa fa-history"></i>
+                Auditoría</a>
             </router-link>
             <!-- <router-link class="button" to="/pedidos">
               <a class="collapse-item" v-bind:class="ActivaLink(3)" :key="3" @click="obtenerLinkA(3)"> <i
@@ -144,8 +142,8 @@
                   class="fas fa-fw fa-cogs"></i> Datos empresa</a>
             </router-link>-->
             <router-link class="button" to="/ubicaciones" @click="obtenerLinkA(8)">
-              <a class="collapse-item" v-bind:class="ActivaLink(8)" :key="8"> <i
-                  class="fa fa-map-marker-alt"></i> Ubicaciones</a>
+              <a class="collapse-item" v-bind:class="ActivaLink(8)" :key="8"> <i class="fa fa-map-marker-alt"></i>
+                Ubicaciones</a>
             </router-link>
 
             <!-- <router-link class="button" to="/gest_inventario">
@@ -439,10 +437,12 @@
                   <i class="fa fa-envelope fa-sm fa-fw mr-2 text-gray-400"></i>
                   Enviar correo electrónico
                 </a> -->
-                <router-link to="/cmasiva"><a class="dropdown-item" href="#">
+                <router-link to="/cmasiva">
+                  <button class="dropdown-item">
                     <i class="fa fa-upload fa-sm fa-fw mr-2 text-gray-400"></i>
                     Carga masiva de datos
-                  </a></router-link>
+                  </button>
+                </router-link>
 
                 <!-- <a class="dropdown-item" href="#" @click="Cambia_Color">
                   <i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-400"></i>
