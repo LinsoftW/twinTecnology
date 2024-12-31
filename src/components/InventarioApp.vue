@@ -244,7 +244,7 @@
                       @click="generarCodeBar(item.relationships.departamento.data.id, item.relationships.articulo.data.id, item.id)"
                       v-b-tooltip.hover title="Código de barra"><span class="fas fas fa-barcode"></span></button>
                     <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Detalles(item)" v-b-tooltip.hover
-                    title="Detalles"><span class="fa fa-eye"></span></button>
+                      title="Detalles"><span class="fa fa-eye"></span></button>
                   </div>
                 </template>
                 <template #item-codigo="item">
@@ -994,12 +994,22 @@ const verificar_error = (n) => {
 const errores = ref({ descripcion: "", observacion: "", articulo_id: "", ubicacion_id: "", cantidad: "" })
 
 const agregarUProducto = async () => {
+  // GuardarProducto.value = 'Guardando...';
+  // disabledProductoBtn.value = 'disabled';
+  // Agregar_Productos();
+  // itemsProductos1.value = Store.itemsProductos;
+  // GuardarProducto.value = 'Agregar';
+  // disabledProductoBtn.value = '';
   // console.log(formProductos.data)
   if (Store.formProductos.data.attributes.descripcion != '' && Store.formProductos.data.attributes.articulo_id != 0 && Store.formProductos.data.attributes.observacion != '' && Store.formProductos.data.attributes.ubicacion_id != "" && Store.formProductos.data.attributes.cantidad != "") {
     // console.log("OKKKK")
     Store.cambiaEstado(1);
     GuardarProducto.value = 'Guardando...';
     disabledProductoBtn.value = 'disabled';
+    // Agregar_Productos();
+    // GuardarProducto.value = 'Agregar';
+    // disabledProductoBtn.value = '';
+    // itemsProductos1.value = Store.itemsProductos;
     const response = await GuardarDatos(Store.formProductos, 1);
 
     if (response == null) {
@@ -1186,8 +1196,8 @@ const emit = defineEmits(['consultar'])
 
 // const props = defineProps(['key'])
 
-function Consultar_Productos() {
-  emit('consultar', 1);
+function Agregar_Productos() {
+  return emit('consultar', 1);
 }
 
 const nuevoArreglo = ref([]);

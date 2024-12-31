@@ -694,10 +694,10 @@ import CargaMasivaApp from '@/components/CargaMasivaApp.vue';
 import CategoriasApp from '@/components/CategoriasApp.vue';
 import emailjs from 'emailjs-com';
 import * as XLSX from 'xlsx';
-import { useAlertsStore } from '@/components/ComunicacionApp';
+// import { useAlertsStore } from '@/components/ComunicacionApp';
 import UbicacionesApp from '@/components/UbicacionesApp.vue';
 import { useStoreAxios } from '@/store/AxiosStore';
-import { obtenerDatos } from '../components/helper/useAxios'
+import { GuardarDatos, obtenerDatos } from '../components/helper/useAxios'
 // import { almacenDatosArticulos, almacenDatosDepartamentos, almacenDatosProductos, obtenerDatos } from '@/components/service/servicio';
 // import { cantidadArticulos, cantidadDepartamentos, cantidadProductos, esperandoArticulos, esperandoDepartamentos, esperandoProductos, listadoArticulos, listadoDepartamentos, listadoMagnitudes, listadoProductos } from '@/components/controler/ControlerApp';
 // import { Input, TextArea } from "@progress/kendo-vue-inputs";
@@ -860,108 +860,6 @@ const MueveMenu = () => {
   }
 }
 
-// const obtenerListadoLimpioSucursales = () => {
-//   let i = 0;
-//   // if (cargado.value = false) {
-//   newListadoSucursal.value = [];
-//   for (let index = 0; index < listadoSucursales.value.length; index++) {
-//     const element = listadoSucursales.value[index];
-//     if (element.attributes.deleted_at == null) {
-//       newListadoSucursal.value[i] = element;
-//       i++;
-//     }
-//   }
-//   return newListadoSucursal;
-//   // }
-
-// }
-
-// Expandir o no las opciones del menu
-// const Exp_Consultar = () => {
-//   if (collapsed.value == "") {
-//     collapsed.value = 'collapsed';
-//     activa.value = false;
-//     show.value = '';
-
-//     collapsed1.value = 'collapsed';
-//     activa1.value = false;
-//     show1.value = '';
-
-//     collapsed2.value = 'collapsed';
-//     activa2.value = false;
-//     show2.value = '';
-
-//   } else {
-//     collapsed.value = '';
-//     activa.value = true;
-//     show.value = 'show';
-
-//     collapsed1.value = 'collapsed';
-//     activa1.value = false;
-//     show1.value = '';
-
-//     collapsed2.value = 'collapsed';
-//     activa2.value = false;
-//     show2.value = '';
-//   }
-// }
-
-// const Exp_Gestion = () => {
-//   if (collapsed1.value == '') {
-//     collapsed1.value = 'collapsed';
-//     activa1.value = false;
-//     show1.value = '';
-
-//     collapsed.value = 'collapsed';
-//     activa.value = false;
-//     show.value = '';
-
-//     collapsed2.value = 'collapsed';
-//     activa2.value = false;
-//     show2.value = '';
-//   } else {
-//     collapsed1.value = '';
-//     activa1.value = true;
-//     show1.value = 'show';
-
-//     collapsed2.value = 'collapsed';
-//     activa2.value = false;
-//     show2.value = '';
-
-//     collapsed.value = 'collapsed';
-//     activa.value = false;
-//     show.value = '';
-//   }
-// }
-
-// const Exp_Nomenc = () => {
-//   if (collapsed2.value == '') {
-//     collapsed2.value = 'collapsed';
-//     activa2.value = false;
-//     show2.value = '';
-
-//     collapsed1.value = 'collapsed';
-//     activa1.value = false;
-//     show1.value = '';
-
-//     collapsed.value = 'collapsed';
-//     activa.value = false;
-//     show.value = '';
-//   } else {
-//     collapsed2.value = '';
-//     activa2.value = true;
-//     show2.value = 'show';
-
-//     collapsed1.value = 'collapsed';
-//     activa1.value = false;
-//     show1.value = '';
-
-//     collapsed.value = 'collapsed';
-//     activa.value = false;
-//     show.value = '';
-//   }
-// }
-
 const ActivaLink = (valor) => {
   // if (valor != 1) {
   // collapsed.value = 'collapsed';
@@ -976,287 +874,95 @@ const ActivaLink = (valor) => {
   }
 }
 
-// const click_inicio = () => {
-//   window.location = '/inicio';
-// }
-
-// const click_pedidos = () => {
-//   window.location = '/pedidos';
-// }
-
-// const click_inventario = () => {
-//   window.location = '/inventario';
-// }
-
-// const click_sucursales = () => {
-//   window.location = '/sucursales';
-// }
-
-// const click_productos = () => {
-//   window.location = '/productos';
-// }
-
-// onUpdated(() => {
-//   // text content should be the same as current `count.value`
-//   console.log('Actual')
-//   Kinicio.value += 1;
-// })
-
-// const almacenDatosProductos = (Lista) => {
-//   localStorage.removeItem('ListadoCacheProductos');
-//   const parsed = JSON.stringify(Lista);
-//   localStorage.setItem('ListadoCacheProductos', parsed);
-// }
-
-// const almacenDatosSucursales = (Lista) => {
-//   localStorage.removeItem('ListadoCacheSucursal');
-//   const parsed = JSON.stringify(Lista);
-//   localStorage.setItem('ListadoCacheSucursal', parsed);
-// }
-
-// const almacenDatosDepartamentos = (Lista) => {
-//   localStorage.removeItem('ListadoCacheDepartamentos');
-//   const parsed = JSON.stringify(Lista);
-//   localStorage.setItem('ListadoCacheDepartamentos', parsed);
-// }
-
-// const almacenDatosArticulos = (Lista) => {
-//   localStorage.removeItem('ListadoCacheArticulos');
-//   const parsed = JSON.stringify(Lista);
-//   localStorage.setItem('ListadoCacheArticulos', parsed);
-// }
-
-// const almacenDatosMagnitudes = (Lista) => {
-//   localStorage.removeItem('ListadoCacheMagnitudes');
-//   const parsed = JSON.stringify(Lista);
-//   localStorage.setItem('ListadoCacheMagnitudes', parsed);
-// }
-
-// const almacenDatosUnidades = (Lista) => {
-//   localStorage.removeItem('ListadoCacheUnidades');
-//   const parsed = JSON.stringify(Lista);
-//   localStorage.setItem('ListadoCacheUnidades', parsed);
-// }
-
-const almacenDatosCodigos = (Lista) => {
-  localStorage.removeItem('ListadoCacheCodigos');
-  const parsed = JSON.stringify(Lista);
-  localStorage.setItem('ListadoCacheCodigos', parsed);
-}
-
-const errors = ref();
-
 // Funcion q esta escuchando las llamadas de los demas hijos
-
-const comunicador = useAlertsStore();
-comunicador.$onAction(() => {
-  console.log("LLamaron")
-})
-// useAlertsStore.onAction(() => {
-//
-// })
-// FIN
-
-const consultarPrincipal = async () => {
-  // if (cargado.value == false) {
-  esperando.value = true;
-  // PRODUCTOS
-  await axios.get(`https://` + ipPublica.value + `/fullstack/public/productos`)
-    .then((response) => {
-
-      if (response.data.data == null) {
-
-      } else {
-        // console.log(response.data.data.meta.count_data)
-        listado.value = response.data.data;
-        almacenDatosProductos(listado.value);
-        localStorage.setItem("Carg_datP", '1');
-        localStorage.setItem("Wait", '0');
-        esperando.value = false;
-        Kinicio.value = Kinicio.value + 1;
-        // localStorage.setItem("Wait", '0');
-      }
-    }).catch((error) => {
-      if (error.response.status === 500) {
-        errors.value = error.response.status;
-      }
-      esperando.value = false;
-    })
-
-  // Departamentos
-  axios.get(`https://` + ipPublica.value + `/fullstack/public/departamentos`)
-    .then((response) => {
-      if (response.data.data == null) {
-
-      } else {
-        esperando.value = true;
-        listadoDepartamentos.value = response.data.data;
-        almacenDatosDepartamentos(listadoDepartamentos.value);
-        localStorage.setItem("Carg_datD", '1');
-        localStorage.setItem("Wait2", '0');
-        esperando.value = false;
-        Kinicio.value = Kinicio.value + 1;
-      }
-    }).catch((error) => {
-      if (error.response.status === 500) {
-        errors.value = error.response.status;
-      }
-      esperando.value = false;
-    })
-
-  // Articulos
-  axios.get(`https://` + ipPublica.value + `/fullstack/public/articulos`)
-    .then((response) => {
-      if (response.data.data == null) {
-
-      } else {
-        esperando.value = true;
-        listadoArticulos.value = response.data.data;
-        almacenDatosArticulos(listadoArticulos.value);
-        localStorage.setItem("Carg_datA", '1');
-        localStorage.setItem("Wait3", '0');
-        esperando.value = false;
-        Kinicio.value = Kinicio.value + 1;
-      }
-
-    }).catch((error) => {
-      if (error.response.status === 500) {
-        errors.value = error.response.status;
-      }
-      esperando.value = false;
-    });
-
-  // Sucursales
-  axios.get(`https://` + ipPublica.value + `/fullstack/public/sucursales`)
-    .then((response1) => {
-      if (response1.data.data == null) {
-
-      } else {
-        esperando.value = true;
-        listadoSucursales.value = response1.data.data;
-        almacenDatosSucursales(listadoSucursales.value);
-        localStorage.setItem("Carg_datS", '1');
-        localStorage.setItem("Wait", '0');
-        // Kinicio.value = Kinicio.value + 1;
-        successFull("Datos cargados satisfactoriamente.", "top-end")
-        esperando.value = false;
-      }
-
-    }).catch((error) => {
-      if (error.response.status === 500) {
-        ErrorFull("Problemas de conexión, verificaremos en otro momento.", "top-end");
-        esperando.value = false;
-        localStorage.setItem("Carg_dat", '0');
-      }
-      esperando.value = false;
-    });
-
-  // MAGNITUDES
-  // await axios.get(`https://` + ipPublica.value + `/fullstack/public/magnitudes`)
-  //   .then((response) => {
-  //     listadoMagnitudes.value = response.data.data;
-  //     almacenDatosArticulos(listadoMagnitudes.value);
-  //     // localStorage.setItem("Carg_dat", '1');
-  //     localStorage.setItem("Carg_datM", '1');
-  //     // Kgest_nomencladores.value = Kgest_nomencladores.value + 1;
-
-  //   }).catch((error) => {
-  //     if (error.response.status === 500) {
-  //       errors.value = error.response.status;
-  //     }
-  //   })
-
-  // Medidas
-  // await axios.get(`https://` + ipPublica.value + `/fullstack/public/medidas`)
-  //   .then((response) => {
-  //     listadoMedidas.value = response.data.data;
-  //     almacenDatosUnidades(listadoMedidas.value);
-  //     // cargado.value = true;
-  //     localStorage.setItem("Carg_datMe", '1');
-  //     // Kgest_nomencladores.value = Kgest_nomencladores.value + 1;
-  //   }).catch((error) => {
-  //     if (error.response.status === 500) {
-  //       errors.value = error.response.status;
-  //     }
-  //     // loading.value = false
-  //   });
-}
+const errores = ref({ descripcion: "", observacion: "", articulo_id: "", ubicacion_id: "", cantidad: "" })
 
 const consultar = async (n) => {
   //Productos
   if (n == 1) {
-    await axios.get(`http://` + ipPublica.value + `/fullstack/public/productos`)
-      .then((response) => {
-        listado.value = response.data.data;
-        almacenDatosProductos(listado.value);
-        // cargado.value = true;
-        Kinventario.value = Kinventario.value + 1;
-      });
+    // Agregar productos
+    // if (Store.formProductos.data.attributes.descripcion != '' && Store.formProductos.data.attributes.articulo_id != 0 && Store.formProductos.data.attributes.observacion != '' && Store.formProductos.data.attributes.ubicacion_id != "" && Store.formProductos.data.attributes.cantidad != "") {
+      // console.log("OKKKK")
+      Store.cambiaEstado(1);
+      const response = await GuardarDatos(Store.formProductos, 1);
+
+      if (response == null) {
+        Store.cambiaEstado(1)
+        errores.value.descripcion = "Este dato ya existe en el sistema";
+        ErrorFull("Descripción de producto ya existente.", "top-start")
+      } else {
+        Store.formProductos.data.attributes.cantidad = '';
+        Store.formProductos.data.attributes.descripcion = '';
+        Store.formProductos.data.attributes.ubicacion_id = '';
+        Store.formProductos.data.attributes.articulo_id = '';
+        Store.formProductos.data.attributes.observacion = '';
+        Store.AddProductos(response)
+        // itemsProductos1.value = Store.itemsProductos;
+        successFull("Producto agregado satisfactoriamente.", "top-end")
+        Store.cambiaEstado(1)
+        // return Store.itemsProductos;
+      }
+    // } else {
+    //   if (Store.formProductos.data.attributes.descripcion == '') {
+    //     errores.value.descripcion = "Este campo es obligatorio";
+    //   } else {
+    //     errores.value.descripcion = "";
+    //   }
+
+    //   if (Store.formProductos.data.attributes.observacion == '') {
+    //     errores.value.observacion = "Este campo es obligatorio";
+    //   } else {
+    //     errores.value.observacion = "";
+    //   }
+    //   if (Store.formProductos.data.attributes.articulo_id == '') {
+    //     errores.value.articulo_id = 'Este campo es obligatorio';
+    //   } else {
+    //     errores.value.articulo_id = "";
+    //   }
+    //   if (Store.formProductos.data.attributes.ubicacion_id == '') {
+    //     errores.value.ubicacion_id = 'Este campo es obligatorio';
+    //   } else {
+    //     errores.value.ubicacion_id = "";
+    //   }
+    //   if (Store.formProductos.data.attributes.cantidad == '') {
+    //     errores.value.cantidad = 'Este campo es obligatorio';
+    //   } else {
+    //     errores.value.cantidad = "";
+    //   }
+    //   // GuardarProducto.value = 'Agregar';
+    //   // disabledProductoBtn.value = ''
+    //   // Store.cambiaEstado(1)
+    //   ErrorFull("Debe llenar todos los campos obligatorios", "top-start")
+    //   return errores;
+    // }
 
   }
   if (n == 2) {
-    // console.log()
-    // console.log("Excel")
-    // Kinventario.value = Kinventario.value + 1;
+
   }
   if (n == 3) {
-    // console.log("Imprimir")
+
   }
 
   if (n == 4) {
-    // console.log("Carga masiva")
+
   }
 
-  if (n == 5) { // Actualizar los departamentos
-    // console.log("Departamentos")
-    await axios.get(`https://` + ipPublica.value + `/fullstack/public/departamentos`)
-      .then((response) => {
-        listado.value = response.data.data;
-        almacenDatosDepartamentos(listado.value);
-        // cargado.value = true;
-        Kcategorias.value = Kcategorias.value + 1;
-      });
+  if (n == 5) {
+
   }
 
-  if (n == 6) { // Actualizar los articulos
-    // console.log("Artculos")
-    await axios.get(`https://` + ipPublica.value + `/fullstack/public/articulos`)
-      .then((response) => {
-        listado.value = response.data.data;
-        almacenDatosArticulos(listado.value);
-        // cargado.value = true;
-        Kcategorias.value = Kcategorias.value + 1;
-      });
+  if (n == 6) {
+
   }
 
-  if (n == 7) { // Actualizar los magnitudes
-    // console.log("Magnitudes")
-    await axios.get(`https://` + ipPublica.value + `/fullstack/public/magnitudes`)
-      .then((response) => {
-        listado.value = response.data.data;
-        almacenDatosMagnitudes(listado.value);
-        // cargado.value = true;
-        // Kgest_nomencladores.value = Kgest_nomencladores.value + 1;
-      });
+  if (n == 7) {
+
   }
 
-  if (n == 8) { // Actualizar los medidas
-    // console.log("medidas")
-    await axios.get(`https://` + ipPublica.value + `/fullstack/public/medidas`)
-      .then((response) => {
-        listado.value = response.data.data;
-        almacenDatosUnidades(listado.value);
-        // cargado.value = true;
-        // Kgest_nomencladores.value = Kgest_nomencladores.value + 1;
-      });
+  if (n == 8) {
+
   }
-
-
-
-  // } else {
-  //   almacenDatosProductos(listado.value);
-  //   cargado.value = true;
-  // }
 
 }
 
@@ -1494,11 +1200,6 @@ const salir = () => {
   }).then((result) => {
     if (result.isConfirmed) {
       localStorage.removeItem('userName');
-      // localStorage.removeItem('ListadoCache');
-      // localStorage.removeItem('ListadoCacheUnidades');
-      // localStorage.removeItem('ListadoCacheMagnitudes');
-      // // localStorage.removeItem('ListadoCacheMedidas');
-      // localStorage.removeItem('ListadoCacheSucursal');
       localStorage.removeItem('Carg_dat');
       localStorage.removeItem('Carg_datA'); // Articulos
       localStorage.removeItem('Carg_datD'); // Departamentos
