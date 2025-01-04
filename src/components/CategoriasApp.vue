@@ -778,6 +778,17 @@ const agrega = () => {
   errores.value.etiqueta = "";
   errores.value.descripcionEtiqueta = "";
   errores.value.observEtiqueta = "";
+  store.formDepartamentos.data.attributes.departamento = '';
+  store.formDepartamentos.data.attributes.descripcion = '';
+  store.formDepartamentos.data.attributes.observacion = '';
+  store.formArticulo.data.attributes.articulo = '';
+  store.formArticulo.data.attributes.descripcion = '';
+  store.formArticulo.data.attributes.observacion = '';
+  store.formArticulo.data.attributes.departamento_id = '';
+  store.formArticulo.data.attributes.medida_id = '';
+  store.formEtiqueta.data.attributes.etiqueta = '';
+  store.formEtiqueta.data.attributes.descripcion = '';
+  store.formEtiqueta.data.attributes.observacion = '';
 }
 
 let btnModificarClass = ref('')
@@ -1531,6 +1542,16 @@ const borrarUEtiqueta = (id, correo) => {
 
 const clickEditar = async (idSelect) => {
   editar.value = true;
+  errores.value.departamento = "";
+  errores.value.descripcion = "";
+  errores.value.descripcionDepatamento = "";
+  errores.value.observacion = "";
+  errores.value.articulo = "";
+  errores.value.departamento_id = "";
+  errores.value.medida_id = "";
+  errores.value.etiqueta = "";
+  errores.value.descripcionEtiqueta = "";
+  errores.value.observEtiqueta = "";
   // console.log(idSelect)
   // localStorage.setItem("editar", editar.value);
   id.value = idSelect;
@@ -1548,6 +1569,16 @@ const clickEditar = async (idSelect) => {
 
 const clickEditarArticulo = async (idSelect) => {
   editar.value = true;
+  errores.value.departamento = "";
+  errores.value.descripcion = "";
+  errores.value.descripcionDepatamento = "";
+  errores.value.observacion = "";
+  errores.value.articulo = "";
+  errores.value.departamento_id = "";
+  errores.value.medida_id = "";
+  errores.value.etiqueta = "";
+  errores.value.descripcionEtiqueta = "";
+  errores.value.observEtiqueta = "";
   // console.log(idSelect)
   // localStorage.setItem("editar", editar.value);
   id.value = idSelect;
@@ -1567,6 +1598,16 @@ const clickEditarArticulo = async (idSelect) => {
 
 const clickEditarEtiqueta = async (idSelect) => {
   editar.value = true;
+  errores.value.departamento = "";
+  errores.value.descripcion = "";
+  errores.value.descripcionDepatamento = "";
+  errores.value.observacion = "";
+  errores.value.articulo = "";
+  errores.value.departamento_id = "";
+  errores.value.medida_id = "";
+  errores.value.etiqueta = "";
+  errores.value.descripcionEtiqueta = "";
+  errores.value.observEtiqueta = "";
   // console.log(idSelect)
   // localStorage.setItem("editar", editar.value);
   id.value = idSelect;

@@ -675,7 +675,7 @@
 
 <script setup>
 import InicioApp from '@/components/InicioApp.vue';
-import axios from 'axios';
+// import axios from 'axios';
 import InventarioApp from '@/components/InventarioApp.vue';
 import PedidosApp from '@/components/PedidosApp.vue';
 import router from '@/router';
@@ -882,26 +882,28 @@ const consultar = async (n) => {
   if (n == 1) {
     // Agregar productos
     // if (Store.formProductos.data.attributes.descripcion != '' && Store.formProductos.data.attributes.articulo_id != 0 && Store.formProductos.data.attributes.observacion != '' && Store.formProductos.data.attributes.ubicacion_id != "" && Store.formProductos.data.attributes.cantidad != "") {
-      // console.log("OKKKK")
-      Store.cambiaEstado(1);
-      const response = await GuardarDatos(Store.formProductos, 1);
+    // console.log("OKKKK")
+    // Store.cambiaEstado(1);
+    // const response = await GuardarDatos(Store.formProductos, 1);
 
-      if (response == null) {
-        Store.cambiaEstado(1)
-        errores.value.descripcion = "Este dato ya existe en el sistema";
-        ErrorFull("Descripción de producto ya existente.", "top-start")
-      } else {
-        Store.formProductos.data.attributes.cantidad = '';
-        Store.formProductos.data.attributes.descripcion = '';
-        Store.formProductos.data.attributes.ubicacion_id = '';
-        Store.formProductos.data.attributes.articulo_id = '';
-        Store.formProductos.data.attributes.observacion = '';
-        Store.AddProductos(response)
-        // itemsProductos1.value = Store.itemsProductos;
-        successFull("Producto agregado satisfactoriamente.", "top-end")
-        Store.cambiaEstado(1)
-        // return Store.itemsProductos;
-      }
+    // if (response == null) {
+    //   Store.cambiaEstado(1)
+    //   errores.value.descripcion = "Este dato ya existe en el sistema";
+    //   ErrorFull("Descripción de producto ya existente.", "top-start")
+    // } else {
+    //   Store.formProductos.data.attributes.cantidad = '';
+    //   Store.formProductos.data.attributes.descripcion = '';
+    //   Store.formProductos.data.attributes.ubicacion_id = '';
+    //   Store.formProductos.data.attributes.articulo_id = '';
+    //   Store.formProductos.data.attributes.observacion = '';
+    //   Store.AddProductos(response)
+    //   // itemsProductos1.value = Store.itemsProductos;
+    //   successFull("Producto agregado satisfactoriamente.", "top-end")
+    //   Store.cambiaEstado(1)
+
+    //   // return Store.itemsProductos;
+    // }
+    //
     // } else {
     //   if (Store.formProductos.data.attributes.descripcion == '') {
     //     errores.value.descripcion = "Este campo es obligatorio";
@@ -938,7 +940,7 @@ const consultar = async (n) => {
 
   }
   if (n == 2) {
-
+    // Kinventario.value = Kinventario.value + 1;
   }
   if (n == 3) {
 

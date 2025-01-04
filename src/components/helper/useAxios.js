@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const url = "https://localhost/fullstack/public/inventario/";
+// const url = "http://www.twintechnology.cu/inventario/";
 
 const apiService = axios.create({
   baseURL: url,

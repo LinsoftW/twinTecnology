@@ -912,6 +912,13 @@ const agrega = () => {
   errores.value.medida = "";
   errores.value.magnitud_id = "";
   errores.value.descripMedida = "";
+  store.formMedida.data.attributes.medida = '';
+  store.formMedida.data.attributes.descripcion = '';
+  store.formMedida.data.attributes.observacion = '';
+  store.formMedida.data.attributes.magnitud_id = '';
+  store.formMagnitud.data.attributes.magnitud = '';
+  store.formMagnitud.data.attributes.descripcion = '';
+  store.formMagnitud.data.attributes.observacion = '';
 }
 
 const errores = ref({ descripcion: "", observacion: "", magnitud: "", descripMedida: "", obserMedida: "", medida: "", magnitud_id: "" })
@@ -1460,6 +1467,13 @@ const borrarUMedida = (id, correo) => {
 
 const clickEditar = async (idSelect) => {
   editar.value = true;
+  errores.value.descripMedida = "";
+  errores.value.descripcion = "";
+  errores.value.magnitud = "";
+  errores.value.obserMedida = "";
+  errores.value.medida = "";
+  errores.value.observacion = "";
+  errores.value.magnitud_id = "";
   id.value = idSelect;
 
   for (let index = 0; index < itemsMagnitud1.value.length; index++) {
@@ -1475,6 +1489,13 @@ const clickEditar = async (idSelect) => {
 
 const clickEditarMedidas = async (idSelect) => {
   editar.value = true;
+  errores.value.descripMedida = "";
+  errores.value.descripcion = "";
+  errores.value.magnitud = "";
+  errores.value.obserMedida = "";
+  errores.value.medida = "";
+  errores.value.observacion = "";
+  errores.value.magnitud_id = "";
   id.value = idSelect;
   // console.log(id.value)
   for (let index = 0; index < itemsMedida1.value.length; index++) {
@@ -1583,9 +1604,10 @@ const headersMedidas = [
   { text: "CÓDIGO", value: "id", width: 50, sortable: true },
   // { text: "CODIGO", value: "attributes.codigo", sortable: true },
   { text: "NOMBRE", value: "attributes.medida" },
+  { text: "MAGNITUD", value: "magnitud" },
   { text: "DESCRIPCIÓN", value: "attributes.descripcion" },
   { text: "OBSERVACIONES", value: "attributes.observacion" },
-  { text: "MAGNITUD", value: "magnitud" },
+
   { text: "FECHA DE CREACIÓN", value: "attributes.timestamps.created_at", sortable: true },
   { text: "FECHA DE ACTUALIZACION", value: "attributes.timestamps.updated_at", sortable: true },
   // { text: "VENTAS", value: "cantV", sortable: true },

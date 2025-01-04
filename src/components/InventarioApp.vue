@@ -158,7 +158,7 @@
                       </span>
                       <span class="text">Nuevo</span>
                     </a>
-                    <a @click="abrirModalAddProd()" class="btn btn-secondary btn-sm btn-icon-split m-2"
+                    <a @click="generar_pdf()" class="btn btn-secondary btn-sm btn-icon-split m-2"
                       :class="disabledProductos">
                       <span class="icon text-white-50">
                         <i class="fas fa-file-pdf"></i>
@@ -190,11 +190,17 @@
                       </router-link>
 
                     </div>
+                    <a @click="EliminarSelecc()" class="btn btn-success btn-sm btn-icon-split" :class="disabledProductos">
+                      <span class="icon text-white-50">
+                        <i class="fas fa-trash"></i>
+                      </span>
+                      <span class="text">Eliminar seleccionados</span>
+                    </a>
                     <!-- <a @click="abrirModalAddProd()" href="#" class="d-sm-inline-block btn btn-sm btn-info shadow-sm"
                     v-b-tooltip.hover title="Agregar producto"><i class="fas fa-plus fa-sm "></i> Agregar productos </a> -->
                     <!-- <a @click="EliminarSelecc()" href="#" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm m-2"
-                    v-b-tooltip.hover title="Eliminar seleccionados"><i class="fas fa-trash fa-sm "></i> Eliminar
-                    seleccionados </a> -->
+                      v-b-tooltip.hover title="Eliminar seleccionados"><i class="fas fa-trash fa-sm "></i> Eliminar
+                      seleccionados </a> -->
                     <!-- </router-link> -->
                     <!-- <a @click="ExportExcel()" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
                     v-b-tooltip.hover title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a> -->
@@ -323,7 +329,7 @@
           </div>
           <div class="modal-footer">
             <!-- <a class="btn btn-info" @click="AColumnas">Aceptar</a> -->
-            <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cerrar</button>
+            <button class="btn btn-info btn-sm" type="button" data-dismiss="modal">Cerrar</button>
           </div>
         </div>
       </div>
@@ -827,7 +833,7 @@
   <!-- <div :class="showModBack2" @click="cerrarModal()"></div> -->
 </template>
 <script setup>
-import { ref, reactive, onMounted, onUnmounted, watchEffect } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import Swal from 'sweetalert2';
 // import AddProducto from './modal/AddProducto.vue';
 // import VueDatePicker from '@vuepic/vue-datepicker';
@@ -835,12 +841,54 @@ import '@vuepic/vue-datepicker/dist/main.css';
 import * as XLSX from 'xlsx';
 import Quagga from 'quagga';
 import { useStoreAxios } from '@/store/AxiosStore';
-import { ErrorFull, itemsMedidas, itemsUbicaciones, successFull } from './controler/ControlerApp';
+import { ErrorFull, successFull } from './controler/ControlerApp';
 import { EditarDatos, EliminarDatos, GuardarDatos, obtenerDatos } from './helper/useAxios';
 import { data } from 'jquery';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 // import { almacenDatosProductos, GuardarDatos, obtenerArticulos, obtenerProductos, obtenerUbicaciones } from './service/servicio';
 // import { disabledProductos, esperandoProductos, formProductos, itemsProductos, listadoArticulos, listadoMedida, listadoProductos, listadoUbicaciones, loadingP } from './controler/ControlerApp';
 const Store = useStoreAxios()
+
+const generar_pdf = async () => {
+
+  let nuevoArreglo = ref([]);
+
+  for (let index = 0; index < itemsProductos1.value.length; index++) {
+    nuevoArreglo.value.push({ id: itemsProductos1.value[index].id,
+      descripcion: itemsProductos1.value[index].attributes.descripcion,
+      codigo: itemsProductos1.value[index].relationships.departamento.data.id.toString() + itemsProductos1.value[index].relationships.articulo.data.id.toString() + itemsProductos1.value[index].id.toString(),
+      observacion: itemsProductos1.value[index].attributes.observacion,
+      medida: obtenMedida(itemsProductos1.value[index].relationships.medida.data.id),
+      cantidad: itemsProductos1.value[index].attributes.cantidad })
+  }
+
+  // esperando.value = false;
+  const doc = new jsPDF('p', 'pt');
+
+  let columnas = [
+    { title: "No", dataKey: "id" },
+    { title: "Código", dataKey: "codigo" },
+    { title: "En Stock", dataKey: "cantidad" },
+    { title: "U. Medida", dataKey: "medida" },
+    { title: "Descripción", dataKey: "descripcion" },
+    { title: "Observación", dataKey: "observacion" }
+  ]
+
+  doc.autoTable(columnas, nuevoArreglo.value)
+  // const doc = new jsPDF({
+  //   orientation: "landscape",
+  //   unit: "in",
+  //   format: [10, 10]
+  // });
+
+  doc.text("Listado de productos", 220, 25);
+  doc.save("Resumen.pdf");
+
+  // cerrarAlert();
+
+
+}
 
 const disabledProductos = ref('')
 
@@ -1003,13 +1051,23 @@ const agregarUProducto = async () => {
   // console.log(formProductos.data)
   if (Store.formProductos.data.attributes.descripcion != '' && Store.formProductos.data.attributes.articulo_id != 0 && Store.formProductos.data.attributes.observacion != '' && Store.formProductos.data.attributes.ubicacion_id != "" && Store.formProductos.data.attributes.cantidad != "") {
     // console.log("OKKKK")
-    Store.cambiaEstado(1);
+    // Store.cambiaEstado(1);
     GuardarProducto.value = 'Guardando...';
     disabledProductoBtn.value = 'disabled';
     // Agregar_Productos();
     // GuardarProducto.value = 'Agregar';
     // disabledProductoBtn.value = '';
+    // // emit("consultar", 2)
     // itemsProductos1.value = Store.itemsProductos;
+    // const response = await obtenerDatos(1);
+    // if (response.length > 0) {
+    //   Store.setListadoProductos(response)
+    // }
+    // localStorage.setItem("Carg_datP", "1");
+    // itemsProductos1.value = Store.itemsProductos;
+    // Store.cambiaEstado(1)
+    // itemsProductos1.value = Store.itemsProductos;
+    Store.cambiaEstado(1)
     const response = await GuardarDatos(Store.formProductos, 1);
 
     if (response == null) {
@@ -1295,13 +1353,13 @@ const showRow = () => {
 
 }
 
-// const EliminarSelecc = () => {
-//   for (let index = 0; index < itemsSelected.value.length; index++) {
-//     // console.log(itemsSelected.value[index])
-//     borrarU(itemsSelected.value[index].id, itemsSelected.value[index].attributes.codigo, 2)
-//   }
+const EliminarSelecc = () => {
+  for (let index = 0; index < itemsSelected.value.length; index++) {
+    // console.log(itemsSelected.value[index])
+    borrarU(itemsSelected.value[index].id, itemsSelected.value[index].attributes.codigo, 2)
+  }
 
-// }
+}
 
 // const almacenDatosSucursales = (Lista) => {
 //   if (localStorage.getItem('ListadoCacheSucursal')) {
@@ -1797,24 +1855,6 @@ const borrarU = async (id, correo, caso) => {
 
       }
     })
-    // .then((result) => {
-    //   if (result.isConfirmed) {
-    //     esperando.value = true;
-    //     cargado.value = false;
-    //     // Eliminar //
-    //     axios.delete(`http://${ipPublica.value}/fullstack/public/productos/${id}`)
-    //       .then(() => {
-    //         esperando.value = false;
-    //         consultar();
-    //         // cerrarAlert();
-    //         cancelarU();
-    //         successFull("Producto eliminado satisfactoriamente.", "top-start")
-    //       }).catch((error) => {
-    //         esperando.value = false;
-    //         ErrorFull(error.response.data.message, "top-start")
-    //       });
-    //   }
-    // })
   } else {
     Swal.fire({
       title: "Confirmación",
@@ -1824,34 +1864,29 @@ const borrarU = async (id, correo, caso) => {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Sí, eliminar"
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        esperando.value = true;
-        cargado.value = false;
+        Store.cambiaEstado(1);
         // Eliminar //
         for (let index = 0; index < itemsSelected.value.length; index++) {
-          // console.log(itemsSelected.value[index])
-          // borrarU(itemsSelected.value[index].id, itemsSelected.value[index].attributes.codigo, 2)
-          axios.delete(`http://${ipPublica.value}/fullstack/public/productos/${itemsSelected.value[index].id}`)
-            .then(() => {
-              // esperando.value = false;
-              consultar();
-              // cerrarAlert();
-              cancelarU();
-              console.log("Eliminado" + itemsSelected.value[index].id)
-              // successFull("Producto eliminado satisfactoriamente.", "top-start")
-            }).catch((error) => {
-              // esperando.value = false;
-              console.log("error " + itemsSelected.value[index].id)
-              correcto = false;
-              // ErrorFull(error.response.data.message, "top-start")
-            });
+
+          const response = await EliminarDatos(itemsSelected.value[index].id, 1);
+          if (response == null) {
+            // Store.cambiaEstado(1);
+            correcto = false;
+          } else {
+            Store.DeleteProducto(response);
+            correcto = true;
+            // Store.cambiaEstado(1);
+          }
         }
         if (correcto == true) {
-          esperando.value = false;
-          successFull("Productos eliminados satisfactoriamente.", "top-start")
+          itemsProductos1.value = Store.itemsProductos;
+          successFull("Producto eliminado satisfactoriamente.", "top-end")
+          Store.cambiaEstado(1);
         } else {
-          ErrorFull(error.response.data.message, "top-start")
+          ErrorFull("Error eliminando los elementos seleccionados.", "top-start")
+          Store.cambiaEstado(1);
         }
       }
     })

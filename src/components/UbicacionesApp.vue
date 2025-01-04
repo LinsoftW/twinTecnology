@@ -931,6 +931,14 @@ const agrega = () => {
   errores.value.descripcionUbica = "";
   errores.value.obserUbica = "";
   errores.value.sucursal_id = "";
+  store.formUbicaciones.data.attributes.ubicacion = '';
+  store.formUbicaciones.data.attributes.descripcion = '';
+  store.formUbicaciones.data.attributes.observacion = '';
+  store.formUbicaciones.data.attributes.sucursal_id = '';
+  store.formSucursal.data.attributes.sucursal = '';
+  store.formSucursal.data.attributes.descripcion = '';
+  store.formSucursal.data.attributes.observacion = '';
+  store.formSucursal.data.attributes.abreviatura = '';
 }
 
 let GuardarMag = ref('Agregar')
