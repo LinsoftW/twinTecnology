@@ -11,14 +11,16 @@ import 'vue3-easy-data-table/dist/style.css';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import VueBarcode from '@chenfengyuan/vue-barcode';
-import { createPinia } from 'pinia'
+import { createPinia } from 'pinia';
 
-const pinia = createPinia()
+const pinia = createPinia();
+pinia.use(storeReset);
 
 import App from './App.vue'
 
 // Importando las rutas
 import router from './router'
+import storeReset from './store/AxiosStore';
 
 const app = createApp(App);
 

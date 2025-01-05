@@ -694,17 +694,11 @@ import CargaMasivaApp from '@/components/CargaMasivaApp.vue';
 import CategoriasApp from '@/components/CategoriasApp.vue';
 import emailjs from 'emailjs-com';
 import * as XLSX from 'xlsx';
-// import { useAlertsStore } from '@/components/ComunicacionApp';
 import UbicacionesApp from '@/components/UbicacionesApp.vue';
 import { useStoreAxios } from '@/store/AxiosStore';
-import { GuardarDatos, obtenerDatos } from '../components/helper/useAxios'
-// import { almacenDatosArticulos, almacenDatosDepartamentos, almacenDatosProductos, obtenerDatos } from '@/components/service/servicio';
-// import { cantidadArticulos, cantidadDepartamentos, cantidadProductos, esperandoArticulos, esperandoDepartamentos, esperandoProductos, listadoArticulos, listadoDepartamentos, listadoMagnitudes, listadoProductos } from '@/components/controler/ControlerApp';
-// import { Input, TextArea } from "@progress/kendo-vue-inputs";
-// import { Button } from "@progress/kendo-vue-buttons";
+import { obtenerDatos } from '../components/helper/useAxios'
 
 const Store = useStoreAxios();
-// const obj = ObjControl;
 
 const Kinicio = ref(0);
 const Kpedidos = ref(0);
@@ -716,10 +710,6 @@ const Kcategorias = ref(0)
 const tiempoEspera = async () => {
   // console.log(n)
 }
-
-// const esperando = ref(false);
-
-// const activalo = ref('');
 
 const link = ref(0);
 
@@ -752,35 +742,11 @@ const enviarEmail = async () => {
     });
 }
 
-// const bodyLogin = document.getElementById('page-top');
-
-// const ulBody = document.getElementById('accordionSidebar');
-
-// const datosPrueba = ref([]);
-
-// const listado = ref([]);
-
-// const listadoArticulos = ref([])
-
-// const listadoDepartamentos = ref([])
-
-// let listadoSucursales = ref([]);
-
-// const newListado = ref([])
-
-// const newListadoSucursal = ref([])
-
 const collapsed = ref('collapsed');
 
 const activa = ref(false);
 
 const show = ref('')
-
-// const collapsed1 = ref('collapsed');
-
-// const activa1 = ref(false);
-
-// const show1 = ref('')
 
 const collapsed2 = ref('collapsed');
 
@@ -795,40 +761,6 @@ const showUser = ref('');
 const activaNot = ref(false);
 
 const showNot = ref('');
-
-// const ipPublica = ref('192.168.121.154');
-
-// let cargado = ref(false);
-
-// let datosPaginados = ref([]);
-
-// let datosSinPaginar = ref([]);
-
-// let buscando = ref('');
-
-// let editar = ref(false);
-
-// let id = ref('');
-
-// let cantidad = ref(0);
-
-// let elementPagina = ref(5);
-
-// let inicio = ref(0);
-
-// let fin = ref(0);
-
-// let paginaActual = ref(1);
-
-// const Exp_User = () => {
-//   if (activaUser.value == false) {
-//     activaUser.value = true;
-//     showUser.value = 'show'
-//   } else {
-//     activaUser.value = false;
-//     showUser.value = ''
-//   }
-// }
 
 const Exp_Not = () => {
   if (activaNot.value == false) {
@@ -1077,14 +1009,18 @@ onMounted(async () => {
       // cargando los productos
       Store.cambiaEstado(1)
       const response = await obtenerDatos(1);
-
-      if (!response) {
+      // console.log(response)
+      if (response == null) {
         ErrorFull("Error de red, intente más tarde.", "top-start")
       } else {
         Store.setCantidadProductos(response.length)
         if (response.length > 0) {
           Store.setListadoProductos(response)
         }
+        for (let index = 0; index < response.length; index++) {
+          Store.nextIDProducto = response[index].id;
+        }
+        // console.log(Store.nextIDProducto + 1)
         localStorage.setItem("Carg_datP", "1");
         Store.cambiaEstado(1);
       }
@@ -1100,6 +1036,10 @@ onMounted(async () => {
         if (response.length > 0) {
           Store.setListadoDepartamentos(response)
         }
+        for (let index = 0; index < response.length; index++) {
+          Store.nextIDDepartamento = response[index].id;
+        }
+        // console.log(Store.nextIDDepartamento)
         localStorage.setItem("Carg_datD", "1");
         Store.cambiaEstado(2);
       }
@@ -1117,6 +1057,10 @@ onMounted(async () => {
         if (response.length > 0) {
           Store.setListadoArticulos(response)
         }
+        for (let index = 0; index < response.length; index++) {
+          Store.nextIDArticulo = response[index].id;
+        }
+        // console.log(Store.nextIDArticulo)
         localStorage.setItem("Carg_datA", "1");
         Store.cambiaEstado(3)
       }
@@ -1126,34 +1070,6 @@ onMounted(async () => {
     router.push('/login');
   }
 })
-
-// const Cambia_Color = () => {
-//   if (Cosc_Clar.value == 'info') {
-//     Cosc_Clar.value = 'dark';
-//   } else {
-//     Cosc_Clar.value = 'info';
-//   }
-// }
-
-// const Vpaginas = ref(false);
-
-// const paginas = () => {
-//   if (route.path == "/inicio") {
-//     Vpaginas.value = 1;
-//   }
-//   if (route.path == "/inventario") {
-//     Vpaginas.value = 2;
-//   }
-//   if (route.path == "/pedidos") {
-//     Vpaginas.value = 3;
-//   }
-//   if (route.path == "/sucursales") {
-//     Vpaginas.value = 4;
-//   }
-//   if (route.path == "/productos") {
-//     Vpaginas.value = 5;
-//   }
-// }
 
 const route = useRoute();
 
@@ -1212,6 +1128,7 @@ const salir = () => {
       localStorage.removeItem('Carg_datU'); // Ubicaciones
       localStorage.removeItem('Host_back'); // IPPublica
       localStorage.clear();
+      Store.$reset();
       router.push('/login')
     }
   });

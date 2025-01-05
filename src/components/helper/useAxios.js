@@ -76,6 +76,14 @@ export async function obtenerDatos(n) {
         throw error;
       }
       break;
+      case 9:
+      try {
+        const response = await axios.get(url + 'minimos');
+        return response.data.data;
+      } catch (error) {
+        throw error;
+      }
+      break;
     default:
       break;
   }
@@ -103,6 +111,15 @@ export async function fecthData(endpoint) {
 // 5- articulos
 // 6- departamentos
 // 7- ubicaciones
+
+export async function GuardarMinimos(datos) {
+  try {
+    const response = await axios.post(url + 'minimos', datos);
+    return response.data.data;
+  } catch (error) {
+    throw error;
+  }
+}
 
 // Insertar datos
 export async function GuardarDatos(datos, n) {
@@ -163,7 +180,7 @@ export async function GuardarDatos(datos, n) {
         throw error;
       }
       break;
-      case 8:
+    case 8:
       try {
         const response = await axios.post(url + 'etiquetas', datos);
         return response.data.data;

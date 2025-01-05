@@ -951,9 +951,10 @@ const agregarU = async () => {
   if (store.formSucursal.data.attributes.sucursal != '' && store.formSucursal.data.attributes.abreviatura != '' && store.formSucursal.data.attributes.descripcion != '') {
     // console.log("OKKKK")
     disabledMagnitudBtn.value = 'disabled'
-    GuardarMag.value = 'Guardando...'
+    GuardarMag.value = 'Guardando...';
+    store.formSucursal.id = store.nextIDSucursal + 1;
     const response = await GuardarDatos(store.formSucursal, 2);
-    if (!response) {
+    if (response == null) {
       store.cambiaEstado(4)
     } else {
       disabledMagnitudBtn.value = '';
@@ -1004,9 +1005,10 @@ const agregarUMedida = async () => {
   if (store.formUbicaciones.data.attributes.sucursal != '' && store.formUbicaciones.data.attributes.observacion != '' && store.formUbicaciones.data.attributes.descripcion != '' && store.formUbicaciones.data.attributes.sucursal_id != '') {
     // console.log("OKKKK")
     disabledMedidaBtn.value = 'disabled'
-    GuardarMedida.value = 'Guardando...'
+    GuardarMedida.value = 'Guardando...';
+    store.formUbicaciones.id = store.nextIDUbicacion + 1;
     const response = await GuardarDatos(store.formUbicaciones, 7);
-    if (!response) {
+    if (response == null) {
       store.cambiaEstado(7)
     } else {
       disabledMedidaBtn.value = '';
@@ -1676,6 +1678,9 @@ onMounted(async () => {
       if (response.length > 0) {
         store.setListadoSucursales(response)
       }
+      for (let index = 0; index < response.length; index++) {
+        store.nextIDSucursal = response[index].id;
+      }
       localStorage.setItem("Carg_datS", "1");
       itemsSucursales1.value = store.itemsSucursales;
       store.cambiaEstado(4)
@@ -1693,6 +1698,9 @@ onMounted(async () => {
       if (response.length > 0) {
         store.setListadoUbicaciones(response)
       }
+      for (let index = 0; index < response.length; index++) {
+        store.nextIDUbicacion = response[index].id;
+      }
       localStorage.setItem("Carg_datU", "1");
       itemsUbicaciones1.value = store.itemsUbicaciones;
       store.cambiaEstado(7)
@@ -1702,66 +1710,6 @@ onMounted(async () => {
       itemsUbicaciones1.value = store.itemsUbicaciones;
       store.cambiaEstado(7)
     }
-    // ipPublica.value = localStorage.getItem('Host_back');
-    // if (localStorage.getItem('Carg_datS') == '0') {
-    //   // MAGNITUDES
-    //   loading.value = true;
-    //   disabledMagnitud.value = 'disabled'
-    //   disabledMedida.value = 'disabled'
-    //   // emit('actualiza', 7)
-    //   // emit('actualiza', 8)
-    //   await axios.get(`https://` + ipPublica.value + `/fullstack/public/sucursales`)
-    //     .then((response) => {
-    //       listadoSucursales.value = response.data.data;
-    //       almacenDatosSucursales(listadoSucursales.value);
-    //       listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
-    //       obtenerSucursales();
-    //       loading.value = false;
-    //       disabledMagnitud.value = ''
-    //       localStorage.setItem('Carg_datS', '1')
-    //     }).catch((error) => {
-    //       if (error.response.status === 500) {
-    //         errors.value = error.response.status;
-    //       }
-    //     })
-
-    // } else {
-    //   loading.value = true;
-    //   disabledMagnitud.value = 'disabled'
-    //   listadoSucursales.value = await JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
-    //   obtenerSucursales();
-    //   disabledMagnitud.value = ''
-    //   loading.value = false;
-    // }
-
-    // if (localStorage.getItem('Carg_datU') == '0') {
-    //   loadingU.value = true;
-    //   // disabledMedida.value = 'disabled'
-    //   await axios.get(`https://` + ipPublica.value + `/fullstack/public/ubicaciones`)
-    //     .then((response) => {
-
-    //       listadoUbicaciones.value = response.data.data;
-    //       almacenDatosUbicaciones(listadoUbicaciones.value);
-    //       listadoUbicaciones.value = JSON.parse(localStorage.getItem('ListadoCacheUbicaciones'));
-    //       obtenerListadoLimpioMedida();
-    //       localStorage.setItem('Carg_datU', '1')
-    //       disabledMedida.value = ''
-    //       loadingU.value = false;
-    //     }).catch((error) => {
-    //       if (error.response.status === 500) {
-    //         errors.value = error.response.status;
-    //       }
-    //     });
-
-    // } else {
-    //   loadingU.value = true;
-    //   disabledMedida.value = 'disabled'
-    //   listadoUbicaciones.value = await JSON.parse(localStorage.getItem('ListadoCacheUbicaciones'));
-    //   obtenerListadoLimpioMedida();
-    //   console.log(listadoUbicaciones.value)
-    //   disabledMedida.value = ''
-    //   loadingU.value = false;
-    // }
 
   } else {
     router.push('/login');

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container-fluid">
+    <div class="container-fluid" v-if="!detalle">
       <!-- <div>
         <div id="interactive" class="viewport"></div>
         <button @click="startScanner">Iniciar Escaneo</button>
@@ -58,7 +58,7 @@
             <div class="container-fluid row">
               <div class="col-xl-4 col-lg-3">
 
-                <label>Sucursal</label>
+                <label>Etiqueta</label>
                 <input type="text" class="form-control form-control-sm" placeholder="Ej: La Habana"
                   v-model="critBusq[0]">
 
@@ -72,7 +72,7 @@
                 <input type="text" class="form-control form-control-sm" placeholder="Ej: Producto 1"
                   v-model="critBusq[2]">
               </div>
-              {{ critBusq }}
+              <!-- {{ critBusq }} -->
               <!-- <div class="col-xl-2 col-lg-3">
                 <label>Por categoría</label>
                 <select class="form-control form-control-sm" name="" id="" placeholder="Por cantidades">
@@ -190,11 +190,12 @@
                       </router-link>
 
                     </div>
-                    <a @click="EliminarSelecc()" class="btn btn-success btn-sm btn-icon-split" :class="disabledProductos">
-                      <span class="icon text-white-50">
+                    <a @click="EliminarSelecc()" class="btn bg-gradient-info btn-sm btn-icon-split"
+                      :class="disabledProductos">
+                      <span class="icon text-white">
                         <i class="fas fa-trash"></i>
                       </span>
-                      <span class="text">Eliminar seleccionados</span>
+                      <span class="text text-white">Eliminar seleccionados</span>
                     </a>
                     <!-- <a @click="abrirModalAddProd()" href="#" class="d-sm-inline-block btn btn-sm btn-info shadow-sm"
                     v-b-tooltip.hover title="Agregar producto"><i class="fas fa-plus fa-sm "></i> Agregar productos </a> -->
@@ -249,8 +250,11 @@
                     <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode"
                       @click="generarCodeBar(item.relationships.departamento.data.id, item.relationships.articulo.data.id, item.id)"
                       v-b-tooltip.hover title="Código de barra"><span class="fas fas fa-barcode"></span></button>
+                    <!-- <router-link to="/detalles"> -->
                     <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Detalles(item)" v-b-tooltip.hover
                       title="Detalles"><span class="fa fa-eye"></span></button>
+                    <!-- </router-link> -->
+
                   </div>
                 </template>
                 <template #item-codigo="item">
@@ -267,6 +271,161 @@
                 </template>
 
               </EasyDataTable>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="container-fluid" v-if="detalle">
+      <!-- <div>
+        <div id="interactive" class="viewport"></div>
+        <button @click="startScanner">Iniciar Escaneo</button>
+        <p v-if="barcode">Código de barras detectado: {{ barcode }}</p>
+      </div> -->
+      <!-- <ImageBarcodeReader @decode="onDecode" @error="onError" /> -->
+      <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-2 text-gray-800">DETALLES</h1>
+        <!-- <img src="/cargando2.gif" style="width: 40px; height:40px" v-if="esperando" > -->
+        <div class="row">
+          <div class="col-md-12 justify-content-between">
+            <!-- <router-link class="button" to="/gest_inventario"> -->
+            <!-- <a @click="abrirModalAddProd()" href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm"
+              v-b-tooltip.hover title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar productos </a> -->
+            <!-- </router-link> -->
+            <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" v-b-tooltip.hover
+              title="Generar resumen diario"><i class="fas fa-download fa-sm "></i> Excel</a> -->
+            <!-- <a @click="CargaMasiva()" href="#" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm m-2"
+              v-b-tooltip.hover title="Agregar productos según archivo"><i class="fas fa-upload fa-sm "></i> Carga
+              masiva</a> -->
+            <!-- <a @click="ImprimirDoc()" href="#" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm"
+              v-b-tooltip.hover title="Imprimir"><i class="fas fa-print fa-sm "></i> Imprimir</a> -->
+            <!-- <a @click="escanea = true" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
+              v-b-tooltip.hover data-toggle="modal" data-target="#escanearCode" title="Escanear código de barras"><i
+                class="fa fa-barcode fa-sm "></i> Escanear</a> -->
+          </div>
+        </div>
+
+
+        <!-- <router-link class="button" to="/gest_inventario">
+          <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" v-b-tooltip.hover
+            title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar productos</a>
+        </router-link> -->
+
+      </div>
+
+      <!-- TABLA INVENTARIOS -->
+      <!-- codigo, descripcion, cantidad -->
+      <!-- permitir seleccionar que quiere mostrar -->
+      <!-- poner todos los datos en la tabla inventario -->
+      <!-- elementos de busqueda -->
+      <!-- por Sucursal -->
+      <!-- por codigo -->
+      <!-- por cantidad -->
+      <!--Opciones de busqueda -->
+      <!-- <div class=""> -->
+
+      <!-- Nuevo Listado productos -->
+      <div class="col-xl-12 col-lg-12">
+        <div class="card shadow mb-4">
+          <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button"
+            aria-expanded="true" aria-controls="collapseCardExample">
+            <h6 class="m-0 font-weight-bold text-info"><i class="fa fa-eye"></i> PRODUCTO <i>"{{ nombreProd }}"</i>
+            </h6>
+          </a>
+          <!-- <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-edit"></i> DEPARTAMENTOS</h6>
+              <button class="btn btn-info" @click="abrirModalAddProd()"> <span class="fa fa-plus"></span> Nuevo</button>
+            </div> -->
+          <!-- Card Body -->
+          <div class="collapse show" id="collapseCardExample">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6 col-xl-6 col-lg-6">
+                  <!-- <div class="row"> -->
+                  <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%">
+                      <thead>
+                        <tr>
+                          <th>ID: </th>
+                          <td>{{ idProd }}</td>
+                        </tr>
+                        <tr>
+                          <th>Código: </th>
+                          <td>{{ codProd }}</td>
+                        </tr>
+                        <tr>
+                          <th>Nombre: </th>
+                          <td>{{ nombreProd }}</td>
+                        </tr>
+                        <tr>
+                          <th>Cantidad: </th>
+                          <td>{{ cantProd }}</td>
+                        </tr>
+                        <tr>
+                          <th>Tipo de artículo: </th>
+                          <td>{{ artiProd }}</td>
+                        </tr>
+                        <tr>
+                          <th>Unidad de medida: </th>
+                          <td>{{ medidProd }}</td>
+                        </tr>
+                        <tr>
+                          <th>Ubicación: </th>
+                          <td>{{ ubicaProd }}</td>
+                        </tr>
+
+                        <tr>
+                          <th>Descripción: </th>
+                          <td>{{ nombreProd }}</td>
+                        </tr>
+                        <tr>
+                          <th>Observaciones: </th>
+                          <td>{{ obsProd }}</td>
+                        </tr>
+                      </thead>
+                      <tbody>
+
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- <strong><label for="n">Nombre: </label></strong>
+                  <label for="n1"> {{ nombreProd }}</label>
+                  <strong><label for="n">Nombre: </label></strong>
+                  <label for="n1"> {{ nombreProd }}</label> -->
+                  <!-- </div> -->
+                </div>
+                <div class="col-md-6 col-xl-6 col-lg-6">
+                  <!-- <div class="row"> -->
+                  <img src="/inventario.jpg" alt="No image" class="img img-thumbnail m-5"
+                    style="width: 80%; height:80%;" />
+
+                  <!-- <strong><label for="n">Nombre: </label></strong>
+                  <label for="n1"> {{ nombreProd }}</label>
+                  <strong><label for="n">Nombre: </label></strong>
+                  <label for="n1"> {{ nombreProd }}</label> -->
+                  <!-- </div> -->
+                </div>
+                <div class="container">
+
+                  <div class="col-md-12 text-center">
+                    <button class="btn btn-primary btn-sm " data-toggle="modal" data-target="#agregaProducto"
+                      @click="clickEditarProducto(idProd)" v-b-tooltip.hover title="Modificar"><span
+                        class="fas fa-edit"></span> Modificar</button>
+                    <button class="btn btn-info btn-sm m-2" @click="Atras()"> Atrás</button>
+                  </div>
+                </div>
+                <!-- <div class="col-md-3 col-xl-3 col-lg-3">
+                <span class="text-info">Filtrar por columna: </span>
+                <select v-model="searchField" @change="cuandoCambie()" class="form-control form-control-user">
+                  <option>Tipo</option>
+                  <option>Código</option>
+                </select>
+              </div> -->
+
+              </div>
+              <br>
 
             </div>
           </div>
@@ -471,22 +630,23 @@
                 <span style="color: red;">{{ errores.ubicacion_id }}</span>
               </div>
 
-              <div class="form-group col-lg-12 text-left">
+
+            </div>
+            <div class="row">
+              <div class="form-group col-lg-6 text-left">
                 <label class="text-info">Cantidad: <label style="color: red;">*</label></label>
                 <input type="text" class="form-control" id="cantidadP" @change="verificar_error(5)"
                   aria-describedby="emailHelp" v-model="Store.formProductos.data.attributes.cantidad"
                   placeholder="Ej: 5" required>
                 <span style="color: red;">{{ errores.cantidad }}</span>
-                <!-- <select name="cantidad" id="cantidad" @change="verificar_error(5)" style="width: 100%; text-align:center"
-                  placeholder="Artículo" class="text-gray-900 form-control"
-                  v-model="formProductos.data.attributes.cantidad">
-                  <option value="1"> 1 </option>
-                  <option value="10"> 10 </option>
-                </select> -->
-                <!-- <span v-if="errores.ubicacion_id == 0" style="color: red;">Este campo es obligatorio</span> -->
+              </div>
+              <div class="form-group col-lg-6 text-left">
+                <label class="text-info">Mínimo en Stock: <label style="color: red;">*</label></label>
+                <input type="text" class="form-control" id="minimo" v-model="minimos.data.attributes.cantidad"
+                  @change="verificar_error(6)" aria-describedby="emailHelp" value="0" placeholder="Ej: 5" required>
+                <!-- <span style="color: red;">{{ errores.cantidad }}</span> -->
               </div>
             </div>
-
             <div class="text-center">
               <h1 class="h6 text-gray-900 mb-3">CAMPOS OBLIGATORIOS (<label style="color: red;">*</label>)
               </h1>
@@ -833,7 +993,7 @@
   <!-- <div :class="showModBack2" @click="cerrarModal()"></div> -->
 </template>
 <script setup>
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted, watchEffect, watch } from 'vue';
 import Swal from 'sweetalert2';
 // import AddProducto from './modal/AddProducto.vue';
 // import VueDatePicker from '@vuepic/vue-datepicker';
@@ -842,7 +1002,7 @@ import * as XLSX from 'xlsx';
 import Quagga from 'quagga';
 import { useStoreAxios } from '@/store/AxiosStore';
 import { ErrorFull, successFull } from './controler/ControlerApp';
-import { EditarDatos, EliminarDatos, GuardarDatos, obtenerDatos } from './helper/useAxios';
+import { EditarDatos, EliminarDatos, GuardarDatos, GuardarMinimos, obtenerDatos } from './helper/useAxios';
 import { data } from 'jquery';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -850,17 +1010,29 @@ import autoTable from 'jspdf-autotable';
 // import { disabledProductos, esperandoProductos, formProductos, itemsProductos, listadoArticulos, listadoMedida, listadoProductos, listadoUbicaciones, loadingP } from './controler/ControlerApp';
 const Store = useStoreAxios()
 
+const detalle = ref(false)
+
+const searchField = ref(["id", "attributes.descripcion", "attributes.observacion", "attributes.cantidad"]);
+
+const searchField1 = ref('')
+
+const searchValue = ref("");
+
+const critBusq = ref([], [], []);
+
 const generar_pdf = async () => {
 
   let nuevoArreglo = ref([]);
 
   for (let index = 0; index < itemsProductos1.value.length; index++) {
-    nuevoArreglo.value.push({ id: itemsProductos1.value[index].id,
+    nuevoArreglo.value.push({
+      id: itemsProductos1.value[index].id,
       descripcion: itemsProductos1.value[index].attributes.descripcion,
       codigo: itemsProductos1.value[index].relationships.departamento.data.id.toString() + itemsProductos1.value[index].relationships.articulo.data.id.toString() + itemsProductos1.value[index].id.toString(),
       observacion: itemsProductos1.value[index].attributes.observacion,
       medida: obtenMedida(itemsProductos1.value[index].relationships.medida.data.id),
-      cantidad: itemsProductos1.value[index].attributes.cantidad })
+      cantidad: itemsProductos1.value[index].attributes.cantidad
+    })
   }
 
   // esperando.value = false;
@@ -904,8 +1076,33 @@ const formCantidad = reactive({
   }
 })
 
+const nombreProd = ref('');
+const idProd = ref('');
+const descProd = ref('');
+const obsProd = ref('');
+const ubicaProd = ref('');
+const codProd = ref('');
+const cantProd = ref(0);
+const medidProd = ref('');
+const artiProd = ref('');
+
+const Atras = () => {
+  detalle.value = false;
+}
+
 const Detalles = (dato) => {
-  console.log(dato)
+  // console.log(dato)
+  detalle.value = true;
+  nombreProd.value = dato.attributes.descripcion;
+  idProd.value = dato.id;
+  codProd.value = dato.relationships.departamento.data.id.toString() + dato.relationships.articulo.data.id.toString() + dato.id.toString();
+  obsProd.value = dato.attributes.observacion;
+  medidProd.value = obtenMedida(dato.relationships.medida.data.id)
+  artiProd.value = obtenarticulo(dato.relationships.articulo.data.id)
+  descProd.value = dato.attributes.descripcion;
+  cantProd.value = dato.attributes.cantidad;
+  ubicaProd.value = obtenUbicacion(dato.relationships.ubicacion.data.id)
+
 }
 
 const Aumentar = async (dato) => {
@@ -981,6 +1178,30 @@ const obtenMedida = (id) => {
 
 }
 
+const obtenUbicacion = (id) => {
+  const val = ref('')
+
+  for (let index = 0; index < itemsUbicaciones1.value.length; index++) {
+    if (id == itemsUbicaciones1.value[index].id) {
+      // console.log(listadoMedida.value[index].id)
+      return itemsUbicaciones1.value[index].attributes.ubicacion
+    }
+  }
+
+}
+
+const obtenarticulo = (id) => {
+  const val = ref('')
+
+  for (let index = 0; index < itemsArticulos1.value.length; index++) {
+    if (id == itemsArticulos1.value[index].id) {
+      // console.log(listadoMedida.value[index].id)
+      return itemsArticulos1.value[index].attributes.articulo
+    }
+  }
+
+}
+
 const verificar_error = (n) => {
   switch (n) {
     case 1:
@@ -1041,35 +1262,26 @@ const verificar_error = (n) => {
 
 const errores = ref({ descripcion: "", observacion: "", articulo_id: "", ubicacion_id: "", cantidad: "" })
 
+const minimos = reactive({
+  id: 0,
+  data: {
+    attributes: {
+      persona_id: 0,
+      producto_id: 0,
+      cantidad: 0,
+    }
+  }
+})
+
 const agregarUProducto = async () => {
-  // GuardarProducto.value = 'Guardando...';
-  // disabledProductoBtn.value = 'disabled';
-  // Agregar_Productos();
-  // itemsProductos1.value = Store.itemsProductos;
-  // GuardarProducto.value = 'Agregar';
-  // disabledProductoBtn.value = '';
-  // console.log(formProductos.data)
   if (Store.formProductos.data.attributes.descripcion != '' && Store.formProductos.data.attributes.articulo_id != 0 && Store.formProductos.data.attributes.observacion != '' && Store.formProductos.data.attributes.ubicacion_id != "" && Store.formProductos.data.attributes.cantidad != "") {
-    // console.log("OKKKK")
-    // Store.cambiaEstado(1);
     GuardarProducto.value = 'Guardando...';
     disabledProductoBtn.value = 'disabled';
+    Store.formProductos.id = Store.nextIDProducto + 1;
+    // console.log(Store.formProductos);
     // Agregar_Productos();
-    // GuardarProducto.value = 'Agregar';
-    // disabledProductoBtn.value = '';
-    // // emit("consultar", 2)
-    // itemsProductos1.value = Store.itemsProductos;
-    // const response = await obtenerDatos(1);
-    // if (response.length > 0) {
-    //   Store.setListadoProductos(response)
-    // }
-    // localStorage.setItem("Carg_datP", "1");
-    // itemsProductos1.value = Store.itemsProductos;
-    // Store.cambiaEstado(1)
-    // itemsProductos1.value = Store.itemsProductos;
     Store.cambiaEstado(1)
     const response = await GuardarDatos(Store.formProductos, 1);
-
     if (response == null) {
       Store.cambiaEstado(1)
       disabledProductoBtn.value = '';
@@ -1079,7 +1291,6 @@ const agregarUProducto = async () => {
     } else {
       disabledProductoBtn.value = '';
       GuardarProducto.value = 'Agregar'
-      // console.log(response)
       Store.formProductos.data.attributes.cantidad = '';
       Store.formProductos.data.attributes.descripcion = '';
       Store.formProductos.data.attributes.ubicacion_id = '';
@@ -1087,6 +1298,17 @@ const agregarUProducto = async () => {
       Store.formProductos.data.attributes.observacion = '';
       Store.AddProductos(response)
       itemsProductos1.value = Store.itemsProductos;
+      minimos.data.attributes.persona_id = 1;
+      minimos.data.attributes.producto_id = response.id;
+      for (let index = 0; index < itemsProductos1.value.length; index++) {
+        Store.nextIDProducto = itemsProductos1.value[index].id;
+      }
+      const response2 = await obtenerDatos(9)
+      for (let index = 0; index < response2.length; index++) {
+        Store.nextIDMinimos = response2[index].id;
+      }
+      minimos.data.attributes.id = Store.nextIDMinimos + 1;
+      GuardarMinimos(minimos);
       successFull("Producto agregado satisfactoriamente.", "top-end")
       GuardarProducto.value = 'Agregar';
       disabledProductoBtn.value = '';
@@ -1329,8 +1551,6 @@ const editarU = async () => {
   btnModificarM.value = 'Actualizando...'
   deactiva.value = 'disabled';
   const response = await EditarDatos(id.value, Store.formProductos, 1);
-
-  // console.log(response)
   editar.value = false;
   Store.formProductos.data.attributes.descripcion = ''
   Store.formProductos.data.attributes.ubicacion_id = ''
@@ -1340,7 +1560,7 @@ const editarU = async () => {
   Store.EditProductos(response)
   itemsProductos1.value = Store.itemsProductos;
   btnModificarM.value = 'Modificar'
-  deactiva.value = ''
+  deactiva.value = '';
   successFull("Producto modificado satisfactoriamente.", "top-end")
   Store.cambiaEstado(1);
 }
@@ -1373,13 +1593,20 @@ const EliminarSelecc = () => {
 //   }
 // }
 
-const searchField = ref(["id", "attributes.descripcion", "attributes.observacion", "attributes.cantidad"]);
+watchEffect(() => {
+  // Se activa de forma inmediata y cuando name o surname cambie
+  // Haz algo (side effects) 👁
+  if (critBusq.value[0]) {
+    searchValue.value = critBusq.value[0]
+  }
+  if (critBusq.value[1]) {
+    searchValue.value = critBusq.value[1]
+  }
+  if (critBusq.value[2]) {
+    searchValue.value = critBusq.value[2]
+  }
 
-const searchField1 = ref('')
-
-const searchValue = ref("");
-
-const critBusq = ref([], [], [])
+});
 
 const cuandoCambie = () => {
   if (searchField.value == 'Código') {
@@ -1882,7 +2109,7 @@ const borrarU = async (id, correo, caso) => {
         }
         if (correcto == true) {
           itemsProductos1.value = Store.itemsProductos;
-          successFull("Producto eliminado satisfactoriamente.", "top-end")
+          successFull("Productos eliminados satisfactoriamente.", "top-end")
           Store.cambiaEstado(1);
         } else {
           ErrorFull("Error eliminando los elementos seleccionados.", "top-start")

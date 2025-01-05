@@ -1004,6 +1004,7 @@ const agregarU = async () => {
     // console.log("OKKKK")
     disabledMagnitudBtn.value = 'disabled'
     GuardarMag.value = 'Guardando...';
+    store.formMagnitud.id = store.nextIDMagnitud + 1;
     const response = await GuardarDatos(store.formMagnitud, 4)
     store.formMagnitud.data.attributes.observacion = ''
     store.formMagnitud.data.attributes.descripcion = '';
@@ -1039,7 +1040,8 @@ const agregarUMedida = async () => {
 
   if (store.formMedida.data.attributes.medida != "" && store.formMedida.data.attributes.descripcion != "" && store.formMedida.data.attributes.magnitud_id != 0) {
     GuardarMedida.value = 'Guardando...'
-    disabledMedidaBtn.value = 'disabled'
+    disabledMedidaBtn.value = 'disabled';
+    store.formMedida.id = store.nextIDMedida + 1;
     store.cambiaEstado(6);
     const response = await GuardarDatos(store.formMedida, 3)
     store.formMedida.data.attributes.observacion = ''
@@ -1556,6 +1558,9 @@ onMounted(async () => {
       if (response.length > 0) {
         store.setListadoMagnitud(response)
       }
+      for (let index = 0; index < response.length; index++) {
+        store.nextIDMagnitud = response[index].id;
+      }
       localStorage.setItem("Carg_datM", "1");
       itemsMagnitud1.value = store.itemsMagnitudes;
       store.cambiaEstado(8)
@@ -1572,6 +1577,9 @@ onMounted(async () => {
       if (response.length > 0) {
         store.setListadoMedidas(response)
       }
+      for (let index = 0; index < response.length; index++) {
+          store.nextIDMedida = response[index].id;
+        }
       localStorage.setItem("Carg_datMe", "1");
       itemsMedida1.value = store.itemsMedidas;
       store.cambiaEstado(6)

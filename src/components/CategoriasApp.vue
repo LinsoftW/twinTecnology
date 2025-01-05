@@ -814,8 +814,10 @@ const agregarU = async () => {
     store.cambiaEstado(2)
     disabledDepartamentodBtn.value = 'disabled';
     GuardarDep.value = 'Gardando...';
+    // console.log(store.nextIDDepartamento)
+    store.formDepartamentos.id = store.nextIDDepartamento + 1;
     const response = await GuardarDatos(store.formDepartamentos, 6);
-    if (!response) {
+    if (response == null) {
       store.cambiaEstado(2)
     } else {
       disabledDepartamentodBtn.value = '';
@@ -857,9 +859,10 @@ const agregarUArticulo = async () => {
     // esperando.value = true;
     store.cambiaEstado(3)
     disabledDepartamentodBtn.value = 'disabled';
-    GuardarArt.value = 'Gardando...'
+    GuardarArt.value = 'Gardando...';
+    store.formArticulo.id = store.nextIDArticulo + 1;
     const response = await GuardarDatos(store.formArticulo, 5);
-    if (!response) {
+    if (response == null) {
       store.cambiaEstado(3)
     } else {
       disabledDepartamentodBtn.value = '';
@@ -909,9 +912,10 @@ const agregarUEtiqueta = async () => {
     // esperando.value = true;
     store.cambiaEstado(5)
     disabledDepartamentodBtn.value = 'disabled';
-    GuardarArt.value = 'Gardando...'
+    GuardarArt.value = 'Gardando...';
+    store.formEtiqueta.id = store.nextIDEtiqueta + 1;
     const response = await GuardarDatos(store.formEtiqueta, 8);
-    if (!response) {
+    if (response == null) {
       store.cambiaEstado(5)
     } else {
       disabledDepartamentodBtn.value = '';
@@ -1375,7 +1379,7 @@ const editarUEtiqueta = async () => {
   }
 }
 
-const editarUArticulo =async () => {
+const editarUArticulo = async () => {
   btnModificar.value = 'Actualizando...'
   btnModificarClass.value = 'disabled'
   store.cambiaEstado(3);
@@ -1764,6 +1768,10 @@ onMounted(async () => {
         if (response.length > 0) {
           store.setListadoMedidas(response)
         }
+        for (let index = 0; index < response.length; index++) {
+          store.nextIDMedida = response[index].id;
+        }
+
         localStorage.setItem("Carg_datMe", "1");
         itemsMedida1.value = store.itemsMedidas;
       }
@@ -1780,6 +1788,9 @@ onMounted(async () => {
       } else {
         if (response.length > 0) {
           store.setListadoEtiquetas(response)
+        }
+        for (let index = 0; index < response.length; index++) {
+          store.nextIDEtiqueta = response[index].id;
         }
         localStorage.setItem("Carg_datE", "1");
         itemsEtiqueta1.value = store.itemsEtiquetas;

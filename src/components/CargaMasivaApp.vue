@@ -33,7 +33,7 @@
         <div class="card shadow mb-4">
           <!-- Card Header - Dropdown -->
           <div class=" card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-info">SELECCIONE EL ARCHIVO A CARGAR (* Excel)</h6>
+            <h6 class="m-0 font-weight-bold text-info">SELECCIONE EL ARCHIVO (* Excel)</h6>
           </div>
           <!-- Card Body -->
           <div class="card-body ">
@@ -56,8 +56,8 @@
                   id="loadExcel" @click="loadExcel"><i class="fas fa-upload"></i> Cargar Excel</button>
               </div> -->
               <div class="col-xl-2 col-lg-6 col-md-6 col-sm-4">
-                <button class="form-control form-control-user d-sm-inline-block btn btn-sm btn-danger shadow-sm m-2"
-                  id="modifyExcel" @click="modifyExcel"><i class="fas fa-save"></i> Guardar datos en BD</button>
+                <!-- <button class="form-control form-control-user d-sm-inline-block btn btn-sm btn-danger shadow-sm m-2"
+                  id="modifyExcel" @click="modifyExcel"><i class="fas fa-save"></i> Guardar datos en BD</button> -->
               </div>
             </div>
           </div>
