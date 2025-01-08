@@ -25,8 +25,8 @@
                         </span>
                         <span class="text">Nuevo</span>
                       </a>
-                      <a @click="abrirModalAddProd()" class="btn btn-secondary btn-sm btn-icon-split m-2"
-                        :class="disabledMagnitud">
+                      <a @click="generar_pdf()" class="btn btn-secondary btn-sm btn-icon-split m-2"
+                        :class="disabledProductos">
                         <span class="icon text-white-50">
                           <i class="fas fa-file-pdf"></i>
                         </span>
@@ -175,8 +175,8 @@
                         </span>
                         <span class="text">Nuevo</span>
                       </a>
-                      <a @click="abrirModalAddProd()" class="btn btn-secondary btn-sm btn-icon-split m-2"
-                        :class="disabledMedida">
+                      <a @click="generar_pdfMed()" class="btn btn-secondary btn-sm btn-icon-split m-2"
+                        :class="disabledProductos">
                         <span class="icon text-white-50">
                           <i class="fas fa-file-pdf"></i>
                         </span>
@@ -596,6 +596,7 @@ import { GuardarDatos, obtenerDatos } from './service/servicio';
 import { useStoreAxios } from '@/store/AxiosStore';
 import { ErrorFull, successFull } from './controler/ControlerApp';
 import { EditarDatos, EliminarDatos } from './helper/useAxios';
+import jsPDF from 'jspdf';
 // import { store.formMagnitud, listadoMagnitudes, listadoMedida, loadingM, successFull } from './controler/ControlerApp';
 
 // const esperando = ref(false);
@@ -721,6 +722,90 @@ const ObtenIdMagnitud = (ID) => {
 
 const cerrarAlert = () => {
   Swal.close();
+}
+
+const generar_pdf = async () => {
+
+  let nuevoArreglo = ref([]);
+
+  for (let index = 0; index < itemsMagnitud1.value.length; index++) {
+    nuevoArreglo.value.push({
+      id: itemsMagnitud1.value[index].id,
+      magnitud: itemsMagnitud1.value[index].attributes.magnitud,
+      descripcion: itemsMagnitud1.value[index].attributes.descripcion,
+      // codigo: itemsDeparta1.value[index].relationships.departamento.data.id.toString() + itemsDeparta1.value[index].relationships.articulo.data.id.toString() + itemsDeparta1.value[index].id.toString(),
+      observacion: itemsMagnitud1.value[index].attributes.observacion,
+      fechaC: itemsMagnitud1.value[index].attributes.timestamps.created_at,
+      fechaU: itemsMagnitud1.value[index].attributes.timestamps.updated_at
+    })
+  }
+
+  const doc = new jsPDF('p', 'pt');
+
+  let columnas = [
+    { title: "No", dataKey: "id" },
+    { title: "Nombre", dataKey: "magnitud" },
+    { title: "Descripción", dataKey: "descripcion" },
+    { title: "Observación", dataKey: "observacion" },
+    { title: "Fecha creación", dataKey: "fechaC" },
+    { title: "Fecha actualización", dataKey: "fechaU" }
+  ]
+
+  doc.autoTable({columns: columnas, body: nuevoArreglo.value})
+  // const doc = new jsPDF({
+  //   orientation: "landscape",
+  //   unit: "in",
+  //   format: [10, 10]
+  // });
+
+  doc.text("Listado de magnitudes", 220, 25);
+  doc.save("Magnitudes.pdf");
+
+  // cerrarAlert();
+
+
+}
+
+const generar_pdfMed = async () => {
+
+  let nuevoArreglo = ref([]);
+
+  for (let index = 0; index < itemsMedida1.value.length; index++) {
+    nuevoArreglo.value.push({
+      id: itemsMedida1.value[index].id,
+      medida: itemsMedida1.value[index].attributes.medida,
+      descripcion: itemsMedida1.value[index].attributes.descripcion,
+      // codigo: itemsDeparta1.value[index].relationships.departamento.data.id.toString() + itemsDeparta1.value[index].relationships.articulo.data.id.toString() + itemsDeparta1.value[index].id.toString(),
+      observacion: itemsMedida1.value[index].attributes.observacion,
+      fechaC: itemsMedida1.value[index].attributes.timestamps.created_at,
+      fechaU: itemsMedida1.value[index].attributes.timestamps.updated_at
+    })
+  }
+
+  const doc = new jsPDF('p', 'pt');
+
+  let columnas = [
+    { title: "No", dataKey: "id" },
+    { title: "Nombre", dataKey: "medida" },
+    { title: "Descripción", dataKey: "descripcion" },
+    { title: "Observación", dataKey: "observacion" },
+    { title: "Fecha creación", dataKey: "fechaC" },
+    { title: "Fecha actualización", dataKey: "fechaU" }
+  ]
+
+  doc.autoTable({columns: columnas, body: nuevoArreglo.value})
+  // const doc = new jsPDF({
+  //   orientation: "landscape",
+  //   unit: "in",
+  //   format: [10, 10]
+  // });
+
+  doc.text("Listado de unidades de medidas", 220, 25);
+  doc.save("U_Medidas.pdf");
+
+  // cerrarAlert();
+
+
 }
 
 const EliminarTodos = () => {

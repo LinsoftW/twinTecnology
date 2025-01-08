@@ -38,6 +38,13 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
   const loadingM = ref(false) // Magnitudes
   const loadingUb = ref(false) // Ubicaciones
   const loadingE = ref(false) // Etiquetas
+  const id = ref(0); // Ids
+  const collapsed = ref('collapsed');
+  const collapsed2 = ref('collapsed');
+  const activa = ref(false);
+  const show = ref('')
+  const activa2 = ref(false);
+  const show2 = ref('')
   // IDs de las tablas
   const nextIDProducto = ref(1000);
   const nextIDDepartamento = ref(10);
@@ -96,7 +103,7 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
   }
 
   const formProductos = reactive({
-    id: 0,
+    // id: 0,
     data: {
       attributes: {
         descripcion: "",
@@ -109,7 +116,7 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
   })
 
   const formSucursal = reactive({
-    id: 0,
+    // id: 0,
     data: {
       attributes: {
         sucursal: "",
@@ -121,7 +128,7 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
   })
 
   const formEtiqueta = reactive({
-    id: 0,
+    // id: 0,
     data: {
       attributes: {
         etiqueta: "",
@@ -132,7 +139,7 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
   })
 
   const formUbicaciones = reactive({
-    id: 0,
+    // id: 0,
     data: {
       attributes: {
         ubicacion: "",
@@ -145,7 +152,7 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
 
   //Magnitudes
   const formMagnitud = reactive({
-    id: 0,
+    // id: 0,
     data: {
       attributes: {
         magnitud: "",
@@ -156,7 +163,7 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
   })
   //Unidades de medida
   const formMedida = reactive({
-    id: 0,
+    // id: 0,
     data: {
       attributes: {
         medida: "",
@@ -419,7 +426,7 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
     itemsMedidas.value = []
     for (let index = 0; index < listadoMedida.value.length; index++) {
       if (newdato.id == listadoMedida.value[index].id) {
-        if (index == listadoMedida.value.length-1) {
+        if (index == listadoMedida.value.length - 1) {
           listadoMedida.value.pop();
           break
         } else {
@@ -524,7 +531,7 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
   }
 
   const formArticulo = reactive({
-    id: 0,
+    // id: 0,
     data: {
       attributes: {
         articulo: "",
@@ -549,7 +556,7 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
   }
 
   const formDepartamentos = reactive({
-    id: 0,
+    // id: 0,
     data: {
       attributes: {
         departamento: "",
@@ -582,14 +589,14 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
     itemsProductos, itemsDepartamentos, itemsMagnitudes, itemsArticulos, itemsEtiquetas, itemsUbicaciones, itemsMedidas, itemsSucursales,
     cambiaEstado, AddMagnitud, AddProductos, EditProductos, DeleteMagnitud, DeleteProducto, AddMedida, DeleteMedida, EditMagnitud, EditMedida, AddDepartamento, DeleteDepartamento, EditDepartamento,
     AddArticulo, DeleteArticulo, EditArticulo, AddSucursal, DeleteSucursal, EditSucursal, AddUbicaciones, DeleteUbicaciones, EditUbicaciones, formSucursal, formUbicaciones,
-    AddEtiqueta, EditEtiqueta, DeleteEtiqueta, formEtiqueta, setListadoEtiquetas, nextIDArticulo, nextIDProducto, nextIDDepartamento,nextIDEtiqueta,
-    nextIDMagnitud, nextIDMedida, nextIDSucursal, nextIDUbicacion, nextIDMinimos
+    AddEtiqueta, EditEtiqueta, DeleteEtiqueta, formEtiqueta, setListadoEtiquetas, nextIDArticulo, nextIDProducto, nextIDDepartamento, nextIDEtiqueta,
+    nextIDMagnitud, nextIDMedida, nextIDSucursal, nextIDUbicacion, nextIDMinimos, id, collapsed, collapsed2, activa, activa2, show, show2
   }
 })
 
 // Reset store
-export default function storeReset({ store }){
-const inicializar = cloneDeep(store.$state);
-store.$reset = () => store.$patch(cloneDeep(inicializar));
+export default function storeReset({ store }) {
+  const inicializar = cloneDeep(store.$state);
+  store.$reset = () => store.$patch(cloneDeep(inicializar));
 }
 

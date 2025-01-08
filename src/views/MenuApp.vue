@@ -43,8 +43,8 @@
       <li class="nav-item">
         <!-- <a :class="'nav-link ' + collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
           :aria-expanded="activa" aria-controls="collapseTwo" @click="Exp_Consultar()"> -->
-        <a :class="'nav-link ' + collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-          :aria-expanded="activa" aria-controls="collapseTwo">
+        <a :class="'nav-link ' + Store.collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+          :aria-expanded="Store.activa" aria-controls="collapseTwo">
           <i class="fas fa-shopping-bag"></i>
           <span>Inventario
           </span>
@@ -127,8 +127,8 @@
 
         <!-- <a :class="'nav-link ' + collapsed2" href="#" data-toggle="collapse" data-target="#collapseUtilities"
           :aria-expanded="activa2" aria-controls="collapseUtilities" @click="Exp_Nomenc()"> -->
-        <a :class="'nav-link ' + collapsed2" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-          :aria-expanded="activa2" aria-controls="collapseUtilities">
+        <a :class="'nav-link ' + Store.collapsed2" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+          :aria-expanded="Store.activa2" aria-controls="collapseUtilities">
           <i class="fas fa-fw fa-cog"></i>
           <span>Administración</span>
         </a>
@@ -425,11 +425,11 @@
               <!-- Dropdown - User Information -->
               <div :class="'dropdown-menu dropdown-menu-right shadow animated--grow-in ' + showUser"
                 aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#" @click="cargarImagen">
+                <a class="dropdown-item" @click="cargarImagen">
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Ajustes de perfil
                 </a>
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" >
                   <i class="fas fa-cog fa-sm fa-fw mr-2 text-gray-400"></i>
                   Configurar sitio
                 </a>
@@ -526,7 +526,7 @@
 
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Todos los derechos reservados. &nbsp; 2024</span>
+            <span>TwinTechnology &copy;<br> Todos los derechos reservados. &nbsp; 2024</span>
           </div>
         </div>
       </footer>
@@ -679,7 +679,7 @@ import InicioApp from '@/components/InicioApp.vue';
 import InventarioApp from '@/components/InventarioApp.vue';
 import PedidosApp from '@/components/PedidosApp.vue';
 import router from '@/router';
-import { ref } from 'vue';
+import { ref, watch, watchEffect } from 'vue';
 import { useRoute } from 'vue-router'
 import { onMounted } from 'vue';
 import SucursalApp from '@/components/SucursalApp.vue';
@@ -742,17 +742,17 @@ const enviarEmail = async () => {
     });
 }
 
-const collapsed = ref('collapsed');
+// const collapsed = ref('collapsed');
+// const collapsed2 = ref('collapsed');
+// const activa = ref(false);
 
-const activa = ref(false);
+// const show = ref('')
 
-const show = ref('')
 
-const collapsed2 = ref('collapsed');
 
-const activa2 = ref(false);
+// const activa2 = ref(false);
 
-const show2 = ref('')
+// const show2 = ref('')
 
 const activaUser = ref(false);
 
@@ -775,12 +775,13 @@ const Exp_Not = () => {
 const obtenerLinkA = (alink) => {
   // console.log("OKKK")
   link.value = alink;
-  collapsed.value = 'collapsed';
-  activa.value = false;
-  show.value = '';
-  collapsed2.value = 'collapsed';
-  activa2.value = false;
-  show2.value = '';
+  Store.collapsed = 'collapsed';
+  Store.activa = false;
+  Store.show = '';
+  Store.collapsed2 = 'collapsed';
+  Store.activa2 = false;
+  Store.show2 = '';
+  // console.log("Cierra")
 
 }
 

@@ -162,8 +162,8 @@ const form = reactive({
 let bodyLogin1 = document.getElementById('page-top');
 
 onMounted(async () => {
-  form.nombre = "admin@admin.co";
-  form.passw = "123";
+  // form.nombre = "admin@admin.co";
+  // form.passw = "123";
   localStorage.setItem('ListadoCache', []);
   localStorage.setItem('ListadoCacheSucursal', []);
   localStorage.setItem('Carg_datA', '0'); // Articulos

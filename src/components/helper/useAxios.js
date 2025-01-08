@@ -270,6 +270,7 @@ export async function EditarDatos(id, datos, n) {
   switch (n) {
     case 1:
       try {
+        // console.log(datos)
         const response = await axios.patch(`${url}productos/${id}`, datos);
         return response.data.data;
       } catch (error) {

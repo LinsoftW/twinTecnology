@@ -25,8 +25,8 @@
                         </span>
                         <span class="text">Nuevo</span>
                       </a>
-                      <a @click="abrirModalAddProd()" class="btn btn-secondary btn-sm btn-icon-split m-2"
-                        :class="disabledMagnitud">
+                      <a @click="generar_pdfS()" class="btn btn-secondary btn-sm btn-icon-split m-2"
+                        :class="disabledProductos">
                         <span class="icon text-white-50">
                           <i class="fas fa-file-pdf"></i>
                         </span>
@@ -168,8 +168,8 @@
                         </span>
                         <span class="text">Nuevo</span>
                       </a>
-                      <a @click="abrirModalAddProd()" class="btn btn-secondary btn-sm btn-icon-split m-2"
-                        :class="disabledMedida">
+                      <a @click="generar_pdfU()" class="btn btn-secondary btn-sm btn-icon-split m-2"
+                        :class="disabledProductos">
                         <span class="icon text-white-50">
                           <i class="fas fa-file-pdf"></i>
                         </span>
@@ -592,6 +592,7 @@ import { onMounted, reactive, ref } from 'vue';
 import * as XLSX from 'xlsx';
 import { useStoreAxios } from '@/store/AxiosStore';
 import { EditarDatos, EliminarDatos, GuardarDatos, obtenerDatos } from './helper/useAxios';
+import jsPDF from 'jspdf';
 
 const store = useStoreAxios();
 
@@ -939,6 +940,90 @@ const agrega = () => {
   store.formSucursal.data.attributes.descripcion = '';
   store.formSucursal.data.attributes.observacion = '';
   store.formSucursal.data.attributes.abreviatura = '';
+}
+
+const generar_pdfU = async () => {
+
+  let nuevoArreglo = ref([]);
+
+  for (let index = 0; index < itemsUbicaciones1.value.length; index++) {
+    nuevoArreglo.value.push({
+      id: itemsUbicaciones1.value[index].id,
+      ubicacion: itemsUbicaciones1.value[index].attributes.ubicacion,
+      descripcion: itemsUbicaciones1.value[index].attributes.descripcion,
+      // codigo: itemsDeparta1.value[index].relationships.departamento.data.id.toString() + itemsDeparta1.value[index].relationships.articulo.data.id.toString() + itemsDeparta1.value[index].id.toString(),
+      observacion: itemsUbicaciones1.value[index].attributes.observacion,
+      fechaC: itemsUbicaciones1.value[index].attributes.timestamps.created_at,
+      fechaU: itemsUbicaciones1.value[index].attributes.timestamps.updated_at
+    })
+  }
+
+  const doc = new jsPDF('p', 'pt');
+
+  let columnas = [
+    { title: "No", dataKey: "id" },
+    { title: "Nombre", dataKey: "ubicacion" },
+    { title: "Descripción", dataKey: "descripcion" },
+    { title: "Observación", dataKey: "observacion" },
+    { title: "Fecha creación", dataKey: "fechaC" },
+    { title: "Fecha actualización", dataKey: "fechaU" }
+  ]
+
+  doc.autoTable({columns: columnas, body: nuevoArreglo.value})
+  // const doc = new jsPDF({
+  //   orientation: "landscape",
+  //   unit: "in",
+  //   format: [10, 10]
+  // });
+
+  doc.text("Listado de ubicaciones", 220, 25);
+  doc.save("Ubicaciones.pdf");
+
+  // cerrarAlert();
+
+
+}
+
+const generar_pdfS = async () => {
+
+  let nuevoArreglo = ref([]);
+
+  for (let index = 0; index < itemsSucursales1.value.length; index++) {
+    nuevoArreglo.value.push({
+      id: itemsSucursales1.value[index].id,
+      sucursal: itemsSucursales1.value[index].attributes.sucursal,
+      descripcion: itemsSucursales1.value[index].attributes.descripcion,
+      // codigo: itemsDeparta1.value[index].relationships.departamento.data.id.toString() + itemsDeparta1.value[index].relationships.articulo.data.id.toString() + itemsDeparta1.value[index].id.toString(),
+      observacion: itemsSucursales1.value[index].attributes.observacion,
+      fechaC: itemsSucursales1.value[index].attributes.timestamps.created_at,
+      fechaU: itemsSucursales1.value[index].attributes.timestamps.updated_at
+    })
+  }
+
+  const doc = new jsPDF('p', 'pt');
+
+  let columnas = [
+    { title: "No", dataKey: "id" },
+    { title: "Nombre", dataKey: "sucursal" },
+    { title: "Descripción", dataKey: "descripcion" },
+    { title: "Observación", dataKey: "observacion" },
+    { title: "Fecha creación", dataKey: "fechaC" },
+    { title: "Fecha actualización", dataKey: "fechaU" }
+  ]
+
+  doc.autoTable({columns: columnas, body: nuevoArreglo.value})
+  // const doc = new jsPDF({
+  //   orientation: "landscape",
+  //   unit: "in",
+  //   format: [10, 10]
+  // });
+
+  doc.text("Listado de sucursales", 220, 25);
+  doc.save("Sucursales.pdf");
+
+  // cerrarAlert();
+
+
 }
 
 let GuardarMag = ref('Agregar')

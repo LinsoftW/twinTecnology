@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container-fluid">
+    <div class="container-fluid" @click="CierraMenu()">
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">DEPARTAMENTOS, TIPOS DE ARTÍCULOS Y ETIQUETAS </h1>
       </div>
@@ -33,8 +33,8 @@
                         </span>
                         <span class="text">Nuevo</span>
                       </a>
-                      <a @click="abrirModalAddProd()" class="btn btn-secondary btn-sm btn-icon-split m-2"
-                        :class="disabledDepartamento">
+                      <a @click="generar_pdf()" class="btn btn-secondary btn-sm btn-icon-split m-2"
+                        :class="disabledProductos">
                         <span class="icon text-white-50">
                           <i class="fas fa-file-pdf"></i>
                         </span>
@@ -113,8 +113,8 @@
                         </span>
                         <span class="text">Nuevo</span>
                       </a>
-                      <a @click="abrirModalAddProd()" class="btn btn-secondary btn-sm btn-icon-split m-2"
-                        :class="disabledArticulo">
+                     <a @click="generar_pdfA()" class="btn btn-secondary btn-sm btn-icon-split m-2"
+                        :class="disabledProductos">
                         <span class="icon text-white-50">
                           <i class="fas fa-file-pdf"></i>
                         </span>
@@ -194,8 +194,8 @@
                         </span>
                         <span class="text">Nuevo</span>
                       </a>
-                      <a @click="abrirModalAddProd()" class="btn btn-secondary btn-sm btn-icon-split m-2"
-                        :class="disabledArticulo">
+                      <a @click="generar_pdfE()" class="btn btn-secondary btn-sm btn-icon-split m-2"
+                        :class="disabledProductos">
                         <span class="icon text-white-50">
                           <i class="fas fa-file-pdf"></i>
                         </span>
@@ -559,6 +559,7 @@ import * as XLSX from 'xlsx';
 import { useStoreAxios } from '@/store/AxiosStore';
 import { EditarDatos, EliminarDatos, GuardarDatos, obtenerDatos } from './helper/useAxios';
 import { ErrorFull, successFull } from './controler/ControlerApp';
+import jsPDF from 'jspdf';
 
 const store = useStoreAxios();
 
@@ -632,6 +633,132 @@ const actualizaArt = () => {
     }
 
   }
+
+}
+
+const generar_pdf = async () => {
+
+  let nuevoArreglo = ref([]);
+
+  for (let index = 0; index < itemsDeparta1.value.length; index++) {
+    nuevoArreglo.value.push({
+      id: itemsDeparta1.value[index].id,
+      departamento: itemsDeparta1.value[index].attributes.departamento,
+      descripcion: itemsDeparta1.value[index].attributes.descripcion,
+      // codigo: itemsDeparta1.value[index].relationships.departamento.data.id.toString() + itemsDeparta1.value[index].relationships.articulo.data.id.toString() + itemsDeparta1.value[index].id.toString(),
+      observacion: itemsDeparta1.value[index].attributes.observacion,
+      fechaC: itemsDeparta1.value[index].attributes.timestamps.created_at,
+      fechaU: itemsDeparta1.value[index].attributes.timestamps.updated_at
+    })
+  }
+
+  const doc = new jsPDF('p', 'pt');
+
+  let columnas = [
+    { title: "No", dataKey: "id" },
+    { title: "Nombre", dataKey: "departamento" },
+    { title: "Descripción", dataKey: "descripcion" },
+    { title: "Observación", dataKey: "observacion" },
+    { title: "Fecha creación", dataKey: "fechaC" },
+    { title: "Fecha actualización", dataKey: "fechaU" }
+  ]
+
+  doc.autoTable({columns: columnas, body: nuevoArreglo.value})
+  // const doc = new jsPDF({
+  //   orientation: "landscape",
+  //   unit: "in",
+  //   format: [10, 10]
+  // });
+
+  doc.text("Listado de departamentos", 220, 25);
+  doc.save("Departamentos.pdf");
+
+  // cerrarAlert();
+
+
+}
+
+const generar_pdfA = async () => {
+
+  let nuevoArreglo = ref([]);
+
+  for (let index = 0; index < itemsArticulos1.value.length; index++) {
+    nuevoArreglo.value.push({
+      id: itemsArticulos1.value[index].id,
+      articulo: itemsArticulos1.value[index].attributes.articulo,
+      descripcion: itemsArticulos1.value[index].attributes.descripcion,
+      // codigo: itemsDeparta1.value[index].relationships.departamento.data.id.toString() + itemsDeparta1.value[index].relationships.articulo.data.id.toString() + itemsDeparta1.value[index].id.toString(),
+      observacion: itemsArticulos1.value[index].attributes.observacion,
+      fechaC: itemsArticulos1.value[index].attributes.timestamps.created_at,
+      fechaU: itemsArticulos1.value[index].attributes.timestamps.updated_at
+    })
+  }
+
+  const doc = new jsPDF('p', 'pt');
+
+  let columnas = [
+    { header: "No", dataKey: "id" },
+    { header: "Nombre", dataKey: "articulo" },
+    { header: "Descripción", dataKey: "descripcion" },
+    { header: "Observación", dataKey: "observacion" },
+    { header: "Fecha creación", dataKey: "fechaC" },
+    { header: "Fecha actualización", dataKey: "fechaU" }
+  ]
+
+  doc.autoTable({columns: columnas, body: nuevoArreglo.value})
+  // const doc = new jsPDF({
+  //   orientation: "landscape",
+  //   unit: "in",
+  //   format: [10, 10]
+  // });
+
+  doc.text("Listado de artículos", 220, 25);
+  doc.save("Articulos.pdf");
+
+  // cerrarAlert();
+
+
+}
+
+const generar_pdfE = async () => {
+
+  let nuevoArreglo = ref([]);
+
+  for (let index = 0; index < itemsEtiqueta1.value.length; index++) {
+    nuevoArreglo.value.push({
+      id: itemsEtiqueta1.value[index].id,
+      etiqueta: itemsEtiqueta1.value[index].attributes.etiqueta,
+      descripcion: itemsEtiqueta1.value[index].attributes.descripcion,
+      // codigo: itemsDeparta1.value[index].relationships.departamento.data.id.toString() + itemsDeparta1.value[index].relationships.articulo.data.id.toString() + itemsDeparta1.value[index].id.toString(),
+      observacion: itemsEtiqueta1.value[index].attributes.observacion,
+      fechaC: itemsEtiqueta1.value[index].attributes.timestamps.created_at,
+      fechaU: itemsEtiqueta1.value[index].attributes.timestamps.updated_at
+    })
+  }
+
+  const doc = new jsPDF('p', 'pt');
+
+  let columnas = [
+    { title: "No", dataKey: "id" },
+    { title: "Nombre", dataKey: "etiqueta" },
+    { title: "Descripción", dataKey: "descripcion" },
+    { title: "Observación", dataKey: "observacion" },
+    { title: "Fecha creación", dataKey: "fechaC" },
+    { title: "Fecha actualización", dataKey: "fechaU" }
+  ]
+
+  doc.autoTable({columns: columnas, body: nuevoArreglo.value})
+  // const doc = new jsPDF({
+  //   orientation: "landscape",
+  //   unit: "in",
+  //   format: [10, 10]
+  // });
+
+  doc.text("Listado de etiquetas", 220, 25);
+  doc.save("Etiquetas.pdf");
+
+  // cerrarAlert();
+
 
 }
 
@@ -765,6 +892,15 @@ let disableS = ref('');
 let setTiempoBusca = '';
 
 const datos_archivados = ref([]);
+
+const CierraMenu = () => {
+  store.collapsed = 'collapsed';
+  store.activa= false;
+  store.show = '';
+  store.collapsed2 = 'collapsed';
+  store.activa2 = false;
+  store.show2 = '';
+}
 
 const agrega = () => {
   editar.value = false
