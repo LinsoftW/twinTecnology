@@ -1273,7 +1273,7 @@ const verificar_error = (n) => {
 const errores = ref({ descripcion: "", observacion: "", articulo_id: "", ubicacion_id: "", cantidad: "" })
 
 const minimos = reactive({
-  id: 0,
+  // id: 0,
   data: {
     attributes: {
       persona_id: 0,
@@ -1319,14 +1319,14 @@ const agregarUProducto = async (n) => {
         for (let index = 0; index < response2.length; index++) {
           Store.nextIDMinimos = response2[index].id;
         }
-        minimos.data.attributes.id = Store.nextIDMinimos + 1;
+        // minimos.data.attributes.id = Store.nextIDMinimos + 1;
         GuardarMinimos(minimos);
         successFull("Producto agregado satisfactoriamente.", "top-end")
         GuardarProductoC.value = 'Agregar y continuar';
         disabledProductoBtn.value = '';
         Store.cambiaEstado(1)
       }
-    }else{
+    } else {
       GuardarProducto.value = 'Guardando...';
       disabledProductoBtn.value = 'disabled';
       Store.formProductos.id = Store.nextIDProducto + 1;
@@ -1360,7 +1360,7 @@ const agregarUProducto = async (n) => {
         for (let index = 0; index < response2.length; index++) {
           Store.nextIDMinimos = response2[index].id;
         }
-        minimos.data.attributes.id = Store.nextIDMinimos + 1;
+        // minimos.data.attributes.id = Store.nextIDMinimos + 1;
         GuardarMinimos(minimos);
         successFull("Producto agregado satisfactoriamente.", "top-end")
         GuardarProducto.value = 'Agregar';
@@ -1614,6 +1614,9 @@ const editarU = async () => {
   Store.formProductos.data.attributes.articulo_id = ''
   Store.formProductos.data.attributes.cantidad = '';
   Store.EditProductos(response)
+  // console.log(minimos)
+  const response2 = await EditarDatos(minimos.data.attributes.producto_id, minimos, 9);
+  console.log(response2)
   itemsProductos1.value = Store.itemsProductos;
   btnModificarM.value = 'Modificar'
   deactiva.value = '';
@@ -1768,7 +1771,8 @@ const clickEditarProducto = async (idSelect) => {
       Store.formProductos.data.attributes.observacion = itemsProductos1.value[index].attributes.observacion;
       Store.formProductos.data.attributes.articulo_id = itemsProductos1.value[index].relationships.articulo.data.id;
       Store.formProductos.data.attributes.ubicacion_id = itemsProductos1.value[index].relationships.ubicacion.data.id;
-
+      // console.log(Store.formProductos.id)
+      minimos.data.attributes.producto_id = itemsProductos1.value[index].id;
       // Detalles(Store.formProductos.data)
       break;
     }

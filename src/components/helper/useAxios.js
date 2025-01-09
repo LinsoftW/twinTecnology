@@ -76,7 +76,7 @@ export async function obtenerDatos(n) {
         throw error;
       }
       break;
-      case 9:
+    case 9:
       try {
         const response = await axios.get(url + 'minimos');
         return response.data.data;
@@ -330,6 +330,24 @@ export async function EditarDatos(id, datos, n) {
       try {
         const response = await axios.patch(`${url}etiquetas/${id}`, datos);
         return response.data.data;
+      } catch (error) {
+        throw error;
+      }
+      break;
+    case 9:
+      try {
+        const dato = await obtenerDatos(9);
+        console.log(datos)
+        for (let index = 0; index < dato.length; index++) {
+          const element = dato[index].meta.foreign_keys_instances.producto_id;
+          if (element == id) {
+            console.log(dato[index])
+            // const response = await axios.patch(`${url}minimos/${dato[index].id}`, datos);
+            // return response.data.data;
+            break;
+          }
+        }
+
       } catch (error) {
         throw error;
       }

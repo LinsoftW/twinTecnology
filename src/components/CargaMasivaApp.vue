@@ -56,8 +56,8 @@
                   id="loadExcel" @click="loadExcel"><i class="fas fa-upload"></i> Cargar Excel</button>
               </div> -->
               <div class="col-xl-2 col-lg-6 col-md-6 col-sm-4">
-                <!-- <button class="form-control form-control-user d-sm-inline-block btn btn-sm btn-danger shadow-sm m-2"
-                  id="modifyExcel" @click="modifyExcel"><i class="fas fa-save"></i> Guardar datos en BD</button> -->
+                <button class="form-control form-control-user d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
+                  id="modifyExcel" @click="modifyExcel"><i class="fas fa-save"></i> Guardar datos</button>
               </div>
             </div>
           </div>
@@ -108,15 +108,39 @@
           <!-- Card Header - Dropdown -->
           <div class=" card-header py-3 d-flex flex-row align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-info">DATOS CARGADOS</h6>
+
           </div>
           <!-- Card Body -->
           <div class="card-body ">
             <div class="row d-sm-flex align-items-center justify-content-between mb-4 ">
               <div class="col-xl-12 col-lg-12 col-md-12">
                 <div class="spreadsheet-container">
+                  <EasyDataTable :headers="headers2" :items="item" buttons-pagination border-cell
+                    v-model:items-selected="itemsSelected" header-text-direction="center" body-text-direction="center"
+                    @click-row="showRow" :rows-per-page="5">
+                    <template #item-image="item">
+                      <img src="/inventario.jpg" alt="No image" class="img img-thumbnail"
+                        style="width: 50px; height: 50px;" />
+                    </template>
+                    <template #item-opciones="item">
+                      <button disabled class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal"
+                        data-target="#agregaProducto" @click="clickEditarProducto(item.id)" v-b-tooltip.hover
+                        title="Modificar"><span class="fas fa-edit"></span></button>
+                      <button disabled class="btn btn-danger btn-sm btn-circle ml-1"
+                        @click="borrarU(item.id, item.attributes.descripcion, 1)" v-b-tooltip.hover
+                        title="Eliminar"><span class="fas fas fa-trash-alt"></span></button>
+                    </template>
 
+                    <template #loading>
+                      <img src="/cargando4.gif" style="width: 100px; height: 80px;" />
+                    </template>
+                    <template #empty-message>
+                      <a>No hay datos que mostrar</a>
+                    </template>
+
+                  </EasyDataTable>
                   <!--EJEMPLO CARGARR EXCEL -->
-                  <table v-if="sheetData.length" class="table table-bordered">
+                  <!-- <table v-if="sheetData.length" class="table table-bordered">
                     <thead>
                       <tr>
                         <th v-for="(header, index) in headers" :key="index">{{ header }}</th>
@@ -127,7 +151,7 @@
                         <td v-for="(cell, cellIndex) in row" :key="cellIndex">{{ cell }}</td>
                       </tr>
                     </tbody>
-                  </table>
+                  </table> -->
 
                   <!-- <EasyDataTable table-class-name="customize-table" :headers="headers" :items="items" buttons-pagination
                     border-cell v-model:items-selected="itemsSelected" header-text-direction="center"
@@ -335,6 +359,7 @@ export default {
       sheetData: [],
       sheetsData: [],
       headers: [],
+      headers2: [],
       esperando: false,
       cantidad: 0
     }
@@ -343,6 +368,10 @@ export default {
     onFileChange(event) {
       const file = event.target.files[0];
       if (file) {
+        this.item = [];
+        this.headers2 = [];
+        this.headers = [];
+        this.sheetData = [];
         const reader = new FileReader();
         reader.onload = (e) => {
           const data = new Uint8Array(e.target.result);
@@ -350,12 +379,23 @@ export default {
           const firstSheetName = workbook.SheetNames[0];
           const worksheet = workbook.Sheets[firstSheetName];
           this.sheetData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-          this.headers = this.sheetData[0]; // Assuming the first row contains headers
-          this.sheetData = this.sheetData.slice(1); // Remove the header row from data
-          // console.log(this.sheetData[0][3]) De esta forma leo los valores del excel para poder guardarlos en la base de datos
+          this.headers.push(this.sheetData[0]);
+          this.sheetData.push(this.sheetData.slice(1)); // Remove the header row from data
+          for (let index = 0; index < this.headers[0].length; index++) {
+            const element = this.headers[0][index];
+            this.headers2.push({ text: element, value: index.toString() })
+          }
+          this.headers2.push({ text: "OPCIONES", value: "opciones" });
+          for (let index = 0; index < this.sheetData.length - 2; index++) {
+            const element = this.sheetData.slice(1)[index];
+            this.item.push(element)
+          }
         };
+        // console.log(this.item)
         reader.readAsArrayBuffer(file);
+
       }
+
     },
     onFileChange2(event) {
       // console.log("entro")
