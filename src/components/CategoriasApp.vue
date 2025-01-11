@@ -40,7 +40,7 @@
                         </span>
                         <span class="text">PDF</span>
                       </a>
-                      <a @click="ExportExcel()" class="btn btn-primary btn-sm btn-icon-split"
+                      <a @click="ExportExcel()" class="btn btn-secondary btn-sm btn-icon-split"
                         :class="disabledDepartamento">
                         <span class="icon text-white-50">
                           <i class="fas fa-download"></i>
@@ -120,7 +120,7 @@
                         </span>
                         <span class="text">PDF</span>
                       </a>
-                      <a @click="ExportExcelArticulos()" class="btn btn-primary btn-sm btn-icon-split"
+                      <a @click="ExportExcelArticulos()" class="btn btn-secondary btn-sm btn-icon-split"
                         :class="disabledArticulo">
                         <span class="icon text-white-50">
                           <i class="fas fa-download"></i>
@@ -201,7 +201,7 @@
                         </span>
                         <span class="text">PDF</span>
                       </a>
-                      <a @click="ExportExcelEtiqueta()" class="btn btn-primary btn-sm btn-icon-split"
+                      <a @click="ExportExcelEtiqueta()" class="btn btn-secondary btn-sm btn-icon-split"
                         :class="disabledArticulo">
                         <span class="icon text-white-50">
                           <i class="fas fa-download"></i>

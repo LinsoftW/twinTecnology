@@ -229,8 +229,11 @@
                 :search-field="searchField" :search-value="searchValue" @click-row="showRow" :rows-per-page="5"
                 :loading="Store.esperandoProductos">
                 <template #item-image="item">
-                  <img src="/inventario.jpg" alt="No image" class="img img-thumbnail"
-                    style="width: 50px; height: 50px;" />
+                  <a data-toggle="modal" data-target="#verImagen">
+                    <img src="/inventario.jpg" alt="No image" class="img img-thumbnail"
+                      style="width: 50px; height: 50px;" />
+                  </a>
+
                 </template>
                 <!-- <template #item-rows>
                 <a>Filas por paginas</a>
@@ -551,6 +554,72 @@
 
     </div>
     <!-- <AddProducto v-show="popup" @cerrar="abrirModalAddProd()" /> -->
+  </div>
+
+  <div :class="'modal fade ' + showModal1" id="verImagen" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-info" id="exampleModalLabel">IMAGEN</h5>
+
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="text-info">×</span>
+          </button>
+        </div>
+        <div class="modal-body text-center">
+          <!-- <div class="text-center">
+            <h1 class="h6 text-gray-900 mb-4"><i>CAMPOS OBLIGATORIOS</i> (<label style="color: red;">*</label>)
+            </h1>
+          </div> -->
+          <form class="user">
+
+            <div class="row">
+              <div class="form-group col-lg-12 text-left">
+                <img src="/inventario.jpg" alt="No image" class="img img-thumbnail"
+                  style="width: 100%; height: 100%;" />
+              </div>
+
+            </div>
+
+            <div class="row">
+              <div class="form-group h4 col-lg-6">
+                <a class="btn btn-danger btn-block" data-dismiss="modal" aria-label="close" :class="deactiva">
+                  Cancelar
+                </a>
+              </div>
+            </div>
+
+
+          </form>
+
+          <!-- <div>
+            <card class="card-section" style="width: 450px; margin: auto">
+              <h1>Contact Form</h1>
+              <form ref="values" @submit.prevent="sendEmail">
+                <div class="form-group">
+                  <KInput class="form-input" :style="{ width: '290px' }" name="name" v-model="user_name"
+                    placeholder="Name"></KInput>
+                </div>
+                <div class="form-group">
+                  <KInput class="form-input" :style="{ width: '290px' }" name="email" v-model="user_email"
+                    placeholder="email address"></KInput>
+                </div>
+                <div class="form-group">
+                  <kTextarea class="form-input" :style="{ width: '290px' }" name="message" v-model="user_message"
+                    placeholder="Message" :rows="4" />
+                </div>
+                <div class="example-col">
+                  <kButton :style="{ width: '100px' }" id="submit-btn">Submit form</kButton>
+                </div>
+              </form>
+            </card>
+          </div> -->
+          <!-- <vue-barcode :value="cod" tag="svg"></vue-barcode> -->
+        </div>
+
+      </div>
+    </div>
   </div>
 
   <!-- Logout Modal-->
@@ -1003,7 +1072,7 @@
   <!-- <div :class="showModBack2" @click="cerrarModal()"></div> -->
 </template>
 <script setup>
-import { ref, reactive, onMounted, watchEffect, watch } from 'vue';
+import { ref, reactive, onMounted, watchEffect } from 'vue';
 import Swal from 'sweetalert2';
 // import AddProducto from './modal/AddProducto.vue';
 // import VueDatePicker from '@vuepic/vue-datepicker';
@@ -1285,6 +1354,7 @@ const minimos = reactive({
 
 const agregarUProducto = async (n) => {
   if (Store.formProductos.data.attributes.descripcion != '' && Store.formProductos.data.attributes.articulo_id != 0 && Store.formProductos.data.attributes.observacion != '' && Store.formProductos.data.attributes.ubicacion_id != "") {
+    // editando.value = true;
     if (n == 1) {
       GuardarProductoC.value = 'Guardando...';
       disabledProductoBtn.value = 'disabled';
@@ -1368,8 +1438,10 @@ const agregarUProducto = async (n) => {
         Store.cambiaEstado(1)
       }
     }
+    // editando.value = false;
 
   } else {
+    // editando.value = false;
     if (Store.formProductos.data.attributes.descripcion == '') {
       errores.value.descripcion = "Este campo es obligatorio";
     } else {
@@ -2215,6 +2287,7 @@ const borrarU = async (id, correo, caso) => {
 // })
 
 // const itemsProductos = ref(listadoProductos)
+
 onMounted(async () => {
 
   if (localStorage.getItem('userName')) {

@@ -1,6 +1,6 @@
 <template>
   <!-- <Suspense> -->
-  <div v-if="!esperando" class="container">
+  <div v-if="!esperando" class="container" @keyup.enter="autenticate()">
     <!-- Outer Row -->
     <div class="row justify-content-center">
 
@@ -304,7 +304,7 @@ const autenticate = async () => {
         text: emailError.value,
       });
     }
-    if (form.passw.length == 0 && form.passw == null) {
+    if (form.passw.length == 0 || form.passw == null) {
       Swal.fire({
         icon: "error",
         title: "Oops...",

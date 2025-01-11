@@ -32,7 +32,7 @@
                         </span>
                         <span class="text">PDF</span>
                       </a>
-                      <a @click="ExportExcel()" class="btn btn-primary btn-sm btn-icon-split" :class="disabledMagnitud">
+                      <a @click="ExportExcel()" class="btn btn-secondary btn-sm btn-icon-split" :class="disabledMagnitud">
                         <span class="icon text-white-50">
                           <i class="fas fa-download"></i>
                         </span>
@@ -182,7 +182,7 @@
                         </span>
                         <span class="text">PDF</span>
                       </a>
-                      <a @click="ExportExcelMedidas()" class="btn btn-primary btn-sm btn-icon-split"
+                      <a @click="ExportExcelMedidas()" class="btn btn-secondary btn-sm btn-icon-split"
                         :class="disabledMedida">
                         <span class="icon text-white-50">
                           <i class="fas fa-download"></i>

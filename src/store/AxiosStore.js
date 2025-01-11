@@ -22,6 +22,7 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
   const listadoUbicaciones = ref([]);
   const listadoMagnitudes = ref([]);
   const listadoEtiquetas = ref([]);
+  const NewlistadoAgregar = ref({ data: [] });
   const itemsProductos = ref([])
   const itemsArticulos = ref([])
   const itemsDepartamentos = ref([])
@@ -590,8 +591,10 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
     cambiaEstado, AddMagnitud, AddProductos, EditProductos, DeleteMagnitud, DeleteProducto, AddMedida, DeleteMedida, EditMagnitud, EditMedida, AddDepartamento, DeleteDepartamento, EditDepartamento,
     AddArticulo, DeleteArticulo, EditArticulo, AddSucursal, DeleteSucursal, EditSucursal, AddUbicaciones, DeleteUbicaciones, EditUbicaciones, formSucursal, formUbicaciones,
     AddEtiqueta, EditEtiqueta, DeleteEtiqueta, formEtiqueta, setListadoEtiquetas, nextIDArticulo, nextIDProducto, nextIDDepartamento, nextIDEtiqueta,
-    nextIDMagnitud, nextIDMedida, nextIDSucursal, nextIDUbicacion, nextIDMinimos, id, collapsed, collapsed2, activa, activa2, show, show2
+    nextIDMagnitud, nextIDMedida, nextIDSucursal, nextIDUbicacion, nextIDMinimos, id, collapsed, collapsed2, activa, activa2, show, show2, NewlistadoAgregar
   }
+}, {
+  persist: true
 })
 
 // Reset store

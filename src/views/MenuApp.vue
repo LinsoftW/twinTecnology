@@ -1,7 +1,12 @@
 <template>
-  <!-- Page Wrapper -->
 
   <div id="wrapper">
+    <q-table
+      title="Treats"
+      :rows="rows"
+      :columns="columns"
+      row-key="name"
+    ></q-table>
 
     <!-- Sidebar -->
     <ul :class="'navbar-nav bg-gradient-' + Cosc_Clar + ' sidebar sidebar-dark accordion ' + Ctoggled"
@@ -429,7 +434,7 @@
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Ajustes de perfil
                 </a>
-                <a class="dropdown-item" >
+                <a class="dropdown-item">
                   <i class="fas fa-cog fa-sm fa-fw mr-2 text-gray-400"></i>
                   Configurar sitio
                 </a>
@@ -679,8 +684,8 @@ import InicioApp from '@/components/InicioApp.vue';
 import InventarioApp from '@/components/InventarioApp.vue';
 import PedidosApp from '@/components/PedidosApp.vue';
 import router from '@/router';
-import { ref, watch, watchEffect } from 'vue';
-import { useRoute } from 'vue-router'
+import { onUnmounted, ref, watch, watchEffect } from 'vue';
+import { onBeforeRouteLeave, useRoute } from 'vue-router'
 import { onMounted } from 'vue';
 import SucursalApp from '@/components/SucursalApp.vue';
 import ProductosApp from '@/components/ProductosApp.vue';
@@ -696,7 +701,14 @@ import emailjs from 'emailjs-com';
 import * as XLSX from 'xlsx';
 import UbicacionesApp from '@/components/UbicacionesApp.vue';
 import { useStoreAxios } from '@/store/AxiosStore';
-import { obtenerDatos } from '../components/helper/useAxios'
+import { obtenerDatos } from '../components/helper/useAxios';
+// import { useQuasar, useDialogPluginComponent } from 'quasar';
+
+// const { dialogRef, onDialogHide, onDialogOK, onDialogCancel, qTable } = useDialogPluginComponent()
+
+// Nuevo quasar
+
+// Fin quasar
 
 const Store = useStoreAxios();
 
@@ -1002,9 +1014,59 @@ const consultar = async (n) => {
 //       });
 //   }
 // })
+const editando = ref(false);
+
+const beforeRouteLeave = (to, from, next) => {
+  if (!editando.value) {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        next();
+      }
+    });
+  }
+
+}
+
+const evitarRecargar = () => {
+
+  window.addEventListener("beforeunload", event => {
+    if (!editando.value) return
+    event.preventDefault()
+    // Chrome requires returnValue to be set.
+    BeforeUnloadEvent.returnValue = "No se puede recargar"
+  })
+}
+
+const destruirRecarga = () => {
+  window.removeEventListener("beforeunload", event => {
+    if (!editando.value) return
+    event.preventDefault()
+    // Chrome requires returnValue to be set.
+    BeforeUnloadEvent.returnValue = "No se puede recargar"
+  })
+}
+
+// onUnmounted(() =>{
+//    destruirRecarga();
+// })
+
+// const quasar = useQuasar();
 
 onMounted(async () => {
+
+  Ctoggled.value = 'toggled';
   // console.log("Montado")
+  editando.value = true;
+  evitarRecargar();
+  // beforeRouteLeave()
   if (localStorage.getItem('userName')) {
     if (localStorage.getItem('Carg_datP') == '0') {
       // cargando los productos
@@ -1066,7 +1128,7 @@ onMounted(async () => {
         Store.cambiaEstado(3)
       }
     }
-    Ctoggled.value = 'toggled';
+
   } else {
     router.push('/login');
   }

@@ -57,7 +57,7 @@
               </div> -->
               <div class="col-xl-2 col-lg-6 col-md-6 col-sm-4">
                 <button class="form-control form-control-user d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
-                  id="modifyExcel" @click="modifyExcel"><i class="fas fa-save"></i> Guardar datos</button>
+                  id="modifyExcel" @click="almacenarDatos()"><i class="fas fa-save"></i> Guardar datos</button>
               </div>
             </div>
           </div>
@@ -319,6 +319,9 @@ import { ref } from 'vue';
 // import "@mescius/spread-sheets-io";
 // import readXlsxFile from 'read-excel-file';
 import * as XLSX from 'xlsx'
+import { successFull } from './controler/ControlerApp';
+import { useStoreAxios } from '@/store/AxiosStore';
+import { GuardarColecciones } from './helper/useAxios';
 
 // const searchField = ref("attributes.codigo");
 
@@ -350,18 +353,19 @@ export default {
     return {
       sheetName: 'Sales Data',
       hostClass: 'spreadsheet',
-      autoGenerateColumns: true,
-      width: 200,
-      visible: true,
-      resizable: true,
-      priceFormatter: "$ #.00",
+      // autoGenerateColumns: true,
+      // width: 200,
+      // visible: true,
+      // resizable: true,
+      // priceFormatter: "$ #.00",
       item: [],
       sheetData: [],
       sheetsData: [],
       headers: [],
       headers2: [],
-      esperando: false,
-      cantidad: 0
+      // esperando: false,
+      cantidad: 0,
+      store: useStoreAxios()
     }
   },
   methods: {
@@ -390,10 +394,11 @@ export default {
             const element = this.sheetData.slice(1)[index];
             this.item.push(element)
           }
+          this.preparar_Guardar(this.item)
         };
         // console.log(this.item)
+        // this.preparar_Guardar(this.item)
         reader.readAsArrayBuffer(file);
-
       }
 
     },
@@ -476,6 +481,58 @@ export default {
         icon: "error",
         title: mensaje
       })
+    },
+    preparar_Guardar(listado) {
+      switch (listado[0][0]) {
+        case "articulo":
+          for (let index = 0; index < listado.length; index++) {
+            const element = listado[index];
+            // console.log(element)
+            this.store.NewlistadoAgregar.data.push(
+              {
+                attributes: {
+                  articulo: element[1],
+                  descripcion: element[2],
+                  observacion: element[3],
+                  departamento_id: element[4],
+                  medida_id: element[5],
+                }
+              }
+            )
+          }
+          // console.log(this.store.NewlistadoAgregar);
+          // const response = GuardarColecciones(this.store.NewlistadoAgregar, 5)
+          // console.log(response)
+          break;
+        case "departamento":
+          successFull("Departamento", "top-start")
+          break;
+        case "sucursal":
+          successFull("Sucursal", "top-start")
+          break;
+        case "medida":
+          successFull("Unidad de medida", "top-start")
+          break;
+        case "etiqueta":
+          successFull("Etiqueta", "top-start")
+          break;
+        case "ubicacion":
+          successFull("Ubicacion", "top-start")
+          break;
+        case "producto":
+          successFull("Producto", "top-start")
+          break;
+        case "magnitud":
+          successFull("Magnitud", "top-start")
+          break;
+        default:
+          break;
+      }
+    },
+    async almacenarDatos() {
+      // console.log(this.store.NewlistadoAgregar);
+      const response = await GuardarColecciones(this.store.NewlistadoAgregar, 5)
+      console.log(response)
     }
   },
   loading: (texto) => {

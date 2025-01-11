@@ -12,9 +12,11 @@ import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import VueBarcode from '@chenfengyuan/vue-barcode';
 import { createPinia } from 'pinia';
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 
 const pinia = createPinia();
 pinia.use(storeReset);
+pinia.use(piniaPluginPersistedstate);
 
 import App from './App.vue'
 
