@@ -309,7 +309,7 @@
 </template>
 <script>
 import Swal from 'sweetalert2';
-import { ref } from 'vue';
+// import { ref } from 'vue';
 // import "@mescius/spread-sheets/styles/gc.spread.sheets.excel2016colorful.css";
 // SpreadJS imports
 // import GC from "@mescius/spread-sheets";
@@ -483,6 +483,7 @@ export default {
       })
     },
     preparar_Guardar(listado) {
+      this.store.NewlistadoAgregar.data = [];
       switch (listado[0][0]) {
         case "articulo":
           for (let index = 0; index < listado.length; index++) {

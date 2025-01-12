@@ -592,14 +592,10 @@ import Swal from 'sweetalert2';
 import { onMounted, reactive, ref } from 'vue';
 // import { load } from '@progress/kendo-vue-intl';
 import * as XLSX from 'xlsx';
-import { GuardarDatos, obtenerDatos } from './service/servicio';
 import { useStoreAxios } from '@/store/AxiosStore';
 import { ErrorFull, successFull } from './controler/ControlerApp';
-import { EditarDatos, EliminarDatos } from './helper/useAxios';
+import { EditarDatos, EliminarDatos, GuardarDatos, obtenerDatos } from './helper/useAxios';
 import jsPDF from 'jspdf';
-// import { store.formMagnitud, listadoMagnitudes, listadoMedida, loadingM, successFull } from './controler/ControlerApp';
-
-// const esperando = ref(false);
 
 const itemsMagnitud1 = ref([])
 
@@ -633,20 +629,7 @@ const disabledMedida = ref('')
 
 const disabledMedidaBtn = ref('')
 
-const loadingA = (texto) => {
-  Swal.fire({
-    // title: "Sweet!",
-    text: texto,
-    imageUrl: "/cargando2.gif",
-    imageWidth: 100,
-    imageHeight: 100,
-    imageAlt: "Custom image",
-    showConfirmButton: false
-  });
-}
-
 // Excel
-
 const nuevoArreglo = ref([]);
 const elementos = ref([]);
 function ExportExcel() {
@@ -676,8 +659,6 @@ function ExportExcel() {
 // Fin
 
 const obtenMagnitud = (id) => {
-  const val = ref('')
-
   for (let index = 0; index < itemsMagnitud1.value.length; index++) {
     if (id == itemsMagnitud1.value[index].id) {
       // console.log(listadoMedida.value[index].id)
@@ -717,7 +698,6 @@ const IdMagnitud = ref(0);
 
 const ObtenIdMagnitud = (ID) => {
   IdMagnitud.value = ID;
-  // console.log(store.formMedida.data.attributes.magnitud_id)
 }
 
 const cerrarAlert = () => {
@@ -775,7 +755,6 @@ const generar_pdfMed = async () => {
       id: itemsMedida1.value[index].id,
       medida: itemsMedida1.value[index].attributes.medida,
       descripcion: itemsMedida1.value[index].attributes.descripcion,
-      // codigo: itemsDeparta1.value[index].relationships.departamento.data.id.toString() + itemsDeparta1.value[index].relationships.articulo.data.id.toString() + itemsDeparta1.value[index].id.toString(),
       observacion: itemsMedida1.value[index].attributes.observacion,
       fechaC: itemsMedida1.value[index].attributes.timestamps.created_at,
       fechaU: itemsMedida1.value[index].attributes.timestamps.updated_at
@@ -802,10 +781,6 @@ const generar_pdfMed = async () => {
 
   doc.text("Listado de unidades de medidas", 220, 25);
   doc.save("U_Medidas.pdf");
-
-  // cerrarAlert();
-
-
 }
 
 const EliminarTodos = () => {
@@ -940,17 +915,9 @@ const searchFieldMedida = ref(["attributes.medida", "attributes.descripcion", "a
 
 const searchValueMedida = ref("");
 
-// let listadoMagnitudes = ref([]);
-
-// let listadoMedida = ref([]);
-
-// let listadoSucursales = ref([]);
-
 let datosPaginados = ref([]);
 
 let datosSinPaginar = ref([]);
-
-// let buscando = ref('');
 
 let editar = ref(false);
 
@@ -969,6 +936,7 @@ let fin = ref(0);
 let paginaActual = ref(1);
 
 let disableA = ref('');
+
 let disableS = ref('');
 
 let setTiempoBusca = '';
@@ -976,8 +944,6 @@ let setTiempoBusca = '';
 const datos_archivados = ref([]);
 
 const emit = defineEmits(['cerrar', 'actualiza']);
-
-// const alerta = useAlertsStore;
 
 function closeVentana() {
   emit('cerrar')
@@ -1115,7 +1081,6 @@ const agregarU = async () => {
     ErrorFull("Debe llenar todos los campos obligatorios", "top-start")
     store.cambiaEstado(8);
   }
-  // console.log(datos_archivados.value);
 
 }
 
