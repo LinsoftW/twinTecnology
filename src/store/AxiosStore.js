@@ -25,6 +25,7 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
   const listadoEtiquetas = ref([]);
   const listadoLotes = ref([]);
   const listadoMonedas = ref([]);
+  const listadoImagenes = ref([]);
   const NewlistadoAgregar = ref({ data: [] });
   const itemsProductos = ref([])
   const itemsArticulos = ref([])
@@ -36,6 +37,7 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
   const itemsEtiquetas = ref([])
   const itemsLotes = ref([])
   const itemsMonedas = ref([])
+  const itemsImagen = ref([])
   const loadingP = ref(false) // Productos
   const loadingD = ref(false) // Departamentos
   const loadingA = ref(false) // Articulos
@@ -119,6 +121,28 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
         observacion: "",
         minimo: 0,
         articulo_id: 99,
+        producto_imagen_id: 0
+      }
+    }
+  })
+
+  const formImagen = reactive({
+    // id: 0,
+    data: {
+      attributes: {
+        file: ""
+      }
+    }
+  })
+
+  const formImagenes = reactive({
+    // id: 0,
+    data: {
+      attributes: {
+        descripcion: "",
+        path: "",
+        observacion: "",
+        producto_id: 999,
       }
     }
   })
@@ -319,6 +343,37 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
         listadoSucursales.value[index] = newdato;
       }
       itemsSucursales.value.push(listadoSucursales.value[index])
+    }
+  }
+
+  const AddImagen = (L) => {
+    listadoImagenes.value.push(L);
+    setListadoImagen(listadoImagenes.value);
+  }
+
+  const DeleteImagen = (newdato) => {
+    itemsImagen.value = []
+    for (let index = 0; index < listadoImagenes.value.length; index++) {
+      if (newdato.id == listadoImagenes.value[index].id) {
+        if (index == listadoImagenes.value.length - 1) {
+          listadoImagenes.value.pop();
+          break
+        } else {
+          listadoImagenes.value.splice(index, 1)
+        }
+      }
+      itemsImagen.value.push(listadoImagenes.value[index])
+
+    }
+  }
+
+  const EditImagen = (newdato) => {
+    itemsImagen.value = [];
+    for (let index = 0; index < listadoImagenes.value.length; index++) {
+      if (newdato.id == listadoImagenes.value[index].id) {
+        listadoImagenes.value[index] = newdato;
+      }
+      itemsImagen.value.push(listadoImagenes.value[index])
     }
   }
 
@@ -577,6 +632,14 @@ const AddLotes = (L) => {
     }
   }
 
+  const setListadoImagen = (L) => {
+    listadoImagenes.value = L;
+    itemsImagen.value = [];
+    for (let index = 0; index < listadoImagenes.value.length; index++) {
+      itemsImagen.value.push(listadoImagenes.value[index])
+    }
+  }
+
   const setListadoLotes = (L) => {
     listadoLotes.value = L;
     itemsLotes.value = [];
@@ -709,9 +772,9 @@ const AddLotes = (L) => {
     esperandoArticulos, esperandoDepartamentos,esperandoLotes,itemsLotes,itemsMonedas, esperandoProductos, esperandoMedidas, esperandoEtiquetas, esperandoMagnitudes, esperandoSucursales, esperandoUbicaciones, loadingP, loadingA, loadingD, loadingE, loadingM, loadingMe, loadingS, loadingUb,
     itemsProductos, itemsDepartamentos, itemsMagnitudes, itemsArticulos, itemsEtiquetas, itemsUbicaciones, itemsMedidas, itemsSucursales,
     cambiaEstado, AddMagnitud, AddProductos, EditProductos, AddMoneda, DeleteMoneda,EditMoneda, DeleteMagnitud, DeleteProducto, AddMedida,AddLotes, DeleteMedida,EditLotes, EditMagnitud, EditMedida, AddDepartamento, DeleteDepartamento, EditDepartamento,
-    AddArticulo, DeleteArticulo, EditArticulo, AddSucursal, DeleteSucursal,DeleteLotes, EditSucursal, AddUbicaciones, DeleteUbicaciones, EditUbicaciones, formSucursal, formUbicaciones,
+    AddArticulo, DeleteArticulo, EditArticulo, AddSucursal, DeleteSucursal,DeleteLotes, EditSucursal, AddUbicaciones, DeleteUbicaciones, EditUbicaciones,AddImagen,setListadoImagen, DeleteImagen, EditImagen, formSucursal, formUbicaciones,
     AddEtiqueta, EditEtiqueta, DeleteEtiqueta, formEtiqueta, setListadoEtiquetas, nextIDArticulo, nextIDProducto, nextIDDepartamento, nextIDEtiqueta,
-    nextIDMagnitud, nextIDMedida, nextIDSucursal, nextIDUbicacion, nextIDMinimos, id, collapsed, collapsed2, activa, activa2, show, show2, NewlistadoAgregar
+    nextIDMagnitud, nextIDMedida, nextIDSucursal, nextIDUbicacion, nextIDMinimos, id, collapsed, collapsed2, activa, activa2, show, show2, NewlistadoAgregar, formImagenes, itemsImagen, formImagen
   }
 }, {
   persist: true

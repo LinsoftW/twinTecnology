@@ -1,7 +1,12 @@
 import axios from 'axios';
+import { error } from 'jquery';
 
-// const url = "http://localhost/inventary/api/inventario";
-const url = "http://www.twintechnology.cu/inventary/api/inventario";
+// const url = "http://localhost/inventory/api/inventario";
+const url = "http://www.twintechnology.cu/inventory/api/inventario";
+
+// const urlImagen = "http://localhost/inventory/api/imagen/producto_imagenes";
+const urlImagen = "http://www.twintechnology.cu/inventory/api/imagen/producto_imagenes";
+const urlUploadImagen = "http://www.twintechnology.cu/inventory/api/imagen/upload";
 
 const axiosInstance = axios.create({
   baseURL: url,
@@ -25,7 +30,8 @@ export async function obtenerDatos(n) {
         // console.log(response)
         return response.data.data;
       } catch (error) {
-        throw error;
+        // throw error;
+        return error;
       }
       break;
     case 2:
@@ -103,6 +109,14 @@ export async function obtenerDatos(n) {
     case 11:
       try {
         const response = await axiosInstance.get('/monedas');
+        return response.data.data;
+      } catch (error) {
+        throw error;
+      }
+      break;
+    case 12:
+      try {
+        const response = await axios.get(urlImagen);
         return response.data.data;
       } catch (error) {
         throw error;
@@ -231,6 +245,14 @@ export async function GuardarDatos(datos, n) {
     case 11:
       try {
         const response = await axiosInstance.post('/monedas', datos);
+        return response.data.data;
+      } catch (error) {
+        throw error;
+      }
+      break;
+    case 12:
+      try {
+        const response = await axios.post(urlImagen, datos);
         return response.data.data;
       } catch (error) {
         throw error;
@@ -413,8 +435,25 @@ export async function EliminarDatos(id, n) {
         throw error;
       }
       break;
+    case 11:
+      try {
+        const response = await axios.delete(`${urlImagen}/${id}`);
+        return response.data.data;
+      } catch (error) {
+        throw error;
+      }
+      break;
     default:
       break;
+  }
+}
+
+export async function subirImagen(imagen) {
+  try {
+    const response = axios.post(urlUploadImagen, imagen);
+    return response.data.data
+  } catch (error) {
+    throw error;
   }
 }
 
@@ -525,4 +564,5 @@ export async function EditarDatos(id, datos, n) {
     default:
       break;
   }
+
 }

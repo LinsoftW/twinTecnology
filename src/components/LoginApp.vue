@@ -11,15 +11,15 @@
             <!-- Nested Row within Card Body -->
             <div class="row">
               <div class="col-lg-6 d-none d-lg-block">
-                <img class="sidebar-card-illustration mb-2" src="/1631285117380.png" style="width: 100%; height:100%"
+                <img class="sidebar-card-illustration mb-2" src="/imgFull.jpg" style="width: 100%; height:100%"
                   alt="...">
               </div>
               <div class="col-lg-6">
                 <div class="p-5">
                   <div class="text-center">
-                    <div class="sidebar-brand-icon rotate-n-15"><img src="/clipboard-list.png" alt=""
+                    <div class="sidebar-brand-icon rotate-n-15"><img src="/icono.jpg" alt=""
                         style="width: 35px; height:35px"></div>
-                    <h1 class="h1 text-gray-900 mb-1"> MyInventary </h1>
+                    <h1 class="h1 text-gray-900 mb-1"> MyInventory </h1>
                     <h4 class="h6 text-gray-900 mb-4">Todos detalles
                     </h4>
 
@@ -97,7 +97,7 @@
             <!-- Nested Row within Card Body -->
             <div class="row">
               <div class="col-lg-6 d-none d-lg-block">
-                <img class="sidebar-card-illustration mb-2" src="/1631285117380.png" style="width: 100%; height:100%"
+                <img class="sidebar-card-illustration mb-2" src="/src/imgFull.jpg" style="width: 100%; height:100%"
                   alt="...">
               </div>
               <div class="col-lg-6">
@@ -105,7 +105,7 @@
                   <div class="text-center">
                     <div class="sidebar-brand-icon rotate-n-15"><img src="/clipboard-list.png" alt=""
                         style="width: 35px; height:35px"></div>
-                    <h1 class="h1 text-gray-900 mb-1"> MyInventary </h1>
+                    <h1 class="h1 text-gray-900 mb-1"> MyInventory </h1>
                     <h4 class="h6 text-gray-900 mb-4">Todos detalles
                     </h4>
 
@@ -264,6 +264,7 @@ onMounted(async () => {
   localStorage.setItem('Carg_datE', '0'); // Etiquetas
   localStorage.setItem('Carg_datL', '0'); // Lotes
   localStorage.setItem('Carg_datMo', '0'); // Monedas
+  localStorage.setItem('Carg_datIM', '0'); // Imagenes
   // localStorage.setItem('Host_back', 'localhost'); // IPPublica
   localStorage.setItem('Wait', '1'); // Esperar para cargar el inicio
   localStorage.setItem('Wait2', '1'); // Esperar para cargar el inicio

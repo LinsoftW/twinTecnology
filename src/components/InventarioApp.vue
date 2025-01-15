@@ -231,7 +231,8 @@
                 <template #item-image="item">
                   <a data-toggle="modal" data-target="#verImagen"
                     @click="obtenDescripcion(item.attributes.descripcion)">
-                    <img src="/inventario.jpg" alt="No image" class="img img-thumbnail"
+                    <!-- "{{ obtenImagen(item.id) }}" -->
+                    <img :src="obtenImagen(item.id)" alt="No image" class="img img-thumbnail"
                       style="width: 50px; height: 50px;" />
                   </a>
 
@@ -271,8 +272,8 @@
                   <!-- item.relationships.medida.data.id -->
                 </template>
                 <template #item-etiqueta="item">
-                  <!-- {{item.relationships.etiquetas.data.id}} -->
-                  {{ obtenEtiqueta(item.relationships.etiquetas.data.id) }}
+                  <!-- {{item.id}} -->
+                  {{ obtenEtiqueta(item.id) }}
                 </template>
                 <template #loading>
                   <img src="/cargando4.gif" style="width: 100px; height: 80px;" />
@@ -307,14 +308,14 @@
                   <!-- <div class="row"> -->
                   <div class="justify-content-between">
                     <!-- <router-link class="button" to="/gest_inventario"> -->
-                    <a data-toggle="modal" @click="agrega1()" data-target="#agregaLotes"
+                    <a data-toggle="modal" @click="agrega()" data-target="#agregaLote"
                       class="btn btn-info btn-sm btn-icon-split" :class="disabledProductos">
                       <span class="icon text-white-50">
                         <i class="fas fa-plus"></i>
                       </span>
                       <span class="text">Nuevo</span>
                     </a>
-                    <a @click="generar_pdf1()" class="btn btn-secondary btn-sm btn-icon-split m-2"
+                    <!-- <a @click="generar_pdf1()" class="btn btn-secondary btn-sm btn-icon-split m-2"
                       :class="disabledProductos">
                       <span class="icon text-white-50">
                         <i class="fas fa-file-pdf"></i>
@@ -327,14 +328,14 @@
                         <i class="fas fa-download"></i>
                       </span>
                       <span class="text">Excel</span>
-                    </a>
-                    <button class="btn btn-primary btn-sm dropdown-toggle m-2" type="button" id="dropdownMenuButton"
+                    </a> -->
+                    <!-- <button class="btn btn-primary btn-sm dropdown-toggle m-2" type="button" id="dropdownMenuButton"
                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <span class="icon text-white-50">
                         <i class="fas fa-plus"></i>
                       </span>
                       <span class="text"> Agregar</span>
-                    </button>
+                    </button> -->
                     <!-- <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
                       <router-link class="button" to="/categorias">
                         <a class="dropdown-item" href="#"><span class="fa fa-list-alt"></span> Clasificaciones</a>
@@ -374,7 +375,7 @@
               </div> -->
                 <div class="col-md-6 col-xl-6 col-lg-12">
                   <span class="text-info">Buscar: </span>
-                  <input class="form-control form-control-user" type="text" v-model="searchValue"
+                  <input class="form-control form-control-user" type="text" v-model="searchValue2"
                     placeholder="Qué desea buscar" />
                 </div>
               </div>
@@ -399,9 +400,9 @@
                     <button class="btn btn-success btn-sm btn-circle" @click="Aumentar(item)" v-b-tooltip.hover
                       title="Aumentar / Disminuir"><span class="fas fa-plus"></span> / <span
                         class="fas fa-minus"></span></button>
-                    <button class="btn btn-primary btn-sm btn-circle ml-1" data-toggle="modal"
-                      data-target="#agregaLotes" @click="clickEditarProducto1(item.id)" v-b-tooltip.hover
-                      title="Modificar"><span class="fas fa-edit"></span></button>
+                    <button class="btn btn-primary btn-sm btn-circle ml-1" data-toggle="modal" data-target="#agregaLote"
+                      @click="clickEditarProducto1(item.id)" v-b-tooltip.hover title="Modificar"><span
+                        class="fas fa-edit"></span></button>
 
                     <!-- <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
                     title="Restar"><span class="fas fa-minus"></span></button> -->
@@ -422,7 +423,7 @@
                   {{ item.attributes.precio_compra }} {{ obtenMoneda(item.attributes.moneda_compra) }}
                 </template>
                 <template #item-precioV="item">
-                  {{ item.attributes.precio_venta }}{{ obtenMoneda(item.attributes.moneda_venta) }}
+                  {{ item.attributes.precio_venta }} {{ obtenMoneda(item.attributes.moneda_venta) }}
                 </template>
                 <!-- <template #item-departamento="item">
                   {{ obtenDepartamento(item.relationships.departamento.data.id) }}
@@ -807,6 +808,21 @@
             </h1>
           </div> -->
           <form class="user">
+            <div class="row">
+              <div class="col-lg-12">
+                <img v-if="imgPerfil" class="img-profile rounded-circle" v-bind:src="imgPerfil"
+                  style="width: 150px; height: 150px">
+                <img v-else class="img-profile rounded-circle" src="/src/assets/new/img/undraw_profile.svg"
+                  style="width: 150px; height: 150px">
+
+              </div>
+              <div class="col-lg-12">
+
+                <label for="avatar">Seleccione una imagen:</label>
+                <input type="file" id="file" name="file" accept="image/png, image/jpeg" @change="cargarImagen()" />
+              </div>
+            </div>
+            <hr>
 
             <div class="row">
               <div class="form-group col-lg-12 text-left">
@@ -946,16 +962,16 @@
     </div>
   </div>
 
-  <div :class="'modal fade ' + showModal1" id="agregaSucursales" tabindex="-1" role="dialog"
+  <div :class="'modal fade ' + showModal1" id="agregaLote" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title text-info" id="exampleModalLabel" v-if="editar == false">NUEVA SUCURSAL</h5>
+          <h5 class="modal-title text-info" id="exampleModalLabel" v-if="editar == false">NUEVO LOTE</h5>
           <h5 class="modal-title text-info text-center" id="exampleModalLabel" v-if="editar == true"><span
               class="fa fa-edit"></span>
-            MODIFICAR LOS DATOS DE LA SUCURSAL <br>(<label style="color: red;">{{
-              Store.formSucursal.data.attributes.sucursal
+            MODIFICAR LOS DATOS DEL LOTE <br>(<label style="color: red;">{{
+              Store.formLotes.data.attributes.descripcion
             }}</label>)</h5>
           <!-- <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
             style="text-align: center;">
@@ -983,29 +999,94 @@
 
                   <div class="row">
                     <div class="form-group col-lg-12 text-left">
-                      <label class="text-info">Nombre: <label style="color: red;">*</label></label>
-                      <input type="text" class="form-control" id="sucursal" aria-describedby="emailHelp"
-                        v-model="Store.formSucursal.data.attributes.sucursal" placeholder="Ej: La Habana" required>
-                      <span style="color: red;">{{ errores.sucursal }}</span>
-                    </div>
-                    <div class="form-group col-lg-12 text-left">
-                      <label class="text-info">Abreviatura: <label style="color: red;">*</label></label>
-                      <input type="text" class="form-control" id="abreviatura" aria-describedby="emailHelp"
-                        v-model="Store.formSucursal.data.attributes.abreviatura" placeholder="Ej: HAB">
-                      <span style="color: red;">{{ errores.abreviatura }}</span>
-                    </div>
-                    <div class="form-group col-lg-12 text-left">
                       <label class="text-info">Descripción: <label style="color: red;">*</label></label>
-                      <input type="text" class="form-control" id="descripcion" aria-describedby="emailHelp"
-                        v-model="Store.formSucursal.data.attributes.descripcion" placeholder="Ej: La bella Habana">
-                      <span style="color: red;">{{ errores.descripcion }}</span>
+                      <input @change="verificar_error(6)" type="text" class="form-control" id="sucursal"
+                        aria-describedby="emailHelp" v-model="Store.formLotes.data.attributes.descripcion"
+                        placeholder="Ej: Lote de productos" required>
+                      <span style="color: red;">{{ errores.descripLote }}</span>
                     </div>
                     <div class="form-group col-lg-12 text-left">
-                      <label class="text-info">Observaciones:</label>
-                      <textarea class="form-control" id="observaciones"
-                        v-model="Store.formSucursal.data.attributes.observacion"
-                        placeholder="Ej: Observaciones de la Habana"></textarea>
+                      <!-- <label class="text-info">Producto: <label style="color: red;">*</label></label> -->
+                      <label class="text-info ">Seleccione el producto: <label style="color: red;">*</label>&nbsp;
+                        &nbsp;
+                        &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
+                        &nbsp;
+                        &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
+                        &nbsp;
+                        &nbsp;&nbsp; &nbsp; &nbsp;
+                      </label>
+                      <select name="produc" id="produc" @change="verificar_error(7)"
+                        style="width: 100%; text-align:center" placeholder="Ej: Lapicez"
+                        class="text-gray-900 form-control" v-model="Store.formLotes.data.attributes.producto_id">
+                        <option v-for="dato in itemsProductos1" :key="dato.id" :value="dato.id">{{
+                          dato.attributes.descripcion }}</option>
+                      </select>
+                      <span style="color: red;">{{ errores.producto_id }}</span>
+                    </div>
 
+                    <div class="form-group col-lg-12 text-left">
+                      <label class="text-info">Cantidad: </label>
+                      <input type="text" class="form-control" id="sucursal" aria-describedby="emailHelp"
+                        v-model="Store.formLotes.data.attributes.cantidad" placeholder="Ej: 25" required>
+
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-lg-6 text-left">
+                      <label class="text-info">Ubicación: <label style="color: red;">*</label></label>
+                      <select name="produc" id="produc" @change="verificar_error(8)"
+                        style="width: 100%; text-align:center" placeholder="Ej: Ubicaciones"
+                        class="text-gray-900 form-control" v-model="Store.formLotes.data.attributes.ubicacion_id">
+                        <option v-for="dato in itemsUbicaciones1" :key="dato.id" :value="dato.id">{{
+                          dato.attributes.ubicacion }}</option>
+                      </select>
+                      <span style="color: red;">{{ errores.ubicacion_id }}</span>
+                    </div>
+                    <div class="form-group col-lg-6 text-left">
+                      <label class="text-info">Fecha de compra: </label>
+                      <input type="date" class="form-control" id="fechaC" aria-describedby="emailHelp"
+                        v-model="Store.formLotes.data.attributes.fecha_compra" placeholder="Ej: 10/10/2024" required>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-lg-6 text-left">
+                      <label class="text-info">Precio de compra: </label>
+                      <input type="text" class="form-control" id="sucursal" aria-describedby="emailHelp"
+                        v-model="Store.formLotes.data.attributes.precio_compra" placeholder="Ej: 50" required>
+
+                    </div>
+                    <div class="form-group col-lg-6 text-left">
+                      <label class="text-info">Moneda de compra: </label>
+                      <select name="produc" id="produc" style="width: 100%; text-align:center" placeholder="Artículo"
+                        class="text-gray-900 form-control" v-model="Store.formLotes.data.attributes.moneda_compra">
+                        <option v-for="dato in itemsMoneda1" :key="dato.id" :value="dato.id">{{
+                          dato.attributes.abreviatura }}</option>
+                      </select>
+
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-lg-6 text-left">
+                      <label class="text-info">Precio de venta: </label>
+                      <input type="text" class="form-control" id="sucursal" aria-describedby="emailHelp"
+                        v-model="Store.formLotes.data.attributes.precio_venta" placeholder="Ej: 100" required>
+
+                    </div>
+                    <div class="form-group col-lg-6 text-left">
+                      <label class="text-info">Moneda de venta: </label>
+                      <select name="produc" id="produc" style="width: 100%; text-align:center" placeholder="Ej: USD"
+                        class="text-gray-900 form-control" v-model="Store.formLotes.data.attributes.moneda_venta">
+                        <option v-for="dato in itemsMoneda1" :key="dato.id" :value="dato.id">{{
+                          dato.attributes.abreviatura }}</option>
+                      </select>
+
+                    </div>
+                    <div class="form-group col-lg-12 text-left">
+                      <label class="text-info">Observaciones: </label>
+                      <textarea class="form-control" id="observaciones"
+                        v-model="Store.formLotes.data.attributes.observacion"
+                        placeholder="Ej: Observaciones del lote"></textarea>
+                      <!-- <span style="color: red;">{{ errores.descripLote }}</span> -->
                     </div>
                   </div>
                   <!-- <div class="row">
@@ -1025,17 +1106,17 @@
 
                 </div>
                 <div v-if="editar == false" class="form-group h4 col-lg-6">
-                  <a @click="agregarU" class="btn btn-info btn-block" :class="disabledMagnitudBtn">
+                  <a @click="agregarULote()" class="btn btn-info btn-block" :class="disabledProductoBtn">
                     {{ GuardarMag }}
                   </a>
                 </div>
                 <div v-if="editar" class="form-group h4 col-lg-6">
-                  <a @click="editarU" class="btn btn-info btn-block" :class="btnModificarClass">
-                    {{ btnModificarM }}
+                  <a @click="editarULote()" class="btn btn-info btn-block" :class="disabledProductoBtn">
+                    {{ btnModificarL }}
                   </a>
                 </div>
                 <div v-if="editar" class="form-group h4 col-lg-6">
-                  <a @click="cancelarU()" class="btn btn-danger btn-block" :class="btnModificarClass"
+                  <a @click="cancelarU()" class="btn btn-danger btn-block" :class="disabledProductoBtn"
                     data-dismiss="modal" aria-label="Close">
                     Cancelar
                   </a>
@@ -1099,130 +1180,6 @@
     </div>
   </div>
 
-
-  <!-- Logout Modal-->
-  <div :class="'modal fade ' + showModal1" id="agregaUbicaciones" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalLabel" :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title text-info" id="exampleModalLabel" v-if="editar == false">NUEVA UBICACIÓN</h5>
-          <h5 class="modal-title text-info text-center" id="exampleModalLabel" v-if="editar == true"><span
-              class="fa fa-edit"></span>
-            MODIFICAR LOS DATOS DE LA UBICACIÓN <br>(<label style="color: red;">{{
-              Store.formUbicaciones.data.attributes.ubicacion
-            }}</label>)</h5>
-
-          <!-- <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
-            style="text-align: center;">
-            <h6 class="m-0 font-weight-bold text-info" v-if="editar == false"><span class="fa fa-plus"></span>
-              AGREGAR
-              NUEVA MAGNITUD / <i style="color: red;">CAMPOS OBLIGATORIOS</i> (<label style="color: red;">*</label>)
-            </h6>
-            <h6 class="m-0 font-weight-bold text-info" v-if="editar == true"><span class="fa fa-edit"></span>
-              MODIFICAR LOS DATOS DE LA MAGNITUD <br>(<label style="color: red;">{{
-                formSucursal.data.attributes.magnitud
-              }}</label>)</h6>
-          </div> -->
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true" class="text-info">×</span>
-          </button>
-        </div>
-        <div class="modal-body text-center">
-
-          <form class="user">
-
-            <div class="row">
-              <div class="form-group col-lg-12 text-left">
-                <label class="text-info">Nombre: <label style="color: red;">*</label></label>
-                <input type="text" class="form-control" id="ubicacion" aria-describedby="emailHelp"
-                  v-model="Store.formUbicaciones.data.attributes.ubicacion" placeholder="Ej: Casa de Pepe" required>
-                <span style="color: red;">{{ errores.ubicacion }}</span>
-              </div>
-              <div class="form-group col-lg-12 text-left">
-                <label class="text-info">Descripción: <label style="color: red;">*</label></label>
-                <input type="text" class="form-control" id="descripcionUbic" aria-describedby="emailHelp"
-                  v-model="Store.formUbicaciones.data.attributes.descripcion" placeholder="Ej: La casa de Pepe">
-                <span style="color: red;">{{ errores.descripcionUbica }}</span>
-              </div>
-
-            </div>
-            <div class="form-group text-left">
-              <label class="text-info">Observaciones:</label>
-              <textarea class="form-control" id="observacionesUbi"
-                v-model="Store.formUbicaciones.data.attributes.observacion"
-                placeholder="Observaciones de la ubicación"></textarea>
-
-            </div>
-            <div class="form-group col-lg-12 text-left">
-              <label class="text-info">Seleccione una Sucursal: <label style="color: red;">*</label></label>
-              <select name="IDmagnitud" id="IDmagnitud" style="width: 100%; text-align:center"
-                placeholder="Unidad de medida" class="text-gray-900 form-control"
-                v-model="Store.formUbicaciones.data.attributes.sucursal_id">
-                <option v-for="dato in itemsSucursales1" :key="dato.id" :value="dato.id">{{
-                  dato.attributes.sucursal }}</option>
-              </select>
-              <span style="color: red;">{{ errores.sucursal_id }}</span>
-            </div>
-            <div class="text-center">
-              <h1 class="h6 text-gray-900 mb-4"><i>CAMPOS OBLIGATORIOS</i> (<label style="color: red;">*</label>)
-              </h1>
-            </div>
-
-            <div class="row">
-              <div v-if="editar == false" class="form-group h4 col-lg-3">
-
-              </div>
-              <div v-if="editar == false" class="form-group h4 col-lg-6">
-                <a @click="agregarUMedida" class="btn btn-info btn-block" :class="disabledMedidaBtn">
-                  {{ GuardarMedida }}
-                </a>
-              </div>
-              <div v-if="editar" class="form-group h4 col-lg-6">
-                <a @click="editarUMedida()" class="btn btn-info btn-block" :class="deactiva">
-                  {{ btnModificarM }}
-                </a>
-              </div>
-              <div v-if="editar" class="form-group h4 col-lg-6">
-                <a class="btn btn-danger btn-block" data-dismiss="modal" aria-label="close" :class="deactiva"
-                  @click="cancelarUMedida()">
-                  Cancelar
-                </a>
-              </div>
-            </div>
-
-
-          </form>
-
-          <!-- <div>
-            <card class="card-section" style="width: 450px; margin: auto">
-              <h1>Contact Form</h1>
-              <form ref="values" @submit.prevent="sendEmail">
-                <div class="form-group">
-                  <KInput class="form-input" :style="{ width: '290px' }" name="name" v-model="user_name"
-                    placeholder="Name"></KInput>
-                </div>
-                <div class="form-group">
-                  <KInput class="form-input" :style="{ width: '290px' }" name="email" v-model="user_email"
-                    placeholder="email address"></KInput>
-                </div>
-                <div class="form-group">
-                  <kTextarea class="form-input" :style="{ width: '290px' }" name="message" v-model="user_message"
-                    placeholder="Message" :rows="4" />
-                </div>
-                <div class="example-col">
-                  <kButton :style="{ width: '100px' }" id="submit-btn">Submit form</kButton>
-                </div>
-              </form>
-            </card>
-          </div> -->
-          <!-- <vue-barcode :value="cod" tag="svg"></vue-barcode> -->
-        </div>
-
-      </div>
-    </div>
-  </div>
-
   <!-- <template v-if="esperando">
     <div v-on="loadingA('Actualizando datos...')">
 
@@ -1242,7 +1199,7 @@ import * as XLSX from 'xlsx';
 // import Quagga from 'quagga';
 import { useStoreAxios } from '@/store/AxiosStore';
 import { ErrorFull, successFull } from './controler/ControlerApp';
-import { EditarDatos, EliminarDatos, GuardarDatos, obtenerDatos } from './helper/useAxios';
+import { EditarDatos, EliminarDatos, GuardarDatos, obtenerDatos, subirImagen } from './helper/useAxios';
 // import { data } from 'jquery';
 import jsPDF from 'jspdf';
 // import { event } from 'jquery';
@@ -1266,6 +1223,21 @@ const searchValue = ref("");
 const searchValue2 = ref("");
 
 const critBusq = ref([], [], []);
+
+let imgPerfil = ref("");
+
+const cargarImagen = async () => {
+  let file = document.getElementById("file").files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      imgPerfil.value = e.target.result;
+      // console.log(imgPerfil.value)
+    };
+    reader.readAsDataURL(file);
+    // successFull("Imagen cambiada satisfactoriamente.", "top-start");
+  }
+}
 
 const generar_pdf = async () => {
 
@@ -1328,6 +1300,7 @@ const cantProd = ref(0);
 const minProd = ref(0);
 const medidProd = ref('');
 const artiProd = ref('');
+const GuardarMag = ref('Agregar')
 
 const Atras = () => {
   detalle.value = false;
@@ -1400,6 +1373,8 @@ let GuardarProductoC = ref('Agregar y Continuar');
 
 let btnModificarM = ref('Modificar');
 
+let btnModificarL = ref('Modificar');
+
 const disabledProductoBtn = ref('')
 
 const itemsMedidas1 = ref([])
@@ -1411,6 +1386,8 @@ const itemsMoneda1 = ref([])
 const itemsEtiqueta1 = ref([])
 
 const itemsProductos1 = ref([])
+
+const itemsImagenes1 = ref([])
 
 const itemsArticulos1 = ref([])
 
@@ -1429,6 +1406,15 @@ const agrega = () => {
   Store.formProductos.data.attributes.descripcion = "";
   Store.formProductos.data.attributes.observacion = "";
   Store.formProductos.data.attributes.minimo = "";
+  Store.formLotes.data.attributes.cantidad = 0;
+  Store.formLotes.data.attributes.descripcion = "";
+  Store.formLotes.data.attributes.producto_id = 0;
+  Store.formLotes.data.attributes.ubicacion_id = 0;
+  Store.formLotes.data.attributes.moneda_compra = 0;
+  Store.formLotes.data.attributes.precio_compra = "";
+  Store.formLotes.data.attributes.fecha_compra = "";
+  Store.formLotes.data.attributes.precio_venta = "";
+  Store.formLotes.data.attributes.observacion = "";
 }
 
 let y = 0;
@@ -1438,6 +1424,16 @@ const obtenMedida = (id) => {
     if (id == itemsMedidas1.value[index].id) {
       // console.log(listadoMedida.value[index].id)
       return itemsMedidas1.value[index].attributes.medida
+    }
+  }
+
+}
+const obtenImagen = (id) => {
+  for (let index = 0; index < itemsImagenes1.value.length; index++) {
+    if (id == itemsImagenes1.value[index].relationships.producto.data.id) {
+      // console.log(listadoMedida.value[index].id)
+      // console.log(itemsImagenes1.value[index].attributes.path)
+      return itemsImagenes1.value[index].attributes.path
     }
   }
 
@@ -1464,10 +1460,11 @@ const obtenMoneda = (id) => {
 }
 
 const obtenEtiqueta = (id) => {
-  // console.log(itemsEtiqueta1.value)
+  // console.log(itemsEtiqueta1.value + id)
   for (let index = 0; index < itemsEtiqueta1.value.length; index++) {
-    if (id == itemsEtiqueta1.value[index].id) {
-      // console.log(listadoMedida.value[index].id)
+    // console.log(itemsEtiqueta1.value[index].relationships.productos.data.id)
+    if (id == itemsEtiqueta1.value[index].relationships.productos.data.id) {
+      // console.log(itemsEtiqueta1.value[index].id)
       return itemsEtiqueta1.value[index].attributes.etiqueta
     }
   }
@@ -1529,6 +1526,27 @@ const verificar_error = (n) => {
       }
       break;
 
+    case 6:
+      if (Store.formLotes.data.attributes.descripcion != 0) {
+        errores.value.descripLote = "";
+      } else {
+        errores.value.descripLote = "Este campo es obligatorio"
+      }
+      break;
+    case 7:
+      if (Store.formLotes.data.attributes.producto_id != 0) {
+        errores.value.producto_id = "";
+      } else {
+        errores.value.producto_id = "Este campo es obligatorio"
+      }
+      break;
+    case 8:
+      if (Store.formLotes.data.attributes.ubicacion_id != 0) {
+        errores.value.ubicacion_id = "";
+      } else {
+        errores.value.ubicacion_id = "Este campo es obligatorio"
+      }
+      break;
     default:
       break;
   }
@@ -1549,12 +1567,20 @@ const verificar_error = (n) => {
   // }
 }
 
-const errores = ref({ descripcion: "", observacion: "", articulo_id: "", ubicacion_id: "", cantidad: "" })
-
+const errores = ref({ descripcion: "", observacion: "", articulo_id: "", ubicacion_id: "", cantidad: "", descripLote: "", precio_compra: "", precio_venta: "", moneda_compra: "", moneda_venta: "", producto_id: "", obsvacLote: "" })
 const agregarUProducto = async (n) => {
   if (Store.formProductos.data.attributes.descripcion != '' && Store.formProductos.data.attributes.articulo_id != 0) {
     // editando.value = true;
     if (n == 1) {
+      // console.log(imgPerfil.value)
+      Store.formImagen.data.attributes.file = imgPerfil.value;
+      const response4 = await subirImagen(Store.formImagen);
+      // console.log(response4)
+      if (response4 != null) {
+        Store.formProductos.producto_imagen_id = response4.id;
+      }else{
+        Store.formProductos.producto_imagen_id = 1;
+      }
       GuardarProductoC.value = 'Guardando...';
       disabledProductoBtn.value = 'disabled';
       // Store.formProductos.id = Store.nextIDProducto + 1;
@@ -1662,6 +1688,114 @@ const agregarUProducto = async (n) => {
       errores.value.cantidad = "";
     }
     GuardarProducto.value = 'Agregar';
+    disabledProductoBtn.value = ''
+    // Store.cambiaEstado(1)
+    ErrorFull("Debe llenar todos los campos obligatorios", "top-start")
+  }
+
+}
+
+const agregarULote = async (n) => {
+  if (Store.formLotes.data.attributes.descripcion != '' && Store.formLotes.data.attributes.producto_id != 0 && Store.formLotes.data.attributes.ubicacion_id != 0) {
+    // editando.value = true;
+    if (n == 1) {
+      GuardarMag.value = 'Guardando...';
+      disabledProductoBtn.value = 'disabled';
+      // Store.formProductos.id = Store.nextIDProducto + 1;
+      // console.log(Store.formProductos);
+      // Agregar_Productos();
+      Store.cambiaEstado(9)
+      const response = await GuardarDatos(Store.formLotes, 10);
+      // console.log(response)
+      if (response == null) {
+        Store.cambiaEstado(9)
+        disabledProductoBtn.value = '';
+        GuardarMag.value = 'Agregar y continuar';
+        errores.value.descripcion = "Este dato ya existe en el sistema";
+        ErrorFull("Descripción de producto ya existente.", "top-start")
+      } else {
+        disabledProductoBtn.value = '';
+        GuardarMag.value = 'Agregar y continuar'
+        Store.formLotes.data.attributes.cantidad = '';
+        Store.formLotes.data.attributes.descripcion = '';
+        Store.formLotes.data.attributes.producto_id = '';
+        Store.formLotes.data.attributes.observacion = '';
+        Store.formLotes.data.attributes.precio_compra = '';
+        Store.formLotes.data.attributes.moneda_compra = '';
+        Store.formLotes.data.attributes.precio_venta = '';
+        Store.formLotes.data.attributes.precio_venta = '';
+        Store.AddLotes(response)
+        itemsLotes1.value = Store.itemsLotes;
+        successFull("Lote agregado satisfactoriamente.", "top-end")
+        GuardarMag.value = 'Agregar y continuar';
+        disabledProductoBtn.value = '';
+        Store.cambiaEstado(9)
+      }
+    } else {
+      GuardarMag.value = 'Guardando...';
+      disabledProductoBtn.value = 'disabled';
+      // Store.formProductos.id = Store.nextIDProducto + 1;
+      // console.log(Store.formProductos);
+      // Agregar_Productos();
+      Store.cambiaEstado(9)
+      const response = await GuardarDatos(Store.formLotes, 10);
+      // console.log(response)
+      if (response == null) {
+        Store.cambiaEstado(9)
+        disabledProductoBtn.value = '';
+        GuardarMag.value = 'Agregar';
+        errores.value.descripLote = "Este dato ya existe en el sistema";
+        ErrorFull("Descripción de lote ya existente.", "top-start")
+      } else {
+        disabledProductoBtn.value = '';
+        GuardarMag.value = 'Agregar'
+        Store.formLotes.data.attributes.cantidad = '';
+        Store.formLotes.data.attributes.descripcion = '';
+        Store.formLotes.data.attributes.producto_id = '';
+        Store.formLotes.data.attributes.observacion = '';
+        Store.formLotes.data.attributes.precio_compra = '';
+        Store.formLotes.data.attributes.moneda_compra = '';
+        Store.formLotes.data.attributes.precio_venta = '';
+        Store.formLotes.data.attributes.precio_venta = '';
+        Store.AddLotes(response)
+        itemsLotes1.value = Store.itemsLotes;
+        // minimos.data.attributes.persona_id = 1;
+        // minimos.data.attributes.producto_id = response.id;
+        // for (let index = 0; index < itemsProductos1.value.length; index++) {
+        //   Store.nextIDProducto = itemsProductos1.value[index].id;
+        // }
+        // const response2 = await obtenerDatos(9)
+        // for (let index = 0; index < response2.length; index++) {
+        //   Store.nextIDMinimos = response2[index].id;
+        // }
+        // // minimos.data.attributes.id = Store.nextIDMinimos + 1;
+        // const response3 = await GuardarDatos(minimos, 9);
+        successFull("Lote agregado satisfactoriamente.", "top-end")
+        GuardarMag.value = 'Agregar';
+        disabledProductoBtn.value = '';
+        Store.cambiaEstado(9)
+      }
+    }
+    // editando.value = false;
+
+  } else {
+    // editando.value = false;
+    if (Store.formLotes.data.attributes.descripcion == '') {
+      errores.value.descripLote = "Este campo es obligatorio";
+    } else {
+      errores.value.descripLote = "";
+    }
+    if (Store.formLotes.data.attributes.producto_id == '') {
+      errores.value.producto_id = 'Este campo es obligatorio';
+    } else {
+      errores.value.producto_id = "";
+    }
+    if (Store.formLotes.data.attributes.ubicacion_id == '') {
+      errores.value.ubicacion_id = 'Este campo es obligatorio';
+    } else {
+      errores.value.ubicacion_id = "";
+    }
+    GuardarMag.value = 'Agregar';
     disabledProductoBtn.value = ''
     // Store.cambiaEstado(1)
     ErrorFull("Debe llenar todos los campos obligatorios", "top-start")
@@ -1889,6 +2023,30 @@ const editarU = async () => {
   Store.cambiaEstado(1);
 }
 
+const editarULote = async () => {
+  Store.cambiaEstado(9);
+  btnModificarL.value = 'Actualizando...'
+  deactiva.value = 'disabled';
+  // console.log(Store.formProductos.id)
+  const response = await EditarDatos(Store.id, Store.formLotes, 10);
+  // console.log(response)
+  editar.value = false;
+  Store.formLotes.data.attributes.cantidad = '';
+  Store.formLotes.data.attributes.descripcion = '';
+  Store.formLotes.data.attributes.producto_id = '';
+  Store.formLotes.data.attributes.observacion = '';
+  Store.formLotes.data.attributes.precio_compra = '';
+  Store.formLotes.data.attributes.moneda_compra = '';
+  Store.formLotes.data.attributes.precio_venta = '';
+  Store.formLotes.data.attributes.precio_venta = '';
+  Store.EditLotes(response)
+  itemsLotes1.value = Store.itemsLotes;
+  btnModificarL.value = 'Modificar'
+  deactiva.value = '';
+  successFull("Lote modificado satisfactoriamente.", "top-end")
+  Store.cambiaEstado(9);
+}
+
 const showRow = (item = ClickRowArgument) => {
   const NewLote = [];
   for (let index = 0; index < Store.getListadoLotes().value.length; index++) {
@@ -1994,7 +2152,7 @@ const headers1 = [
   { text: "DESCRIPCIÓN", value: "attributes.descripcion", width: 250 },
   // { text: "DEPARTAMENTO", value: "departamento" },
   // { text: "ETIQUETA", value: "etiquetas" },
-  { text: "CANTIDAD", value: "attributes.cantidad" },
+  { text: "CANTIDAD", value: "attributes.cantidad", sortable: true },
   { text: "P. COMPRA (Moneda)", value: "precioC", sortable: true },
   // { text: "MONEDA. COMPRA", value: "moneda_compra"},
   // { text: "MONEDA. VENTA", value: "attributes.mondeda_venta"},
@@ -2057,6 +2215,35 @@ const clickEditarProducto = async (idSelect) => {
       Store.formProductos.data.attributes.minimo = itemsProductos1.value[index].attributes.minimo;
       Store.formProductos.data.attributes.observacion = itemsProductos1.value[index].attributes.observacion;
       Store.formProductos.data.attributes.articulo_id = itemsProductos1.value[index].relationships.articulo.data.id;
+      break;
+    }
+  }
+}
+
+const clickEditarProducto1 = async (idSelect) => {
+  editar.value = true;
+  errores.value.producto_id = "";
+  errores.value.ubicacion_id = "";
+  errores.value.descripcion = "";
+  errores.value.observacion = "";
+  errores.value.cantidad = "";
+  // console.log(idSelect)
+  // localStorage.setItem("editar", editar.value);
+  Store.id = idSelect;
+  // console.log(itemsProductos1)
+  for (let index = 0; index < itemsLotes1.value.length; index++) {
+    const element = itemsLotes1.value[index].id;
+    if (element == idSelect) {
+      Store.formLotes.data.attributes.descripcion = itemsLotes1.value[index].attributes.descripcion;
+      Store.formLotes.data.attributes.cantidad = itemsLotes1.value[index].attributes.cantidad;
+      Store.formLotes.data.attributes.observacion = itemsLotes1.value[index].attributes.observacion;
+      Store.formLotes.data.attributes.precio_compra = itemsLotes1.value[index].attributes.precio_compra;
+      Store.formLotes.data.attributes.precio_venta = itemsLotes1.value[index].attributes.precio_venta;
+      Store.formLotes.data.attributes.moneda_compra = itemsLotes1.value[index].attributes.moneda_compra;
+      Store.formLotes.data.attributes.moneda_venta = itemsLotes1.value[index].attributes.moneda_venta;
+      Store.formLotes.data.attributes.producto_id = itemsLotes1.value[index].relationships.producto.data.id;
+      Store.formLotes.data.attributes.ubicacion_id = itemsLotes1.value[index].attributes.ubicacion_id;
+      Store.formLotes.data.attributes.fecha_compra = itemsLotes1.value[index].attributes.fecha_compra;
       break;
     }
   }
@@ -2586,6 +2773,18 @@ onMounted(async () => {
       itemsProductos1.value = Store.itemsProductos;
       Store.cambiaEstado(1)
     }
+
+    if (localStorage.getItem('Carg_datIM') == '0') {
+      const response2 = await obtenerDatos(12);
+      // console.log(response2)
+      if (response2 != null) {
+        Store.setListadoImagen(response2);
+        itemsImagenes1.value = Store.itemsImagen;
+        localStorage.setItem("Carg_datP", "1");
+      }
+    } else {
+      itemsImagenes1.value = Store.itemsImagen;
+    }
     // console.log(itemsProductos1.value)
 
     if (localStorage.getItem('Carg_datA') == '0') {
@@ -2693,6 +2892,26 @@ onMounted(async () => {
       Store.cambiaEstado(5);
       itemsEtiqueta1.value = Store.itemsEtiquetas;
       Store.cambiaEstado(5);
+    }
+
+    if (localStorage.getItem('Carg_datU') == '0') {
+      // Ubicaciones
+      Store.cambiaEstado(7)
+      const response = await obtenerDatos(7);
+      if (response.length > 0) {
+        Store.setListadoUbicaciones(response)
+      }
+      for (let index = 0; index < response.length; index++) {
+        Store.nextIDUbicacion = response[index].id;
+      }
+      localStorage.setItem("Carg_datU", "1");
+      itemsUbicaciones1.value = Store.itemsUbicaciones;
+      Store.cambiaEstado(7)
+
+    } else {
+      Store.cambiaEstado(7)
+      itemsUbicaciones1.value = Store.itemsUbicaciones;
+      Store.cambiaEstado(7)
     }
     // console.log(itemsEtiqueta1.value)
 

@@ -1,12 +1,7 @@
 <template>
 
   <div id="wrapper">
-    <q-table
-      title="Treats"
-      :rows="rows"
-      :columns="columns"
-      row-key="name"
-    ></q-table>
+    <q-table title="Treats" :rows="rows" :columns="columns" row-key="name"></q-table>
 
     <!-- Sidebar -->
     <ul :class="'navbar-nav bg-gradient-' + Cosc_Clar + ' sidebar sidebar-dark accordion ' + Ctoggled"
@@ -1068,6 +1063,15 @@ onMounted(async () => {
   evitarRecargar();
   // beforeRouteLeave()
   if (localStorage.getItem('userName')) {
+    // if (localStorage.getItem('Carg_datIM') == '0') {
+    //   const response2 = await obtenerDatos(12);
+    //   // console.log(response2)
+    //   if (response2 != null) {
+    //     Store.setListadoImagen(response2);
+    //     localStorage.setItem("Carg_datP", "1");
+    //   }
+    //   // itemsImagenes1.value = Store.itemsImagen;
+    // }
     if (localStorage.getItem('Carg_datP') == '0') {
       // cargando los productos
       Store.cambiaEstado(1)
