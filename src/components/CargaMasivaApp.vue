@@ -501,38 +501,130 @@ export default {
               }
             )
           }
-          // console.log(this.store.NewlistadoAgregar);
-          // const response = GuardarColecciones(this.store.NewlistadoAgregar, 5)
-          // console.log(response)
+          this.almacenarDatos(5)
           break;
         case "departamento":
-          successFull("Departamento", "top-start")
+          for (let index = 0; index < listado.length; index++) {
+            const element = listado[index];
+            // console.log(element)
+            this.store.NewlistadoAgregar.data.push(
+              {
+                attributes: {
+                  departamento: element[1],
+                  descripcion: element[2],
+                  observacion: element[3],
+                }
+              }
+            )
+          }
+          this.almacenarDatos(6)
           break;
         case "sucursal":
-          successFull("Sucursal", "top-start")
+          for (let index = 0; index < listado.length; index++) {
+            const element = listado[index];
+            // console.log(element)
+            this.store.NewlistadoAgregar.data.push(
+              {
+                attributes: {
+                  sucursal: element[1],
+                  abreviatura: element[2],
+                  descripcion: element[3],
+                  observacion: element[4],
+                }
+              }
+            )
+          }
+          this.almacenarDatos(2)
           break;
         case "medida":
-          successFull("Unidad de medida", "top-start")
+          for (let index = 0; index < listado.length; index++) {
+            const element = listado[index];
+            // console.log(element)
+            this.store.NewlistadoAgregar.data.push(
+              {
+                attributes: {
+                  medida: element[1],
+                  descripcion: element[2],
+                  observacion: element[3],
+                  magnitud_id: element[4],
+                }
+              }
+            )
+          }
+          this.almacenarDatos(3)
           break;
         case "etiqueta":
-          successFull("Etiqueta", "top-start")
+          for (let index = 0; index < listado.length; index++) {
+            const element = listado[index];
+            // console.log(element)
+            this.store.NewlistadoAgregar.data.push(
+              {
+                attributes: {
+                  etiqueta: element[1],
+                  descripcion: element[2],
+                  observacion: element[3],
+                }
+              }
+            )
+          }
+          this.almacenarDatos(8)
           break;
         case "ubicacion":
-          successFull("Ubicacion", "top-start")
+          for (let index = 0; index < listado.length; index++) {
+            const element = listado[index];
+            // console.log(element)
+            this.store.NewlistadoAgregar.data.push(
+              {
+                attributes: {
+                  ubicacion: element[1],
+                  descripcion: element[2],
+                  observacion: element[3],
+                  sucursal_id: element[4],
+                }
+              }
+            )
+          }
+          this.almacenarDatos(7)
           break;
         case "producto":
-          successFull("Producto", "top-start")
+          for (let index = 0; index < listado.length; index++) {
+            const element = listado[index];
+            // console.log(element)
+            this.store.NewlistadoAgregar.data.push(
+              {
+                attributes: {
+                  descripcion: element[1],
+                  observacion: element[2],
+                  articulo_id: element[3],
+                  minimo: element[4],
+                }
+              }
+            )
+          }
+          this.almacenarDatos(1)
           break;
         case "magnitud":
-          successFull("Magnitud", "top-start")
+          for (let index = 0; index < listado.length; index++) {
+            const element = listado[index];
+            // console.log(element)
+            this.store.NewlistadoAgregar.data.push(
+              {
+                attributes: {
+                  magnitud: element[1],
+                  descripcion: element[2],
+                  observacion: element[3],
+                }
+              }
+            )
+          }
+          this.almacenarDatos(4)
           break;
         default:
           break;
       }
     },
-    async almacenarDatos() {
-      // console.log(this.store.NewlistadoAgregar);
-      const response = await GuardarColecciones(this.store.NewlistadoAgregar, 5)
+    async almacenarDatos(n) {
+      const response = await GuardarColecciones(this.store.NewlistadoAgregar, n)
       console.log(response)
     }
   },

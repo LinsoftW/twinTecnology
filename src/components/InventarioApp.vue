@@ -1235,6 +1235,7 @@ const cargarImagen = async () => {
       // console.log(imgPerfil.value)
     };
     reader.readAsDataURL(file);
+    // data.append
     // successFull("Imagen cambiada satisfactoriamente.", "top-start");
   }
 }
@@ -1567,23 +1568,40 @@ const verificar_error = (n) => {
   // }
 }
 
+const Asignar_Imagen = async (id) => {
+  var data = new FormData();
+  data.append('file', imgPerfil.value);
+  data.append('_method', 'PUT');
+  const response4 = await subirImagen(data);
+  // console.log(response4)
+  if (response4 != null) {
+    Store.formProductos.producto_imagen_id = response4.id;
+  } else {
+    Store.formProductos.producto_imagen_id = 1;
+  }
+  const response = await EditarDatos(id, Store.formProductos, 1);
+  // console.log(response)
+  editar.value = false;
+  Store.formProductos.data.attributes.descripcion = ''
+  Store.formProductos.data.attributes.observacion = '';
+  Store.formProductos.data.attributes.articulo_id = ''
+  Store.formProductos.data.attributes.minimo = '';
+  Store.EditProductos(response)
+  itemsProductos1.value = Store.itemsProductos;
+}
+
 const errores = ref({ descripcion: "", observacion: "", articulo_id: "", ubicacion_id: "", cantidad: "", descripLote: "", precio_compra: "", precio_venta: "", moneda_compra: "", moneda_venta: "", producto_id: "", obsvacLote: "" })
+
 const agregarUProducto = async (n) => {
   if (Store.formProductos.data.attributes.descripcion != '' && Store.formProductos.data.attributes.articulo_id != 0) {
     // editando.value = true;
     if (n == 1) {
       // console.log(imgPerfil.value)
-      Store.formImagen.data.attributes.file = imgPerfil.value;
-      const response4 = await subirImagen(Store.formImagen);
-      // console.log(response4)
-      if (response4 != null) {
-        Store.formProductos.producto_imagen_id = response4.id;
-      }else{
-        Store.formProductos.producto_imagen_id = 1;
-      }
+      // Store.formImagen.data.attributes.file = imgPerfil.value;
       GuardarProductoC.value = 'Guardando...';
       disabledProductoBtn.value = 'disabled';
       // Store.formProductos.id = Store.nextIDProducto + 1;
+      // Store.producto_imagen_id = 0;
       // console.log(Store.formProductos);
       // Agregar_Productos();
       Store.cambiaEstado(1)
@@ -1616,6 +1634,7 @@ const agregarUProducto = async (n) => {
         // minimos.data.attributes.id = Store.nextIDMinimos + 1;
         // GuardarMinimos(minimos);
         // const response3 = await GuardarDatos(minimos, 9);
+        Asignar_Imagen(response.id);
         successFull("Producto agregado satisfactoriamente.", "top-end")
         GuardarProductoC.value = 'Agregar y continuar';
         disabledProductoBtn.value = '';
@@ -1656,12 +1675,14 @@ const agregarUProducto = async (n) => {
         // }
         // // minimos.data.attributes.id = Store.nextIDMinimos + 1;
         // const response3 = await GuardarDatos(minimos, 9);
+        Asignar_Imagen(response.id);
         successFull("Producto agregado satisfactoriamente.", "top-end")
         GuardarProducto.value = 'Agregar';
         disabledProductoBtn.value = '';
         Store.cambiaEstado(1)
       }
     }
+
     // editando.value = false;
 
   } else {

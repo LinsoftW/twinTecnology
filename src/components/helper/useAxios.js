@@ -1,12 +1,26 @@
 import axios from 'axios';
-import { error } from 'jquery';
+// import { error } from 'jquery';
+const cache = new Map;
+const endpointP = [];
+const endpointA = [];
+const endpointD = [];
+const endpointS = [];
+const endpointU = [];
+const endpointE = [];
+const endpointL = [];
+const endpointM = [];
+const endpointMa = [];
+const endpointMo = [];
+const endpointMi = [];
+const endpointI = [];
 
 // const url = "http://localhost/inventory/api/inventario";
 const url = "http://www.twintechnology.cu/inventory/api/inventario";
 
 // const urlImagen = "http://localhost/inventory/api/imagen/producto_imagenes";
+
 const urlImagen = "http://www.twintechnology.cu/inventory/api/imagen/producto_imagenes";
-const urlUploadImagen = "http://www.twintechnology.cu/inventory/api/imagen/upload";
+// const urlUploadImagen = "http://www.twintechnology.cu/inventory/api/imagen/producto_imagenes/upload";
 
 const axiosInstance = axios.create({
   baseURL: url,
@@ -25,9 +39,12 @@ const axiosInstance = axios.create({
 export async function obtenerDatos(n) {
   switch (n) {
     case 1:
+      // if (cache.has(endpointP)) {
+      //   return cache.get(endpointP);
+      // }
       try {
         const response = await axiosInstance.get('/productos');
-        // console.log(response)
+        // cache.set(endpointP, response.data.data);
         return response.data.data;
       } catch (error) {
         // throw error;
@@ -35,88 +52,132 @@ export async function obtenerDatos(n) {
       }
       break;
     case 2:
+      // if (cache.has(endpointS)) {
+      //   return cache.get(endpointS);
+      // }
       try {
         const response = await axiosInstance.get('/sucursales');
+        // cache.set(endpointS, response.data.data);
         return response.data.data;
       } catch (error) {
         throw error;
       }
       break;
     case 3:
+      // if (cache.has(endpointM)) {
+      //   return cache.get(endpointM);
+      // }
       try {
         const response = await axiosInstance.get('/medidas');
+        // cache.set(endpointM, response.data.data);
         return response.data.data;
       } catch (error) {
         throw error;
       }
       break;
     case 4:
+      // if (cache.has(endpointMa)) {
+      //   return cache.get(endpointMa);
+      // }
       try {
         const response = await axiosInstance.get('/magnitudes');
+        // cache.set(endpointMa, response.data.data);
         return response.data.data;
       } catch (error) {
         throw error;
       }
       break;
     case 5:
+      // if (cache.has(endpointA)) {
+      //   return cache.get(endpointA);
+      // }
       try {
         const response = await axiosInstance.get('/articulos');
+        // cache.set(endpointA, response.data.data);
         return response.data.data;
       } catch (error) {
         throw error;
       }
       break;
     case 6:
+      // if (cache.has(endpointD)) {
+      //   return cache.get(endpointD);
+      // }
       try {
         const response = await axiosInstance.get('/departamentos');
+        // cache.set(endpointD, response.data.data);
         return response.data.data;
       } catch (error) {
         throw error;
       }
       break;
     case 7:
+      // if (cache.has(endpointU)) {
+      //   return cache.get(endpointU);
+      // }
       try {
         const response = await axiosInstance.get('/ubicaciones');
+        // cache.set(endpointU, response.data.data);
         return response.data.data;
       } catch (error) {
         throw error;
       }
       break;
     case 8:
+      // if (cache.has(endpointE)) {
+      //   return cache.get(endpointE);
+      // }
       try {
         const response = await axiosInstance.get('/etiquetas');
+        // cache.set(endpointE, response.data.data);
         return response.data.data;
       } catch (error) {
         throw error;
       }
       break;
     case 9:
+      // if (cache.has(endpointMi)) {
+      //   return cache.get(endpointMi);
+      // }
       try {
         const response = await axiosInstance.get('/minimos');
+        // cache.set(endpointMi, response.data.data);
         return response.data.data;
       } catch (error) {
         throw error;
       }
       break;
     case 10:
+      // if (cache.has(endpointL)) {
+      //   return cache.get(endpointL);
+      // }
       try {
         const response = await axiosInstance.get('/lotes');
+        // cache.set(endpointL, response.data.data);
         return response.data.data;
       } catch (error) {
         throw error;
       }
       break;
     case 11:
+      // if (cache.has(endpointMo)) {
+      //   return cache.get(endpointMo);
+      // }
       try {
         const response = await axiosInstance.get('/monedas');
+        // cache.set(endpointMo, response.data.data);
         return response.data.data;
       } catch (error) {
         throw error;
       }
       break;
     case 12:
+      // if (cache.has(endpointI)) {
+      //   return cache.get(endpointI);
+      // }
       try {
         const response = await axios.get(urlImagen);
+        // cache.set(endpointI, response.data.data);
         return response.data.data;
       } catch (error) {
         throw error;
@@ -450,8 +511,8 @@ export async function EliminarDatos(id, n) {
 
 export async function subirImagen(imagen) {
   try {
-    const response = axios.post(urlUploadImagen, imagen);
-    return response.data.data
+    const response = axios.post(urlImagen + '/upload', imagen);
+    return response
   } catch (error) {
     throw error;
   }

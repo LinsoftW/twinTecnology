@@ -121,7 +121,7 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
         observacion: "",
         minimo: 0,
         articulo_id: 99,
-        producto_imagen_id: 0
+        // producto_imagen_id: 1
       }
     }
   })
