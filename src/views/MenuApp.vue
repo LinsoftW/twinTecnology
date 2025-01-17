@@ -1030,13 +1030,17 @@ const beforeRouteLeave = (to, from, next) => {
 
 }
 
+const serecargo = ref(false);
+
 const evitarRecargar = () => {
 
   window.addEventListener("beforeunload", event => {
+    // successFull("Puede perder todo","top-center")
     if (!editando.value) return
     event.preventDefault()
+    serecargo.value = true;
     // Chrome requires returnValue to be set.
-    BeforeUnloadEvent.returnValue = "No se puede recargar"
+    BeforeUnloadEvent.returnValue = "No se puede recargar";
   })
 }
 
@@ -1044,6 +1048,7 @@ const destruirRecarga = () => {
   window.removeEventListener("beforeunload", event => {
     if (!editando.value) return
     event.preventDefault()
+    // console.log('Cargadoooo')
     // Chrome requires returnValue to be set.
     BeforeUnloadEvent.returnValue = "No se puede recargar"
   })
@@ -1055,9 +1060,16 @@ const destruirRecarga = () => {
 
 // const quasar = useQuasar();
 
+onUnmounted(async () => {
+  destruirRecarga()
+})
+
 onMounted(async () => {
 
   Ctoggled.value = 'toggled';
+  if (serecargo.value == true) {
+    console.log('Se tiene q volver a cargar')
+  }
   // console.log("Montado")
   editando.value = true;
   evitarRecargar();
@@ -1083,6 +1095,7 @@ onMounted(async () => {
         Store.setCantidadProductos(response.length)
         if (response.length > 0) {
           Store.setListadoProductos(response)
+          localStorage.setItem("LProductos", response);
         }
         for (let index = 0; index < response.length; index++) {
           Store.nextIDProducto = response[index].id;
@@ -1102,6 +1115,7 @@ onMounted(async () => {
         Store.setCantidadDepartamentos(response.length)
         if (response.length > 0) {
           Store.setListadoDepartamentos(response)
+          localStorage.setItem("LDepartamentos", response);
         }
         for (let index = 0; index < response.length; index++) {
           Store.nextIDDepartamento = response[index].id;
@@ -1123,6 +1137,7 @@ onMounted(async () => {
         Store.setCantidadArticulos(response.length)
         if (response.length > 0) {
           Store.setListadoArticulos(response)
+          localStorage.setItem("LArticulos", response);
         }
         for (let index = 0; index < response.length; index++) {
           Store.nextIDArticulo = response[index].id;

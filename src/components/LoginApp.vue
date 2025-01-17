@@ -103,7 +103,7 @@
               <div class="col-lg-6">
                 <div class="p-5">
                   <div class="text-center">
-                    <div class="sidebar-brand-icon rotate-n-15"><img src="/clipboard-list.png" alt=""
+                    <div class="sidebar-brand-icon rotate-n-15"><img src="/icono.jpg" alt=""
                         style="width: 35px; height:35px"></div>
                     <h1 class="h1 text-gray-900 mb-1"> MyInventory </h1>
                     <h4 class="h6 text-gray-900 mb-4">Todos detalles

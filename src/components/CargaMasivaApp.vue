@@ -625,7 +625,7 @@ export default {
     },
     async almacenarDatos(n) {
       const response = await GuardarColecciones(this.store.NewlistadoAgregar, n)
-      console.log(response)
+      // console.log(response)
     }
   },
   loading: (texto) => {

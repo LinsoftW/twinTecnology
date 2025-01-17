@@ -300,14 +300,14 @@
                       <label class="text-info">Descripción: <label style="color: red;">*</label></label>
                       <input type="text" class="form-control" id="descripcion" aria-describedby="emailHelp"
                         v-model="store.formDepartamentos.data.attributes.descripcion"
-                        placeholder="Departamento donde se guardan los artículos" @change="verificar_error(6)">
+                        placeholder="Ej: Departamento donde se guardan los artículos" @change="verificar_error(6)">
                       <span style="color: red;">{{ errores.descripcionDepatamento }}</span>
                     </div>
                     <div class="form-group col-lg-12">
                       <label class="text-info">Observaciones:</label>
                       <textarea class="form-control" id="observacion"
                         v-model="store.formDepartamentos.data.attributes.observacion"
-                        placeholder="Observaciones del departamento"></textarea>
+                        placeholder="Ej: Observaciones del departamento"></textarea>
 
                     </div>
                   </div>
@@ -996,7 +996,7 @@ const agregarUArticulo = async () => {
     store.cambiaEstado(3)
     disabledDepartamentodBtn.value = 'disabled';
     GuardarArt.value = 'Gardando...';
-    store.formArticulo.id = store.nextIDArticulo + 1;
+    // store.formArticulo.id = store.nextIDArticulo + 1;
     const response = await GuardarDatos(store.formArticulo, 5);
     if (response == null) {
       store.cambiaEstado(3)
@@ -1007,6 +1007,8 @@ const agregarUArticulo = async () => {
       store.formArticulo.data.attributes.observacion = ''
       store.formArticulo.data.attributes.descripcion = '';
       store.formArticulo.data.attributes.articulo = '';
+      store.formArticulo.data.attributes.departamento_id = '';
+      store.formArticulo.data.attributes.medida_id = '';
       store.AddArticulo(response)
       itemsArticulos1.value = store.itemsArticulos;
       successFull("Artículo agregado satisfactoriamente.", "top-end")

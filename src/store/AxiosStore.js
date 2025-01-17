@@ -170,6 +170,16 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
     }
   })
 
+    const formEtiquetaProducto = reactive({
+    // id: 0,
+    data: {
+      attributes: {
+        etiqueta_id: "",
+        producto_id: ""
+      }
+    }
+  })
+
   const formMoneda = reactive({
     // id: 0,
     data: {
@@ -773,7 +783,7 @@ const AddLotes = (L) => {
     itemsProductos, itemsDepartamentos, itemsMagnitudes, itemsArticulos, itemsEtiquetas, itemsUbicaciones, itemsMedidas, itemsSucursales,
     cambiaEstado, AddMagnitud, AddProductos, EditProductos, AddMoneda, DeleteMoneda,EditMoneda, DeleteMagnitud, DeleteProducto, AddMedida,AddLotes, DeleteMedida,EditLotes, EditMagnitud, EditMedida, AddDepartamento, DeleteDepartamento, EditDepartamento,
     AddArticulo, DeleteArticulo, EditArticulo, AddSucursal, DeleteSucursal,DeleteLotes, EditSucursal, AddUbicaciones, DeleteUbicaciones, EditUbicaciones,AddImagen,setListadoImagen, DeleteImagen, EditImagen, formSucursal, formUbicaciones,
-    AddEtiqueta, EditEtiqueta, DeleteEtiqueta, formEtiqueta, setListadoEtiquetas, nextIDArticulo, nextIDProducto, nextIDDepartamento, nextIDEtiqueta,
+    AddEtiqueta, EditEtiqueta, DeleteEtiqueta, formEtiqueta, setListadoEtiquetas, nextIDArticulo, nextIDProducto, nextIDDepartamento, nextIDEtiqueta,formEtiquetaProducto,
     nextIDMagnitud, nextIDMedida, nextIDSucursal, nextIDUbicacion, nextIDMinimos, id, collapsed, collapsed2, activa, activa2, show, show2, NewlistadoAgregar, formImagenes, itemsImagen, formImagen
   }
 }, {

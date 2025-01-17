@@ -14,12 +14,12 @@ const endpointMo = [];
 const endpointMi = [];
 const endpointI = [];
 
-// const url = "http://localhost/inventory/api/inventario";
-const url = "http://www.twintechnology.cu/inventory/api/inventario";
+const url = "http://localhost/inventory/api/inventario";
+// const url = "http://www.twintechnology.cu/inventory/api/inventario";
 
-// const urlImagen = "http://localhost/inventory/api/imagen/producto_imagenes";
+const urlImagen = "http://localhost/inventory/api/imagen/producto_imagenes";
 
-const urlImagen = "http://www.twintechnology.cu/inventory/api/imagen/producto_imagenes";
+// const urlImagen = "http://www.twintechnology.cu/inventory/api/imagen/producto_imagenes";
 // const urlUploadImagen = "http://www.twintechnology.cu/inventory/api/imagen/producto_imagenes/upload";
 
 const axiosInstance = axios.create({
@@ -319,6 +319,14 @@ export async function GuardarDatos(datos, n) {
         throw error;
       }
       break;
+    case 13:
+      try {
+        const response = await axiosInstance.post('/etiqueta_producto', datos);
+        return response.data.data;
+      } catch (error) {
+        throw error;
+      }
+      break;
     default:
       break;
   }
@@ -326,6 +334,7 @@ export async function GuardarDatos(datos, n) {
 
 // Insertar conjunto de datos
 export async function GuardarColecciones(datos, n) {
+  console.log(datos)
   switch (n) {
     case 1:
       try {

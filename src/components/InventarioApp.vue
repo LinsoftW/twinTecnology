@@ -859,7 +859,24 @@
                 </select>
                 <span style="color: red;">{{ errores.articulo_id }}</span>
               </div>
-
+              <div class="form-group col-lg-12 text-left">
+                <label class="text-info ">Seleccione una etiqueta: <label style="color: red;">*</label>&nbsp; &nbsp;
+                  &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;
+                  &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;
+                  &nbsp;&nbsp; &nbsp; &nbsp;
+                  <!-- <router-link class="button" to="/categorias">
+                    <button class="btn btn-danger" v-b-tooltip.hover title="Agregar artículo"><span
+                        class="fa fa-plus"></span></button>
+                  </router-link> -->
+                </label>
+                <select name="etiqueta" id="etiqueta" @change="verificar_error(9)"
+                  style="width: 100%; text-align:center" placeholder="Etiqueta" class="text-gray-900 form-control"
+                  v-model="etiqueta_R">
+                  <option v-for="dato in itemsEtiqueta1" :key="dato.id" :value="dato.id">{{
+                    dato.attributes.etiqueta }}</option>
+                </select>
+                <span style="color: red;">{{ errores.etiqueta }}</span>
+              </div>
             </div>
             <!-- <div class="row">
                 <div class="col-lg-11 text-left">
@@ -1044,7 +1061,7 @@
                     </div>
                     <div class="form-group col-lg-6 text-left">
                       <label class="text-info">Fecha de compra: </label>
-                      <input type="date" class="form-control" id="fechaC" aria-describedby="emailHelp"
+                      <input type="datetime-local" class="form-control" id="fechaC" aria-describedby="emailHelp"
                         v-model="Store.formLotes.data.attributes.fecha_compra" placeholder="Ej: 10/10/2024" required>
                     </div>
                   </div>
@@ -1223,6 +1240,8 @@ const searchValue = ref("");
 const searchValue2 = ref("");
 
 const critBusq = ref([], [], []);
+
+const etiqueta_R = ref(0)
 
 let imgPerfil = ref("");
 
@@ -1430,13 +1449,13 @@ const obtenMedida = (id) => {
 
 }
 const obtenImagen = (id) => {
-  for (let index = 0; index < itemsImagenes1.value.length; index++) {
-    if (id == itemsImagenes1.value[index].relationships.producto.data.id) {
-      // console.log(listadoMedida.value[index].id)
-      // console.log(itemsImagenes1.value[index].attributes.path)
-      return itemsImagenes1.value[index].attributes.path
-    }
-  }
+  // for (let index = 0; index < itemsImagenes1.value.length; index++) {
+  //   if (id == itemsImagenes1.value[index].relationships.producto.data.id) {
+  //     // console.log(listadoMedida.value[index].id)
+  //     // console.log(itemsImagenes1.value[index].attributes.path)
+  //     return itemsImagenes1.value[index].attributes.path
+  //   }
+  // }
 
 }
 
@@ -1548,6 +1567,13 @@ const verificar_error = (n) => {
         errores.value.ubicacion_id = "Este campo es obligatorio"
       }
       break;
+      case 9:
+      if (etiqueta_R != 0) {
+        errores.value.etiqueta = "";
+      } else {
+        errores.value.etiqueta = "Este campo es obligatorio"
+      }
+      break;
     default:
       break;
   }
@@ -1622,18 +1648,9 @@ const agregarUProducto = async (n) => {
         Store.formProductos.data.attributes.observacion = '';
         Store.AddProductos(response)
         itemsProductos1.value = Store.itemsProductos;
-        // minimos.data.attributes.persona_id = 1;
-        // minimos.data.attributes.producto_id = response.id;
-        // for (let index = 0; index < itemsProductos1.value.length; index++) {
-        //   Store.nextIDProducto = itemsProductos1.value[index].id;
-        // }
-        // const response2 = await obtenerDatos(9)
-        // for (let index = 0; index < response2.length; index++) {
-        //   Store.nextIDMinimos = response2[index].id;
-        // }
-        // minimos.data.attributes.id = Store.nextIDMinimos + 1;
-        // GuardarMinimos(minimos);
-        // const response3 = await GuardarDatos(minimos, 9);
+        Store.formEtiquetaProducto.data.attributes.producto_id = response.id;
+        Store.formEtiquetaProducto.data.attributes.etiqueta_id = etiqueta_R.value;
+        const response2 = await GuardarDatos(Store.formEtiquetaProducto, 13);
         Asignar_Imagen(response.id);
         successFull("Producto agregado satisfactoriamente.", "top-end")
         GuardarProductoC.value = 'Agregar y continuar';
@@ -1965,11 +1982,11 @@ function ExportExcel() {
   nuevoArreglo.value = []
   for (let index = 0; index < itemsProductos1.value.length; index++) {
     elementos.value.TIPO = itemsProductos1.value[index].type;
-    elementos.value.CANTIDAD = itemsProductos1.value[index].attributes.cantidad;
+    elementos.value.CÓDIGO = itemsProductos1.value[index].relationships.departamento.data.id.toString() + itemsProductos1.value[index].relationships.articulo.data.id.toString() + itemsProductos1.value[index].id.toString()
+    elementos.value.MINIMO = itemsProductos1.value[index].attributes.minimo;
     elementos.value.DESCRIPCIÓN = itemsProductos1.value[index].attributes.descripcion;
     elementos.value.OBSERVACIÓN = itemsProductos1.value[index].attributes.observacion;
     elementos.value.U_MEDIDA = obtenMedida(itemsProductos1.value[index].relationships.medida.data.id)
-    elementos.value.CÓDIGO = itemsProductos1.value[index].relationships.departamento.data.id.toString() + itemsProductos1.value[index].relationships.articulo.data.id.toString() + itemsProductos1.value[index].id.toString()
     nuevoArreglo.value.push(elementos.value)
     elementos.value = []
   }
@@ -2077,7 +2094,7 @@ const showRow = (item = ClickRowArgument) => {
     }
   }
   itemsLotes1.value = NewLote;
-
+  // console.log(itemsLotes1.value)
 }
 
 const EliminarSelecc = () => {
@@ -2157,7 +2174,7 @@ const headers = [
   { text: "CODIGO", value: "codigo" },
   { text: "DESCRIPCIÓN", value: "attributes.descripcion", width: 250 },
   { text: "DEPARTAMENTO", value: "departamento" },
-  { text: "ETIQUETA", value: "etiqueta" },
+  // { text: "ETIQUETA", value: "etiqueta" },
   // { text: "CANTIDAD", value: "cantidad" },
   // { text: "P.COMPRA", value: "precioc", sortable: true },
   { text: "MÍNIMO STOCK", value: "attributes.minimo", sortable: true },
@@ -2174,10 +2191,10 @@ const headers1 = [
   // { text: "DEPARTAMENTO", value: "departamento" },
   // { text: "ETIQUETA", value: "etiquetas" },
   { text: "CANTIDAD", value: "attributes.cantidad", sortable: true },
-  { text: "P. COMPRA (Moneda)", value: "precioC", sortable: true },
+  { text: "P. COMPRA (Moneda)", value: "precioC" },
   // { text: "MONEDA. COMPRA", value: "moneda_compra"},
   // { text: "MONEDA. VENTA", value: "attributes.mondeda_venta"},
-  { text: "P. VENTA (Moneda)", value: "precioV", sortable: true },
+  { text: "P. VENTA (Moneda)", value: "precioV" },
   { text: "FECHA. COMPRA", value: "attributes.fecha_compra" },
   // { text: "P.COMPRA", value: "precioc", sortable: true },
   // { text: "MÍNIMO STOCK", value: "attributes.minimo", sortable: true },
@@ -2775,7 +2792,8 @@ const borrarUL = async (id, correo, caso) => {
 // const itemsProductos = ref(listadoProductos)
 
 onMounted(async () => {
-
+  // console.log(Store.itemsProductos)
+  // console.log(localStorage.getItem('Carg_datP'))
   if (localStorage.getItem('userName')) {
     // ipPublica.value = localStorage.getItem('Host_back');
     if (localStorage.getItem('Carg_datP') == '0') {
@@ -2801,7 +2819,7 @@ onMounted(async () => {
       if (response2 != null) {
         Store.setListadoImagen(response2);
         itemsImagenes1.value = Store.itemsImagen;
-        localStorage.setItem("Carg_datP", "1");
+        localStorage.setItem("Carg_datIM", "1");
       }
     } else {
       itemsImagenes1.value = Store.itemsImagen;
