@@ -515,6 +515,9 @@
         <div v-if="route.path == '/ubicaciones'">
           <UbicacionesApp :key="Kubicaciones" />
         </div>
+        <div v-if="route.path == '/auditoria'">
+          <AuditoriaApp :key="Kauditoria" />
+        </div>
 
         <!-- /.container-fluid -->
 
@@ -697,6 +700,7 @@ import * as XLSX from 'xlsx';
 import UbicacionesApp from '@/components/UbicacionesApp.vue';
 import { useStoreAxios } from '@/store/AxiosStore';
 import { obtenerDatos } from '../components/helper/useAxios';
+import AuditoriaApp from '@/components/AuditoriaApp.vue';
 // import { useQuasar, useDialogPluginComponent } from 'quasar';
 
 // const { dialogRef, onDialogHide, onDialogOK, onDialogCancel, qTable } = useDialogPluginComponent()
@@ -1030,15 +1034,42 @@ const beforeRouteLeave = (to, from, next) => {
 
 }
 
-const serecargo = ref(false);
+// const serecargo = ref(false);
 
 const evitarRecargar = () => {
 
   window.addEventListener("beforeunload", event => {
     // successFull("Puede perder todo","top-center")
     if (!editando.value) return
+    // Store.cambiaEstado(1)
+    Store.limpiarDatos()
+    localStorage.removeItem('Carg_datA'); // Articulos
+    localStorage.removeItem('Carg_datD'); // Departamentos
+    localStorage.removeItem('Carg_datMe'); // Unidades de medida
+    localStorage.removeItem('Carg_datM'); // Magitudes
+    localStorage.removeItem('Carg_datP'); // Productos
+    localStorage.removeItem('Carg_datS'); // Sucursales
+    localStorage.removeItem('Carg_datU'); // Ubicaciones
+    localStorage.removeItem('Carg_datE'); // Etiquetas
+    localStorage.removeItem('Carg_datL'); // Lotes
+    localStorage.removeItem('Carg_datMo'); // Monedas
+    localStorage.removeItem('Carg_datIM'); // Imagenes
+    localStorage.removeItem('Carg_datEP'); // Etiqueta productos
+    localStorage.setItem('Carg_datA', '0'); // Articulos
+    localStorage.setItem('Carg_datD', '0'); // Departamentos
+    localStorage.setItem('Carg_datMe', '0'); // Unidades de medida
+    localStorage.setItem('Carg_datM', '0'); // Magitudes
+    localStorage.setItem('Carg_datP', '0'); // Productos
+    localStorage.setItem('Carg_datS', '0'); // Sucursales
+    localStorage.setItem('Carg_datU', '0'); // Ubicaciones
+    localStorage.setItem('Carg_datE', '0'); // Etiquetas
+    localStorage.setItem('Carg_datL', '0'); // Lotes
+    localStorage.setItem('Carg_datMo', '0'); // Monedas
+    localStorage.setItem('Carg_datIM', '0'); // Imagenes
+    localStorage.setItem('Carg_datEP', '0'); // Etiqueta productos
+    // Store.cambiaEstado(1)
     event.preventDefault()
-    serecargo.value = true;
+    // Store.serecargo = true;
     // Chrome requires returnValue to be set.
     BeforeUnloadEvent.returnValue = "No se puede recargar";
   })
@@ -1047,6 +1078,7 @@ const evitarRecargar = () => {
 const destruirRecarga = () => {
   window.removeEventListener("beforeunload", event => {
     if (!editando.value) return
+
     event.preventDefault()
     // console.log('Cargadoooo')
     // Chrome requires returnValue to be set.
@@ -1067,10 +1099,6 @@ onUnmounted(async () => {
 onMounted(async () => {
 
   Ctoggled.value = 'toggled';
-  if (serecargo.value == true) {
-    console.log('Se tiene q volver a cargar')
-  }
-  // console.log("Montado")
   editando.value = true;
   evitarRecargar();
   // beforeRouteLeave()
@@ -1090,6 +1118,7 @@ onMounted(async () => {
       const response = await obtenerDatos(1);
       // console.log(response)
       if (response == null) {
+        Store.cambiaEstado(1)
         ErrorFull("Error de red, intente más tarde.", "top-start")
       } else {
         Store.setCantidadProductos(response.length)
@@ -1110,6 +1139,7 @@ onMounted(async () => {
       Store.cambiaEstado(2)
       const response = await obtenerDatos(6);
       if (!response) {
+        Store.cambiaEstado(2)
         // ErrorFull("Error de red, intente más tarde.", "top-start")
       } else {
         Store.setCantidadDepartamentos(response.length)
@@ -1132,6 +1162,7 @@ onMounted(async () => {
       Store.cambiaEstado(3)
       const response = await obtenerDatos(5);
       if (!response) {
+        Store.cambiaEstado(3)
         ErrorFull("Error de red, intente más tarde.", "top-start")
       } else {
         Store.setCantidadArticulos(response.length)

@@ -14,16 +14,30 @@ const endpointMo = [];
 const endpointMi = [];
 const endpointI = [];
 
-const url = "http://localhost/inventory/api/inventario";
-// const url = "http://www.twintechnology.cu/inventory/api/inventario";
+const urlAuditoria = "http://www.twintechnology.cu/inventory/api/auditoria";
+const url = "http://www.twintechnology.cu/inventory/api/inventario";
+const urlImagen = "http://www.twintechnology.cu/inventory/api/imagen/producto_imagenes";
+// const url = "http://localhost/inventory/api/inventario";
+// const urlAuditoria = "http://localhost/inventory/api/auditoria";
+// const urlImagen = "http://localhost/inventory/api/imagen/producto_imagenes";
 
-const urlImagen = "http://localhost/inventory/api/imagen/producto_imagenes";
-
-// const urlImagen = "http://www.twintechnology.cu/inventory/api/imagen/producto_imagenes";
 // const urlUploadImagen = "http://www.twintechnology.cu/inventory/api/imagen/producto_imagenes/upload";
 
 const axiosInstance = axios.create({
   baseURL: url,
+  timeout: 5000,
+  // headers: {
+  //   'Access-Control-Allow-Origin': '*',
+  //   'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE',
+  //   'Content-type': 'application/json',
+  //   'Access-Control-Allow-Credentials': 'true',
+  //   'Access-Control-Allow-Headers': 'origin, content-Type, accept',
+  //   'Cache-control': 'no-cache, private'
+  // }
+});
+
+const axiosInstanceA = axios.create({
+  baseURL: urlAuditoria,
   timeout: 5000,
   // headers: {
   //   'Access-Control-Allow-Origin': '*',
@@ -183,6 +197,54 @@ export async function obtenerDatos(n) {
         throw error;
       }
       break;
+    case 13:
+      // if (cache.has(endpointMo)) {
+      //   return cache.get(endpointMo);
+      // }
+      try {
+        const response = await axiosInstance.get('/etiqueta_productos');
+        // cache.set(endpointMo, response.data.data);
+        return response.data.data;
+      } catch (error) {
+        throw error;
+      }
+      break;
+    case 14:
+      // if (cache.has(endpointMo)) {
+      //   return cache.get(endpointMo);
+      // }
+      try {
+        const response = await axiosInstance.get('/personas');
+        // cache.set(endpointMo, response.data.data);
+        return response.data.data;
+      } catch (error) {
+        throw error;
+      }
+      break;
+    case 15:
+      // if (cache.has(endpointMo)) {
+      //   return cache.get(endpointMo);
+      // }
+      try {
+        const response = await axiosInstanceA.get('/inventario');
+        // cache.set(endpointMo, response.data.data);
+        return response.data.data;
+      } catch (error) {
+        throw error;
+      }
+      break;
+    case 16:
+      // if (cache.has(endpointMo)) {
+      //   return cache.get(endpointMo);
+      // }
+      try {
+        const response = await axiosInstance.get('/operaciones');
+        // cache.set(endpointMo, response.data.data);
+        return response.data.data;
+      } catch (error) {
+        throw error;
+      }
+      break;
     default:
       break;
   }
@@ -327,6 +389,16 @@ export async function GuardarDatos(datos, n) {
         throw error;
       }
       break;
+    case 14:
+      try {
+        // /inventario/lots/1?function[name]=ajustar_cantidad
+        // console.log(datos)
+        const response = await axiosInstanceA.patch(`/inventario/lots/1?function[name]=ajustar_cantidad`, datos);
+        return response.data.data;
+      } catch (error) {
+        throw error;
+      }
+      break;
     default:
       break;
   }
@@ -334,7 +406,7 @@ export async function GuardarDatos(datos, n) {
 
 // Insertar conjunto de datos
 export async function GuardarColecciones(datos, n) {
-  console.log(datos)
+  // console.log(datos)
   switch (n) {
     case 1:
       try {
@@ -513,6 +585,14 @@ export async function EliminarDatos(id, n) {
         throw error;
       }
       break;
+    case 12:
+      try {
+        const response = await axiosInstance.delete(`${url}/etiqueta_productos/${id}`);
+        return response.data.data;
+      } catch (error) {
+        throw error;
+      }
+      break;
     default:
       break;
   }
@@ -600,11 +680,11 @@ export async function EditarDatos(id, datos, n) {
     case 9:
       try {
         const dato = await obtenerDatos(9);
-        console.log(datos)
+        // console.log(datos)
         for (let index = 0; index < dato.length; index++) {
           const element = dato[index].meta.foreign_keys_instances.producto_id;
           if (element == id) {
-            console.log(dato[index].id)
+            // console.log(dato[index].id)
             // const response = await axiosInstance.patch(`${url}minimos/${dato[index].id}`, datos);
             // return response.data.data;
             break;
@@ -626,6 +706,16 @@ export async function EditarDatos(id, datos, n) {
     case 11:
       try {
         const response = await axiosInstance.patch(`${url}/monedas/${id}`, datos);
+        return response.data.data;
+      } catch (error) {
+        throw error;
+      }
+      break;
+    case 12:
+      try {
+        const dato = await obtenerDatos(13);
+        console.log(dato)
+        const response = await axiosInstance.patch(`${url}/etiqueta_productos/${id}`, datos);
         return response.data.data;
       } catch (error) {
         throw error;

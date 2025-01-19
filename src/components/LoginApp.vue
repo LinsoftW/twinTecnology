@@ -215,6 +215,7 @@ import { onMounted, reactive, ref } from 'vue';
 // import axios from 'axios';
 import Swal from 'sweetalert2';
 import { ErrorFull } from './controler/ControlerApp';
+import { obtenerDatos } from './helper/useAxios';
 // import ModalApp from './ModalApp.vue';
 
 const ipPublica = ref('');
@@ -265,6 +266,8 @@ onMounted(async () => {
   localStorage.setItem('Carg_datL', '0'); // Lotes
   localStorage.setItem('Carg_datMo', '0'); // Monedas
   localStorage.setItem('Carg_datIM', '0'); // Imagenes
+  localStorage.setItem('Carg_datEP', '0'); // Etiqueta productos
+  localStorage.setItem('Carg_datAu', '0'); // Auditorias
   // localStorage.setItem('Host_back', 'localhost'); // IPPublica
   localStorage.setItem('Wait', '1'); // Esperar para cargar el inicio
   localStorage.setItem('Wait2', '1'); // Esperar para cargar el inicio
@@ -389,38 +392,28 @@ const autenticate = async () => {
   // }
 
   // }
+  // console.log(response)
   if (ValidacionEmail() == "OKKK") {
-    // console.log('Okkkk')
-    if (form.correo == 'admin@admin.co' && form.passw == '123') {
-      localStorage.setItem("userName", form.correo);
-      localStorage.setItem("Carg_dat", '0');
-      localStorage.setItem("Wait", '1');
-      // const start = new Date();
-      // esperando.value = true;
-      // console.log(esperando.value)
-      // await consultar();
-      // await consultarSucursales();
-      // if (esperando.value == false) {
-      successFull('Bienvenido al sistema', 'top-end');
-      router.push('/inicio');
-      // }
-      // console.log(esperando.value)
-      // const end = new Date();
-      // tiempo.value = end.getTime() - start.getTime();
-      // console.log(tiempo.value)
+    const response = await obtenerDatos(14);
+    for (let index = 0; index < response.length; index++) {
+      if (form.correo == response[index].attributes.email) {
+        localStorage.setItem("userName", response[index].attributes.alias);
+        localStorage.setItem("Carg_dat", '0');
+        localStorage.setItem("Wait", '1');
+        successFull('Bienvenido al sistema', 'top-end');
+        router.push('/inicio');
+        break
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Error de autenticación",
+        });
+      }
 
-      // esperar();
-      // console.log(end.getTime() - start.getTime(), "ms");
-      // successFull('Bienvenido al sistema', 'top-end');
-      // window.location = '/inicio';
-      // router.push('/inicio')
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Error de autenticación",
-      });
     }
+    // if (form.correo == 'admin@admin.co' && form.passw == '123') {
+    // }
   } else {
     if (emailError.value != 'Email válido') {
       Swal.fire({

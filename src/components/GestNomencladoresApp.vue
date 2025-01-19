@@ -86,7 +86,7 @@
 
 
 
-                      <button class="btn btn-success btn-sm btn-circle" data-toggle="modal"
+                      <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal"
                         @click="clickEditar(item.id)" data-target="#agregaMagnitudes" v-b-tooltip.hover
                         title="Editar"><span class="fas fa-edit"></span></button>
                       <!-- <button class="btn btn-info" data-toggle="modal" @click="clickEditar(item.id)" data-target="#agregaEditaMagnitudes"> <span
@@ -230,7 +230,7 @@
 
 
                                       title="Modificar"><span class="fas fa-edit"></span></button> -->
-                      <button class="btn btn-success btn-sm btn-circle" data-toggle="modal" data-target="#agregaMedidas"
+                      <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal" data-target="#agregaMedidas"
                         @click="clickEditarMedidas(item.id)" v-b-tooltip.hover title="Editar"><span
                           class="fas fa-edit"></span></button>
                       <!-- <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover

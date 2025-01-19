@@ -6,6 +6,7 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
 
   const ipPublica = ref('localhost');
   const actualiza = ref(false);
+  const serecargo = ref(false);
   const esperandoProductos = ref(false);
   const esperandoDepartamentos = ref(false);
   const esperandoArticulos = ref(false);
@@ -15,6 +16,7 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
   const esperandoMagnitudes = ref(false);
   const esperandoEtiquetas = ref(false);
   const esperandoLotes = ref(false);
+  const esperandoAuditoria = ref(false)
   const listadoDepartamentos = ref([]);
   const listadoArticulos = ref([]);
   const listadoProductos = ref([]);
@@ -25,7 +27,10 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
   const listadoEtiquetas = ref([]);
   const listadoLotes = ref([]);
   const listadoMonedas = ref([]);
+  const listadoOperaciones = ref([]);
   const listadoImagenes = ref([]);
+  const listadoAuditorias = ref([]);
+  const listadoEtiquetasProductos = ref([]);
   const NewlistadoAgregar = ref({ data: [] });
   const itemsProductos = ref([])
   const itemsArticulos = ref([])
@@ -35,6 +40,9 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
   const itemsUbicaciones = ref([])
   const itemsSucursales = ref([])
   const itemsEtiquetas = ref([])
+  const itemsAuditorias = ref([])
+  const itemsOperaciones = ref([])
+  const itemsEtiquetasProductos = ref([])
   const itemsLotes = ref([])
   const itemsMonedas = ref([])
   const itemsImagen = ref([])
@@ -79,6 +87,20 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
     cantidadDepartamentos.value = c;
   }
 
+  const limpiarDatos = () => {
+    listadoArticulos.value = [];
+    listadoDepartamentos.value = [];
+    listadoProductos.value = [];
+    listadoUbicaciones.value = [];
+    listadoSucursales.value = [];
+    listadoEtiquetas.value = [];
+    listadoEtiquetasProductos.value = [];
+    listadoMagnitudes.value = [];
+    listadoMonedas.value = [];
+    listadoImagenes.value = [];
+    listadoLotes.value = [];
+  }
+
   const cambiaEstado = (n) => {
     switch (n) {
       case 1:
@@ -108,6 +130,9 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
       case 9:
         return esperandoLotes.value = !esperandoLotes.value;
         break;
+      case 10:
+        return esperandoAuditoria.value = !esperandoAuditoria.value;
+        break;
       default:
         break;
     }
@@ -121,7 +146,25 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
         observacion: "",
         minimo: 0,
         articulo_id: 99,
-        // producto_imagen_id: 1
+        producto_imagen_id: 1
+      }
+    }
+  })
+
+  const formInventario = reactive({
+    // id: 0,
+    data: {
+      attributes: {
+        justificacion: "",
+        cantidad: 0,
+        // lot_id: 0,
+        // operacion_id: 0,
+        // observacion: ""
+      }
+    },
+    meta: {
+      foreign_keys_instances: {
+        operacion_id: 0
       }
     }
   })
@@ -170,7 +213,7 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
     }
   })
 
-    const formEtiquetaProducto = reactive({
+  const formEtiquetaProducto = reactive({
     // id: 0,
     data: {
       attributes: {
@@ -254,6 +297,7 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
   }
 
   const setListadoProductos = (L) => {
+    listadoProductos.value = [];
     listadoProductos.value = L;
     itemsProductos.value = [];
     for (let index = 0; index < listadoProductos.value.length; index++) {
@@ -387,7 +431,7 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
     }
   }
 
-const AddLotes = (L) => {
+  const AddLotes = (L) => {
     listadoLotes.value.push(L);
     setListadoLotes(listadoLotes.value);
   }
@@ -415,6 +459,68 @@ const AddLotes = (L) => {
         listadoLotes.value[index] = newdato;
       }
       itemsLotes.value.push(listadoLotes.value[index])
+    }
+  }
+
+  const AddOperaciones = (L) => {
+    listadoOperaciones.value.push(L);
+    setListadoOperaciones(listadoOperaciones.value);
+  }
+
+  const DeleteOperaciones = (newdato) => {
+    itemsOperaciones.value = []
+    for (let index = 0; index < listadoOperaciones.value.length; index++) {
+      if (newdato.id == listadoOperaciones.value[index].id) {
+        if (index == listadoOperaciones.value.length - 1) {
+          listadoOperaciones.value.pop();
+          break
+        } else {
+          listadoOperaciones.value.splice(index, 1)
+        }
+      }
+      itemsOperaciones.value.push(listadoOperaciones.value[index])
+
+    }
+  }
+
+  const EditOperaciones = (newdato) => {
+    itemsOperaciones.value = [];
+    for (let index = 0; index < listadoOperaciones.value.length; index++) {
+      if (newdato.id == listadoOperaciones.value[index].id) {
+        listadoOperaciones.value[index] = newdato;
+      }
+      itemsOperaciones.value.push(listadoOperaciones.value[index])
+    }
+  }
+
+  const AddEtiquetaProducto = (L) => {
+    listadoEtiquetasProductos.value.push(L);
+    setListadoEtiquetasProductos(listadoEtiquetasProductos.value);
+  }
+
+  const DeleteEtiquetaProducto = (newdato) => {
+    itemsEtiquetasProductos.value = []
+    for (let index = 0; index < listadoEtiquetasProductos.value.length; index++) {
+      if (newdato.id == listadoEtiquetasProductos.value[index].id) {
+        if (index == listadoEtiquetasProductos.value.length - 1) {
+          listadoEtiquetasProductos.value.pop();
+          break
+        } else {
+          listadoEtiquetasProductos.value.splice(index, 1)
+        }
+      }
+      itemsEtiquetasProductos.value.push(listadoEtiquetasProductos.value[index])
+
+    }
+  }
+
+  const EditEtiquetaProducto = (newdato) => {
+    itemsEtiquetasProductos.value = [];
+    for (let index = 0; index < listadoEtiquetasProductos.value.length; index++) {
+      if (newdato.id == listadoEtiquetasProductos.value[index].id) {
+        listadoEtiquetasProductos.value[index] = newdato;
+      }
+      itemsEtiquetasProductos.value.push(listadoEtiquetasProductos.value[index])
     }
   }
 
@@ -449,6 +555,10 @@ const AddLotes = (L) => {
     }
   }
 
+  const AddAuditoria = (L) => {
+    listadoAuditorias.value.push(L);
+    setListadoAuditorias(listadoAuditorias.value);
+  }
 
   const AddEtiqueta = (L) => {
     listadoEtiquetas.value.push(L);
@@ -658,7 +768,23 @@ const AddLotes = (L) => {
     }
   }
 
-   const setListadoMonedas = (L) => {
+  const setListadoOperaciones = (L) => {
+    listadoOperaciones.value = L;
+    itemsOperaciones.value = [];
+    for (let index = 0; index < listadoOperaciones.value.length; index++) {
+      itemsOperaciones.value.push(listadoOperaciones.value[index])
+    }
+  }
+
+  const setListadoEtiquetasProductos = (L) => {
+    listadoEtiquetasProductos.value = L;
+    itemsEtiquetasProductos.value = [];
+    for (let index = 0; index < listadoEtiquetasProductos.value.length; index++) {
+      itemsEtiquetasProductos.value.push(listadoEtiquetasProductos.value[index])
+    }
+  }
+
+  const setListadoMonedas = (L) => {
     listadoMonedas.value = L;
     itemsMonedas.value = [];
     for (let index = 0; index < listadoMonedas.value.length; index++) {
@@ -666,6 +792,13 @@ const AddLotes = (L) => {
     }
   }
 
+  const setListadoAuditorias = (L) => {
+    listadoAuditorias.value = L;
+    itemsAuditorias.value = [];
+    for (let index = 0; index < listadoAuditorias.value.length; index++) {
+      itemsAuditorias.value.push(listadoAuditorias.value[index])
+    }
+  }
 
   const getListadoSucursales = () => {
     return listadoSucursales;
@@ -774,17 +907,17 @@ const AddLotes = (L) => {
     cantidadProductos, setCantidadProductos,
     cantidadArticulos, setCantidadArticulos,
     cantidadDepartamentos, setCantidadDepartamentos,
-    formProductos, formArticulo,formMoneda, formDepartamentos, formMagnitud, formMedida,formLotes,
+    formProductos, formArticulo, formMoneda, formDepartamentos, formMagnitud, formMedida, formLotes,
     setProductos, getProductos, setArticulos, getArticulos, setDepartamento, getDepartamento,
-    setListadoArticulos,setListadoLotes, setListadoDepartamentos, setListadoEtiquetas, setListadoMedidas,setListadoMonedas, setListadoMagnitud, setListadoProductos,
-    setListadoSucursales, setListadoUbicaciones, getListadoArticulos,getListadoLotes, getListadoDepartamentos, getListadoEtiquetas, getListadoMagnitud,
+    setListadoArticulos, setListadoLotes, setListadoEtiquetasProductos, setListadoDepartamentos, setListadoEtiquetas, setListadoMedidas, setListadoMonedas, setListadoMagnitud, setListadoProductos,
+    setListadoSucursales, setListadoUbicaciones, getListadoArticulos, getListadoLotes, getListadoDepartamentos, getListadoEtiquetas, getListadoMagnitud,
     getListadoMedidas, getListadoProductos, getListadoSucursales, getListadoUbicaciones,
-    esperandoArticulos, esperandoDepartamentos,esperandoLotes,itemsLotes,itemsMonedas, esperandoProductos, esperandoMedidas, esperandoEtiquetas, esperandoMagnitudes, esperandoSucursales, esperandoUbicaciones, loadingP, loadingA, loadingD, loadingE, loadingM, loadingMe, loadingS, loadingUb,
-    itemsProductos, itemsDepartamentos, itemsMagnitudes, itemsArticulos, itemsEtiquetas, itemsUbicaciones, itemsMedidas, itemsSucursales,
-    cambiaEstado, AddMagnitud, AddProductos, EditProductos, AddMoneda, DeleteMoneda,EditMoneda, DeleteMagnitud, DeleteProducto, AddMedida,AddLotes, DeleteMedida,EditLotes, EditMagnitud, EditMedida, AddDepartamento, DeleteDepartamento, EditDepartamento,
-    AddArticulo, DeleteArticulo, EditArticulo, AddSucursal, DeleteSucursal,DeleteLotes, EditSucursal, AddUbicaciones, DeleteUbicaciones, EditUbicaciones,AddImagen,setListadoImagen, DeleteImagen, EditImagen, formSucursal, formUbicaciones,
-    AddEtiqueta, EditEtiqueta, DeleteEtiqueta, formEtiqueta, setListadoEtiquetas, nextIDArticulo, nextIDProducto, nextIDDepartamento, nextIDEtiqueta,formEtiquetaProducto,
-    nextIDMagnitud, nextIDMedida, nextIDSucursal, nextIDUbicacion, nextIDMinimos, id, collapsed, collapsed2, activa, activa2, show, show2, NewlistadoAgregar, formImagenes, itemsImagen, formImagen
+    esperandoArticulos, esperandoDepartamentos, esperandoLotes, itemsLotes, itemsMonedas, esperandoProductos, esperandoMedidas, esperandoEtiquetas, esperandoAuditoria, esperandoMagnitudes, esperandoSucursales, esperandoUbicaciones, loadingP, loadingA, loadingD, loadingE, loadingM, loadingMe, loadingS, loadingUb,
+    itemsProductos, itemsDepartamentos, itemsMagnitudes, itemsArticulos, itemsEtiquetas, itemsUbicaciones, itemsMedidas, itemsSucursales, itemsEtiquetasProductos, listadoEtiquetasProductos,
+    cambiaEstado, AddMagnitud, AddProductos, EditProductos, AddMoneda, DeleteMoneda, EditMoneda, DeleteMagnitud, AddAuditoria, DeleteProducto, AddMedida, AddLotes, DeleteMedida, EditLotes, EditMagnitud, EditMedida, AddDepartamento, DeleteDepartamento, EditDepartamento,
+    AddArticulo, DeleteArticulo, EditArticulo, AddSucursal, DeleteSucursal, DeleteLotes, EditEtiquetaProducto, DeleteEtiquetaProducto, AddEtiquetaProducto, EditSucursal, AddUbicaciones, DeleteUbicaciones, EditUbicaciones, AddImagen, setListadoImagen, DeleteImagen, EditImagen, formSucursal, formUbicaciones,
+    AddEtiqueta, EditEtiqueta, DeleteEtiqueta, formEtiqueta, setListadoEtiquetas, nextIDArticulo, nextIDProducto, nextIDDepartamento, nextIDEtiqueta, formEtiquetaProducto,
+    nextIDMagnitud, nextIDMedida, nextIDSucursal, nextIDUbicacion, nextIDMinimos, id, collapsed, collapsed2, activa, activa2, show, show2, NewlistadoAgregar, formImagenes, itemsImagen, formImagen, serecargo, limpiarDatos, formInventario, itemsAuditorias, listadoAuditorias, setListadoAuditorias, setListadoOperaciones, AddOperaciones, EditOperaciones, DeleteOperaciones, itemsOperaciones, listadoOperaciones
   }
 }, {
   persist: true

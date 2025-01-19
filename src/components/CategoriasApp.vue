@@ -62,7 +62,7 @@
                   :loading="store.esperandoDepartamentos" show-index>
                   <template #item-opciones="item">
                     <div class="operation-wrapper">
-                      <button class="btn btn-success btn-sm btn-circle" @click="clickEditar(item.id)" v-b-tooltip.hover
+                      <button class="btn btn-primary btn-sm btn-circle" @click="clickEditar(item.id)" v-b-tooltip.hover
                         title="Editar" data-toggle="modal" data-target="#agregaDepartamento"><span
                           class="fas fa-edit"></span></button>
                       <!-- <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
@@ -143,7 +143,7 @@
                   :loading="store.esperandoArticulos" show-index>
                   <template #item-opciones="item">
                     <div class="operation-wrapper">
-                      <button class="btn btn-success btn-sm btn-circle" data-toggle="modal"
+                      <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal"
                         data-target="#agregaArticulos" @click="clickEditarArticulo(item.id)" v-b-tooltip.hover
                         title="Editar"><span class="fas fa-edit"></span></button>
                       <!-- <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
@@ -224,7 +224,7 @@
                   :loading="store.esperandoEtiquetas" show-index>
                   <template #item-opciones="item">
                     <div class="operation-wrapper">
-                      <button class="btn btn-success btn-sm btn-circle" data-toggle="modal"
+                      <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal"
                         data-target="#agregaEtiqueta" @click="clickEditarEtiqueta(item.id)" v-b-tooltip.hover
                         title="Editar"><span class="fas fa-edit"></span></button>
                       <!-- <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover

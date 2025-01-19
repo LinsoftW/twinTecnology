@@ -56,18 +56,18 @@
           <!-- Card Body -->
           <div class="card-body ">
             <div class="container-fluid row">
-              <div class="col-xl-4 col-lg-3">
+              <!-- <div class="col-xl-4 col-lg-3">
 
                 <label>Etiqueta</label>
                 <input type="text" class="form-control form-control-sm" placeholder="Ej: La Habana"
                   v-model="critBusq[0]">
 
-              </div>
-              <div class="col-xl-4 col-lg-3">
+              </div> -->
+              <div class="col-xl-6 col-lg-3">
                 <label>Código</label>
                 <input type="text" class="form-control form-control-sm" placeholder="Ej: 0000" v-model="critBusq[1]">
               </div>
-              <div class="col-xl-4 col-lg-3">
+              <div class="col-xl-6 col-lg-3">
                 <label>Producto</label>
                 <input type="text" class="form-control form-control-sm" placeholder="Ej: Producto 1"
                   v-model="critBusq[2]">
@@ -272,7 +272,7 @@
                   <!-- item.relationships.medida.data.id -->
                 </template>
                 <template #item-etiqueta="item">
-                  <!-- {{item.id}} -->
+                  <!-- {{item}} -->
                   {{ obtenEtiqueta(item.id) }}
                 </template>
                 <template #loading>
@@ -397,9 +397,10 @@
               </template> -->
                 <template #item-opciones="item">
                   <div class="operation-wrapper">
-                    <button class="btn btn-success btn-sm btn-circle" @click="Aumentar(item)" v-b-tooltip.hover
-                      title="Aumentar / Disminuir"><span class="fas fa-plus"></span> / <span
-                        class="fas fa-minus"></span></button>
+                    <!-- @click="Aumentar(item)" -->
+                    <button class="btn btn-success btn-sm btn-circle" data-toggle="modal" @click="Aumentar(item)"
+                      data-target="#agregaAuditoria" v-b-tooltip.hover title="Aumentar / Disminuir"><span
+                        class="fas fa-plus"></span> / <span class="fas fa-minus"></span></button>
                     <button class="btn btn-primary btn-sm btn-circle ml-1" data-toggle="modal" data-target="#agregaLote"
                       @click="clickEditarProducto1(item.id)" v-b-tooltip.hover title="Modificar"><span
                         class="fas fa-edit"></span></button>
@@ -539,6 +540,14 @@
                           <th>Unidad de medida: </th>
                           <td>{{ medidProd }}</td>
                         </tr>
+                        <tr>
+                          <th>Etiqueta: </th>
+                          <td>{{ obtenEtiqueta(idProd) }}</td>
+                        </tr>
+                        <!-- <tr>
+                          <th>Departamento: </th>
+                          <td>{{ obtenDepartamento(idProd) }}</td>
+                        </tr> -->
                         <!-- <tr>
                           <th>Ubicación: </th>
                           <td>{{ ubicaProd }}</td>
@@ -940,7 +949,7 @@
                 </a>
               </div>
               <div v-if="editar" class="form-group h4 col-lg-6">
-                <a class="btn btn-danger btn-block" data-dismiss="modal" aria-label="close" @click="cancelarU"
+                <a class="btn btn-danger btn-block" data-dismiss="modal" aria-label="close" @click="cancelarU()"
                   :class="deactiva">
                   Cancelar
                 </a>
@@ -1123,7 +1132,7 @@
 
                 </div>
                 <div v-if="editar == false" class="form-group h4 col-lg-6">
-                  <a @click="agregarULote()" class="btn btn-info btn-block" :class="disabledProductoBtn">
+                  <a @click="agregarULote(1)" class="btn btn-info btn-block" :class="disabledProductoBtn">
                     {{ GuardarMag }}
                   </a>
                 </div>
@@ -1197,6 +1206,177 @@
     </div>
   </div>
 
+  <div :class="'modal fade ' + showModal1" id="agregaAuditoria" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-info" id="exampleModalLabel">LOTE (<label style="color: red;">{{
+            Store.formLotes.data.attributes.descripcion
+          }}</label>) </h5>
+          <!-- <h5 class="modal-title text-info text-center" id="exampleModalLabel" v-if="editar == true"><span
+              class="fa fa-edit"></span>
+            MODIFICAR LOS DATOS DEL LOTE <br>(<label style="color: red;">{{
+              Store.formLotes.data.attributes.descripcion
+            }}</label>)</h5> -->
+          <!-- <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+            style="text-align: center;">
+            <h6 class="m-0 font-weight-bold text-info" v-if="editar == false"><span class="fa fa-plus"></span>
+              AGREGAR
+              NUEVA MAGNITUD / <i style="color: red;">CAMPOS OBLIGATORIOS</i> (<label style="color: red;">*</label>)
+            </h6>
+            <h6 class="m-0 font-weight-bold text-info" v-if="editar == true"><span class="fa fa-edit"></span>
+              MODIFICAR LOS DATOS DE LA MAGNITUD <br>(<label style="color: red;">{{
+                formSucursal.data.attributes.magnitud
+              }}</label>)</h6>
+          </div> -->
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="text-info">×</span>
+          </button>
+        </div>
+        <div class="modal-body text-center">
+
+          <form id="form">
+
+            <div class="col-lg-12">
+              <div class="">
+
+                <form class="user">
+
+                  <div class="row">
+                    <label for="">
+                      Cantidad actual: {{
+                        cantInicial
+                      }}
+                    </label>
+                    <div class="form-group col-lg-12 text-left">
+                      <label class="text-info">Aumentar o disminuir: </label>
+                      <input type="text" class="form-control" id="sucursal" aria-describedby="emailHelp"
+                        v-model="Store.formLotes.data.attributes.cantidad" placeholder="Ej: 5 o -5" required>
+
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="form-group col-lg-12 text-left">
+                      <!-- <label class="text-info">Producto: <label style="color: red;">*</label></label> -->
+                      <label class="text-info ">Seleccione la operación: <label style="color: red;">*</label>&nbsp;
+                        &nbsp;
+                        &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
+                        &nbsp;
+                        &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
+                        &nbsp;
+                        &nbsp;&nbsp; &nbsp; &nbsp;
+                      </label>
+                      <select name="produc" id="produc" @change="verificar_error(7)"
+                        style="width: 100%; text-align:center" placeholder="Ej: Lapicez"
+                        class="text-gray-900 form-control"
+                        v-model="Store.formInventario.meta.foreign_keys_instances.operacion_id">
+                        <option v-for="dato in itemsOperaciones1" :key="dato.id" :value="dato.id">{{
+                          dato.attributes.operacion }}</option>
+                      </select>
+                      <span style="color: red;">{{ errores.producto_id }}</span>
+                    </div>
+
+                    <div class="form-group col-lg-12 text-left">
+                      <label class="text-info">Justificación: </label>
+                      <textarea class="form-control" id="justificacion"
+                        v-model="Store.formInventario.data.attributes.justificacion"
+                        placeholder="Ej: Por qué está aumentando o disminuyendo la cantidad?"></textarea>
+                      <!-- <span style="color: red;">{{ errores.descripLote }}</span> -->
+                    </div>
+                  </div>
+                  <!-- <div class="row">
+
+                      </div> -->
+
+
+                </form>
+              </div>
+              <div class="text-center">
+                <h1 class="h6 text-gray-900 mb-4"><i>CAMPOS OBLIGATORIOS</i> (<label style="color: red;">*</label>)
+                </h1>
+              </div>
+              <div class="row">
+
+                <div class="form-group h4 col-lg-3">
+
+                </div>
+                <div class="form-group h4 col-lg-6">
+                  <a @click="aceptarCambio()" class="btn btn-info btn-block" data-dismiss="modal" aria-label="Close"
+                    :class="disabledLoteBtn">
+                    {{ AceptarAD }}
+                  </a>
+                </div>
+                <!-- <div v-if="editar" class="form-group h4 col-lg-6">
+                  <a @click="editarULote()" class="btn btn-info btn-block" :class="disabledProductoBtn">
+                    {{ btnModificarL }}
+                  </a>
+                </div> -->
+                <!-- <div v-if="editar" class="form-group h4 col-lg-6">
+                  <a @click="cancelarU()" class="btn btn-danger btn-block" :class="disabledProductoBtn"
+                    data-dismiss="modal" aria-label="Close">
+                    Cancelar
+                  </a>
+                </div> -->
+              </div>
+            </div>
+
+            <!-- <div class="modal-footer" style="text-align: center;"> -->
+            <!-- <a class="btn btn-info" @click="AColumnas">Aceptar</a> -->
+            <!-- <button class="btn btn-secondary btn-sm" type="submit" id="button" @click="enviarEmail()">Enviar</button> -->
+            <!-- <div class="row">
+
+              <div v-if="editar == false" class="form-group h4 col-lg-1">
+
+              </div>
+              <div v-if="editar == false" class="form-group h4 col-lg-6">
+                <a @click="agregarU" class="btn btn-info btn-block">
+                  Guardar datos
+                </a>
+              </div>
+              <div v-if="editar" class="form-group h4 col-lg-6">
+                <a @click="editarU" class="btn btn-info btn-block">
+                  {{ btnModificar }}
+                </a>
+              </div>
+              <div v-if="editar" class="form-group h4 col-lg-6">
+                <a @click="cancelarU()" class="btn btn-danger btn-block" data-dismiss="modal" aria-label="Close">
+                  Cancelar
+                </a>
+              </div>
+              </div> -->
+            <!-- </div> -->
+          </form>
+
+          <!-- <div>
+            <card class="card-section" style="width: 450px; margin: auto">
+              <h1>Contact Form</h1>
+              <form ref="values" @submit.prevent="sendEmail">
+                <div class="form-group">
+                  <KInput class="form-input" :style="{ width: '290px' }" name="name" v-model="user_name"
+                    placeholder="Name"></KInput>
+                </div>
+                <div class="form-group">
+                  <KInput class="form-input" :style="{ width: '290px' }" name="email" v-model="user_email"
+                    placeholder="email address"></KInput>
+                </div>
+                <div class="form-group">
+                  <kTextarea class="form-input" :style="{ width: '290px' }" name="message" v-model="user_message"
+                    placeholder="Message" :rows="4" />
+                </div>
+                <div class="example-col">
+                  <kButton :style="{ width: '100px' }" id="submit-btn">Submit form</kButton>
+                </div>
+              </form>
+            </card>
+          </div> -->
+          <!-- <vue-barcode :value="cod" tag="svg"></vue-barcode> -->
+        </div>
+
+      </div>
+    </div>
+  </div>
   <!-- <template v-if="esperando">
     <div v-on="loadingA('Actualizando datos...')">
 
@@ -1242,6 +1422,8 @@ const searchValue2 = ref("");
 const critBusq = ref([], [], []);
 
 const etiqueta_R = ref(0)
+
+const itemsOperaciones1 = ref([]);
 
 let imgPerfil = ref("");
 
@@ -1310,6 +1492,32 @@ const formCantidad = reactive({
   }
 })
 
+const aceptarCambio = async () => {
+  Store.cambiaEstado(9);
+  AceptarAD.value = 'Actualizando...'
+  disabledLoteBtn.value = 'disabled'
+  if (cantInicial.value == null) {
+    Store.formLotes.data.attributes.cantidad = Store.formLotes.data.attributes.cantidad;
+  } else {
+    Store.formLotes.data.attributes.cantidad = parseInt(Store.formLotes.data.attributes.cantidad) + parseInt(cantInicial.value);
+  }
+  const response = await EditarDatos(IdLote.value, Store.formLotes, 10);
+  // console.log(response)
+  Store.EditLotes(response)
+  itemsLotes1.value = Store.itemsLotes;
+  // guardo la operacion en la auditoria
+  Store.formInventario.data.attributes.cantidad = parseInt(Store.formLotes.data.attributes.cantidad);
+  // Store.formInventario.data.attributes.lot_id = response.id;
+  // Store.formInventario.data.attributes.observacion = "Perfecto";
+  const response2 = await GuardarDatos(Store.formInventario, 14);
+  successFull("Cantidad modificada satisfactoriamente.", "top-end")
+  Store.formLotes.data.attributes.cantidad = '';
+  Store.formInventario.data.attributes.justificacion = '';
+  Store.cambiaEstado(9);
+  disabledLoteBtn.value = '';
+  AceptarAD.value = 'Aceptar';
+}
+
 const nombreProd = ref('');
 const idProd = ref('');
 const descProd = ref('');
@@ -1342,53 +1550,72 @@ const Detalles = (dato) => {
 
 }
 
+const cantInicial = ref(0);
+
+const IdLote = ref(0);
+
 const Aumentar = async (dato) => {
-  const { value: formValues } = await Swal.fire({
-    title: `Cantidad actual en Stock: ${dato.attributes.cantidad} `,
-    html: `
-    <label> Aumentar: Ej: 5 / Disminuir: Ej: -5 </label><input id="swal-input2" class="swal2-input" placeholder="Ej: 5 ó -5">
-  `,
-    focusConfirm: false,
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Modificar",
-    cancelButtonText: "Cancelar",
-    preConfirm: () => {
-      return [
-        document.getElementById("swal-input2").value
-      ];
-    }
-  });
-  if (formValues) {
-    Store.cambiaEstado(9);
-    Store.formLotes.data.attributes.descripcion = dato.attributes.descripcion;
-    Store.formLotes.data.attributes.producto_id = dato.attributes.producto_id;
-    Store.formLotes.data.attributes.observacion = dato.attributes.observacion;
-    Store.formLotes.data.attributes.ubicacion_id = dato.attributes.ubicacion_id;
-    Store.formLotes.data.attributes.moneda_compra = dato.attributes.moneda_compra;
-    Store.formLotes.data.attributes.precio_compra = dato.attributes.precio_compra;
-    Store.formLotes.data.attributes.precio_venta = dato.attributes.precio_venta;
-    Store.formLotes.data.attributes.moneda_venta = dato.attributes.moneda_venta;
-    Store.formLotes.data.attributes.fecha_compra = dato.attributes.fecha_compra;
-    if (dato.attributes.cantidad == null) {
-      Store.formLotes.data.attributes.cantidad = parseInt(formValues[0]);
-    } else {
-      Store.formLotes.data.attributes.cantidad = parseInt(dato.attributes.cantidad) + parseInt(formValues[0]);
-    }
-    // formCantidad.data.attributes.cantidad = parseInt(dato.attributes.cantidad) + parseInt(formValues[0]);
-    const response = await EditarDatos(dato.id, Store.formLotes, 10);
-    // console.log(response)
-    Store.EditLotes(response)
-    itemsLotes1.value = Store.itemsLotes;
-    successFull("Cantidad modificada satisfactoriamente.", "top-end")
-    Store.cambiaEstado(9);
-  }
+  // const { value: formValues } = await Swal.fire({
+  //   title: `Cantidad actual en Stock: ${dato.attributes.cantidad} `,
+  //   html: `
+  //   <label> Aumentar: Ej: 5 / Disminuir: Ej: -5 </label>
+  //   <input id="swal-input2" class="swal2-input" placeholder="Ej: 5 ó -5">
+  //   <label> Operación: </label>
+  //   <input id="swal-input1" class="swal2-input" placeholder="">
+  // `,
+  //   focusConfirm: false,
+  //   showCancelButton: true,
+  //   confirmButtonColor: "#3085d6",
+  //   cancelButtonColor: "#d33",
+  //   confirmButtonText: "Modificar",
+  //   cancelButtonText: "Cancelar",
+  //   preConfirm: () => {
+  //     return [
+  //       document.getElementById("swal-input2").value
+  //     ];
+  //   }
+  // });
+  // if (formValues) {
+  //   Store.cambiaEstado(9);
+  Store.formLotes.data.attributes.descripcion = dato.attributes.descripcion;
+  Store.formLotes.data.attributes.producto_id = dato.attributes.producto_id;
+  Store.formLotes.data.attributes.observacion = dato.attributes.observacion;
+  Store.formLotes.data.attributes.ubicacion_id = dato.attributes.ubicacion_id;
+  Store.formLotes.data.attributes.moneda_compra = dato.attributes.moneda_compra;
+  Store.formLotes.data.attributes.precio_compra = dato.attributes.precio_compra;
+  Store.formLotes.data.attributes.precio_venta = dato.attributes.precio_venta;
+  Store.formLotes.data.attributes.moneda_venta = dato.attributes.moneda_venta;
+  Store.formLotes.data.attributes.fecha_compra = dato.attributes.fecha_compra;
+  cantInicial.value = dato.attributes.cantidad;
+  IdLote.value = dato.id;
+  // if (dato.attributes.cantidad == null) {
+  //   Store.formLotes.data.attributes.cantidad = parseInt(formValues[0]);
+  // } else {
+  //   Store.formLotes.data.attributes.cantidad = parseInt(dato.attributes.cantidad) + parseInt(formValues[0]);
+  // }
+  // formCantidad.data.attributes.cantidad = parseInt(dato.attributes.cantidad) + parseInt(formValues[0]);
+  // const response = await EditarDatos(dato.id, Store.formLotes, 10);
+  // // console.log(response)
+  // Store.EditLotes(response)
+  // itemsLotes1.value = Store.itemsLotes;
+  // // guardo la operacion en la auditoria
+  // Store.formInventario.data.attributes.justificacion = "Aumentando / disminuyendo la cantidad del lote.";
+  // Store.formInventario.data.attributes.cantidad = parseInt(formValues[0]);
+  // Store.formInventario.data.attributes.lot_id = response.id;
+  // Store.formInventario.data.attributes.operacion_id = 6;
+  // Store.formInventario.data.attributes.observacion = "Perfecto";
+  // const response2 = await GuardarDatos(Store.formInventario, 14);
+  // successFull("Cantidad modificada satisfactoriamente.", "top-end")
+  // Store.cambiaEstado(9);
+  // }
 }
 
 const barcode = ref();
 
 let GuardarProducto = ref('Agregar');
+
+let AceptarAD = ref('Aceptar');
+
 let GuardarProductoC = ref('Agregar y Continuar');
 
 let btnModificarM = ref('Modificar');
@@ -1397,6 +1624,8 @@ let btnModificarL = ref('Modificar');
 
 const disabledProductoBtn = ref('')
 
+const disabledLoteBtn = ref('')
+
 const itemsMedidas1 = ref([])
 
 const itemsDeparta1 = ref([])
@@ -1404,6 +1633,8 @@ const itemsDeparta1 = ref([])
 const itemsMoneda1 = ref([])
 
 const itemsEtiqueta1 = ref([])
+
+const itemsEtiquetaProductos1 = ref([])
 
 const itemsProductos1 = ref([])
 
@@ -1480,12 +1711,13 @@ const obtenMoneda = (id) => {
 }
 
 const obtenEtiqueta = (id) => {
-  // console.log(itemsEtiqueta1.value + id)
-  for (let index = 0; index < itemsEtiqueta1.value.length; index++) {
-    // console.log(itemsEtiqueta1.value[index].relationships.productos.data.id)
-    if (id == itemsEtiqueta1.value[index].relationships.productos.data.id) {
-      // console.log(itemsEtiqueta1.value[index].id)
-      return itemsEtiqueta1.value[index].attributes.etiqueta
+  // console.log(id)
+  for (let index = 0; index < itemsEtiquetaProductos1.value.length; index++) {
+    // console.log(itemsEtiqueta1.value[index].relationships.productos.data[0].id)
+    for (let index1 = 0; index1 < itemsEtiqueta1.value.length; index1++) {
+      if ((id == itemsEtiquetaProductos1.value[index].meta.foreign_keys_instances.producto_id) && (itemsEtiquetaProductos1.value[index].meta.foreign_keys_instances.etiqueta_id == itemsEtiqueta1.value[index1].id)) {
+        return itemsEtiqueta1.value[index1].attributes.etiqueta
+      }
     }
   }
 
@@ -1567,7 +1799,7 @@ const verificar_error = (n) => {
         errores.value.ubicacion_id = "Este campo es obligatorio"
       }
       break;
-      case 9:
+    case 9:
       if (etiqueta_R != 0) {
         errores.value.etiqueta = "";
       } else {
@@ -1601,10 +1833,23 @@ const Asignar_Imagen = async (id) => {
   const response4 = await subirImagen(data);
   // console.log(response4)
   if (response4 != null) {
-    Store.formProductos.producto_imagen_id = response4.id;
+    Store.formProductos.data.attributes.producto_imagen_id = response4.id;
   } else {
-    Store.formProductos.producto_imagen_id = 1;
+    Store.formProductos.data.attributes.producto_imagen_id = 1;
   }
+  // console.log(id)
+  const response1 = await obtenerDatos(1)
+  // console.log(response1)
+  for (let index = 0; index < response1.length; index++) {
+    if (id == response1[index].id) {
+      Store.formProductos.data.attributes.descripcion = response1[index].attributes.descripcion;
+      Store.formProductos.data.attributes.observacion = response1[index].attributes.observacion;
+      Store.formProductos.data.attributes.articulo_id = response1[index].relationships.articulo.data.id;
+      Store.formProductos.data.attributes.minimo = response1[index].attributes.minimo;
+    }
+  }
+  Store.formProductos.data.attributes.producto_imagen_id = 1;
+  // console.log(Store.formProductos)
   const response = await EditarDatos(id, Store.formProductos, 1);
   // console.log(response)
   editar.value = false;
@@ -1613,6 +1858,7 @@ const Asignar_Imagen = async (id) => {
   Store.formProductos.data.attributes.articulo_id = ''
   Store.formProductos.data.attributes.minimo = '';
   Store.EditProductos(response)
+  itemsProductos1.value = [];
   itemsProductos1.value = Store.itemsProductos;
 }
 
@@ -1681,17 +1927,9 @@ const agregarUProducto = async (n) => {
         Store.formProductos.data.attributes.observacion = '';
         Store.AddProductos(response)
         itemsProductos1.value = Store.itemsProductos;
-        // minimos.data.attributes.persona_id = 1;
-        // minimos.data.attributes.producto_id = response.id;
-        // for (let index = 0; index < itemsProductos1.value.length; index++) {
-        //   Store.nextIDProducto = itemsProductos1.value[index].id;
-        // }
-        // const response2 = await obtenerDatos(9)
-        // for (let index = 0; index < response2.length; index++) {
-        //   Store.nextIDMinimos = response2[index].id;
-        // }
-        // // minimos.data.attributes.id = Store.nextIDMinimos + 1;
-        // const response3 = await GuardarDatos(minimos, 9);
+        Store.formEtiquetaProducto.data.attributes.producto_id = response.id;
+        Store.formEtiquetaProducto.data.attributes.etiqueta_id = etiqueta_R.value;
+        const response2 = await GuardarDatos(Store.formEtiquetaProducto, 13);
         Asignar_Imagen(response.id);
         successFull("Producto agregado satisfactoriamente.", "top-end")
         GuardarProducto.value = 'Agregar';
@@ -1739,9 +1977,6 @@ const agregarULote = async (n) => {
     if (n == 1) {
       GuardarMag.value = 'Guardando...';
       disabledProductoBtn.value = 'disabled';
-      // Store.formProductos.id = Store.nextIDProducto + 1;
-      // console.log(Store.formProductos);
-      // Agregar_Productos();
       Store.cambiaEstado(9)
       const response = await GuardarDatos(Store.formLotes, 10);
       // console.log(response)
@@ -1764,6 +1999,15 @@ const agregarULote = async (n) => {
         Store.formLotes.data.attributes.precio_venta = '';
         Store.AddLotes(response)
         itemsLotes1.value = Store.itemsLotes;
+        // guardo la operacion en la auditoria
+        Store.formInventario.data.attributes.justificacion = "Inicializando los valores del lote.";
+        Store.formInventario.data.attributes.cantidad = response.attributes.cantidad;
+        Store.formInventario.data.attributes.lot_id = response.id;
+        Store.formInventario.data.attributes.operacion_id = 1;
+        Store.formInventario.data.attributes.observacion = "Agregando nuevo lote.";
+        const response2 = await GuardarDatos(Store.formInventario, 14);
+        Store.AddAuditoria(response2)
+        // console.log(response2)
         successFull("Lote agregado satisfactoriamente.", "top-end")
         GuardarMag.value = 'Agregar y continuar';
         disabledProductoBtn.value = '';
@@ -1797,17 +2041,13 @@ const agregarULote = async (n) => {
         Store.formLotes.data.attributes.precio_venta = '';
         Store.AddLotes(response)
         itemsLotes1.value = Store.itemsLotes;
-        // minimos.data.attributes.persona_id = 1;
-        // minimos.data.attributes.producto_id = response.id;
-        // for (let index = 0; index < itemsProductos1.value.length; index++) {
-        //   Store.nextIDProducto = itemsProductos1.value[index].id;
-        // }
-        // const response2 = await obtenerDatos(9)
-        // for (let index = 0; index < response2.length; index++) {
-        //   Store.nextIDMinimos = response2[index].id;
-        // }
-        // // minimos.data.attributes.id = Store.nextIDMinimos + 1;
-        // const response3 = await GuardarDatos(minimos, 9);
+        // guardo la operacion en la auditoria
+        Store.formInventario.data.attributes.justificacion = "Modificación de los valores del lote.";
+        Store.formInventario.data.attributes.cantidad = response.attributes.cantidad;
+        Store.formInventario.data.attributes.lot_id = response.id;
+        Store.formInventario.data.attributes.operacion_id = 1;
+        Store.formInventario.data.attributes.observacion = "Perfecto";
+        const response2 = await GuardarDatos(Store.formInventario, 14);
         successFull("Lote agregado satisfactoriamente.", "top-end")
         GuardarMag.value = 'Agregar';
         disabledProductoBtn.value = '';
@@ -2057,6 +2297,10 @@ const editarU = async () => {
   if (detalle.value == true) {
     detalle.value = false;
   }
+  Store.formEtiquetaProducto.data.attributes.producto_id = response.id;
+  Store.formEtiquetaProducto.data.attributes.etiqueta_id = etiqueta_R.value;
+  const response2 = await EditarDatos(Store.formEtiquetaProducto, 12);
+  // console.log(Store.formEtiquetaProducto)
   successFull("Producto modificado satisfactoriamente.", "top-end")
   Store.cambiaEstado(1);
 }
@@ -2081,6 +2325,14 @@ const editarULote = async () => {
   itemsLotes1.value = Store.itemsLotes;
   btnModificarL.value = 'Modificar'
   deactiva.value = '';
+  // guardo la operacion en la auditoria
+  Store.formInventario.data.attributes.justificacion = "Modificación de los valores del lote.";
+  Store.formInventario.data.attributes.cantidad = response.attributes.cantidad;
+  Store.formInventario.data.attributes.lot_id = response.id;
+  Store.formInventario.data.attributes.operacion_id = 5;
+  Store.formInventario.data.attributes.observacion = "Se modificaron los valores del lote.";
+  const response2 = await GuardarDatos(Store.formInventario, 14);
+  Store.AddAuditoria(response2)
   successFull("Lote modificado satisfactoriamente.", "top-end")
   Store.cambiaEstado(9);
 }
@@ -2174,7 +2426,7 @@ const headers = [
   { text: "CODIGO", value: "codigo" },
   { text: "DESCRIPCIÓN", value: "attributes.descripcion", width: 250 },
   { text: "DEPARTAMENTO", value: "departamento" },
-  // { text: "ETIQUETA", value: "etiqueta" },
+  { text: "ETIQUETA", value: "etiqueta" },
   // { text: "CANTIDAD", value: "cantidad" },
   // { text: "P.COMPRA", value: "precioc", sortable: true },
   { text: "MÍNIMO STOCK", value: "attributes.minimo", sortable: true },
@@ -2253,9 +2505,11 @@ const clickEditarProducto = async (idSelect) => {
       Store.formProductos.data.attributes.minimo = itemsProductos1.value[index].attributes.minimo;
       Store.formProductos.data.attributes.observacion = itemsProductos1.value[index].attributes.observacion;
       Store.formProductos.data.attributes.articulo_id = itemsProductos1.value[index].relationships.articulo.data.id;
+      etiqueta_R.value = itemsProductos1.value[index].relationships.etiquetas.data[0].id;
       break;
     }
   }
+  // console.log(etiqueta_R.value)
 }
 
 const clickEditarProducto1 = async (idSelect) => {
@@ -2280,7 +2534,7 @@ const clickEditarProducto1 = async (idSelect) => {
       Store.formLotes.data.attributes.moneda_compra = itemsLotes1.value[index].attributes.moneda_compra;
       Store.formLotes.data.attributes.moneda_venta = itemsLotes1.value[index].attributes.moneda_venta;
       Store.formLotes.data.attributes.producto_id = itemsLotes1.value[index].relationships.producto.data.id;
-      Store.formLotes.data.attributes.ubicacion_id = itemsLotes1.value[index].attributes.ubicacion_id;
+      Store.formLotes.data.attributes.ubicacion_id = itemsLotes1.value[index].relationships.ubicacion.data.id;
       Store.formLotes.data.attributes.fecha_compra = itemsLotes1.value[index].attributes.fecha_compra;
       break;
     }
@@ -2707,7 +2961,8 @@ const borrarUL = async (id, correo, caso) => {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Sí, eliminar"
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar"
     }).then(async (result) => {
       if (result.isConfirmed) {
         Store.cambiaEstado(9);
@@ -2720,6 +2975,14 @@ const borrarUL = async (id, correo, caso) => {
           if (detalle.value == true) {
             detalle.value = false;
           }
+          // guardo la operacion en la auditoria
+          Store.formInventario.data.attributes.justificacion = "Eliminando el lote.";
+          Store.formInventario.data.attributes.cantidad = response.attributes.cantidad;
+          Store.formInventario.data.attributes.lot_id = response.id;
+          Store.formInventario.data.attributes.operacion_id = 15;
+          Store.formInventario.data.attributes.observacion = "Se eliminó el lote";
+          const response2 = await GuardarDatos(Store.formInventario, 14);
+          Store.AddAuditoria(response2)
           successFull("Lote eliminado satisfactoriamente.", "top-end")
           Store.cambiaEstado(9);
         }
@@ -2795,7 +3058,8 @@ onMounted(async () => {
   // console.log(Store.itemsProductos)
   // console.log(localStorage.getItem('Carg_datP'))
   if (localStorage.getItem('userName')) {
-    // ipPublica.value = localStorage.getItem('Host_back');
+    // Cargando productos
+    // console.log(Store.itemsProductos)
     if (localStorage.getItem('Carg_datP') == '0') {
       disabledProductos.value = 'disabled';
       Store.cambiaEstado(1)
@@ -2804,6 +3068,7 @@ onMounted(async () => {
         Store.setListadoProductos(response)
       }
       localStorage.setItem("Carg_datP", "1");
+      // localStorage.setItem("LProductos", Store.itemsProductos);
       itemsProductos1.value = Store.itemsProductos;
       Store.cambiaEstado(1)
 
@@ -2812,7 +3077,7 @@ onMounted(async () => {
       itemsProductos1.value = Store.itemsProductos;
       Store.cambiaEstado(1)
     }
-
+    // cargando imagenes
     if (localStorage.getItem('Carg_datIM') == '0') {
       const response2 = await obtenerDatos(12);
       // console.log(response2)
@@ -2824,8 +3089,8 @@ onMounted(async () => {
     } else {
       itemsImagenes1.value = Store.itemsImagen;
     }
-    // console.log(itemsProductos1.value)
 
+    // cargando articulos
     if (localStorage.getItem('Carg_datA') == '0') {
       Store.cambiaEstado(3)
       const response = await obtenerDatos(5);
@@ -2841,11 +3106,11 @@ onMounted(async () => {
       itemsArticulos1.value = Store.itemsArticulos;
       Store.cambiaEstado(3)
     }
-
+    // cargando lotes
     if (localStorage.getItem("Carg_datL") == '0') {
-      Store.cambiaEstado(9)
       const response = await obtenerDatos(10);
       if (response.length > 0) {
+        Store.cambiaEstado(9)
         Store.setListadoLotes(response)
         localStorage.setItem("Carg_datL", "1");
         itemsLotes1.value = Store.itemsLotes;
@@ -2857,7 +3122,7 @@ onMounted(async () => {
       Store.cambiaEstado(9)
 
     }
-
+    // cargando unidades de medidas
     if (localStorage.getItem("Carg_datMe") == "0") {
 
       const response = await obtenerDatos(3);
@@ -2874,7 +3139,7 @@ onMounted(async () => {
     } else {
       itemsMedidas1.value = Store.itemsMedidas;
     }
-
+    // cargando monedas
     if (localStorage.getItem("Carg_datMo") == "0") {
 
       const response = await obtenerDatos(11);
@@ -2891,7 +3156,7 @@ onMounted(async () => {
     } else {
       itemsMoneda1.value = Store.itemsMonedas;
     }
-
+    // cargando departamentos
     if (localStorage.getItem('Carg_datD') == '0') {
       Store.cambiaEstado(2);
       const response = await obtenerDatos(6);
@@ -2910,7 +3175,7 @@ onMounted(async () => {
       itemsDeparta1.value = Store.itemsDepartamentos;
       Store.cambiaEstado(2);
     }
-
+    // cargando etiquetas
     if (localStorage.getItem('Carg_datE') == '0') {
       Store.cambiaEstado(5);
       const response = await obtenerDatos(8);
@@ -2933,6 +3198,30 @@ onMounted(async () => {
       Store.cambiaEstado(5);
     }
 
+    // cargando etiqueta_productos
+    if (localStorage.getItem('Carg_datEP') == '0') {
+      // Store.cambiaEstado(5);
+      const response = await obtenerDatos(13);
+      if (!response) {
+        // Store.cambiaEstado(5);
+      } else {
+        if (response.length > 0) {
+          Store.setListadoEtiquetasProductos(response)
+        }
+        for (let index = 0; index < response.length; index++) {
+          Store.nextIDEtiqueta = response[index].id;
+        }
+        localStorage.setItem("Carg_datEP", "1");
+        itemsEtiquetaProductos1.value = Store.itemsEtiquetasProductos;
+        // Store.cambiaEstado(5);
+      }
+    } else {
+      // Store.cambiaEstado(5);
+      itemsEtiquetaProductos1.value = Store.itemsEtiquetasProductos;
+      // Store.cambiaEstado(5);
+    }
+
+    // cargando ubicaciones
     if (localStorage.getItem('Carg_datU') == '0') {
       // Ubicaciones
       Store.cambiaEstado(7)
@@ -2953,6 +3242,11 @@ onMounted(async () => {
       Store.cambiaEstado(7)
     }
     // console.log(itemsEtiqueta1.value)
+    const response2 = await obtenerDatos(16);
+    if (response2.length > 0) {
+      Store.setListadoOperaciones(response2)
+      itemsOperaciones1.value = Store.itemsOperaciones;
+    }
 
     disabledProductos.value = '';
 

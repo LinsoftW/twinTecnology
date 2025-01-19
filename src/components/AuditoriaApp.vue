@@ -1,54 +1,192 @@
 <template>
-    <div class="container-fluid" v-if="!detalle">
-      <!-- <div>
+  <div class="container-fluid">
+    <!-- <div>
         <div id="interactive" class="viewport"></div>
         <button @click="startScanner">Iniciar Escaneo</button>
         <p v-if="barcode">Código de barras detectado: {{ barcode }}</p>
       </div> -->
-      <!-- <ImageBarcodeReader @decode="onDecode" @error="onError" /> -->
-      <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-2 text-gray-800">INVENTARIO</h1>
-        <!-- <img src="/cargando2.gif" style="width: 40px; height:40px" v-if="esperando" > -->
-        <div class="row">
-          <div class="col-md-12 justify-content-between">
-            <!-- <router-link class="button" to="/gest_inventario"> -->
-            <!-- <a @click="abrirModalAddProd()" href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm"
+    <!-- <ImageBarcodeReader @decode="onDecode" @error="onError" /> -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+      <h1 class="h3 mb-2 text-gray-800">AUDITORÍA</h1>
+      <!-- <img src="/cargando2.gif" style="width: 40px; height:40px" v-if="esperando" > -->
+      <div class="row">
+        <div class="col-md-12 justify-content-between">
+          <!-- <router-link class="button" to="/gest_inventario"> -->
+          <!-- <a @click="abrirModalAddProd()" href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm"
               v-b-tooltip.hover title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar productos </a> -->
-            <!-- </router-link> -->
-            <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" v-b-tooltip.hover
+          <!-- </router-link> -->
+          <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" v-b-tooltip.hover
               title="Generar resumen diario"><i class="fas fa-download fa-sm "></i> Excel</a> -->
-            <!-- <a @click="CargaMasiva()" href="#" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm m-2"
+          <!-- <a @click="CargaMasiva()" href="#" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm m-2"
               v-b-tooltip.hover title="Agregar productos según archivo"><i class="fas fa-upload fa-sm "></i> Carga
               masiva</a> -->
-            <!-- <a @click="ImprimirDoc()" href="#" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm"
+          <!-- <a @click="ImprimirDoc()" href="#" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm"
               v-b-tooltip.hover title="Imprimir"><i class="fas fa-print fa-sm "></i> Imprimir</a> -->
-            <!-- <a @click="escanea = true" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
+          <!-- <a @click="escanea = true" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
               v-b-tooltip.hover data-toggle="modal" data-target="#escanearCode" title="Escanear código de barras"><i
                 class="fa fa-barcode fa-sm "></i> Escanear</a> -->
-          </div>
         </div>
+      </div>
 
-
-        <!-- <router-link class="button" to="/gest_inventario">
+      <!-- <router-link class="button" to="/gest_inventario">
           <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" v-b-tooltip.hover
             title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar productos</a>
         </router-link> -->
-
-      </div>
-
-      <!-- TABLA INVENTARIOS -->
-      <!-- codigo, descripcion, cantidad -->
-      <!-- permitir seleccionar que quiere mostrar -->
-      <!-- poner todos los datos en la tabla inventario -->
-      <!-- elementos de busqueda -->
-      <!-- por Sucursal -->
-      <!-- por codigo -->
-      <!-- por cantidad -->
-      <!--Opciones de busqueda -->
-      <!-- <div class=""> -->
-      <!-- Nuevo Listado productos -->
-
     </div>
+    <!-- Nuevo Listado productos -->
+    <div class="col-xl-12 col-lg-12">
+      <div class="card shadow mb-4">
+        <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button"
+          aria-expanded="true" aria-controls="collapseCardExample">
+          <h6 class="m-0 font-weight-bold text-info"><i class="fa fa-list-ul"></i> OPERACIONES REALIZADAS</h6>
+        </a>
+        <!-- <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-edit"></i> DEPARTAMENTOS</h6>
+              <button class="btn btn-info" @click="abrirModalAddProd()"> <span class="fa fa-plus"></span> Nuevo</button>
+            </div> -->
+        <!-- Card Body -->
+        <div class="collapse show" id="collapseCardExample">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6 col-xl-6 col-lg-6">
+                <!-- <div class="row"> -->
+                <div class="justify-content-between">
+                  <!-- <router-link class="button" to="/gest_inventario"> -->
+                  <!-- <a data-toggle="modal" @click="agrega()" data-target="#agregaProducto"
+                      class="btn btn-info btn-sm btn-icon-split" :class="disabledProductos">
+                      <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                      </span>
+                      <span class="text">Nuevo</span>
+                    </a>
+                    <a @click="generar_pdf()" class="btn btn-secondary btn-sm btn-icon-split m-2"
+                      :class="disabledProductos">
+                      <span class="icon text-white-50">
+                        <i class="fas fa-file-pdf"></i>
+                      </span>
+                      <span class="text">PDF</span>
+                    </a>
+                    <a @click="ExportExcel()" class="btn btn-secondary btn-sm btn-icon-split"
+                      :class="disabledProductos">
+                      <span class="icon text-white-50">
+                        <i class="fas fa-download"></i>
+                      </span>
+                      <span class="text">Excel</span>
+                    </a>
+                    <button class="btn btn-primary btn-sm dropdown-toggle m-2" type="button" id="dropdownMenuButton"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                      </span>
+                      <span class="text"> Agregar</span>
+                    </button>
+                    <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
+                      <router-link class="button" to="/categorias">
+                        <a class="dropdown-item" href="#"><span class="fa fa-list-alt"></span> Clasificaciones</a>
+                      </router-link>
+                      <router-link class="button" to="/gest_nomencladores">
+                        <a class="dropdown-item" href="#"><span class="fas fa-ruler-horizontal"></span> Magnitudes</a>
+                      </router-link>
+                      <router-link class="button" to="/ubicaciones">
+                        <a class="dropdown-item" href="#"><span class="fa fa-map-marker-alt"></span> Ubicaciones</a>
+                      </router-link>
+
+                    </div>
+                    <a @click="EliminarSelecc()" class="btn btn-danger btn-sm btn-icon-split"
+                      :class="disabledProductos">
+                      <span class="icon text-white">
+                        <i class="fas fa-trash"></i>
+                      </span>
+                      <span class="text text-white">Eliminar seleccionados</span>
+                    </a> -->
+                  <!-- <a @click="abrirModalAddProd()" href="#" class="d-sm-inline-block btn btn-sm btn-info shadow-sm"
+                    v-b-tooltip.hover title="Agregar producto"><i class="fas fa-plus fa-sm "></i> Agregar productos </a> -->
+                  <!-- <a @click="EliminarSelecc()" href="#" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm m-2"
+                      v-b-tooltip.hover title="Eliminar seleccionados"><i class="fas fa-trash fa-sm "></i> Eliminar
+                      seleccionados </a> -->
+                  <!-- </router-link> -->
+                  <!-- <a @click="ExportExcel()" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
+                    v-b-tooltip.hover title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a> -->
+                </div>
+                <!-- </div> -->
+              </div>
+              <!-- <div class="col-md-3 col-xl-3 col-lg-3">
+                <span class="text-info">Filtrar por columna: </span>
+                <select v-model="searchField" @change="cuandoCambie()" class="form-control form-control-user">
+                  <option>Tipo</option>
+                  <option>Código</option>
+                </select>
+              </div> -->
+              <div class="col-md-6 col-xl-6 col-lg-12">
+                <span class="text-info">Buscar: </span>
+                <input class="form-control form-control-user" type="text" v-model="searchValue"
+                  placeholder="Qué desea buscar" />
+              </div>
+            </div>
+            <br>
+
+            <EasyDataTable :headers="headers" :items="itemsAuditorias1" buttons-pagination border-cell
+               header-text-direction="center" body-text-direction="center"
+              :search-field="searchField" :search-value="searchValue" @click-row="showRow" :rows-per-page="5"
+              :loading="Store.esperandoAuditoria">
+              <!-- <template #item-image="item">
+                  <a data-toggle="modal" data-target="#verImagen"
+                    @click="obtenDescripcion(item.attributes.descripcion)">
+
+                    <img :src="obtenImagen(item.id)" alt="No image" class="img img-thumbnail"
+                      style="width: 50px; height: 50px;" />
+                  </a>
+
+                </template> -->
+              <!-- <template #item-rows>
+                <a>Filas por paginas</a>
+              </template> -->
+              <!-- <template #item-opciones="item">
+                <div class="operation-wrapper">
+                  <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Detalles(item)" v-b-tooltip.hover
+                    title="Detalles"><span class="fa fa-eye"></span></button>
+                </div>
+              </template> -->
+              <!-- <template #item-codigo="item">
+                  {{ item.relationships.departamento.data.id }}{{ item.relationships.articulo.data.id }}{{ item.id }}
+                </template>
+                <template #item-departamento="item">
+                  {{ obtenDepartamento(item.relationships.departamento.data.id) }}
+                </template> -->
+              <template #item-operacion="item">
+                <!-- {{item}} -->
+                {{ obtenOperacion(item.id) }}
+              </template>
+              <template #item-lote="item">
+                <!-- {{ item.meta.foreign_keys_instances.lot_id }} -->
+                {{ obtenLote(item.meta.foreign_keys_instances.lot_id) }}
+              </template>
+              <template #loading>
+                <img src="/cargando4.gif" style="width: 100px; height: 80px;" />
+              </template>
+              <template #empty-message>
+                <a>No hay datos que mostrar</a>
+              </template>
+
+            </EasyDataTable>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- TABLA INVENTARIOS -->
+    <!-- codigo, descripcion, cantidad -->
+    <!-- permitir seleccionar que quiere mostrar -->
+    <!-- poner todos los datos en la tabla inventario -->
+    <!-- elementos de busqueda -->
+    <!-- por Sucursal -->
+    <!-- por codigo -->
+    <!-- por cantidad -->
+    <!--Opciones de busqueda -->
+    <!-- <div class=""> -->
+    <!-- Nuevo Listado productos -->
+
+  </div>
 
   <!-- <template v-if="esperando">
     <div v-on="loadingA('Actualizando datos...')">
@@ -69,23 +207,44 @@ import * as XLSX from 'xlsx';
 import Quagga from 'quagga';
 import { useStoreAxios } from '@/store/AxiosStore';
 import { ErrorFull, successFull } from './controler/ControlerApp';
-import { EditarDatos, EliminarDatos, GuardarDatos, GuardarMinimos, obtenerDatos } from './helper/useAxios';
+// import { EditarDatos, EliminarDatos, GuardarDatos, GuardarMinimos, obtenerDatos } from './helper/useAxios';
 import { data } from 'jquery';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { obtenerDatos } from './helper/useAxios';
 // import { almacenDatosProductos, GuardarDatos, obtenerArticulos, obtenerProductos, obtenerUbicaciones } from './service/servicio';
 // import { disabledProductos, esperandoProductos, formProductos, itemsProductos, listadoArticulos, listadoMedida, listadoProductos, listadoUbicaciones, loadingP } from './controler/ControlerApp';
 const Store = useStoreAxios()
 
 const detalle = ref(false)
 
-const searchField = ref(["id", "attributes.descripcion", "attributes.observacion", "attributes.cantidad"]);
+const searchField = ref(["id", "attributes.justificacion", "attributes.observacion", "attributes.cantidad"]);
 
 const searchField1 = ref('')
 
 const searchValue = ref("");
 
+const itemsOperaciones1 = ref([]);
+
+const itemsLotes1 = ref([])
+
 const critBusq = ref([], [], []);
+
+const obtenOperacion = (id) => {
+    for (let index = 0; index < itemsOperaciones1.value.length; index++) {
+        if ((id == itemsOperaciones1.value[index].id)) {
+          return itemsOperaciones1.value[index].attributes.operacion
+        }
+    }
+  }
+
+const obtenLote = (id) => {
+    for (let index = 0; index < itemsLotes1.value.length; index++) {
+        if ((id == itemsLotes1.value[index].id)) {
+          return itemsLotes1.value[index].attributes.descripcion
+        }
+    }
+  }
 
 const generar_pdf = async () => {
 
@@ -212,6 +371,8 @@ const disabledProductoBtn = ref('')
 const itemsMedidas1 = ref([])
 
 const itemsProductos1 = ref([])
+
+const itemsAuditorias1 = ref([])
 
 const itemsArticulos1 = ref([])
 
@@ -768,16 +929,16 @@ const cuandoCambie = () => {
 // const p = ref("10-100-1001")
 const headers = [
   { text: "NO", value: "id", width: 50, sortable: true },
-  { text: "IMAGEN", value: "image" },
-  { text: "CODIGO", value: "codigo" },
-  { text: "DESCRIPCIÓN", value: "attributes.descripcion", width: 250 },
-  // { text: "OBSERVACIONES", value: "attributes.observacion", width: 50 },
-  { text: "P.COMPRA", value: "precioC", sortable: true },
-  { text: "P.VENTA", value: "precioV", sortable: true },
-  { text: "U_MEDIDA", value: "unidad" },
-  { text: "STOCK", value: "attributes.cantidad", sortable: true },
-  { text: "VENTAS", value: "cantV", sortable: true },
-  { text: "OPCIONES", value: "opciones" }
+  // { text: "IMAGEN", value: "image" },
+  { text: "JUSTIFICACIÓN", value: "attributes.justificacion", width: 250 },
+  { text: "CANTIDAD", value: "attributes.cantidad", width: 50, sortable: true },
+  { text: "LOTE", value: "lote" },
+  { text: "OPERACIÓN", value: "operacion" },
+  { text: "OBSERVACIÓN", value: "attributes.observacion", width: 250 },
+  // { text: "U_MEDIDA", value: "unidad" },
+  // { text: "STOCK", value: "attributes.cantidad", sortable: true },
+  // { text: "VENTAS", value: "cantV", sortable: true },
+  // { text: "OPCIONES", value: "opciones" }
 ];
 
 const items = ref([]);
@@ -1280,72 +1441,46 @@ onMounted(async () => {
 
   if (localStorage.getItem('userName')) {
     // ipPublica.value = localStorage.getItem('Host_back');
-    if (localStorage.getItem('Carg_datP') == '0') {
+    if (localStorage.getItem('Carg_datAu') == '0') {
       disabledProductos.value = 'disabled';
-      Store.cambiaEstado(1)
-      const response = await obtenerDatos(1);
+      const response = await obtenerDatos(15);
       if (response.length > 0) {
-        Store.setListadoProductos(response)
+        Store.setListadoAuditorias(response)
       }
-      localStorage.setItem("Carg_datP", "1");
-      itemsProductos1.value = Store.itemsProductos;
-      Store.cambiaEstado(1)
+      Store.cambiaEstado(10)
+      localStorage.setItem("Carg_datAu", "1");
+      itemsAuditorias1.value = Store.itemsAuditorias;
+      Store.cambiaEstado(10)
 
     } else {
-      Store.cambiaEstado(1)
-      itemsProductos1.value = Store.itemsProductos;
-      Store.cambiaEstado(1)
+      Store.cambiaEstado(10)
+      itemsAuditorias1.value = Store.itemsAuditorias;
+      Store.cambiaEstado(10)
+    }
+
+    // cargando lotes
+    if (localStorage.getItem("Carg_datL") == '0') {
+      const response = await obtenerDatos(10);
+      if (response.length > 0) {
+        // Store.cambiaEstado(9)
+        Store.setListadoLotes(response)
+        localStorage.setItem("Carg_datL", "1");
+        itemsLotes1.value = Store.itemsLotes;
+        // Store.cambiaEstado(9)
+      }
+    } else {
+      // Store.cambiaEstado(9)
+      itemsLotes1.value = Store.itemsLotes;
+      // Store.cambiaEstado(9)
+
+    }
+
+    const response2 = await obtenerDatos(16);
+    if (response2.length > 0) {
+      Store.setListadoOperaciones(response2)
+      itemsOperaciones1.value = Store.itemsOperaciones;
     }
     // console.log(itemsProductos1.value)
-
-    if (localStorage.getItem('Carg_datA') == '0') {
-      Store.cambiaEstado(3)
-      const response = await obtenerDatos(5);
-      if (response.length > 0) {
-        Store.setListadoArticulos(response)
-      }
-      localStorage.setItem("Carg_datA", "1");
-      itemsArticulos1.value = Store.itemsArticulos;
-      Store.cambiaEstado(3)
-
-    } else {
-      Store.cambiaEstado(3)
-      itemsArticulos1.value = Store.itemsArticulos;
-      Store.cambiaEstado(3)
-    }
-
-    if (localStorage.getItem("Carg_datU") == '0') {
-      Store.cambiaEstado(7)
-      const response = await obtenerDatos(7);
-      if (response.length > 0) {
-        Store.setListadoUbicaciones(response)
-        localStorage.setItem("Carg_datU", "1");
-        itemsUbicaciones1.value = Store.itemsUbicaciones;
-        Store.cambiaEstado(7)
-      }
-    } else {
-      Store.cambiaEstado(7)
-      itemsUbicaciones1.value = Store.itemsUbicaciones;
-      Store.cambiaEstado(7)
-
-    }
-
-    if (localStorage.getItem("Carg_datMe") == "0") {
-
-      const response = await obtenerDatos(3);
-      if (!response) {
-
-      } else {
-        if (response.length > 0) {
-          Store.setListadoMedidas(response)
-        }
-        localStorage.setItem("Carg_datMe", "1");
-        itemsMedidas1.value = Store.itemsMedidas;
-      }
-
-    } else {
-      itemsMedidas1.value = Store.itemsMedidas;
-    }
     disabledProductos.value = '';
 
   } else {
