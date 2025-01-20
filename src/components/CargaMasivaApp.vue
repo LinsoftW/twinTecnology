@@ -56,7 +56,8 @@
                   id="loadExcel" @click="loadExcel"><i class="fas fa-upload"></i> Cargar Excel</button>
               </div> -->
               <div class="col-xl-2 col-lg-6 col-md-6 col-sm-4">
-                <button class="form-control form-control-user d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
+                <button v-if="cargado"
+                  class="form-control form-control-user d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
                   id="modifyExcel" @click="almacenarDatos()"><i class="fas fa-save"></i> Guardar datos</button>
               </div>
             </div>
@@ -102,6 +103,38 @@
       </div> -->
       </div>
 
+      <div class="col-xl-12 col-lg-12" v-if="editaItem">
+        <div class="card shadow mb-4">
+          <!-- Card Header - Dropdown -->
+          <!-- <div class=" card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-info">Datos a modificar</h6>
+          </div> -->
+          <!-- Card Body -->
+          <div class="card-body ">
+            <div class="row align-items-center justify-content-between ">
+
+              <div class="col-xl-12 col-lg-6 col-md-6">
+                <!-- <label>Por Sucursal</label> -->
+                <!-- <input type="file" id="archivoExcel" class="form-control form-control-user" @change="onFileChange"
+                  accept=".xlsx, .xls" /> -->
+                <!---->
+                <div class="row form-group">
+                  <!-- <div class="col-lg-12"> -->
+                  <div  v-for="(ite, index) in itemEditar" class="input-container">
+                    <!-- <label :for="itemEditar">{{ ite }}</label><hr> -->
+                    <input type="text" :value="ite">
+                  </div>
+                  <button v-if="editaItem" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" @click="guardaCambio()">Modificar</button>
+                  <!-- </div> -->
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
       <!-- Excell -->
       <div class="col-xl-12 col-lg-12">
         <div class="card shadow mb-4">
@@ -115,6 +148,7 @@
             <div class="row d-sm-flex align-items-center justify-content-between mb-4 ">
               <div class="col-xl-12 col-lg-12 col-md-12">
                 <div class="spreadsheet-container">
+
                   <EasyDataTable :headers="headers2" :items="item" buttons-pagination border-cell
                     v-model:items-selected="itemsSelected" header-text-direction="center" body-text-direction="center"
                     @click-row="showRow" :rows-per-page="5">
@@ -123,9 +157,9 @@
                         style="width: 50px; height: 50px;" />
                     </template>
                     <template #item-opciones="item">
-                      <button disabled class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal"
-                        data-target="#agregaProducto" @click="clickEditarProducto(item.id)" v-b-tooltip.hover
-                        title="Modificar"><span class="fas fa-edit"></span></button>
+                      <button class="btn btn-primary btn-sm btn-circle ml-1" data-toggle="modal"
+                        data-target="#agregaProducto" @click="editar(item)" v-b-tooltip.hover title="Modificar"><span
+                          class="fas fa-edit"></span></button>
                       <button disabled class="btn btn-danger btn-sm btn-circle ml-1"
                         @click="borrarU(item.id, item.attributes.descripcion, 1)" v-b-tooltip.hover
                         title="Eliminar"><span class="fas fas fa-trash-alt"></span></button>
@@ -139,6 +173,7 @@
                     </template>
 
                   </EasyDataTable>
+                  <!-- <input v-if="editaItem" type="text" v-model="item" placeholder="Escriba el nuevo valor"> -->
                   <!--EJEMPLO CARGARR EXCEL -->
                   <!-- <table v-if="sheetData.length" class="table table-bordered">
                     <thead>
@@ -363,12 +398,29 @@ export default {
       sheetsData: [],
       headers: [],
       headers2: [],
+      listados: [],
+      cargado: false,
+      editaItem: false,
+      itemEditar: [],
       // esperando: false,
       cantidad: 0,
       store: useStoreAxios()
     }
   },
   methods: {
+    editar(item) {
+      this.editaItem = true;
+      this.itemEditar = []
+      // console.log(this.getObjectSize(item));
+      for (let index = 1; index < this.getObjectSize(item) - 1; index++) {
+        console.log(item[index])
+        this.itemEditar.push(item[index])
+      }
+    },
+    guardaCambio() {
+      this.editaItem = false;
+    },
+    getObjectSize(obj) { return Object.keys(obj).length; },
     onFileChange(event) {
       const file = event.target.files[0];
       if (file) {
@@ -394,6 +446,8 @@ export default {
             const element = this.sheetData.slice(1)[index];
             this.item.push(element)
           }
+          this.cargado = true;
+          this.listados = this.item;
           this.preparar_Guardar(this.item)
         };
         // console.log(this.item)
@@ -414,7 +468,7 @@ export default {
           const data = new Uint8Array(e.target.result);
           const workbook = XLSX.read(data, { type: 'array' });
           this.sheetsData = [];
-          console.log(workbook.SheetNames.length)
+          // console.log(workbook.SheetNames.length)
           this.cantidad = workbook.SheetNames.length;
           // console.log(this.cantidad)
           if (workbook.SheetNames.length > 1) {
@@ -501,7 +555,7 @@ export default {
               }
             )
           }
-          this.almacenarDatos(5)
+          // this.almacenarDatos(5)
           break;
         case "departamento":
           for (let index = 0; index < listado.length; index++) {
@@ -517,7 +571,7 @@ export default {
               }
             )
           }
-          this.almacenarDatos(6)
+          // this.almacenarDatos(6)
           break;
         case "sucursal":
           for (let index = 0; index < listado.length; index++) {
@@ -534,7 +588,7 @@ export default {
               }
             )
           }
-          this.almacenarDatos(2)
+          // this.almacenarDatos(2)
           break;
         case "medida":
           for (let index = 0; index < listado.length; index++) {
@@ -551,7 +605,7 @@ export default {
               }
             )
           }
-          this.almacenarDatos(3)
+          // this.almacenarDatos(3)
           break;
         case "etiqueta":
           for (let index = 0; index < listado.length; index++) {
@@ -567,7 +621,7 @@ export default {
               }
             )
           }
-          this.almacenarDatos(8)
+          // this.almacenarDatos(8)
           break;
         case "ubicacion":
           for (let index = 0; index < listado.length; index++) {
@@ -584,7 +638,7 @@ export default {
               }
             )
           }
-          this.almacenarDatos(7)
+          // this.almacenarDatos(7)
           break;
         case "producto":
           for (let index = 0; index < listado.length; index++) {
@@ -601,7 +655,7 @@ export default {
               }
             )
           }
-          this.almacenarDatos(1)
+          // this.almacenarDatos(1)
           break;
         case "magnitud":
           for (let index = 0; index < listado.length; index++) {
@@ -617,14 +671,96 @@ export default {
               }
             )
           }
-          this.almacenarDatos(4)
+          // this.almacenarDatos(4)
           break;
         default:
           break;
       }
     },
     async almacenarDatos(n) {
-      const response = await GuardarColecciones(this.store.NewlistadoAgregar, n)
+      // console.log(this.listados[0][0])
+      if (this.cargado == true) {
+        switch (this.listados[0][0]) {
+          case 'articulo':
+            // this.almacenarDatos(5)
+            const response1 = await GuardarColecciones(this.store.NewlistadoAgregar, 5)
+            if (response1 != null) {
+              successFull("Registros agregados satisfactoriamente.", "top-end")
+            } else {
+              this.ErrorFull("Hubo un error agregando los datos. Verifíquelos y vuelva a intentarlo.", "top-start")
+            }
+            break;
+          case 'magnitud':
+            // this.almacenarDatos(4)
+            const response2 = await GuardarColecciones(this.store.NewlistadoAgregar, 4)
+            if (response2 != null) {
+              successFull("Registros agregados satisfactoriamente.", "top-end")
+            } else {
+              this.ErrorFull("Hubo un error agregando los datos. Verifíquelos y vuelva a intentarlo.", "top-start")
+            }
+            break;
+          case 'producto':
+            // this.almacenarDatos(1)
+            const response3 = await GuardarColecciones(this.store.NewlistadoAgregar, 1)
+            if (response3 != null) {
+              successFull("Registros agregados satisfactoriamente.", "top-end")
+            } else {
+              this.ErrorFull("Hubo un error agregando los datos. Verifíquelos y vuelva a intentarlo.", "top-start")
+            }
+            break;
+          case 'ubicacion':
+            // this.almacenarDatos(7)
+            const response4 = await GuardarColecciones(this.store.NewlistadoAgregar, 7)
+            if (response4 != null) {
+              successFull("Registros agregados satisfactoriamente.", "top-end")
+            } else {
+              this.ErrorFull("Hubo un error agregando los datos. Verifíquelos y vuelva a intentarlo.", "top-start")
+            }
+            break;
+          case 'etiqueta':
+            // this.almacenarDatos(8)
+            const response5 = await GuardarColecciones(this.store.NewlistadoAgregar, 8)
+            if (response5 != null) {
+              successFull("Registros agregados satisfactoriamente.", "top-end")
+            } else {
+              this.ErrorFull("Hubo un error agregando los datos. Verifíquelos y vuelva a intentarlo.", "top-start")
+            }
+            break;
+          case 'medida':
+            // this.almacenarDatos(3)
+            const response6 = await GuardarColecciones(this.store.NewlistadoAgregar, 3)
+            if (response6 != null) {
+              successFull("Registros agregados satisfactoriamente.", "top-end")
+            } else {
+              this.ErrorFull("Hubo un error agregando los datos. Verifíquelos y vuelva a intentarlo.", "top-start")
+            }
+            break;
+          case 'sucursal':
+            // this.almacenarDatos(2)
+            const response7 = await GuardarColecciones(this.store.NewlistadoAgregar, 2)
+            if (response7 != null) {
+              successFull("Registros agregados satisfactoriamente.", "top-end")
+            } else {
+              this.ErrorFull("Hubo un error agregando los datos. Verifíquelos y vuelva a intentarlo.", "top-start")
+            }
+            break;
+          case 'departamento':
+            // this.almacenarDatos(6)
+            const response8 = await GuardarColecciones(this.store.NewlistadoAgregar, 6)
+            if (response8 != null) {
+              successFull("Registros agregados satisfactoriamente.", "top-end")
+            } else {
+              this.ErrorFull("Hubo un error agregando los datos. Verifíquelos y vuelva a intentarlo.", "top-start")
+            }
+            break;
+          default:
+            break;
+        }
+
+      } else {
+
+      }
+
       // console.log(response)
     }
   },
@@ -638,503 +774,23 @@ export default {
       imageAlt: "Custom image",
       showConfirmButton: false
     });
-  }
+  },
+
 };
 </script>
-<!-- <script setup>
-import { ref, reactive, onMounted, watch, computed } from 'vue';
-import Swal from 'sweetalert2';
-import axios, { spread } from 'axios';
-import AddProducto from './modal/AddProducto.vue';
-import VueDatePicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css';
 
-// import "@mescius/spread-sheets/styles/gc.spread.sheets.excel2016colorful.css";
-// import * as GC from "@mescius/spread-sheets";
-// import "@mescius/spread-sheets-io";
-// import { saveAs } from "file-saver";
-
-const emit = defineEmits(['consultar'])
-
-function Consultar_Productos() {
-  emit('consultar', 1);
-}
-
-function ExportExcel() {
-  emit('consultar', 2);
-}
-
-function ImprimirDoc() {
-  emit('consultar', 3);
-}
-
-// funciones de excel
-import GC from "@mescius/spread-sheets";
-import "@mescius/spread-sheets-vue";
-import Excel from "@mescius/spread-excelio";
-
-const sheetName = 'Sales Data';
-const hostClass = 'spreadsheet';
-const autoGenerateColumns = true;
-const width = 200;
-const visible = true;
-const resizable = true;
-const priceFormatter = "$ #.00";
-
-// function workbookInit(_spread_) {
-//   _spread = spread;
-//   var self = _spread_;
-//   spread.bind(GC.Spread.Sheets.Events.ValueChanged, function () {
-//     const store = self.$store;
-//     var sheet = self._spread.getSheetFromName("Sales Data");
-//     var newSalesData = sheet.getDataSource();
-//     store.commit('UPDATE_RECENT_SALES', newSalesData);
-//   });
-// }
-
-
-// const initSpread = (spread) => {
-//   spread = spread;
-//   let sheet = spread.getActiveSheet();
-//   sheet.revenueCount = 8;
-//   sheet.newRowIndex = 11;
-// }
-
-const changeFileDemo = (e) => {
-  spread.importExcelFile = e.target.files[0];
-}
-
-const changeExportFileName = (e) => {
-  spread.exportFileName = e.target.value;
-}
-
-const loadExcel = (spread) => {
-  // Load an existing Excel file into the Vue spreadsheet app
-  // let spread = spread;
-  let excelFile = spread.importExcelFile;
-  let options = {
-    fileType: GC.Spread.Sheets.FileType.excel,
-  };
-  // Import an existing Excel file to Vue spreadsheet
-  spread.import(
-    excelFile,
-    () => {
-      console.log("Import successful");
-    },
-    (e) => {
-      console.error("Error during import:", e);
-    },
-    options
-  );
-}
-const modifyExcel = () => {
-  // Modify the import Excel file within the Vue instance
-}
-const saveExcel = () => {
-  // Save Vue spreadsheet to local Excel XLSX file
-}
-// Fin excel
-
-const date = ref();
-
-const date2 = ref();
-
-const itemsSelected = ref([]);
-
-const popup = ref(false);
-
-const abrirModalAddProd = () => {
-  popup.value = !popup.value;
-  // console.log(x);
-  if (popup.value == false) {
-    // console.log('Actualiza');
-    emit('consultar', 1);
-    listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
-    obtenerListadoLimpio();
-  }
-
-}
-
-const showRow = () => {
-  if (itemsSelected.value.length > 1) {
-    console.log("Selecciono " + itemsSelected.value.length)
-  }
-
-}
-
-const searchField = ref("attributes.codigo");
-
-const searchValue = ref("");
-
-const headers = [
-  { text: "NO", value: "id", width: 50, sortable: true },
-  { text: "CODIGO", value: "attributes.codigo", sortable: true },
-  { text: "CATEGORIA", value: "type" },
-  { text: "P.COMPRA", value: "precioC", sortable: true },
-  { text: "P.VENTA", value: "precioV", sortable: true },
-  { text: "UNIDAD", value: "unidad" },
-  { text: "STOCK", value: "stock", sortable: true },
-  { text: "VENTAS", value: "cantV", sortable: true },
-  { text: "OPCIONES", value: "opciones" }
-];
-
-const items = ref([]);
-
-const esperando = ref(false);
-
-const loading = (texto) => {
-  Swal.fire({
-    // title: "Sweet!",
-    text: texto,
-    imageUrl: "/cargando2.gif",
-    imageWidth: 100,
-    imageHeight: 100,
-    imageAlt: "Custom image",
-    showConfirmButton: false
-  });
-}
-
-const cerrarAlert = () => {
-  Swal.close();
-}
-
-const show = ref('');
-
-const showModal = ref('');
-
-const activaHide = ref(true);
-
-const activaShow = ref(false);
-
-const activaModal = ref(false);
-
-const displayModal = ref(''); //display: block; padding-right: 17px;
-
-const rolModal = ref(''); // dialog
-
-const showModBack = ref(''); //modal-backdrop fade show
-
-const abrirModal = () => {
-  if (showModal.value == '') {
-    showModal.value = 'show';
-    activaModal.value = true;
-    show.value = '';
-    activaShow.value = false;
-    activaHide.value = false;
-    displayModal.value = 'display: block; padding-right: 17px;';
-    showModBack.value = 'modal-backdrop fade show';
-  } else {
-    showModal.value = '';
-    activaModal.value = false;
-    show.value = '';
-    activaShow.value = false;
-    activaHide.value = true;
-    displayModal.value = 'display: none;';
-    showModBack.value = '';
-  }
-}
-
-const Exp_3Ptos = () => {
-  if (show.value == '') {
-    show.value = 'show';
-    activaShow.value = true;
-  } else {
-    show.value = '';
-    activaShow.value = false;
-  }
-}
-
-const siFoto = ref(true);
-const sicodigo = ref(true);
-const sidescripcion = ref(true);
-const siestado = ref(true);
-const siobservaciones = ref(true);
-const sisucursal = ref(true);
-const siacciones = ref(true);
-
-const AColumnas = () => {
-  siFoto.value = false;
-  sisucursal.value = false;
-  sicodigo.value = false;
-  siobservaciones.value = false;
-  siestado.value = false;
-  sidescripcion.value = false;
-  siacciones.value = false;
-}
-
-const MostrarTodas = () => {
-  siFoto.value = true;
-  sisucursal.value = true;
-  sicodigo.value = true;
-  siobservaciones.value = true;
-  siestado.value = true;
-  sidescripcion.value = true;
-  siacciones.value = true;
-}
-
-const quitarFoto = () => {
-  siFoto.value = !siFoto.value;
-}
-
-const quitarSucursal = () => {
-  sisucursal.value = !sisucursal.value;
-}
-
-const quitarestado = () => {
-  siestado.value = !siestado.value;
-}
-
-const quitardescripcion = () => {
-  sidescripcion.value = !sidescripcion.value;
-}
-
-const quitarobservacion = () => {
-  siobservaciones.value = !siobservaciones.value;
-}
-
-const quitarcodigo = () => {
-  sicodigo.value = !sicodigo.value;
-}
-
-const quitaracciones = () => {
-  siacciones.value = !siacciones.value;
-}
-
-// CRUD
-let errors = ref([]);
-
-let listado = ref([]);
-
-let listadoSucursales = ref([]);
-
-let datosPaginados = ref([]);
-
-let datosSinPaginar = ref([]);
-
-let buscando = ref('');
-
-let editar = ref(false);
-
-let id = ref('');
-
-let cantidad = ref(0);
-
-let elementPagina = ref(5);
-
-let cargado = ref(false);
-
-let inicio = ref(0);
-
-let fin = ref(0);
-
-let paginaActual = ref(1);
-
-let disableA = ref('');
-let disableS = ref('');
-
-let setTiempoBusca = '';
-
-const ipPublica = ref('127.0.0.1');
-
-const formProductos = reactive({
-  data: {
-    type: 'Productos',
-    attributes: {
-      codigo: "",
-      descripcion: "",
-      observacion: "",
-    }
-  }
-})
-
-// Paginado
-const obtenerPagina = (nopage) => {
-  paginaActual.value = nopage;
-  inicio = (nopage * elementPagina.value) - elementPagina.value;
-  fin = (nopage * elementPagina.value);
-  datosPaginados.value = [];
-  datosPaginados.value = datosSinPaginar.value.slice(inicio, fin);
-
-}
-
-const obtenerAnterior = () => {
-  if (paginaActual.value > 1) {
-    paginaActual.value--;
-    disableA.value = '';
-    disableS.value = '';
-  } else {
-    disableA.value = 'disabled';
-    disableS.value = '';
-  }
-  obtenerPagina(paginaActual.value);
-}
-
-const obtenerSiguiente = () => {
-  if (paginaActual.value < cantidad.value) {
-    paginaActual.value++;
-    disableS.value = '';
-    disableA.value = '';
-  } else {
-    disableS.value = 'disabled';
-    disableA.value = '';
-  }
-  obtenerPagina(paginaActual.value);
-}
-
-const isActivo = (nopage) => {
-  if (nopage == paginaActual.value) {
-    if (nopage == 1) {
-      disableA.value = 'disabled';
-      disableS.value = '';
-    } else {
-      if (nopage == cantidad.value) {
-        disableS.value = 'disabled';
-        disableA.value = '';
-      } else {
-        if ((nopage != 1) && (nopage != cantidad.value)) {
-          disableS.value = '';
-          disableA.value = '';
-        }
-      }
-    }
-
-    return 'active';
-  } else {
-    return '';
-  }
-}
-
-let newListado = ref([]);
-
-let newListadoSucursal = ref([]);
-
-const obtenerListadoLimpio = () => {
-  let i = 0;
-  items.value = [];
-  // cargar datos en tabla-vue
-  for (let index = 0; index < listado.value.length; index++) {
-    items.value.push(listado.value[index])
-  }
-
-}
-
-const almacenDatosProductos = (Lista) => {
-  // if (localStorage.getItem('ListadoCache')) {
-  localStorage.removeItem('ListadoCache');
-  //   }else{
-  const parsed = JSON.stringify(Lista);
-  localStorage.setItem('ListadoCache', parsed);
-  // console.log(JSON.parse(localStorage.getItem('ListadoCache')));
-  // dataCache.value = JSON.parse(localStorage.getItem('ListadoCache'));
-  // }
-}
-
-const consultar = async () => {
-  if (cargado.value == false) {
-    let response = await axios.get(`http://${ipPublica.value}/fullstack/public/productos`)
-      .then((response) => {
-        listado.value = response.data.data;
-        almacenDatosProductos(listado.value);
-        obtenerListadoLimpio();
-        cargado.value = true;
-        // console.log(response.data.data)
-        // datosSinPaginar.value = response.data.data;
-        // cantidad.value = Math.ceil(response.data.data.length / elementPagina.value);
-        // obtenerPagina(1);
-        // cargado.value = true;
-        // router.go();
-      });
-  } else {
-    almacenDatosProductos(listado.value);
-    obtenerListadoLimpio();
-    // datosSinPaginar.value = listado.value;
-    // cantidad.value = Math.ceil(listado.value.length / elementPagina.value);
-    // obtenerPagina(1);
-  }
-
-}
-
-const cancelarU = () => {
-  editar.value = false;
-  formProductos.data.attributes.descripcion = '';
-  formProductos.data.attributes.codigo = '';
-  formProductos.data.attributes.observacion = '';
-}
-
-const borrarU = (id, correo) => {
-  Swal.fire({
-    title: "Confirmación",
-    text: `Está a punto de eliminar el producto: ${correo}`,
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Sí, eliminar"
-  }).then((result) => {
-    if (result.isConfirmed) {
-      esperando.value = true;
-      cargado.value = false;
-      // Eliminar //
-      axios.delete(`http://${ipPublica.value}/fullstack/public/productos/${id}`)
-        .then(() => {
-          esperando.value = false;
-          cerrarAlert();
-          consultar();
-          cancelarU();
-          Swal.fire({
-            title: "Eliminado",
-            text: "Producto eliminado satisfactoriamente.",
-            icon: "success"
-          });
-          // cargado.value = false;
-        })
-    }
-  }).catch((error) => {
-    esperando.value = false;
-    cerrarAlert();
-    Swal.fire({
-      icon: "error",
-      title: error.response.data.message
-    })
-  });
-}
-
-const cambiarLimite = () => {
-  let i = 0;
-  newListado.value = [];
-  for (let index = 0; index < listado.value.length; index++) {
-    const element = listado.value[index];
-    if (element.attributes.deleted_at == null) {
-      newListado.value[i] = element;
-      i++;
-    }
-  }
-  datosSinPaginar.value = newListado.value;
-  cantidad.value = Math.ceil(newListado.value.length / elementPagina.value);
-  obtenerPagina(1);
-}
-
-watch(listado.value, (newX) => {
-  console.log(`El nuevo listado es ${newX}`)
-})
-
-onMounted(() => {
-  if (localStorage.getItem('userName')) {
-    listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
-    obtenerListadoLimpio();
-    // console.log(itemsSelected.value);
-    // listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
-    // listadoSucursales = obtenerListadoLimpioSucursales();
-    cargado.value = true;
-  } else {
-    router.push('/login');
-  }
-  // consultar();
-})
-
-
-</script> -->
 <style scoped>
+.input-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.input-container input {
+  flex: 1;
+  margin-right: 10px;
+}
+
 .customize-table {
   --easy-table-border: 1px solid #f5f5f7;
   --easy-table-row-border: 1px solid #c8ced8;

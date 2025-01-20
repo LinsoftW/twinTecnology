@@ -14,11 +14,11 @@ const endpointMo = [];
 const endpointMi = [];
 const endpointI = [];
 
-const urlAuditoria = "http://www.twintechnology.cu/inventory/api/auditoria";
+const urlAuditoria = "http://www.twintechnology.cu/inventory/api";
 const url = "http://www.twintechnology.cu/inventory/api/inventario";
 const urlImagen = "http://www.twintechnology.cu/inventory/api/imagen/producto_imagenes";
 // const url = "http://localhost/inventory/api/inventario";
-// const urlAuditoria = "http://localhost/inventory/api/auditoria";
+// const urlAuditoria = "http://localhost/inventory/api";
 // const urlImagen = "http://localhost/inventory/api/imagen/producto_imagenes";
 
 // const urlUploadImagen = "http://www.twintechnology.cu/inventory/api/imagen/producto_imagenes/upload";
@@ -226,7 +226,7 @@ export async function obtenerDatos(n) {
       //   return cache.get(endpointMo);
       // }
       try {
-        const response = await axiosInstanceA.get('/inventario');
+        const response = await axiosInstanceA.get('/auditoria/inventario');
         // cache.set(endpointMo, response.data.data);
         return response.data.data;
       } catch (error) {
@@ -283,7 +283,7 @@ export async function fecthData(endpoint) {
 // }
 
 // Insertar datos
-export async function GuardarDatos(datos, n) {
+export async function GuardarDatos(datos, n, i) {
   switch (n) {
     case 1:
       try {
@@ -392,8 +392,8 @@ export async function GuardarDatos(datos, n) {
     case 14:
       try {
         // /inventario/lots/1?function[name]=ajustar_cantidad
-        // console.log(datos)
-        const response = await axiosInstanceA.patch(`/inventario/lots/1?function[name]=ajustar_cantidad`, datos);
+        // console.log(i)
+        const response = await axiosInstanceA.patch(`/inventario/lots/${i}?function[name]=ajustar_cantidad`, datos);
         return response.data.data;
       } catch (error) {
         throw error;

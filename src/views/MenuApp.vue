@@ -1055,6 +1055,7 @@ const evitarRecargar = () => {
     localStorage.removeItem('Carg_datMo'); // Monedas
     localStorage.removeItem('Carg_datIM'); // Imagenes
     localStorage.removeItem('Carg_datEP'); // Etiqueta productos
+    localStorage.removeItem('Carg_datAu'); // Auditoria
     localStorage.setItem('Carg_datA', '0'); // Articulos
     localStorage.setItem('Carg_datD', '0'); // Departamentos
     localStorage.setItem('Carg_datMe', '0'); // Unidades de medida
@@ -1067,6 +1068,7 @@ const evitarRecargar = () => {
     localStorage.setItem('Carg_datMo', '0'); // Monedas
     localStorage.setItem('Carg_datIM', '0'); // Imagenes
     localStorage.setItem('Carg_datEP', '0'); // Etiqueta productos
+    localStorage.setItem('Carg_datAu', '0'); // Auditorias
     // Store.cambiaEstado(1)
     event.preventDefault()
     // Store.serecargo = true;

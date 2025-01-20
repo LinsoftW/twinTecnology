@@ -1132,7 +1132,7 @@
 
                 </div>
                 <div v-if="editar == false" class="form-group h4 col-lg-6">
-                  <a @click="agregarULote(1)" class="btn btn-info btn-block" :class="disabledProductoBtn">
+                  <a @click="agregarULote(1)" class="btn btn-info btn-block" data-dismiss="modal" aria-label="Close" :class="disabledProductoBtn">
                     {{ GuardarMag }}
                   </a>
                 </div>
@@ -1213,7 +1213,7 @@
         <div class="modal-header">
           <h5 class="modal-title text-info" id="exampleModalLabel">LOTE (<label style="color: red;">{{
             Store.formLotes.data.attributes.descripcion
-          }}</label>) </h5>
+              }}</label>) </h5>
           <!-- <h5 class="modal-title text-info text-center" id="exampleModalLabel" v-if="editar == true"><span
               class="fa fa-edit"></span>
             MODIFICAR LOS DATOS DEL LOTE <br>(<label style="color: red;">{{
@@ -1252,7 +1252,7 @@
                     <div class="form-group col-lg-12 text-left">
                       <label class="text-info">Aumentar o disminuir: </label>
                       <input type="text" class="form-control" id="sucursal" aria-describedby="emailHelp"
-                        v-model="Store.formLotes.data.attributes.cantidad" placeholder="Ej: 5 o -5" required>
+                        v-model="Store.formLotes.data.attributes.cantidad" placeholder="Ej: 5" required>
 
                     </div>
                   </div>
@@ -1271,7 +1271,7 @@
                       <select name="produc" id="produc" @change="verificar_error(7)"
                         style="width: 100%; text-align:center" placeholder="Ej: Lapicez"
                         class="text-gray-900 form-control"
-                        v-model="Store.formInventario.meta.foreign_keys_instances.operacion_id">
+                        v-model="Store.formInventario.data.meta.foreign_keys_instances.operacion_id">
                         <option v-for="dato in itemsOperaciones1" :key="dato.id" :value="dato.id">{{
                           dato.attributes.operacion }}</option>
                       </select>
@@ -1496,20 +1496,14 @@ const aceptarCambio = async () => {
   Store.cambiaEstado(9);
   AceptarAD.value = 'Actualizando...'
   disabledLoteBtn.value = 'disabled'
-  if (cantInicial.value == null) {
-    Store.formLotes.data.attributes.cantidad = Store.formLotes.data.attributes.cantidad;
-  } else {
-    Store.formLotes.data.attributes.cantidad = parseInt(Store.formLotes.data.attributes.cantidad) + parseInt(cantInicial.value);
-  }
-  const response = await EditarDatos(IdLote.value, Store.formLotes, 10);
-  // console.log(response)
-  Store.EditLotes(response)
-  itemsLotes1.value = Store.itemsLotes;
   // guardo la operacion en la auditoria
   Store.formInventario.data.attributes.cantidad = parseInt(Store.formLotes.data.attributes.cantidad);
-  // Store.formInventario.data.attributes.lot_id = response.id;
-  // Store.formInventario.data.attributes.observacion = "Perfecto";
-  const response2 = await GuardarDatos(Store.formInventario, 14);
+  // console.log(IdLote.value)
+  const response2 = await GuardarDatos(Store.formInventario, 14, IdLote.value);
+  Store.formLotes.data.attributes.cantidad = response2.attributes.cantidad;
+  // const response = await EditarDatos(IdLote.value, Store.formLotes, 10);
+  Store.EditLotes(response2)
+  itemsLotes1.value = Store.itemsLotes;
   successFull("Cantidad modificada satisfactoriamente.", "top-end")
   Store.formLotes.data.attributes.cantidad = '';
   Store.formInventario.data.attributes.justificacion = '';
@@ -1985,7 +1979,7 @@ const agregarULote = async (n) => {
         disabledProductoBtn.value = '';
         GuardarMag.value = 'Agregar y continuar';
         errores.value.descripcion = "Este dato ya existe en el sistema";
-        ErrorFull("Descripción de producto ya existente.", "top-start")
+        ErrorFull("Error insertando los datos. Verifíquelos", "top-start")
       } else {
         disabledProductoBtn.value = '';
         GuardarMag.value = 'Agregar y continuar'
@@ -1997,15 +1991,15 @@ const agregarULote = async (n) => {
         Store.formLotes.data.attributes.moneda_compra = '';
         Store.formLotes.data.attributes.precio_venta = '';
         Store.formLotes.data.attributes.precio_venta = '';
-        Store.AddLotes(response)
-        itemsLotes1.value = Store.itemsLotes;
         // guardo la operacion en la auditoria
         Store.formInventario.data.attributes.justificacion = "Inicializando los valores del lote.";
         Store.formInventario.data.attributes.cantidad = response.attributes.cantidad;
-        Store.formInventario.data.attributes.lot_id = response.id;
-        Store.formInventario.data.attributes.operacion_id = 1;
-        Store.formInventario.data.attributes.observacion = "Agregando nuevo lote.";
-        const response2 = await GuardarDatos(Store.formInventario, 14);
+        // Store.formInventario.data.attributes.lot_id = response.id;
+        Store.formInventario.data.meta.foreign_keys_instances.operacion_id = 1;
+        // Store.formInventario.data.attributes.observacion = "Agregando nuevo lote.";
+        const response2 = await GuardarDatos(Store.formInventario, 14, response.id);
+        Store.AddLotes(response)
+        itemsLotes1.value = Store.itemsLotes;
         Store.AddAuditoria(response2)
         // console.log(response2)
         successFull("Lote agregado satisfactoriamente.", "top-end")
@@ -2042,11 +2036,13 @@ const agregarULote = async (n) => {
         Store.AddLotes(response)
         itemsLotes1.value = Store.itemsLotes;
         // guardo la operacion en la auditoria
-        Store.formInventario.data.attributes.justificacion = "Modificación de los valores del lote.";
+        Store.formInventario.data.attributes.justificacion = "Inicializando los valores del lote";
         Store.formInventario.data.attributes.cantidad = response.attributes.cantidad;
-        Store.formInventario.data.attributes.lot_id = response.id;
-        Store.formInventario.data.attributes.operacion_id = 1;
-        Store.formInventario.data.attributes.observacion = "Perfecto";
+        // Store.formInventario.data.attributes.lot_id = response.id;
+        // Store.formInventario.data.attributes.operacion_id = 1;
+        // Store.formInventario.data.attributes.observacion = "Perfecto";
+        // Store.formInventario.data.meta.foreign_keys_instances.operacion_id = 1;
+        Store.formInventario.data.meta.foreign_keys_instances.operacion_id = 1;
         const response2 = await GuardarDatos(Store.formInventario, 14);
         successFull("Lote agregado satisfactoriamente.", "top-end")
         GuardarMag.value = 'Agregar';
@@ -2328,10 +2324,11 @@ const editarULote = async () => {
   // guardo la operacion en la auditoria
   Store.formInventario.data.attributes.justificacion = "Modificación de los valores del lote.";
   Store.formInventario.data.attributes.cantidad = response.attributes.cantidad;
-  Store.formInventario.data.attributes.lot_id = response.id;
-  Store.formInventario.data.attributes.operacion_id = 5;
-  Store.formInventario.data.attributes.observacion = "Se modificaron los valores del lote.";
-  const response2 = await GuardarDatos(Store.formInventario, 14);
+  // Store.formInventario.data.attributes.lot_id = response.id;
+  // Store.formInventario.data.attributes.operacion_id = 5;
+  Store.formInventario.data.meta.foreign_keys_instances.operacion_id = 5;
+  // Store.formInventario.data.attributes.observacion = "Se modificaron los valores del lote.";
+  const response2 = await GuardarDatos(Store.formInventario, 14, Store.id);
   Store.AddAuditoria(response2)
   successFull("Lote modificado satisfactoriamente.", "top-end")
   Store.cambiaEstado(9);
@@ -2966,26 +2963,42 @@ const borrarUL = async (id, correo, caso) => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         Store.cambiaEstado(9);
-        const response = await EliminarDatos(id, 9);
-        if (response == null) {
-          Store.cambiaEstado(9);
-        } else {
-          Store.DeleteLotes(response);
-          itemsLotes1.value = Store.itemsLotes;
-          if (detalle.value == true) {
-            detalle.value = false;
+        // guardo la operacion en la auditoria
+        for (let index = 0; index < itemsLotes1.value.length; index++) {
+          if (id == itemsLotes1.value[index].id) {
+            // console.log("Okkk")
+            Store.formInventario.data.attributes.justificacion = "Eliminando el lote.";
+            Store.formInventario.data.attributes.cantidad = itemsLotes1.value[index].attributes.cantidad;
+            Store.formInventario.data.meta.foreign_keys_instances.operacion_id = 15;
+            const response2 = await GuardarDatos(Store.formInventario, 14, id);
+            Store.AddAuditoria(response2)
+            Store.DeleteLotes(response2);
+            itemsLotes1.value = Store.itemsLotes;
           }
-          // guardo la operacion en la auditoria
-          Store.formInventario.data.attributes.justificacion = "Eliminando el lote.";
-          Store.formInventario.data.attributes.cantidad = response.attributes.cantidad;
-          Store.formInventario.data.attributes.lot_id = response.id;
-          Store.formInventario.data.attributes.operacion_id = 15;
-          Store.formInventario.data.attributes.observacion = "Se eliminó el lote";
-          const response2 = await GuardarDatos(Store.formInventario, 14);
-          Store.AddAuditoria(response2)
-          successFull("Lote eliminado satisfactoriamente.", "top-end")
-          Store.cambiaEstado(9);
         }
+        successFull("Lote eliminado satisfactoriamente.", "top-end")
+        Store.cambiaEstado(9);
+        // const response = await EliminarDatos(id, 9);
+        // if (response == null) {
+        //   Store.cambiaEstado(9);
+        // } else {
+        //   Store.DeleteLotes(response);
+        //   itemsLotes1.value = Store.itemsLotes;
+        //   if (detalle.value == true) {
+        //     detalle.value = false;
+        //   }
+        //   // guardo la operacion en la auditoria
+        //   Store.formInventario.data.attributes.justificacion = "Eliminando el lote.";
+        //   Store.formInventario.data.attributes.cantidad = response.attributes.cantidad;
+        //   // Store.formInventario.data.attributes.lot_id = response.id;
+        //   // Store.formInventario.data.attributes.operacion_id = 15;
+        //   // Store.formInventario.data.attributes.observacion = "Se eliminó el lote";
+        //   Store.formInventario.data.meta.foreign_keys_instances.operacion_id = 15;
+        //   const response2 = await GuardarDatos(Store.formInventario, 14, id);
+        //   Store.AddAuditoria(response2)
+        //   successFull("Lote eliminado satisfactoriamente.", "top-end")
+        //   Store.cambiaEstado(9);
+        // }
 
       }
     })
@@ -3000,28 +3013,42 @@ const borrarUL = async (id, correo, caso) => {
       confirmButtonText: "Sí, eliminar"
     }).then(async (result) => {
       if (result.isConfirmed) {
-        Store.cambiaEstado(1);
+        Store.cambiaEstado(9);
         // Eliminar //
         for (let index = 0; index < itemsSelected.value.length; index++) {
-
-          const response = await EliminarDatos(itemsSelected.value[index].id, 1);
-          if (response == null) {
-            // Store.cambiaEstado(1);
-            correcto = false;
-          } else {
-            Store.DeleteProducto(response);
+          // guardo la operacion en la auditoria
+          // for (let index = 0; index < itemsLotes1.value.length; index++) {
+            Store.formInventario.data.attributes.justificacion = "Eliminando el lote.";
+            Store.formInventario.data.attributes.cantidad = itemsSelected.value[index].attributes.cantidad;
+            Store.formInventario.data.meta.foreign_keys_instances.operacion_id = 15;
+            const response2 = await GuardarDatos(Store.formInventario, 14, itemsSelected.value[index].id);
+            Store.AddAuditoria(response2)
+            Store.DeleteLotes(response2);
+            itemsLotes1.value = Store.itemsLotes;
             correcto = true;
-            // Store.cambiaEstado(1);
-          }
+            // if (itemsSelected.value[index].id == itemsLotes1.value[index].id) {
+            //   // console.log("Okkk")
+            // }
+          // }
+
+          // const response = await EliminarDatos(itemsSelected.value[index].id, 1);
+          // if (response == null) {
+          //   // Store.cambiaEstado(1);
+          //   correcto = false;
+          // } else {
+          //   Store.DeleteProducto(response);
+          //   correcto = true;
+          //   // Store.cambiaEstado(1);
+          // }
         }
-        if (correcto == true) {
-          itemsProductos1.value = Store.itemsProductos;
-          successFull("Productos eliminados satisfactoriamente.", "top-end")
-          Store.cambiaEstado(1);
-        } else {
-          ErrorFull("Error eliminando los elementos seleccionados.", "top-start")
-          Store.cambiaEstado(1);
-        }
+        // if (correcto == true) {
+        //   itemsProductos1.value = Store.itemsProductos;
+        //   successFull("Productos eliminados satisfactoriamente.", "top-end")
+        //   Store.cambiaEstado(1);
+        // } else {
+        //   ErrorFull("Error eliminando los elementos seleccionados.", "top-start")
+        //   Store.cambiaEstado(1);
+        // }
       }
     })
   }

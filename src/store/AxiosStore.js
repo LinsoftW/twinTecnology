@@ -152,19 +152,15 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
   })
 
   const formInventario = reactive({
-    // id: 0,
     data: {
       attributes: {
         justificacion: "",
         cantidad: 0,
-        // lot_id: 0,
-        // operacion_id: 0,
-        // observacion: ""
-      }
-    },
-    meta: {
-      foreign_keys_instances: {
-        operacion_id: 0
+      },
+      meta: {
+        foreign_keys_instances: {
+          operacion_id: 0
+        }
       }
     }
   })
