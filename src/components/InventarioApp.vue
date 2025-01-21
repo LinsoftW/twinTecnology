@@ -227,7 +227,7 @@
               <EasyDataTable :headers="headers" :items="itemsProductos1" buttons-pagination border-cell
                 v-model:items-selected="itemsSelected" header-text-direction="center" body-text-direction="center"
                 :search-field="searchField" :search-value="searchValue" @click-row="showRow" :rows-per-page="5"
-                :loading="Store.esperandoProductos">
+                :loading="Store.esperandoProductos" :key="actualizaTabla">
                 <template #item-image="item">
                   <a data-toggle="modal" data-target="#verImagen"
                     @click="obtenDescripcion(item.attributes.descripcion)">
@@ -1132,7 +1132,8 @@
 
                 </div>
                 <div v-if="editar == false" class="form-group h4 col-lg-6">
-                  <a @click="agregarULote(1)" class="btn btn-info btn-block" data-dismiss="modal" aria-label="Close" :class="disabledProductoBtn">
+                  <a @click="agregarULote(1)" class="btn btn-info btn-block" data-dismiss="modal" aria-label="Close"
+                    :class="disabledProductoBtn">
                     {{ GuardarMag }}
                   </a>
                 </div>
@@ -1213,7 +1214,7 @@
         <div class="modal-header">
           <h5 class="modal-title text-info" id="exampleModalLabel">LOTE (<label style="color: red;">{{
             Store.formLotes.data.attributes.descripcion
-              }}</label>) </h5>
+          }}</label>) </h5>
           <!-- <h5 class="modal-title text-info text-center" id="exampleModalLabel" v-if="editar == true"><span
               class="fa fa-edit"></span>
             MODIFICAR LOS DATOS DEL LOTE <br>(<label style="color: red;">{{
@@ -1441,6 +1442,8 @@ const cargarImagen = async () => {
   }
 }
 
+const actualizaTabla = ref(0)
+
 const generar_pdf = async () => {
 
   let nuevoArreglo = ref([]);
@@ -1500,6 +1503,7 @@ const aceptarCambio = async () => {
   Store.formInventario.data.attributes.cantidad = parseInt(Store.formLotes.data.attributes.cantidad);
   // console.log(IdLote.value)
   const response2 = await GuardarDatos(Store.formInventario, 14, IdLote.value);
+  // console.log(response2)
   Store.formLotes.data.attributes.cantidad = response2.attributes.cantidad;
   // const response = await EditarDatos(IdLote.value, Store.formLotes, 10);
   Store.EditLotes(response2)
@@ -1887,7 +1891,14 @@ const agregarUProducto = async (n) => {
         Store.formProductos.data.attributes.articulo_id = '';
         Store.formProductos.data.attributes.observacion = '';
         Store.AddProductos(response)
+        // const response = await obtenerDatos(1);
+        // if (response.length > 0) {
+        //   Store.setListadoProductos(response)
+        // }
+        // Store.cambiaEstado(1)
+        actualizaTabla.value = actualizaTabla.value + 1;
         itemsProductos1.value = Store.itemsProductos;
+        // Store.cambiaEstado(1)
         Store.formEtiquetaProducto.data.attributes.producto_id = response.id;
         Store.formEtiquetaProducto.data.attributes.etiqueta_id = etiqueta_R.value;
         const response2 = await GuardarDatos(Store.formEtiquetaProducto, 13);
@@ -1972,6 +1983,7 @@ const agregarULote = async (n) => {
       GuardarMag.value = 'Guardando...';
       disabledProductoBtn.value = 'disabled';
       Store.cambiaEstado(9)
+      if (Store.formLotes.data.attributes.cantidad == '') { Store.formLotes.data.attributes.cantidad = null }
       const response = await GuardarDatos(Store.formLotes, 10);
       // console.log(response)
       if (response == null) {
@@ -1993,7 +2005,9 @@ const agregarULote = async (n) => {
         Store.formLotes.data.attributes.precio_venta = '';
         // guardo la operacion en la auditoria
         Store.formInventario.data.attributes.justificacion = "Inicializando los valores del lote.";
-        Store.formInventario.data.attributes.cantidad = response.attributes.cantidad;
+        if (response.attributes.cantidad == null) { Store.formInventario.data.attributes.cantidad = 0 } else {
+          Store.formInventario.data.attributes.cantidad = response.attributes.cantidad;
+        }
         // Store.formInventario.data.attributes.lot_id = response.id;
         Store.formInventario.data.meta.foreign_keys_instances.operacion_id = 1;
         // Store.formInventario.data.attributes.observacion = "Agregando nuevo lote.";
@@ -3018,17 +3032,17 @@ const borrarUL = async (id, correo, caso) => {
         for (let index = 0; index < itemsSelected.value.length; index++) {
           // guardo la operacion en la auditoria
           // for (let index = 0; index < itemsLotes1.value.length; index++) {
-            Store.formInventario.data.attributes.justificacion = "Eliminando el lote.";
-            Store.formInventario.data.attributes.cantidad = itemsSelected.value[index].attributes.cantidad;
-            Store.formInventario.data.meta.foreign_keys_instances.operacion_id = 15;
-            const response2 = await GuardarDatos(Store.formInventario, 14, itemsSelected.value[index].id);
-            Store.AddAuditoria(response2)
-            Store.DeleteLotes(response2);
-            itemsLotes1.value = Store.itemsLotes;
-            correcto = true;
-            // if (itemsSelected.value[index].id == itemsLotes1.value[index].id) {
-            //   // console.log("Okkk")
-            // }
+          Store.formInventario.data.attributes.justificacion = "Eliminando el lote.";
+          Store.formInventario.data.attributes.cantidad = itemsSelected.value[index].attributes.cantidad;
+          Store.formInventario.data.meta.foreign_keys_instances.operacion_id = 15;
+          const response2 = await GuardarDatos(Store.formInventario, 14, itemsSelected.value[index].id);
+          Store.AddAuditoria(response2)
+          Store.DeleteLotes(response2);
+          itemsLotes1.value = Store.itemsLotes;
+          correcto = true;
+          // if (itemsSelected.value[index].id == itemsLotes1.value[index].id) {
+          //   // console.log("Okkk")
+          // }
           // }
 
           // const response = await EliminarDatos(itemsSelected.value[index].id, 1);

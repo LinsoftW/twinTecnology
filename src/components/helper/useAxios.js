@@ -13,6 +13,10 @@ const endpointMa = [];
 const endpointMo = [];
 const endpointMi = [];
 const endpointI = [];
+const endpointIn = [];
+const endpointEp = [];
+const endpointOp = [];
+const endpointPe = [];
 
 const urlAuditoria = "http://www.twintechnology.cu/inventory/api";
 const url = "http://www.twintechnology.cu/inventory/api/inventario";
@@ -198,48 +202,48 @@ export async function obtenerDatos(n) {
       }
       break;
     case 13:
-      // if (cache.has(endpointMo)) {
-      //   return cache.get(endpointMo);
+      // if (cache.has(endpointEp)) {
+      //   return cache.get(endpointEp);
       // }
       try {
         const response = await axiosInstance.get('/etiqueta_productos');
-        // cache.set(endpointMo, response.data.data);
+        // cache.set(endpointEp, response.data.data);
         return response.data.data;
       } catch (error) {
         throw error;
       }
       break;
     case 14:
-      // if (cache.has(endpointMo)) {
-      //   return cache.get(endpointMo);
+      // if (cache.has(endpointPe)) {
+      //   return cache.get(endpointPe);
       // }
       try {
         const response = await axiosInstance.get('/personas');
-        // cache.set(endpointMo, response.data.data);
+        // cache.set(endpointPe, response.data.data);
         return response.data.data;
       } catch (error) {
         throw error;
       }
       break;
     case 15:
-      // if (cache.has(endpointMo)) {
-      //   return cache.get(endpointMo);
+      // if (cache.has(endpointIn)) {
+      //   return cache.get(endpointIn);
       // }
       try {
         const response = await axiosInstanceA.get('/auditoria/inventario');
-        // cache.set(endpointMo, response.data.data);
+        // cache.set(endpointIn, response.data.data);
         return response.data.data;
       } catch (error) {
         throw error;
       }
       break;
     case 16:
-      // if (cache.has(endpointMo)) {
-      //   return cache.get(endpointMo);
+      // if (cache.has(endpointOp)) {
+      //   return cache.get(endpointOp);
       // }
       try {
         const response = await axiosInstance.get('/operaciones');
-        // cache.set(endpointMo, response.data.data);
+        // cache.set(endpointOp, response.data.data);
         return response.data.data;
       } catch (error) {
         throw error;

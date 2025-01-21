@@ -199,7 +199,6 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
   })
 
   const formEtiqueta = reactive({
-    // id: 0,
     data: {
       attributes: {
         etiqueta: "",

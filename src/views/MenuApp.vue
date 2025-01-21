@@ -1,6 +1,31 @@
 <template>
 
-  <div id="wrapper">
+  <div id="wrapper" @contextmenu.prevent="onContextMenu">
+    <!-- <div @contextmenu.prevent="onContextMenu"> Haz clic derecho en esta área para ver el menú contextual. </div> -->
+    <ContextMenu v-model:show="show" :options="optionsComponent">
+      <context-menu-item @click="handleOption('Opción 2')">
+        <i class="fa fa-home" aria-hidden="true"></i>
+        Página principal &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </context-menu-item>
+      <context-menu-item @click="handleOption('Opción 1')">
+        <i class="fa fa-refresh" aria-hidden="true"></i>
+        Acualizar datos &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </context-menu-item>
+      <context-menu-item @click="handleOption('Opción 3')">
+        <i class="fa fa-upload" aria-hidden="true"></i>
+        Carga masiva de datos&nbsp;
+      </context-menu-item>
+      <context-menu-item @click="handleOption('Opción 4')">
+        <i class="fa fa-cog" aria-hidden="true"></i>
+        Configurar sitio &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </context-menu-item>
+      <!-- <context-menu-item @click="handleOption('Opción 2')">
+        <i class="fas fa-user"></i> Opción 2
+      </context-menu-item>
+      <context-menu-item label="Opción 3" @click="handleOption('Opción 3')">
+        <i class="fas fa-user"></i> Opción 3
+      </context-menu-item> -->
+    </ContextMenu>
     <q-table title="Treats" :rows="rows" :columns="columns" row-key="name"></q-table>
 
     <!-- Sidebar -->
@@ -55,7 +80,8 @@
             <!-- <a class="collapse-item" @click="click_inventario">Inventario</a>
             <a class="collapse-item" @click="click_pedidos">Pedidos</a> -->
             <router-link class="button" to="/inventario" @click="obtenerLinkA(1)">
-              <a class="collapse-item" v-bind:class="ActivaLink(1)" :key="1"><i class="fa fa-list-ul"></i> Productos</a>
+              <a class="collapse-item" v-bind:class="ActivaLink(1)" :key="1"><i class="fa fa-list-ul"></i>
+                Productos</a>
             </router-link>
             <router-link class="button" to="/categorias" @click="obtenerLinkA(2)">
               <a class="collapse-item" v-bind:class="ActivaLink(2)" :key="2"> <i class="fa fa-list-alt"></i>
@@ -683,7 +709,7 @@ import InventarioApp from '@/components/InventarioApp.vue';
 import PedidosApp from '@/components/PedidosApp.vue';
 import router from '@/router';
 import { onUnmounted, ref, watch, watchEffect } from 'vue';
-import { onBeforeRouteLeave, useRoute } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { onMounted } from 'vue';
 import SucursalApp from '@/components/SucursalApp.vue';
 import ProductosApp from '@/components/ProductosApp.vue';
@@ -701,6 +727,8 @@ import UbicacionesApp from '@/components/UbicacionesApp.vue';
 import { useStoreAxios } from '@/store/AxiosStore';
 import { obtenerDatos } from '../components/helper/useAxios';
 import AuditoriaApp from '@/components/AuditoriaApp.vue';
+
+import { ContextMenu, ContextMenuItem } from '@imengyu/vue3-context-menu';
 // import { useQuasar, useDialogPluginComponent } from 'quasar';
 
 // const { dialogRef, onDialogHide, onDialogOK, onDialogCancel, qTable } = useDialogPluginComponent()
@@ -708,6 +736,323 @@ import AuditoriaApp from '@/components/AuditoriaApp.vue';
 // Nuevo quasar
 
 // Fin quasar
+
+const show = ref(false);
+const optionsComponent = ref({ zIndex: 3, minWidth: 230, x: 0, y: 0, });
+const onContextMenu = (event) => {
+  event.preventDefault(); optionsComponent.value.x = event.clientX; optionsComponent.value.y = event.clientY; show.value = true;
+};
+
+const itemsAuditorias1 = ref([])
+const itemsOperaciones1 = ref([])
+const itemsMedidas1 = ref([])
+const itemsMagnitud1 = ref([])
+
+const itemsDeparta1 = ref([])
+
+const itemsMoneda1 = ref([])
+
+const itemsEtiqueta1 = ref([])
+
+const itemsEtiquetaProductos1 = ref([])
+
+const itemsProductos1 = ref([])
+
+const itemsImagenes1 = ref([])
+
+const itemsArticulos1 = ref([])
+
+const itemsSucursales1 = ref([])
+
+const itemsUbicaciones1 = ref([])
+
+const itemsMedida1 = ref([])
+
+const itemsLotes1 = ref([])
+
+const actualizar = async () => {
+  Ctoggled.value = 'toggled';
+  editando.value = true;
+  Store.limpiarDatos()
+  localStorage.removeItem('Carg_datA'); // Articulos
+  localStorage.removeItem('Carg_datD'); // Departamentos
+  localStorage.removeItem('Carg_datMe'); // Unidades de medida
+  localStorage.removeItem('Carg_datM'); // Magitudes
+  localStorage.removeItem('Carg_datP'); // Productos
+  localStorage.removeItem('Carg_datS'); // Sucursales
+  localStorage.removeItem('Carg_datU'); // Ubicaciones
+  localStorage.removeItem('Carg_datE'); // Etiquetas
+  localStorage.removeItem('Carg_datL'); // Lotes
+  localStorage.removeItem('Carg_datMo'); // Monedas
+  localStorage.removeItem('Carg_datIM'); // Imagenes
+  localStorage.removeItem('Carg_datEP'); // Etiqueta productos
+  localStorage.removeItem('Carg_datAu'); // Auditoria
+  localStorage.setItem('Carg_datA', '0'); // Articulos
+  localStorage.setItem('Carg_datD', '0'); // Departamentos
+  localStorage.setItem('Carg_datMe', '0'); // Unidades de medida
+  localStorage.setItem('Carg_datM', '0'); // Magitudes
+  localStorage.setItem('Carg_datP', '0'); // Productos
+  localStorage.setItem('Carg_datS', '0'); // Sucursales
+  localStorage.setItem('Carg_datU', '0'); // Ubicaciones
+  localStorage.setItem('Carg_datE', '0'); // Etiquetas
+  localStorage.setItem('Carg_datL', '0'); // Lotes
+  localStorage.setItem('Carg_datMo', '0'); // Monedas
+  localStorage.setItem('Carg_datIM', '0'); // Imagenes
+  localStorage.setItem('Carg_datEP', '0'); // Etiqueta productos
+  localStorage.setItem('Carg_datAu', '0'); // Auditorias
+  // beforeRouteLeave()
+  if (localStorage.getItem('userName')) {
+    // if (localStorage.getItem('Carg_datIM') == '0') {
+    //   const response2 = await obtenerDatos(12);
+    //   // console.log(response2)
+    //   if (response2 != null) {
+    //     Store.setListadoImagen(response2);
+    //     localStorage.setItem("Carg_datP", "1");
+    //   }
+    //   // itemsImagenes1.value = Store.itemsImagen;
+    // }
+    if (localStorage.getItem('Carg_datP') == '0') {
+      // cargando los productos
+      Store.cambiaEstado(1)
+      const response = await obtenerDatos(1);
+      // console.log(response)
+      if (response == null) {
+        Store.cambiaEstado(1)
+        ErrorFull("Error de red, intente más tarde.", "top-start")
+      } else {
+        Store.setCantidadProductos(response.length)
+        if (response.length > 0) {
+          Store.setListadoProductos(response)
+          localStorage.setItem("LProductos", response);
+        }
+        for (let index = 0; index < response.length; index++) {
+          Store.nextIDProducto = response[index].id;
+        }
+        // console.log(Store.nextIDProducto + 1)
+        localStorage.setItem("Carg_datP", "1");
+        Store.cambiaEstado(1);
+      }
+    }
+    if (localStorage.getItem('Carg_datD') == '0') {
+      // cargando los departamentos
+      Store.cambiaEstado(2)
+      const response = await obtenerDatos(6);
+      if (!response) {
+        Store.cambiaEstado(2)
+        // ErrorFull("Error de red, intente más tarde.", "top-start")
+      } else {
+        Store.setCantidadDepartamentos(response.length)
+        if (response.length > 0) {
+          Store.setListadoDepartamentos(response)
+          localStorage.setItem("LDepartamentos", response);
+        }
+        for (let index = 0; index < response.length; index++) {
+          Store.nextIDDepartamento = response[index].id;
+        }
+        // console.log(Store.nextIDDepartamento)
+        localStorage.setItem("Carg_datD", "1");
+        Store.cambiaEstado(2);
+      }
+
+    }
+
+    if (localStorage.getItem('Carg_datA') == '0') {
+      // cargando los articulos
+      Store.cambiaEstado(3)
+      const response = await obtenerDatos(5);
+      if (!response) {
+        Store.cambiaEstado(3)
+        ErrorFull("Error de red, intente más tarde.", "top-start")
+      } else {
+        Store.setCantidadArticulos(response.length)
+        if (response.length > 0) {
+          Store.setListadoArticulos(response)
+          localStorage.setItem("LArticulos", response);
+        }
+        for (let index = 0; index < response.length; index++) {
+          Store.nextIDArticulo = response[index].id;
+        }
+        // console.log(Store.nextIDArticulo)
+        localStorage.setItem("Carg_datA", "1");
+        Store.cambiaEstado(3)
+      }
+    }
+
+    if (localStorage.getItem('Carg_datAu') == '0') {
+      const response = await obtenerDatos(15);
+      if (response.length > 0) {
+        Store.setListadoAuditorias(response)
+      }
+      Store.cambiaEstado(10)
+      localStorage.setItem("Carg_datAu", "1");
+      itemsAuditorias1.value = Store.itemsAuditorias;
+      Store.cambiaEstado(10)
+
+    } else {
+      Store.cambiaEstado(10)
+      itemsAuditorias1.value = Store.itemsAuditorias;
+      Store.cambiaEstado(10)
+    }
+
+    // cargando lotes
+    if (localStorage.getItem("Carg_datL") == '0') {
+      const response = await obtenerDatos(10);
+      if (response.length > 0) {
+        // Store.cambiaEstado(9)
+        Store.setListadoLotes(response)
+        localStorage.setItem("Carg_datL", "1");
+        itemsLotes1.value = Store.itemsLotes;
+        // Store.cambiaEstado(9)
+      }
+    } else {
+      itemsLotes1.value = Store.itemsLotes;
+    }
+
+    const response2 = await obtenerDatos(16);
+    if (response2.length > 0) {
+      Store.setListadoOperaciones(response2)
+      itemsOperaciones1.value = Store.itemsOperaciones;
+    }
+
+    if (localStorage.getItem("Carg_datMe") == "0") {
+
+      const response = await obtenerDatos(3);
+      if (!response) {
+
+      } else {
+        if (response.length > 0) {
+          Store.setListadoMedidas(response)
+        }
+        for (let index = 0; index < response.length; index++) {
+          Store.nextIDMedida = response[index].id;
+        }
+
+        localStorage.setItem("Carg_datMe", "1");
+        itemsMedida1.value = Store.itemsMedidas;
+      }
+
+    } else {
+      itemsMedida1.value = Store.itemsMedidas;
+    }
+
+    if (localStorage.getItem('Carg_datE') == '0') {
+      Store.cambiaEstado(5);
+      const response = await obtenerDatos(8);
+      if (!response) {
+        Store.cambiaEstado(5);
+      } else {
+        if (response.length > 0) {
+          Store.setListadoEtiquetas(response)
+        }
+        for (let index = 0; index < response.length; index++) {
+          Store.nextIDEtiqueta = response[index].id;
+        }
+        localStorage.setItem("Carg_datE", "1");
+        itemsEtiqueta1.value = Store.itemsEtiquetas;
+        Store.cambiaEstado(5);
+      }
+    } else {
+      Store.cambiaEstado(5);
+      itemsEtiqueta1.value = Store.itemsEtiquetas;
+      Store.cambiaEstado(5);
+    }
+
+    if (localStorage.getItem('Carg_datS') == '0') {
+      // Sucursales
+      Store.cambiaEstado(4)
+      const response = await obtenerDatos(2);
+      if (response.length > 0) {
+        Store.setListadoSucursales(response)
+      }
+      // for (let index = 0; index < response.length; index++) {
+      //   store.nextIDSucursal = response[index].id;
+      // }
+      localStorage.setItem("Carg_datS", "1");
+      itemsSucursales1.value = Store.itemsSucursales;
+      Store.cambiaEstado(4)
+
+    } else {
+      Store.cambiaEstado(4)
+      itemsSucursales1.value = Store.itemsSucursales;
+      Store.cambiaEstado(4)
+    }
+
+    if (localStorage.getItem('Carg_datU') == '0') {
+      // Ubicaciones
+      Store.cambiaEstado(7)
+      const response = await obtenerDatos(7);
+      if (response.length > 0) {
+        Store.setListadoUbicaciones(response)
+      }
+      // for (let index = 0; index < response.length; index++) {
+      //   store.nextIDUbicacion = response[index].id;
+      // }
+      localStorage.setItem("Carg_datU", "1");
+      itemsUbicaciones1.value = Store.itemsUbicaciones;
+      Store.cambiaEstado(7)
+
+    } else {
+      Store.cambiaEstado(7)
+      itemsUbicaciones1.value = Store.itemsUbicaciones;
+      Store.cambiaEstado(7)
+    }
+
+    // cargando monedas
+    if (localStorage.getItem("Carg_datMo") == "0") {
+
+      const response = await obtenerDatos(11);
+      if (!response) {
+
+      } else {
+        if (response.length > 0) {
+          Store.setListadoMonedas(response)
+        }
+        localStorage.setItem("Carg_datMo", "1");
+        itemsMoneda1.value = Store.itemsMonedas;
+      }
+
+    } else {
+      itemsMoneda1.value = Store.itemsMonedas;
+    }
+
+    if (localStorage.getItem('Carg_datM') == '0') {
+      // MAGNITUDES
+      Store.cambiaEstado(8)
+      const response = await obtenerDatos(4);
+      if (response.length > 0) {
+        Store.setListadoMagnitud(response)
+      }
+      localStorage.setItem("Carg_datM", "1");
+      itemsMagnitud1.value = Store.itemsMagnitudes;
+      Store.cambiaEstado(8)
+
+    } else {
+      Store.cambiaEstado(8)
+      itemsMagnitud1.value = Store.itemsMagnitudes;
+      Store.cambiaEstado(8)
+    }
+
+  } else {
+    router.push('/login');
+  }
+}
+
+const handleOption = (option) => {
+  switch (option) {
+    case 'Opción 1':
+      actualizar();
+      break;
+    case 'Opción 2':
+      router.push('/inicio');
+      break;
+    case 'Opción 3':
+      router.push('/cmasiva');
+      break;
+    default:
+      break;
+  }
+  // console.log('Seleccionaste:', option); show.value = false;
+};
 
 const Store = useStoreAxios();
 
@@ -1279,4 +1624,35 @@ const cargarImagen = async () => {
 
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.mx-context-menu-item {
+  justify-content: flex-start
+}
+
+/*.context-menu {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.context-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.context-menu ul li {
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.context-menu ul li:hover {
+  background-color: #eee;
+}
+
+.context-menu-item i {
+  margin-right: 8px;
+}*/
+</style>

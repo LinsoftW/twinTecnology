@@ -103,29 +103,21 @@
       </div> -->
       </div>
 
-      <div class="col-xl-12 col-lg-12" v-if="editaItem">
+      <!-- <div class="col-xl-12 col-lg-12" v-if="editaItem">
         <div class="card shadow mb-4">
-          <!-- Card Header - Dropdown -->
-          <!-- <div class=" card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-info">Datos a modificar</h6>
-          </div> -->
-          <!-- Card Body -->
           <div class="card-body ">
             <div class="row align-items-center justify-content-between ">
 
               <div class="col-xl-12 col-lg-6 col-md-6">
-                <!-- <label>Por Sucursal</label> -->
-                <!-- <input type="file" id="archivoExcel" class="form-control form-control-user" @change="onFileChange"
-                  accept=".xlsx, .xls" /> -->
-                <!---->
-                <div class="row form-group">
-                  <!-- <div class="col-lg-12"> -->
-                  <div  v-for="(ite, index) in itemEditar" class="input-container">
-                    <!-- <label :for="itemEditar">{{ ite }}</label><hr> -->
-                    <input type="text" :value="ite">
+                <div class="row form-control-user text-center">
+
+                  <div v-for="(ite, index) in itemEditar" class="input-container">
+
+                    <input type="text" :value="ite" :key="index" class="form-control form-control-user">
                   </div>
-                  <button v-if="editaItem" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" @click="guardaCambio()">Modificar</button>
-                  <!-- </div> -->
+                  <button v-if="editaItem" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"
+                    @click="guardaCambio()">Modificar</button>
+
                 </div>
               </div>
 
@@ -133,7 +125,7 @@
           </div>
         </div>
 
-      </div>
+      </div> -->
 
       <!-- Excell -->
       <div class="col-xl-12 col-lg-12">
@@ -148,7 +140,18 @@
             <div class="row d-sm-flex align-items-center justify-content-between mb-4 ">
               <div class="col-xl-12 col-lg-12 col-md-12">
                 <div class="spreadsheet-container">
-
+                  <div class="row form-control-user text-center" v-if="editaItem">
+                    <div class="col-md-1"></div>
+                    <div v-for="(ite, index) in itemEditar" class="col-md-2 m-1">
+                      <!-- <label :for="itemEditar">{{ ite }}</label><hr> -->
+                      <input type="text" :value="ite" :key="index" class="form-control form-control-user">
+                    </div>
+                    <div class="text-center row">
+                      <button v-if="editaItem" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"
+                        @click="guardaCambio()">Modificar</button>
+                    </div>
+                    <!-- </div> -->
+                  </div><br>
                   <EasyDataTable :headers="headers2" :items="item" buttons-pagination border-cell
                     v-model:items-selected="itemsSelected" header-text-direction="center" body-text-direction="center"
                     @click-row="showRow" :rows-per-page="5">
@@ -413,7 +416,7 @@ export default {
       this.itemEditar = []
       // console.log(this.getObjectSize(item));
       for (let index = 1; index < this.getObjectSize(item) - 1; index++) {
-        console.log(item[index])
+        // console.log(item[index])
         this.itemEditar.push(item[index])
       }
     },
@@ -423,6 +426,7 @@ export default {
     getObjectSize(obj) { return Object.keys(obj).length; },
     onFileChange(event) {
       const file = event.target.files[0];
+      this.editaItem = false;
       if (file) {
         this.item = [];
         this.headers2 = [];

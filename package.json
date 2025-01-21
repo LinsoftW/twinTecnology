@@ -18,6 +18,7 @@
     "@chenfengyuan/vue-barcode": "^2.0.2",
     "@formkit/vue": "^1.6.9",
     "@fortawesome/fontawesome-free": "^6.6.0",
+    "@imengyu/vue3-context-menu": "^1.4.4",
     "@mescius/spread-sheets-charts": "^17.1.10",
     "@mescius/spread-sheets-io": "^17.1.10",
     "@mescius/spread-sheets-shapes": "^17.1.10",

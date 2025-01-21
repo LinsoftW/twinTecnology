@@ -1763,9 +1763,9 @@ onMounted(async () => {
       if (response.length > 0) {
         store.setListadoSucursales(response)
       }
-      for (let index = 0; index < response.length; index++) {
-        store.nextIDSucursal = response[index].id;
-      }
+      // for (let index = 0; index < response.length; index++) {
+      //   store.nextIDSucursal = response[index].id;
+      // }
       localStorage.setItem("Carg_datS", "1");
       itemsSucursales1.value = store.itemsSucursales;
       store.cambiaEstado(4)
@@ -1783,9 +1783,9 @@ onMounted(async () => {
       if (response.length > 0) {
         store.setListadoUbicaciones(response)
       }
-      for (let index = 0; index < response.length; index++) {
-        store.nextIDUbicacion = response[index].id;
-      }
+      // for (let index = 0; index < response.length; index++) {
+      //   store.nextIDUbicacion = response[index].id;
+      // }
       localStorage.setItem("Carg_datU", "1");
       itemsUbicaciones1.value = store.itemsUbicaciones;
       store.cambiaEstado(7)

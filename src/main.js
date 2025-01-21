@@ -13,6 +13,9 @@ import '@vuepic/vue-datepicker/dist/main.css';
 import VueBarcode from '@chenfengyuan/vue-barcode';
 import { createPinia } from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
+import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css';
+import ContextMenu from '@imengyu/vue3-context-menu';
+import '@fortawesome/fontawesome-free/css/all.css';
 
 const pinia = createPinia();
 pinia.use(storeReset);
@@ -30,4 +33,5 @@ app.component('EasyDataTable', Vue3EasyDataTable)
 .component('VueDatePicker', VueDatePicker)
 .component(VueBarcode.name, VueBarcode)
 app.use(pinia)
+app.use(ContextMenu)
 app.use(router, plugin, defaultConfig, DoughnutChart ).mount('#app')

@@ -1051,7 +1051,7 @@ const agregarUEtiqueta = async () => {
     store.cambiaEstado(5)
     disabledDepartamentodBtn.value = 'disabled';
     GuardarArt.value = 'Gardando...';
-    store.formEtiqueta.id = store.nextIDEtiqueta + 1;
+    // store.formEtiqueta.id = store.nextIDEtiqueta + 1;
     const response = await GuardarDatos(store.formEtiqueta, 8);
     if (response == null) {
       store.cambiaEstado(5)
@@ -1499,8 +1499,12 @@ const editarUEtiqueta = async () => {
   btnModificarClass.value = 'disabled'
   store.cambiaEstado(5);
   const response = await EditarDatos(id.value, store.formEtiqueta, 8);
+  // console.log(response)
   if (!response) {
     store.cambiaEstado(5);
+    btnModificar.value = 'Modificar'
+    btnModificarClass.value = '';
+    ErrorFull("Error modificando los datos. Verifíquelos y vuelva a intentarlo.", "top-start")
   } else {
     // console.log(response)
     editar.value = false;
@@ -1593,7 +1597,7 @@ const borrarU = (id, correo) => {
       } else {
         store.DeleteDepartamento(response);
         itemsDeparta1.value = store.itemsDepartamentos;
-        successFull("Departamento eliminada satisfactoriamente.", "top-end")
+        successFull("Departamento eliminado satisfactoriamente.", "top-end")
         store.cambiaEstado(2);
       }
 
