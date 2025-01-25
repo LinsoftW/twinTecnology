@@ -141,10 +141,11 @@
               <div class="col-xl-12 col-lg-12 col-md-12">
                 <div class="spreadsheet-container">
                   <div class="row form-control-user text-center" v-if="editaItem">
-                    <div class="col-md-1"></div>
+                    <!-- <div class="col-md-1"></div> -->
                     <div v-for="(ite, index) in itemEditar" class="col-md-2 m-1">
                       <!-- <label :for="itemEditar">{{ ite }}</label><hr> -->
-                      <input type="text" :value="ite" :key="index" class="form-control form-control-user">
+                      <input type="text" :value="ite" :key="index" v-if="index != 0" :id="index"
+                        class="form-control form-control-user" @change="archivaValor(index)">
                     </div>
                     <div class="text-center row">
                       <button v-if="editaItem" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"
@@ -163,8 +164,7 @@
                       <button class="btn btn-primary btn-sm btn-circle ml-1" data-toggle="modal"
                         data-target="#agregaProducto" @click="editar(item)" v-b-tooltip.hover title="Modificar"><span
                           class="fas fa-edit"></span></button>
-                      <button disabled class="btn btn-danger btn-sm btn-circle ml-1"
-                        @click="borrarU(item.id, item.attributes.descripcion, 1)" v-b-tooltip.hover
+                      <button disabled class="btn btn-danger btn-sm btn-circle ml-1" @click="borrarU(item)" v-b-tooltip.hover
                         title="Eliminar"><span class="fas fas fa-trash-alt"></span></button>
                     </template>
 
@@ -173,6 +173,16 @@
                     </template>
                     <template #empty-message>
                       <a>No hay datos que mostrar</a>
+                    </template>
+
+                    <template v-slot:cell="{ column, item, rowIndex }">
+                      <div v-if="editingIndex === rowIndex && editingField === column.value">
+                        <input type="text" v-model="editValue" @blur="saveEdit(item, column.value)"
+                          @keyup.enter="saveEdit(item, column.value)" />
+                      </div>
+                      <div v-else @dblclick="editCell(rowIndex, column.value, item[column.value])">
+                        {{ item[column.value] }}
+                      </div>
                     </template>
 
                   </EasyDataTable>
@@ -359,7 +369,8 @@ import Swal from 'sweetalert2';
 import * as XLSX from 'xlsx'
 import { successFull } from './controler/ControlerApp';
 import { useStoreAxios } from '@/store/AxiosStore';
-import { GuardarColecciones } from './helper/useAxios';
+import { GuardarColecciones, obtenerDatos } from './helper/useAxios';
+import { ref } from 'vue';
 
 // const searchField = ref("attributes.codigo");
 
@@ -385,7 +396,6 @@ import { GuardarColecciones } from './helper/useAxios';
 // const items = ref([]);
 
 export default {
-  // components: { TablePanel },
   props: ["tableData"],
   data() {
     return {
@@ -405,23 +415,70 @@ export default {
       cargado: false,
       editaItem: false,
       itemEditar: [],
+      posicion: 0,
       // esperando: false,
       cantidad: 0,
-      store: useStoreAxios()
+      store: useStoreAxios(),
+
     }
   },
   methods: {
     editar(item) {
       this.editaItem = true;
       this.itemEditar = []
-      // console.log(this.getObjectSize(item));
-      for (let index = 1; index < this.getObjectSize(item) - 1; index++) {
-        // console.log(item[index])
+      for (let index = 0; index < this.getObjectSize(item) - 1; index++) {
         this.itemEditar.push(item[index])
       }
+      for (let index = 0; index < this.listados.length; index++) {
+        if (this.listados[index][1] == this.itemEditar[1]) {
+          this.posicion = index;
+        }
+      }
+    },
+    archivaValor(ite) {
+      this.itemEditar.forEach((item, index) => {
+        if (index == ite) {
+          this.itemEditar[index] = document.getElementById(ite).value
+        }
+      })
+    },
+    borrarU(item) {
+      this.itemEditar = []
+      for (let index = 0; index < this.getObjectSize(item) - 1; index++) {
+        this.itemEditar.push(item[index])
+      }
+      for (let index = 0; index < this.listados.length; index++) {
+        if (this.listados[index][1] == this.itemEditar[1]) {
+          this.posicion = index;
+        }
+      }
+      // this.listados.forEach((i, x) => {
+      //   if (i == this.posicion) {
+      //     this.listados.pop();
+      //     // break
+      //   } else {
+      //     listadoProductos.value.splice(i, 1)
+      //   }
+      // })
+      // console.log(this.listados[index][1])
+      for (let index = 0; index < this.listados.length; index++) {
+        if (item[1] == this.listados[index][1]) {
+          if (index == this.listados.length - 1) {
+            this.listados.pop();
+            break
+          } else {
+            this.listados.splice(index, 1)
+          }
+        }
+        // itemsProductos.value.push(listadoProductos.value[index])
+      }
+      // console.log(this.listados)
+      this.preparar_Guardar(this.listados)
     },
     guardaCambio() {
       this.editaItem = false;
+      this.listados.splice(this.posicion, 1, this.itemEditar)
+      this.preparar_Guardar(this.listados)
     },
     getObjectSize(obj) { return Object.keys(obj).length; },
     onFileChange(event) {
@@ -448,6 +505,7 @@ export default {
           this.headers2.push({ text: "OPCIONES", value: "opciones" });
           for (let index = 0; index < this.sheetData.length - 2; index++) {
             const element = this.sheetData.slice(1)[index];
+            // console.log(element)
             this.item.push(element)
           }
           this.cargado = true;
@@ -690,6 +748,20 @@ export default {
             const response1 = await GuardarColecciones(this.store.NewlistadoAgregar, 5)
             if (response1 != null) {
               successFull("Registros agregados satisfactoriamente.", "top-end")
+              // Actualizar registro
+              this.store.cambiaEstado(3)
+              const response = await obtenerDatos(5);
+              if (!response) {
+                this.store.cambiaEstado(3)
+              } else {
+                this.store.setCantidadArticulos(response.length)
+                if (response.length > 0) {
+                  this.store.setListadoArticulos(response)
+                }
+                localStorage.setItem("Carg_datA", "0");
+                this.store.cambiaEstado(3)
+              }
+              // Fin actualizacion
             } else {
               this.ErrorFull("Hubo un error agregando los datos. Verifíquelos y vuelva a intentarlo.", "top-start")
             }
@@ -699,6 +771,19 @@ export default {
             const response2 = await GuardarColecciones(this.store.NewlistadoAgregar, 4)
             if (response2 != null) {
               successFull("Registros agregados satisfactoriamente.", "top-end")
+              // Actualizar registro
+              this.store.cambiaEstado(8)
+              const response = await obtenerDatos(4);
+              if (!response) {
+                this.store.cambiaEstado(8)
+              } else {
+                if (response.length > 0) {
+                  this.store.setListadoMagnitud(response)
+                }
+                localStorage.setItem("Carg_datM", "0");
+                this.store.cambiaEstado(8)
+              }
+              // Fin actualizacion
             } else {
               this.ErrorFull("Hubo un error agregando los datos. Verifíquelos y vuelva a intentarlo.", "top-start")
             }
@@ -708,6 +793,20 @@ export default {
             const response3 = await GuardarColecciones(this.store.NewlistadoAgregar, 1)
             if (response3 != null) {
               successFull("Registros agregados satisfactoriamente.", "top-end")
+              // Actualizar registro
+              this.store.cambiaEstado(1)
+              const response = await obtenerDatos(1);
+              if (!response) {
+                this.store.cambiaEstado(1)
+              } else {
+                this.store.setCantidadProductos(response.length)
+                if (response.length > 0) {
+                  this.store.setListadoProductos(response)
+                }
+                localStorage.setItem("Carg_datP", "0");
+                this.store.cambiaEstado(1)
+              }
+              // Fin actualizacion
             } else {
               this.ErrorFull("Hubo un error agregando los datos. Verifíquelos y vuelva a intentarlo.", "top-start")
             }
@@ -717,6 +816,19 @@ export default {
             const response4 = await GuardarColecciones(this.store.NewlistadoAgregar, 7)
             if (response4 != null) {
               successFull("Registros agregados satisfactoriamente.", "top-end")
+              // Actualizar registro
+              this.store.cambiaEstado(7)
+              const response = await obtenerDatos(7);
+              if (!response) {
+                this.store.cambiaEstado(7)
+              } else {
+                if (response.length > 0) {
+                  this.store.setListadoUbicaciones(response)
+                }
+                localStorage.setItem("Carg_datU", "0");
+                this.store.cambiaEstado(7)
+              }
+              // Fin actualizacion
             } else {
               this.ErrorFull("Hubo un error agregando los datos. Verifíquelos y vuelva a intentarlo.", "top-start")
             }
@@ -726,6 +838,19 @@ export default {
             const response5 = await GuardarColecciones(this.store.NewlistadoAgregar, 8)
             if (response5 != null) {
               successFull("Registros agregados satisfactoriamente.", "top-end")
+              // Actualizar registro
+              this.store.cambiaEstado(5)
+              const response = await obtenerDatos(8);
+              if (!response) {
+                this.store.cambiaEstado(5)
+              } else {
+                if (response.length > 0) {
+                  this.store.setListadoEtiquetas(response)
+                }
+                localStorage.setItem("Carg_datE", "0");
+                this.store.cambiaEstado(5)
+              }
+              // Fin actualizacion
             } else {
               this.ErrorFull("Hubo un error agregando los datos. Verifíquelos y vuelva a intentarlo.", "top-start")
             }
@@ -735,6 +860,16 @@ export default {
             const response6 = await GuardarColecciones(this.store.NewlistadoAgregar, 3)
             if (response6 != null) {
               successFull("Registros agregados satisfactoriamente.", "top-end")
+              // Actualizar registro
+              const response = await obtenerDatos(3);
+              if (!response) {
+              } else {
+                if (response.length > 0) {
+                  this.store.setListadoMedidas(response)
+                }
+                localStorage.setItem("Carg_datMe", "0");
+              }
+              // Fin actualizacion
             } else {
               this.ErrorFull("Hubo un error agregando los datos. Verifíquelos y vuelva a intentarlo.", "top-start")
             }
@@ -744,6 +879,19 @@ export default {
             const response7 = await GuardarColecciones(this.store.NewlistadoAgregar, 2)
             if (response7 != null) {
               successFull("Registros agregados satisfactoriamente.", "top-end")
+              // Actualizar registro
+              this.store.cambiaEstado(4)
+              const response = await obtenerDatos(2);
+              if (!response) {
+                this.store.cambiaEstado(4)
+              } else {
+                if (response.length > 0) {
+                  this.store.setListadoSucursales(response)
+                }
+                localStorage.setItem("Carg_datS", "0");
+                this.store.cambiaEstado(4)
+              }
+              // Fin actualizacion
             } else {
               this.ErrorFull("Hubo un error agregando los datos. Verifíquelos y vuelva a intentarlo.", "top-start")
             }
@@ -753,6 +901,20 @@ export default {
             const response8 = await GuardarColecciones(this.store.NewlistadoAgregar, 6)
             if (response8 != null) {
               successFull("Registros agregados satisfactoriamente.", "top-end")
+              // Actualizar registro
+              this.store.cambiaEstado(2)
+              const response = await obtenerDatos(6);
+              if (!response) {
+                this.store.cambiaEstado(2)
+              } else {
+                this.store.setCantidadDepartamentos(response.length)
+                if (response.length > 0) {
+                  this.store.setListadoDepartamentos(response)
+                }
+                localStorage.setItem("Carg_datD", "0");
+                this.store.cambiaEstado(2)
+              }
+              // Fin actualizacion
             } else {
               this.ErrorFull("Hubo un error agregando los datos. Verifíquelos y vuelva a intentarlo.", "top-start")
             }

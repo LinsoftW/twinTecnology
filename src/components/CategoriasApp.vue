@@ -1771,9 +1771,9 @@ const clickEditarEtiqueta = async (idSelect) => {
 
 const cancelarU = () => {
   editar.value = false;
-  formDepartamentos.data.attributes.descripcion = '';
-  formDepartamentos.data.attributes.departamento = '';
-  formDepartamentos.data.attributes.observacion = '';
+  store.formDepartamentos.data.attributes.descripcion = '';
+  store.formDepartamentos.data.attributes.departamento = '';
+  store.formDepartamentos.data.attributes.observacion = '';
 }
 
 const actualizar_datos = () => {
@@ -1910,9 +1910,9 @@ onMounted(async () => {
         if (response.length > 0) {
           store.setListadoMedidas(response)
         }
-        for (let index = 0; index < response.length; index++) {
-          store.nextIDMedida = response[index].id;
-        }
+        // for (let index = 0; index < response.length; index++) {
+        //   store.nextIDMedida = response[index].id;
+        // }
 
         localStorage.setItem("Carg_datMe", "1");
         itemsMedida1.value = store.itemsMedidas;

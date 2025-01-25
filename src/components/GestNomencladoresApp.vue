@@ -1608,9 +1608,9 @@ onMounted(async () => {
       if (response.length > 0) {
         store.setListadoMagnitud(response)
       }
-      for (let index = 0; index < response.length; index++) {
-        store.nextIDMagnitud = response[index].id;
-      }
+      // for (let index = 0; index < response.length; index++) {
+      //   store.nextIDMagnitud = response[index].id;
+      // }
       localStorage.setItem("Carg_datM", "1");
       itemsMagnitud1.value = store.itemsMagnitudes;
       store.cambiaEstado(8)
