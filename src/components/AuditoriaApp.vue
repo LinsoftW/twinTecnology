@@ -438,7 +438,17 @@ onMounted(async () => {
 
 
 </script>
-<style scoped>
+<style lang="scss" scoped>
+
+div,h1 {
+  @media (max-width: 1024px) {
+    h1.h3.mb-2.text-gray-800 {
+      font-size: small;
+      font-weight: 600;
+    }
+  }
+}
+
 .viewport {
   width: 100%;
   height: 400px;

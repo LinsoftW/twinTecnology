@@ -770,4 +770,13 @@ const generar_pdf = async () => {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+div,h1 {
+  @media (max-width: 1024px) {
+    h1.h3.mb-0.text-gray-800 {
+      font-size: small;
+      font-weight: 600;
+    }
+  }
+}
+</style>

@@ -61,13 +61,13 @@
 
                     <!-- <i class="fas fa-laugh-wink"></i> -->
 
-                    <img width="40" height="40" src="/clipboard-list.png" alt="clipboard-list" />
+                    <img width="40" height="40" src="/icono.png" alt="clipboard-list" />
 
                 </div>
 
                 <!-- <img class="sidebar-card-illustration mb-2" src="../assets/new/img/inventario.jpg" style="width: 30px; height:30px" alt="..."> -->
 
-                <div class="sidebar-brand-text mx-3">MyInventario <sup>1.0</sup></div>
+                <div class="sidebar-brand-text mx-3">MyInventory <sup>1.0</sup></div>
 
             </a>
 
@@ -689,7 +689,7 @@
 
                     </a> -->
 
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Mostrar todas las alertas</a>
+                                <a class="dropdown-item text-center small text-gray-500">Mostrar todas las alertas</a>
 
                             </div>
 
@@ -1077,7 +1077,7 @@
 
                     <div class="copyright text-center my-auto">
 
-                        <span>TwinTechnology &copy;<br> Todos los derechos reservados. &nbsp; 2024</span>
+                        <span>TwinTechnology &copy;<br> Todos los derechos reservados. &nbsp; 2025</span>
 
                     </div>
 
@@ -2285,6 +2285,16 @@ const cargarImagen = async () => {
 </script>
 
 <style lang="scss" scoped>
+@media (min-width: 768px) {
+  .sidebar {
+    text-transform:uppercase;
+  }
+
+  .sidebar.toggled {
+    text-transform:none;
+  }
+}
+
 .mx-context-menu-item {
     justify-content: flex-start
 }

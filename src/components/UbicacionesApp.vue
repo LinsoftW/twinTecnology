@@ -1837,6 +1837,24 @@ const itemsSucursales = ref([]);
 
 </script>
 <style lang="scss" scoped>
+a,span {
+
+  @media (max-width: 1024px) {
+    span.text {
+      display: none;
+    }
+  }
+}
+
+div,h1 {
+  @media (max-width: 1024px) {
+    h1.h3.mb-0.text-gray-800 {
+      font-size: small;
+      font-weight: 600;
+    }
+  }
+}
+
 .tabs-component {
   margin: 4em 0;
 }

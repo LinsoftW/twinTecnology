@@ -156,7 +156,8 @@
                       <span class="icon text-white-50">
                         <i class="fas fa-plus"></i>
                       </span>
-                      <span class="text">Nuevo</span>
+                      <!-- d-md-none -->
+                      <span :class="`text`">Nuevo</span>
                     </a>
                     <a @click="generar_pdf()" class="btn btn-secondary btn-sm btn-icon-split m-2"
                       :class="disabledProductos">
@@ -173,9 +174,11 @@
                       <span class="text">Excel</span>
                     </a>
                     <button class="btn btn-primary btn-sm dropdown-toggle m-2" type="button" id="dropdownMenuButton"
-                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <span class="icon text-white-50">
-                        <i class="fas fa-plus"></i>
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-b-tooltip.hover
+                      title="Agregar">
+                      <span class="icon text-white-50" >
+                        <i class="fas fa-plus" v-b-tooltip.hover
+                      title="Agregar"></i>
                       </span>
                       <span class="text"> Agregar</span>
                     </button>
@@ -3298,7 +3301,34 @@ onMounted(async () => {
 
 
 </script>
-<style scoped>
+<style lang="scss" scoped>
+a,
+span {
+
+  @media (max-width: 1024px) {
+    span.text {
+      display: none;
+    }
+  }
+}
+
+div,h1 {
+  @media (max-width: 1024px) {
+    h1.h3.mb-2.text-gray-800 {
+      font-size: small;
+      font-weight: 600;
+    }
+  }
+}
+
+/*div.col-md-12.text-center {
+  @media (max-width: 1024px) {
+    button.btn.btn-primary.btn-sm.m-1 {
+      display: none;
+    }
+  }
+}*/
+
 .viewport {
   width: 100%;
   height: 400px;
