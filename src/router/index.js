@@ -86,6 +86,11 @@ const router = createRouter({
       name: 'auditoria',
       component: MenuApp,
     },
+    {
+      path: '/perfil',
+      name: 'perfil',
+      component: MenuApp,
+    },
   ]
 })
 

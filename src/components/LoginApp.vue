@@ -123,8 +123,8 @@
                     <div class="form-group text-left">
                       <label style="color: black;"><i class="fa fa-user-circle"></i> Nombre:</label>
                       <input type="text" class="form-control form-control-user" id="correo" aria-describedby=""
-                        v-model="form.nombre" placeholder="Ej: Pepe" @change="validaNombre()"
-                        @keyup="validaNombre()" value="admin@admin.co">
+                        v-model="form.nombre" placeholder="Ej: Pepe" @change="validaNombre()" @keyup="validaNombre()"
+                        value="admin@admin.co">
                       <div class="text-center"><label v-if="nombreError" :style="'color: ' + color">{{ nombreError
                           }}</label></div>
                     </div>
@@ -216,6 +216,9 @@ import { onMounted, reactive, ref } from 'vue';
 import Swal from 'sweetalert2';
 import { ErrorFull } from './controler/ControlerApp';
 import { obtenerDatos } from './helper/useAxios';
+import { useStoreAxios } from '@/store/AxiosStore';
+
+const Store = useStoreAxios();
 // import ModalApp from './ModalApp.vue';
 
 const ipPublica = ref('');
@@ -268,6 +271,7 @@ onMounted(async () => {
   localStorage.setItem('Carg_datIM', '0'); // Imagenes
   localStorage.setItem('Carg_datEP', '0'); // Etiqueta productos
   localStorage.setItem('Carg_datAu', '0'); // Auditorias
+  localStorage.setItem('Carg_datPe', '0'); // Personas
   // localStorage.setItem('Host_back', 'localhost'); // IPPublica
   localStorage.setItem('Wait', '1'); // Esperar para cargar el inicio
   localStorage.setItem('Wait2', '1'); // Esperar para cargar el inicio
@@ -344,7 +348,7 @@ function validaNombre() {
   if (form.nombre.length === 0) {
     nombreError.value = 'Debe llenar el campo';
     color.value = 'red';
-  }else{
+  } else {
     nombreError.value = '';
     color.value = 'green';
     return 'OKKK';
@@ -355,7 +359,7 @@ function validaApellidos1() {
   if (form.apellido1.length === 0) {
     apellido1Error.value = 'Debe llenar el campo';
     color.value = 'red';
-  }else{
+  } else {
     apellido1Error.value = '';
     color.value = 'green';
     return 'OKKK';
@@ -366,7 +370,7 @@ function validaApellidos2() {
   if (form.apellido2.length === 0) {
     apellido2Error.value = 'Debe llenar el campo';
     color.value = 'red';
-  }else{
+  } else {
     apellido2Error.value = '';
     color.value = 'green';
     return 'OKKK';
@@ -398,6 +402,9 @@ const autenticate = async () => {
     for (let index = 0; index < response.length; index++) {
       if (form.correo == response[index].attributes.email) {
         localStorage.setItem("userName", response[index].attributes.alias);
+        Store.formPersonas.data.attributes.alias = response[index].attributes.alias;
+        Store.formPersonas.data.attributes.email = response[index].attributes.email;
+        Store.formPersonas.data.attributes.movil = response[index].attributes.movil;
         localStorage.setItem("Carg_dat", '0');
         localStorage.setItem("Wait", '1');
         successFull('Bienvenido al sistema', 'top-end');

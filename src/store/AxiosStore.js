@@ -30,6 +30,7 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
   const listadoOperaciones = ref([]);
   const listadoImagenes = ref([]);
   const listadoAuditorias = ref([]);
+  const listadoPersonas = ref([]);
   const listadoEtiquetasProductos = ref([]);
   const NewlistadoAgregar = ref({ data: [] });
   const itemsProductos = ref([])
@@ -46,6 +47,7 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
   const itemsLotes = ref([])
   const itemsMonedas = ref([])
   const itemsImagen = ref([])
+  const itemsPersonas = ref([])
   const loadingP = ref(false) // Productos
   const loadingD = ref(false) // Departamentos
   const loadingA = ref(false) // Articulos
@@ -392,6 +394,37 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
         listadoSucursales.value[index] = newdato;
       }
       itemsSucursales.value.push(listadoSucursales.value[index])
+    }
+  }
+
+  const AddPersonas = (L) => {
+    listadoPersonas.value.push(L);
+    setListadoPersonas(listadoPersonas.value);
+  }
+
+  const DeletePersonas = (newdato) => {
+    itemsPersonas.value = []
+    for (let index = 0; index < listadoPersonas.value.length; index++) {
+      if (newdato.id == listadoPersonas.value[index].id) {
+        if (index == listadoPersonas.value.length - 1) {
+          listadoPersonas.value.pop();
+          break
+        } else {
+          listadoPersonas.value.splice(index, 1)
+        }
+      }
+      itemsPersonas.value.push(listadoPersonas.value[index])
+
+    }
+  }
+
+  const EditPersonas = (newdato) => {
+    itemsPersonas.value = [];
+    for (let index = 0; index < listadoPersonas.value.length; index++) {
+      if (newdato.id == listadoPersonas.value[index].id) {
+        listadoPersonas.value[index] = newdato;
+      }
+      itemsPersonas.value.push(listadoPersonas.value[index])
     }
   }
 
@@ -747,6 +780,14 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
     }
   }
 
+  const setListadoPersonas = (L) => {
+    listadoPersonas.value = L;
+    itemsPersonas.value = [];
+    for (let index = 0; index < listadoPersonas.value.length; index++) {
+      itemsPersonas.value.push(listadoPersonas.value[index])
+    }
+  }
+
   const setListadoImagen = (L) => {
     listadoImagenes.value = L;
     itemsImagen.value = [];
@@ -888,6 +929,17 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
     }
   })
 
+  const formPersonas = reactive({
+    // id: 0,
+    data: {
+      attributes: {
+        alias: "",
+        movil: "",
+        email: "",
+      }
+    }
+  })
+
   const setDepartamento = (data) => {
     formDepartamentos.data.attributes.departamento = data.departamento;
     formDepartamentos.data.attributes.descripcion = data.descripcion;
@@ -910,9 +962,9 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
     esperandoArticulos, esperandoDepartamentos, esperandoLotes, itemsLotes, itemsMonedas, esperandoProductos, esperandoMedidas, esperandoEtiquetas, esperandoAuditoria, esperandoMagnitudes, esperandoSucursales, esperandoUbicaciones, loadingP, loadingA, loadingD, loadingE, loadingM, loadingMe, loadingS, loadingUb,
     itemsProductos, itemsDepartamentos, itemsMagnitudes, itemsArticulos, itemsEtiquetas, itemsUbicaciones, itemsMedidas, itemsSucursales, itemsEtiquetasProductos, listadoEtiquetasProductos,
     cambiaEstado, AddMagnitud, AddProductos, EditProductos, AddMoneda, DeleteMoneda, EditMoneda, DeleteMagnitud, AddAuditoria, DeleteProducto, AddMedida, AddLotes, DeleteMedida, EditLotes, EditMagnitud, EditMedida, AddDepartamento, DeleteDepartamento, EditDepartamento,
-    AddArticulo, DeleteArticulo, EditArticulo, AddSucursal, DeleteSucursal, DeleteLotes, EditEtiquetaProducto, DeleteEtiquetaProducto, AddEtiquetaProducto, EditSucursal, AddUbicaciones, DeleteUbicaciones, EditUbicaciones, AddImagen, setListadoImagen, DeleteImagen, EditImagen, formSucursal, formUbicaciones,
+    AddArticulo, DeleteArticulo, EditArticulo, AddSucursal, DeleteSucursal, DeleteLotes, EditEtiquetaProducto, DeleteEtiquetaProducto,AddPersonas, DeletePersonas, EditPersonas, setListadoPersonas, listadoPersonas,itemsPersonas, AddEtiquetaProducto, EditSucursal, AddUbicaciones, DeleteUbicaciones, EditUbicaciones, AddImagen, setListadoImagen, DeleteImagen, EditImagen, formSucursal, formUbicaciones,
     AddEtiqueta, EditEtiqueta, DeleteEtiqueta, formEtiqueta, setListadoEtiquetas, nextIDArticulo, nextIDProducto, nextIDDepartamento, nextIDEtiqueta, formEtiquetaProducto,
-    nextIDMagnitud, nextIDMedida, nextIDSucursal, nextIDUbicacion, nextIDMinimos, id, collapsed, collapsed2, activa, activa2, show, show2, NewlistadoAgregar, formImagenes, itemsImagen, formImagen, serecargo, limpiarDatos, formInventario, itemsAuditorias, listadoAuditorias, setListadoAuditorias, setListadoOperaciones, AddOperaciones, EditOperaciones, DeleteOperaciones, itemsOperaciones, listadoOperaciones
+    nextIDMagnitud, nextIDMedida, nextIDSucursal, nextIDUbicacion, nextIDMinimos, id, collapsed, collapsed2, activa, activa2, show, show2, NewlistadoAgregar, formImagenes, itemsImagen, formImagen, serecargo, limpiarDatos, formInventario, itemsAuditorias, listadoAuditorias, setListadoAuditorias, setListadoOperaciones, AddOperaciones, EditOperaciones, DeleteOperaciones, itemsOperaciones, listadoOperaciones, formPersonas
   }
 }, {
   persist: true

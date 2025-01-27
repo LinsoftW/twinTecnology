@@ -403,6 +403,14 @@ export async function GuardarDatos(datos, n, i) {
         throw error;
       }
       break;
+    case 15:
+      try {
+        const response = await axiosInstance.post('/personas', datos);
+        return response.data.data;
+      } catch (error) {
+        throw error;
+      }
+      break;
     default:
       break;
   }
@@ -720,6 +728,14 @@ export async function EditarDatos(id, datos, n) {
         const dato = await obtenerDatos(13);
         console.log(dato)
         const response = await axiosInstance.patch(`${url}/etiqueta_productos/${id}`, datos);
+        return response.data.data;
+      } catch (error) {
+        throw error;
+      }
+      break;
+    case 13:
+      try {
+        const response = await axiosInstance.patch(`${url}/personas/${id}`, datos);
         return response.data.data;
       } catch (error) {
         throw error;
