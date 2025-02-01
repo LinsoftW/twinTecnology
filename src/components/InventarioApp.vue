@@ -176,9 +176,8 @@
                     <button class="btn btn-primary btn-sm dropdown-toggle m-2" type="button" id="dropdownMenuButton"
                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-b-tooltip.hover
                       title="Agregar">
-                      <span class="icon text-white-50" >
-                        <i class="fas fa-plus" v-b-tooltip.hover
-                      title="Agregar"></i>
+                      <span class="icon text-white-50">
+                        <i class="fas fa-plus" v-b-tooltip.hover title="Agregar"></i>
                       </span>
                       <span class="text"> Agregar</span>
                     </button>
@@ -233,10 +232,11 @@
                 :loading="Store.esperandoProductos" :key="actualizaTabla">
                 <template #item-image="item">
                   <a data-toggle="modal" data-target="#verImagen"
-                    @click="obtenDescripcion(item.attributes.descripcion)">
+                    @click="obtenDescripcion(item.attributes.imagen_path)">
                     <!-- "{{ obtenImagen(item.id) }}" -->
-                    <img :src="obtenImagen(item.id)" alt="No image" class="img img-thumbnail"
-                      style="width: 50px; height: 50px;" />
+                    <!-- {{ item.attributes.imagen_path }} -->
+                    <img :src="urlAuditoria + '/' + item.attributes.imagen_path" alt="No image"
+                      class="img img-thumbnail" style="width: 50px; height: 50px;" />
                   </a>
 
                 </template>
@@ -283,6 +283,9 @@
                 </template>
                 <template #empty-message>
                   <a>No hay datos que mostrar</a>
+                </template>
+                <template #empty-pagination__rows-per-page>
+                  <a>Filas por página</a>
                 </template>
 
               </EasyDataTable>
@@ -578,7 +581,7 @@
                 </div>
                 <div class="col-md-6 col-xl-6 col-lg-6">
                   <!-- <div class="row"> -->
-                  <img src="/inventario.jpg" alt="No image" class="img img-thumbnail m-5"
+                  <img :src="urlAuditoria + '/' + image_path" alt="No image" class="img img-thumbnail m-5"
                     style="width: 80%; height:80%;" />
 
                   <!-- <strong><label for="n">Nombre: </label></strong>
@@ -735,7 +738,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title text-info" id="exampleModalLabel">{{ NombreProducto }}</h5>
+          <h5 class="modal-title text-info" id="exampleModalLabel">{{ fileName }}</h5>
 
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true" class="text-info">×</span>
@@ -750,7 +753,7 @@
 
             <div class="row">
               <div class="form-group col-lg-12 text-left">
-                <img src="/inventario.jpg" alt="No image" class="img img-thumbnail"
+                <img :src="urlAuditoria + '/' + NombreProducto" alt="No image" class="img img-thumbnail"
                   style="width: 100%; height: 100%;" />
               </div>
 
@@ -1217,7 +1220,7 @@
         <div class="modal-header">
           <h5 class="modal-title text-info" id="exampleModalLabel">LOTE (<label style="color: red;">{{
             Store.formLotes.data.attributes.descripcion
-          }}</label>) </h5>
+              }}</label>) </h5>
           <!-- <h5 class="modal-title text-info text-center" id="exampleModalLabel" v-if="editar == true"><span
               class="fa fa-edit"></span>
             MODIFICAR LOS DATOS DEL LOTE <br>(<label style="color: red;">{{
@@ -1400,7 +1403,7 @@ import * as XLSX from 'xlsx';
 // import Quagga from 'quagga';
 import { useStoreAxios } from '@/store/AxiosStore';
 import { ErrorFull, successFull } from './controler/ControlerApp';
-import { EditarDatos, EliminarDatos, GuardarDatos, obtenerDatos, subirImagen } from './helper/useAxios';
+import { EditarDatos, EliminarDatos, GuardarDatos, obtenerDatos, subirImagen, url, urlAuditoria } from './helper/useAxios';
 // import { data } from 'jquery';
 import jsPDF from 'jspdf';
 // import { event } from 'jquery';
@@ -1430,9 +1433,11 @@ const etiqueta_R = ref(0)
 const itemsOperaciones1 = ref([]);
 
 let imgPerfil = ref("");
+const nombreIMG = ref("");
 
 const cargarImagen = async () => {
   let file = document.getElementById("file").files[0];
+  nombreIMG.value = file.name.split('.').pop();
   if (file) {
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -1480,8 +1485,12 @@ const generar_pdf = async () => {
 }
 
 const NombreProducto = ref('');
+const fileName = ref('');
 const obtenDescripcion = (d) => {
   NombreProducto.value = d;
+  const segments = NombreProducto.value.split('/');
+  // Toma el último segmento que es el nombre del archivo
+  fileName.value = segments.pop();
 }
 
 const disabledProductos = ref('')
@@ -1521,6 +1530,7 @@ const aceptarCambio = async () => {
 
 const nombreProd = ref('');
 const idProd = ref('');
+const image_path = ref('');
 const descProd = ref('');
 const obsProd = ref('');
 const ubicaProd = ref('');
@@ -1545,6 +1555,7 @@ const Detalles = (dato) => {
   medidProd.value = obtenMedida(dato.relationships.medida.data.id)
   artiProd.value = obtenarticulo(dato.relationships.articulo.data.id)
   descProd.value = dato.attributes.descripcion;
+  image_path.value = dato.attributes.image_path;
   // cantProd.value = dato.attributes.cantidad;
   minProd.value = dato.attributes.minimo;
   // ubicaProd.value = obtenUbicacion(dato.relationships.ubicacion.data.id)
@@ -1829,18 +1840,18 @@ const verificar_error = (n) => {
 
 const Asignar_Imagen = async (id) => {
   var data = new FormData();
-  data.append('file', imgPerfil.value);
-  data.append('_method', 'PUT');
-  const response4 = await subirImagen(data);
-  // console.log(response4)
-  if (response4 != null) {
-    Store.formProductos.data.attributes.producto_imagen_id = response4.id;
-  } else {
-    Store.formProductos.data.attributes.producto_imagen_id = 1;
-  }
+  data.append('imagen', imgPerfil.value);
+  // data.append('_method', 'PUT');
+  // console.log(data)
+  const response4 = await subirImagen(id, data);
+  // console.log(id+"."+nombreIMG.value)
+  // if (response4 != null) {
+  // } else {
+  //   Store.formProductos.data.attributes.imagen_path = 1;
+  // }
   // console.log(id)
   const response1 = await obtenerDatos(1)
-  // console.log(response1)
+  console.log(response1)
   for (let index = 0; index < response1.length; index++) {
     if (id == response1[index].id) {
       Store.formProductos.data.attributes.descripcion = response1[index].attributes.descripcion;
@@ -1849,7 +1860,8 @@ const Asignar_Imagen = async (id) => {
       Store.formProductos.data.attributes.minimo = response1[index].attributes.minimo;
     }
   }
-  Store.formProductos.data.attributes.producto_imagen_id = 1;
+  Store.formProductos.data.attributes.imagen_path = "back/resources/imagenes/inventario/productos/" + id + "." + nombreIMG.value;
+  // Store.formProductos.data.attributes.producto_imagen_id = 1;
   // console.log(Store.formProductos)
   const response = await EditarDatos(id, Store.formProductos, 1);
   // console.log(response)
@@ -1885,7 +1897,7 @@ const agregarUProducto = async (n) => {
         disabledProductoBtn.value = '';
         GuardarProductoC.value = 'Agregar y continuar';
         errores.value.descripcion = "Este dato ya existe en el sistema";
-        ErrorFull("Descripción de producto ya existente.", "top-start")
+        ErrorFull("Error realizando operación, vuelva a intentarlo.", "top-start")
       } else {
         disabledProductoBtn.value = '';
         GuardarProductoC.value = 'Agregar y continuar'
@@ -1894,18 +1906,13 @@ const agregarUProducto = async (n) => {
         Store.formProductos.data.attributes.articulo_id = '';
         Store.formProductos.data.attributes.observacion = '';
         Store.AddProductos(response)
-        // const response = await obtenerDatos(1);
-        // if (response.length > 0) {
-        //   Store.setListadoProductos(response)
-        // }
-        // Store.cambiaEstado(1)
-        actualizaTabla.value = actualizaTabla.value + 1;
+        Asignar_Imagen(response.id);
         itemsProductos1.value = Store.itemsProductos;
+        actualizaTabla.value = actualizaTabla.value + 1;
         // Store.cambiaEstado(1)
         Store.formEtiquetaProducto.data.attributes.producto_id = response.id;
         Store.formEtiquetaProducto.data.attributes.etiqueta_id = etiqueta_R.value;
         const response2 = await GuardarDatos(Store.formEtiquetaProducto, 13);
-        Asignar_Imagen(response.id);
         successFull("Producto agregado satisfactoriamente.", "top-end")
         GuardarProductoC.value = 'Agregar y continuar';
         disabledProductoBtn.value = '';
@@ -1925,7 +1932,7 @@ const agregarUProducto = async (n) => {
         disabledProductoBtn.value = '';
         GuardarProducto.value = 'Agregar';
         errores.value.descripcion = "Este dato ya existe en el sistema";
-        ErrorFull("Descripción de producto ya existente.", "top-start")
+        ErrorFull("Error realizando operación, vuelva a intentarlo.", "top-start")
       } else {
         disabledProductoBtn.value = '';
         GuardarProducto.value = 'Agregar'
@@ -1934,11 +1941,12 @@ const agregarUProducto = async (n) => {
         Store.formProductos.data.attributes.articulo_id = '';
         Store.formProductos.data.attributes.observacion = '';
         Store.AddProductos(response)
+        Asignar_Imagen(response.id);
         itemsProductos1.value = Store.itemsProductos;
+        actualizaTabla.value = actualizaTabla.value + 1;
         Store.formEtiquetaProducto.data.attributes.producto_id = response.id;
         Store.formEtiquetaProducto.data.attributes.etiqueta_id = etiqueta_R.value;
         const response2 = await GuardarDatos(Store.formEtiquetaProducto, 13);
-        Asignar_Imagen(response.id);
         successFull("Producto agregado satisfactoriamente.", "top-end")
         GuardarProducto.value = 'Agregar';
         disabledProductoBtn.value = '';
@@ -3312,7 +3320,8 @@ span {
   }
 }
 
-div,h1 {
+div,
+h1 {
   @media (max-width: 1024px) {
     h1.h3.mb-2.text-gray-800 {
       font-size: small;

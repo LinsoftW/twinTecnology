@@ -52,7 +52,7 @@
                 <EasyDataTable table-class-name="customize-table" :headers="headersSucursales" :items="itemsSucursales1"
                   buttons-pagination border-cell v-model:items-selected="itemsSelected" header-text-direction="center"
                   body-text-direction="center" :search-field="searchField" :search-value="searchValue"
-                  @click-row="showRow" :rows-per-page="5" show-index :loading="loading">
+                 :rows-per-page="5" show-index :loading="loading">
 
 
 
@@ -205,7 +205,7 @@
                 <EasyDataTable table-class-name="customize-table" :headers="headersUbicaciones"
                   :items="itemsUbicaciones1" buttons-pagination border-cell v-model:items-selected="itemsSelected"
                   header-text-direction="center" body-text-direction="center" :search-field="searchFieldMedida"
-                  :search-value="searchValueMedida" @click-row="showRow" :rows-per-page="5" :loading="loadingU"
+                  :search-value="searchValueMedida" :rows-per-page="5" :loading="loadingU"
                   show-index>
                   <template #empty-message>
                     <a>No hay datos que mostrar</a>
@@ -620,7 +620,11 @@ const disabledMagnitudBtn = ref('')
 
 const disabledMedida = ref('')
 
+const itemsSelected = ref([]);
+
 const disabledMedidaBtn = ref('')
+
+const disabledProductos = ref('')
 
 const loadingA = (texto) => {
   Swal.fire({

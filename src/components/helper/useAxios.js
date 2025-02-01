@@ -18,12 +18,12 @@ const endpointEp = [];
 const endpointOp = [];
 const endpointPe = [];
 
-const urlAuditoria = "http://www.twintechnology.cu/inventory/api";
-const url = "http://www.twintechnology.cu/inventory/api/inventario";
-const urlImagen = "http://www.twintechnology.cu/inventory/api/imagen/producto_imagenes";
-// const url = "http://localhost/inventory/api/inventario";
-// const urlAuditoria = "http://localhost/inventory/api";
-// const urlImagen = "http://localhost/inventory/api/imagen/producto_imagenes";
+export const urlAuditoria = "http://www.twintechnology.cu/inventory/api";
+export const url = "http://www.twintechnology.cu/inventory/api/inventario";
+export const urlImagen = "http://www.twintechnology.cu/inventory/api/imagen/producto_imagenes";
+// export const url = "http://localhost/inventory/api/inventario";
+// export const urlAuditoria = "http://localhost/inventory/api";
+// export const urlImagen = "http://localhost/inventory/api/inventario/productos";
 
 // const urlUploadImagen = "http://www.twintechnology.cu/inventory/api/imagen/producto_imagenes/upload";
 
@@ -610,9 +610,9 @@ export async function EliminarDatos(id, n) {
   }
 }
 
-export async function subirImagen(imagen) {
+export async function subirImagen(id,imagen) {
   try {
-    const response = axios.post(urlImagen + '/upload', imagen);
+    const response = axios.post(url + `/productos/${id}?function[name]=upload_image`, imagen);
     return response
   } catch (error) {
     throw error;

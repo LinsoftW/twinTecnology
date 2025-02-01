@@ -278,6 +278,9 @@ const guardar = async () => {
       const response1 = await obtenerDatos(14);
       itemsPersonas1.value = [];
       itemsPersonas1.value = response1;
+      // console.log(response1)
+      localStorage.removeItem('userName')
+      localStorage.setItem('userName', Store.formPersonas.data.attributes.alias)
       successFull("Datos de usuario modificados satisfactoriamente.", "top-end")
     }else{
       ErrorFull("Error modificando los datos del usuario. Vuelva a intentarlo.", "top-start")
@@ -538,7 +541,7 @@ onMounted(async () => {
       // Store.cambiaEstado(10)
     }
     for (let index = 0; index < itemsPersonas1.value.length; index++) {
-      if (itemsPersonas1.value[index].attributes.alias == Store.formPersonas.data.attributes.alias) {
+      if (itemsPersonas1.value[index].attributes.alias == localStorage.getItem('userName')) {
         IDPersona.value = itemsPersonas1.value[index].id;
         break;
       }

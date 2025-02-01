@@ -59,7 +59,7 @@
                 <EasyDataTable table-class-name="customize-table" :headers="headers" :items="itemsMagnitud1"
                   buttons-pagination border-cell v-model:items-selected="itemsSelected" header-text-direction="center"
                   body-text-direction="center" :search-field="searchField" :search-value="searchValue"
-                  @click-row="showRow" :rows-per-page="5" show-index :loading="store.esperandoMagnitudes">
+                  :rows-per-page="5" show-index :loading="store.esperandoMagnitudes">
 
 
 
@@ -212,7 +212,7 @@
                 <EasyDataTable table-class-name="customize-table" :headers="headersMedidas" :items="itemsMedida1"
                   buttons-pagination border-cell v-model:items-selected="itemsSelected" header-text-direction="center"
                   body-text-direction="center" :search-field="searchFieldMedida" :search-value="searchValueMedida"
-                  @click-row="showRow" :rows-per-page="5" :loading="store.esperandoMedidas" show-index>
+                  :rows-per-page="5" :loading="store.esperandoMedidas" show-index>
                   <template #empty-message>
                     <a>No hay datos que mostrar</a>
                   </template>

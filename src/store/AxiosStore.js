@@ -5,6 +5,7 @@ import cloneDeep from 'lodash/cloneDeep';
 export const useStoreAxios = defineStore('StoreAxios', () => {
 
   const ipPublica = ref('localhost');
+  const tiempoInactivo = ref(10);
   const actualiza = ref(false);
   const serecargo = ref(false);
   const esperandoProductos = ref(false);
@@ -101,6 +102,16 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
     listadoMonedas.value = [];
     listadoImagenes.value = [];
     listadoLotes.value = [];
+    esperandoArticulos.value = false;
+    esperandoEtiquetas.value = false;
+    esperandoProductos.value = false;
+    esperandoUbicaciones.value = false;
+    esperandoSucursales.value = false;
+    esperandoAuditoria.value = false;
+    esperandoDepartamentos.value = false;
+    esperandoLotes.value = false;
+    esperandoMagnitudes.value = false;
+    esperandoMedidas.value = false;
   }
 
   const cambiaEstado = (n) => {
@@ -148,7 +159,7 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
         observacion: "",
         minimo: 0,
         articulo_id: 99,
-        producto_imagen_id: 1
+        imagen_path: ''
       }
     }
   })
@@ -964,7 +975,7 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
     cambiaEstado, AddMagnitud, AddProductos, EditProductos, AddMoneda, DeleteMoneda, EditMoneda, DeleteMagnitud, AddAuditoria, DeleteProducto, AddMedida, AddLotes, DeleteMedida, EditLotes, EditMagnitud, EditMedida, AddDepartamento, DeleteDepartamento, EditDepartamento,
     AddArticulo, DeleteArticulo, EditArticulo, AddSucursal, DeleteSucursal, DeleteLotes, EditEtiquetaProducto, DeleteEtiquetaProducto,AddPersonas, DeletePersonas, EditPersonas, setListadoPersonas, listadoPersonas,itemsPersonas, AddEtiquetaProducto, EditSucursal, AddUbicaciones, DeleteUbicaciones, EditUbicaciones, AddImagen, setListadoImagen, DeleteImagen, EditImagen, formSucursal, formUbicaciones,
     AddEtiqueta, EditEtiqueta, DeleteEtiqueta, formEtiqueta, setListadoEtiquetas, nextIDArticulo, nextIDProducto, nextIDDepartamento, nextIDEtiqueta, formEtiquetaProducto,
-    nextIDMagnitud, nextIDMedida, nextIDSucursal, nextIDUbicacion, nextIDMinimos, id, collapsed, collapsed2, activa, activa2, show, show2, NewlistadoAgregar, formImagenes, itemsImagen, formImagen, serecargo, limpiarDatos, formInventario, itemsAuditorias, listadoAuditorias, setListadoAuditorias, setListadoOperaciones, AddOperaciones, EditOperaciones, DeleteOperaciones, itemsOperaciones, listadoOperaciones, formPersonas
+    nextIDMagnitud, nextIDMedida, nextIDSucursal, nextIDUbicacion, nextIDMinimos, id, NewlistadoAgregar, formImagenes, itemsImagen, formImagen, serecargo, limpiarDatos, formInventario, itemsAuditorias, listadoAuditorias, setListadoAuditorias, setListadoOperaciones, AddOperaciones, EditOperaciones, DeleteOperaciones, itemsOperaciones, listadoOperaciones, formPersonas, tiempoInactivo
   }
 }, {
   persist: true

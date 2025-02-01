@@ -263,7 +263,7 @@
 
     </div>
     <!-- Logout Departamentos-->
-    <div :class="'modal fade ' + showModal1" id="agregaDepartamento" tabindex="-1" role="dialog"
+    <div :class="'modal fade '" id="agregaDepartamento" tabindex="-1" role="dialog"
       aria-labelledby="exampleModalLabel" :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -348,7 +348,7 @@
     </div>
 
     <!-- Logout articulos-->
-    <div :class="'modal fade ' + showModal1" id="agregaArticulos" tabindex="-1" role="dialog"
+    <div :class="'modal fade '" id="agregaArticulos" tabindex="-1" role="dialog"
       aria-labelledby="exampleModalLabel" :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -454,7 +454,7 @@
     </div>
 
     <!-- Logout etiquetas-->
-    <div :class="'modal fade ' + showModal1" id="agregaEtiqueta" tabindex="-1" role="dialog"
+    <div :class="'modal fade '" id="agregaEtiqueta" tabindex="-1" role="dialog"
       aria-labelledby="exampleModalLabel" :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -572,6 +572,14 @@ const itemsDeparta1 = ref([])
 const itemsMedida1 = ref([])
 
 const esperando = ref(false);
+
+const activaModal1 = ref(false);
+
+const activaHide1 = ref(true);
+
+const displayModal1 = ref('');
+
+const disabledProductos = ref('')
 
 const popup = ref(false);
 
@@ -949,7 +957,7 @@ const agregarU = async () => {
     // console.log(formDepartamentos)
     store.cambiaEstado(2)
     disabledDepartamentodBtn.value = 'disabled';
-    GuardarDep.value = 'Gardando...';
+    GuardarDep.value = 'Guardando...';
     // console.log(store.nextIDDepartamento)
     store.formDepartamentos.id = store.nextIDDepartamento + 1;
     const response = await GuardarDatos(store.formDepartamentos, 6);
@@ -995,7 +1003,7 @@ const agregarUArticulo = async () => {
     // esperando.value = true;
     store.cambiaEstado(3)
     disabledDepartamentodBtn.value = 'disabled';
-    GuardarArt.value = 'Gardando...';
+    GuardarArt.value = 'Guardando...';
     // store.formArticulo.id = store.nextIDArticulo + 1;
     const response = await GuardarDatos(store.formArticulo, 5);
     if (response == null) {
@@ -1050,7 +1058,7 @@ const agregarUEtiqueta = async () => {
     // esperando.value = true;
     store.cambiaEstado(5)
     disabledDepartamentodBtn.value = 'disabled';
-    GuardarArt.value = 'Gardando...';
+    GuardarArt.value = 'Guardando...';
     // store.formEtiqueta.id = store.nextIDEtiqueta + 1;
     const response = await GuardarDatos(store.formEtiqueta, 8);
     if (response == null) {

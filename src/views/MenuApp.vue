@@ -1,9 +1,10 @@
 <template>
-  <div id="wrapper" @contextmenu.prevent="onContextMenu">
+  <div id="wrapper" @contextmenu.prevent="onContextMenu" @mousemove="resetTimer" @keydown="resetTimer"
+    @click="resetTimer">
 
     <!-- <div @contextmenu.prevent="onContextMenu"> Haz clic derecho en esta área para ver el menú contextual. </div> -->
 
-    <ContextMenu v-model:show="show" :options="optionsComponent">
+    <ContextMenu v-model:show="showMENU" :options="optionsComponent">
       <context-menu-item @click="handleOption('Opción 1')">
 
         <i class="fa fa-refresh text-info" aria-hidden="true"></i> Acualizar datos
@@ -76,7 +77,7 @@
 
     </ContextMenu>
 
-    <q-table title="Treats" :rows="rows" :columns="columns" row-key="name"></q-table>
+    <!-- <q-table title="Treats" :rows="rows" :columns="columns" row-key="name"></q-table> -->
 
 
 
@@ -159,8 +160,8 @@
 
               :aria-expanded="activa" aria-controls="collapseTwo" @click="Exp_Consultar()"> -->
 
-        <a :class="'nav-link ' + Store.collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-          :aria-expanded="Store.activa" aria-controls="collapseTwo">
+        <a :class="'nav-link ' + collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+          :aria-expanded="activa" aria-controls="collapseTwo">
 
           <i class="fas fa-shopping-bag"></i>
 
@@ -1118,6 +1119,9 @@
 
 
       <!-- Footer -->
+      <FloatingButton class="d-md-none" @click="handleFloatingButtonClick(event)">
+        <i class="fa fa-bars"></i>
+      </FloatingButton>
 
       <footer class="sticky-footer bg-white">
 
@@ -1202,7 +1206,7 @@
 
   <!-- Logout Modal-->
 
-  <div :class="'modal fade ' + showModal1" id="sendEmail" tabindex="-1" role="dialog"
+  <!-- <div :class="'modal fade ' + showModal1" id="sendEmail" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
 
     <div class="modal-dialog" role="document">
@@ -1226,58 +1230,6 @@
 
 
           <form id="form">
-
-            <!-- <div class="field">
-
-                  <label for="to_name">Para</label>
-
-                  <input type="text" name="to_name" id="to_name">
-
-                </div>
-
-                <div class="field">
-
-                  <label for="from_name">De</label>
-
-                  <input type="text" name="from_name" id="from_name">
-
-                </div>
-
-                <div class="field">
-
-                  <label for="Mensaje">Mensaje</label>
-
-                  <input type="text" name="Mensaje" id="Mensaje">
-
-                </div>
-
-                <div class="field">
-
-                  <label for="Dilo_ConGLOBOS">MyInventory</label>
-
-                  <input type="text" name="Dilo_ConGLOBOS" id="Dilo_ConGLOBOS">
-
-                </div>
-
-                <div class="field">
-
-                  <label for="reply_to">reply_to</label>
-
-                  <input type="text" name="reply_to" id="reply_to">
-
-                </div>
-
-                <div class="field">
-
-                  <label for="to_email">to_email</label>
-
-                  <input type="text" name="to_email" id="to_email">
-
-                </div>
-
-
-
-                <input type="submit" id="button" value="Send Email"> -->
 
             <div class="row">
 
@@ -1315,7 +1267,6 @@
 
               </div>
 
-              <!-- name="from_name" -->
 
               <hr>
 
@@ -1342,61 +1293,11 @@
 
             <div class="modal-footer" style="text-align: center;">
 
-              <!-- <a class="btn btn-info" @click="AColumnas">Aceptar</a> -->
-
               <button class="btn btn-secondary btn-sm" type="submit" id="button" @click="enviarEmail()">Enviar</button>
 
             </div>
 
           </form>
-
-
-
-          <!-- <div>
-
-                <card class="card-section" style="width: 450px; margin: auto">
-
-                  <h1>Contact Form</h1>
-
-                  <form ref="values" @submit.prevent="sendEmail">
-
-                    <div class="form-group">
-
-                      <KInput class="form-input" :style="{ width: '290px' }" name="name" v-model="user_name"
-
-                        placeholder="Name"></KInput>
-
-                    </div>
-
-                    <div class="form-group">
-
-                      <KInput class="form-input" :style="{ width: '290px' }" name="email" v-model="user_email"
-
-                        placeholder="email address"></KInput>
-
-                    </div>
-
-                    <div class="form-group">
-
-                      <kTextarea class="form-input" :style="{ width: '290px' }" name="message" v-model="user_message"
-
-                        placeholder="Message" :rows="4" />
-
-                    </div>
-
-                    <div class="example-col">
-
-                      <kButton :style="{ width: '100px' }" id="submit-btn">Submit form</kButton>
-
-                    </div>
-
-                  </form>
-
-                </card>
-
-              </div> -->
-
-          <!-- <vue-barcode :value="cod" tag="svg"></vue-barcode> -->
 
         </div>
 
@@ -1406,7 +1307,7 @@
 
     </div>
 
-  </div>
+  </div> -->
 
 
 
@@ -1419,7 +1320,7 @@ import InicioApp from '@/components/InicioApp.vue';
 import InventarioApp from '@/components/InventarioApp.vue';
 import PedidosApp from '@/components/PedidosApp.vue';
 import router from '@/router';
-import { onUnmounted, ref, watch, watchEffect } from 'vue';
+import { onBeforeMount, onUnmounted, ref, watch, watchEffect } from 'vue';
 import { useRoute } from 'vue-router'
 import { onMounted } from 'vue';
 import SucursalApp from '@/components/SucursalApp.vue';
@@ -1441,6 +1342,9 @@ import AuditoriaApp from '@/components/AuditoriaApp.vue';
 
 import { ContextMenu, ContextMenuItem } from '@imengyu/vue3-context-menu';
 import PerfilApp from '@/components/PerfilApp.vue';
+import FloatingButton from '@/components/FloatingButton.vue';
+import { event } from 'jquery';
+import { error } from 'jquery';
 // import { useQuasar, useDialogPluginComponent } from 'quasar';
 
 // const { dialogRef, onDialogHide, onDialogOK, onDialogCancel, qTable } = useDialogPluginComponent()
@@ -1449,13 +1353,85 @@ import PerfilApp from '@/components/PerfilApp.vue';
 
 // Fin quasar
 
-const show = ref(false);
+const inactivityTimer = ref(null);
+
+const startInactivityTimer = () => {
+  inactivityTimer.value = setTimeout(handleInactivity, Store.tiempoInactivo * 60 * 1000); // 10 minutos
+}
+const resetTimer = () => {
+  clearInactivityTimer();
+  startInactivityTimer();
+}
+const clearInactivityTimer = () => {
+  if (inactivityTimer.value) {
+    clearTimeout(inactivityTimer.value);
+    inactivityTimer.value = null;
+  }
+}
+
+const handleInactivity = () => {
+  // Acción a tomar cuando se detecte inactividad
+  // alert('No has interactuado con la página en 10 minutos. La sesión se cerrará.');
+  // ErrorFull('No has interactuado con la página en 10 minutos. La sesión se cerrará.', "top-start")
+  Swal.fire({
+    title: "Alerta de seguridad!!!",
+    text: "No has interactuado con la página en 10 minutos. La sesión se cerrará.",
+    icon: "warning",
+    allowOutsideClick: false,
+    // showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Aceptar",
+    // cancelButtonText: "Cancelar"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Store.limpiarDatos()
+      localStorage.removeItem('Carg_datA'); // Articulos
+      localStorage.removeItem('Carg_datD'); // Departamentos
+      localStorage.removeItem('Carg_datMe'); // Unidades de medida
+      localStorage.removeItem('Carg_datM'); // Magitudes
+      localStorage.removeItem('Carg_datP'); // Productos
+      localStorage.removeItem('Carg_datS'); // Sucursales
+      localStorage.removeItem('Carg_datU'); // Ubicaciones
+      localStorage.removeItem('Carg_datE'); // Etiquetas
+      localStorage.removeItem('Carg_datL'); // Lotes
+      localStorage.removeItem('Carg_datMo'); // Monedas
+      localStorage.removeItem('Carg_datIM'); // Imagenes
+      localStorage.removeItem('Carg_datEP'); // Etiqueta productos
+      localStorage.removeItem('Carg_datAu'); // Auditoria
+      localStorage.clear();
+      Store.$reset();
+      // Aquí puedes redirigir al usuario, cerrar la sesión, etc.
+      router.push('/login')
+    }
+  });
+  // router.push('/login'); // Redirige a la página de cierre de sesión
+}
+
+// const show = ref('');
+const handleFloatingButtonClick = (event) => {
+  // Lógica para manejar el clic del botón flotante
+  // alert('¡Botón flotante clickeado!');
+  // onContextMenu(event)
+  optionsComponent.value.x = window.innerWidth / 3;
+  optionsComponent.value.y = 74;
+  showMENU.value = true;
+}
+
 const optionsComponent = ref({ zIndex: 3, minWidth: 230, x: 0, y: 0, });
+const showMENU = ref(false);
 const onContextMenu = (event) => {
+  collapsed.value = 'collapsed';
+  activa.value = false;
+  show.value = '';
+  collapsed2.value = 'collapsed';
+  activa2.value = false;
+  show2.value = '';
   event.preventDefault();
   optionsComponent.value.x = event.clientX;
   optionsComponent.value.y = event.clientY;
-  show.value = true;
+  showMENU.value = true;
+  // link.value = alink;
 };
 
 const itemsAuditorias1 = ref([])
@@ -1502,6 +1478,7 @@ const actualizar = async () => {
   localStorage.removeItem('Carg_datIM'); // Imagenes
   localStorage.removeItem('Carg_datEP'); // Etiqueta productos
   localStorage.removeItem('Carg_datAu'); // Auditoria
+  localStorage.removeItem('Carg_datPe'); // Personas
   localStorage.setItem('Carg_datA', '0'); // Articulos
   localStorage.setItem('Carg_datD', '0'); // Departamentos
   localStorage.setItem('Carg_datMe', '0'); // Unidades de medida
@@ -1515,6 +1492,7 @@ const actualizar = async () => {
   localStorage.setItem('Carg_datIM', '0'); // Imagenes
   localStorage.setItem('Carg_datEP', '0'); // Etiqueta productos
   localStorage.setItem('Carg_datAu', '0'); // Auditorias
+  localStorage.setItem('Carg_datPe', '0'); // Personas
   // beforeRouteLeave()
   if (localStorage.getItem('userName')) {
     Kinicio.value = Kinicio.value + 1;
@@ -1817,6 +1795,12 @@ const tiempoEspera = async () => {
   // console.log(n)
 }
 
+// const x = document.getElementById('content')
+//   .addEventListener('click', function (event) {
+//     show.value = false;
+//   }
+//   );
+
 const link = ref(0);
 
 const Cosc_Clar = ref('info');
@@ -1848,17 +1832,17 @@ const enviarEmail = async () => {
     });
 }
 
-// const collapsed = ref('collapsed');
-// const collapsed2 = ref('collapsed');
-// const activa = ref(false);
+const collapsed = ref('collapsed');
+const collapsed2 = ref('collapsed');
+const activa = ref(false);
 
-// const show = ref('')
+const show = ref('')
 
 
 
-// const activa2 = ref(false);
+const activa2 = ref(false);
 
-// const show2 = ref('')
+const show2 = ref('')
 
 const activaUser = ref(false);
 
@@ -1881,12 +1865,13 @@ const Exp_Not = () => {
 const obtenerLinkA = (alink) => {
   // console.log("OKKK")
   link.value = alink;
-  Store.collapsed = 'collapsed';
-  Store.activa = false;
-  Store.show = '';
-  Store.collapsed2 = 'collapsed';
-  Store.activa2 = false;
-  Store.show2 = '';
+  collapsed.value = 'collapsed';
+  activa.value = false;
+  show.value = '';
+  collapsed2.value = 'collapsed';
+  activa2.value = false;
+  show2.value = '';
+  // ActivaLink(alink)
   // console.log("Cierra")
 
 }
@@ -1905,7 +1890,7 @@ const ActivaLink = (valor) => {
   // activa.value = false;
   // show.value = '';
   // }
-  // show.value = '';
+  show2.value = '';
   if (valor == link.value) {
     return 'active'
   } else {
@@ -2195,8 +2180,21 @@ onUnmounted(async () => {
   destruirRecarga()
 })
 
-onMounted(async () => {
+const loadTime = ref(0);
 
+const tiempoActivo = () => {
+  if (performance && performance.timing) {
+    const timing = performance.timing;
+    loadTime.value = timing.loadEventEnd - timing.navigationStart;
+  }
+  // console.log(loadTime.value)
+}
+
+onMounted(async () => {
+  // tiempoActivo();
+  startInactivityTimer();
+  // Escuchar más eventos si es necesario
+  window.addEventListener('scroll', resetTimer);
   Ctoggled.value = 'toggled';
   editando.value = true;
   evitarRecargar();
@@ -2283,6 +2281,11 @@ onMounted(async () => {
   }
 })
 
+onBeforeMount(async () => {
+  clearInactivityTimer();
+  window.removeEventListener('scroll', resetTimer);
+})
+
 const route = useRoute();
 
 const userName = ref(localStorage.getItem("userName"));
@@ -2323,14 +2326,14 @@ const salir = () => {
     text: "Está seguro que desea salir del sistema.",
     icon: "question",
     showCancelButton: true,
+    allowOutsideClick: false,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
     confirmButtonText: "Salir",
     cancelButtonText: "Cancelar"
   }).then((result) => {
     if (result.isConfirmed) {
-      localStorage.removeItem('userName');
-      localStorage.removeItem('Carg_dat');
+      Store.limpiarDatos()
       localStorage.removeItem('Carg_datA'); // Articulos
       localStorage.removeItem('Carg_datD'); // Departamentos
       localStorage.removeItem('Carg_datMe'); // Unidades de medida
@@ -2338,7 +2341,12 @@ const salir = () => {
       localStorage.removeItem('Carg_datP'); // Productos
       localStorage.removeItem('Carg_datS'); // Sucursales
       localStorage.removeItem('Carg_datU'); // Ubicaciones
-      localStorage.removeItem('Host_back'); // IPPublica
+      localStorage.removeItem('Carg_datE'); // Etiquetas
+      localStorage.removeItem('Carg_datL'); // Lotes
+      localStorage.removeItem('Carg_datMo'); // Monedas
+      localStorage.removeItem('Carg_datIM'); // Imagenes
+      localStorage.removeItem('Carg_datEP'); // Etiqueta productos
+      localStorage.removeItem('Carg_datAu'); // Auditoria
       localStorage.clear();
       Store.$reset();
       router.push('/login')
