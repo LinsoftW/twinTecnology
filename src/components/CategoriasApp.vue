@@ -2,7 +2,7 @@
   <div>
     <div class="container-fluid" @click="CierraMenu()">
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">DEPARTAMENTOS, TIPOS DE ARTÍCULOS Y ETIQUETAS </h1>
+        <h1 class="h3 mb-0 text-gray-800 text-center">DEPARTAMENTOS, TIPOS DE ARTÍCULOS Y ETIQUETAS </h1>
       </div>
 
       <!-- Datos del producto a agregar -->
@@ -113,7 +113,7 @@
                         </span>
                         <span class="text">Nuevo</span>
                       </a>
-                     <a @click="generar_pdfA()" class="btn btn-secondary btn-sm btn-icon-split m-2"
+                      <a @click="generar_pdfA()" class="btn btn-secondary btn-sm btn-icon-split m-2"
                         :class="disabledProductos">
                         <span class="icon text-white-50">
                           <i class="fas fa-file-pdf"></i>
@@ -263,8 +263,8 @@
 
     </div>
     <!-- Logout Departamentos-->
-    <div :class="'modal fade '" id="agregaDepartamento" tabindex="-1" role="dialog"
-      aria-labelledby="exampleModalLabel" :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
+    <div :class="'modal fade '" id="agregaDepartamento" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -348,8 +348,8 @@
     </div>
 
     <!-- Logout articulos-->
-    <div :class="'modal fade '" id="agregaArticulos" tabindex="-1" role="dialog"
-      aria-labelledby="exampleModalLabel" :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
+    <div :class="'modal fade '" id="agregaArticulos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -454,8 +454,8 @@
     </div>
 
     <!-- Logout etiquetas-->
-    <div :class="'modal fade '" id="agregaEtiqueta" tabindex="-1" role="dialog"
-      aria-labelledby="exampleModalLabel" :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
+    <div :class="'modal fade '" id="agregaEtiqueta" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -671,7 +671,7 @@ const generar_pdf = async () => {
     { title: "Fecha actualización", dataKey: "fechaU" }
   ]
 
-  doc.autoTable({columns: columnas, body: nuevoArreglo.value})
+  doc.autoTable({ columns: columnas, body: nuevoArreglo.value })
   // const doc = new jsPDF({
   //   orientation: "landscape",
   //   unit: "in",
@@ -713,7 +713,7 @@ const generar_pdfA = async () => {
     { header: "Fecha actualización", dataKey: "fechaU" }
   ]
 
-  doc.autoTable({columns: columnas, body: nuevoArreglo.value})
+  doc.autoTable({ columns: columnas, body: nuevoArreglo.value })
   // const doc = new jsPDF({
   //   orientation: "landscape",
   //   unit: "in",
@@ -755,7 +755,7 @@ const generar_pdfE = async () => {
     { title: "Fecha actualización", dataKey: "fechaU" }
   ]
 
-  doc.autoTable({columns: columnas, body: nuevoArreglo.value})
+  doc.autoTable({ columns: columnas, body: nuevoArreglo.value })
   // const doc = new jsPDF({
   //   orientation: "landscape",
   //   unit: "in",
@@ -903,7 +903,7 @@ const datos_archivados = ref([]);
 
 const CierraMenu = () => {
   store.collapsed = 'collapsed';
-  store.activa= false;
+  store.activa = false;
   store.show = '';
   store.collapsed2 = 'collapsed';
   store.activa2 = false;
@@ -1957,7 +1957,8 @@ onMounted(async () => {
 })
 </script>
 <style lang="scss" scoped>
-a,span {
+a,
+span {
 
   @media (max-width: 1024px) {
     span.text {
@@ -1966,11 +1967,17 @@ a,span {
   }
 }
 
-div,h1 {
+div,
+h1 {
   @media (max-width: 1024px) {
     h1.h3.mb-0.text-gray-800 {
       font-size: small;
       font-weight: 600;
+    }
+
+    .container-fluid {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
     }
   }
 }

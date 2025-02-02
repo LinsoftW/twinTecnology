@@ -2,7 +2,7 @@
   <div>
     <div class="container-fluid">
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">SUCURSALES Y UBICACIONES</h1>
+        <h1 class="h3 mb-0 text-gray-800 text-center">SUCURSALES Y UBICACIONES</h1>
       </div>
       <div class="row">
         <!--Listado de magnitudes -->
@@ -1855,6 +1855,11 @@ div,h1 {
     h1.h3.mb-0.text-gray-800 {
       font-size: small;
       font-weight: 600;
+    }
+
+    .container-fluid {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
     }
   }
 }

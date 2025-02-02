@@ -2,7 +2,7 @@
   <div>
     <div class="container-fluid">
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">MAGNITUDES Y UNIDADES DE MEDIDAS</h1>
+        <h1 class="h3 mb-0 text-gray-800 text-center">MAGNITUDES Y UNIDADES DE MEDIDAS</h1>
       </div>
       <div class="row">
         <!--Listado de magnitudes -->
@@ -32,7 +32,8 @@
                         </span>
                         <span class="text">PDF</span>
                       </a>
-                      <a @click="ExportExcel()" class="btn btn-secondary btn-sm btn-icon-split" :class="disabledMagnitud">
+                      <a @click="ExportExcel()" class="btn btn-secondary btn-sm btn-icon-split"
+                        :class="disabledMagnitud">
                         <span class="icon text-white-50">
                           <i class="fas fa-download"></i>
                         </span>
@@ -731,7 +732,7 @@ const generar_pdf = async () => {
     { title: "Fecha actualización", dataKey: "fechaU" }
   ]
 
-  doc.autoTable({columns: columnas, body: nuevoArreglo.value})
+  doc.autoTable({ columns: columnas, body: nuevoArreglo.value })
   // const doc = new jsPDF({
   //   orientation: "landscape",
   //   unit: "in",
@@ -772,7 +773,7 @@ const generar_pdfMed = async () => {
     { title: "Fecha actualización", dataKey: "fechaU" }
   ]
 
-  doc.autoTable({columns: columnas, body: nuevoArreglo.value})
+  doc.autoTable({ columns: columnas, body: nuevoArreglo.value })
   // const doc = new jsPDF({
   //   orientation: "landscape",
   //   unit: "in",
@@ -1628,8 +1629,8 @@ onMounted(async () => {
         store.setListadoMedidas(response)
       }
       for (let index = 0; index < response.length; index++) {
-          store.nextIDMedida = response[index].id;
-        }
+        store.nextIDMedida = response[index].id;
+      }
       localStorage.setItem("Carg_datMe", "1");
       itemsMedida1.value = store.itemsMedidas;
       store.cambiaEstado(6)
@@ -1677,7 +1678,8 @@ const items = ref([]);
 const itemsMedidas = ref([]);
 </script>
 <style lang="scss" scoped>
-a,span {
+a,
+span {
 
   @media (max-width: 1024px) {
     span.text {
@@ -1686,11 +1688,17 @@ a,span {
   }
 }
 
-div,h1 {
+div,
+h1 {
   @media (max-width: 1024px) {
     h1.h3.mb-0.text-gray-800 {
       font-size: small;
       font-weight: 600;
+    }
+
+    .container-fluid {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
     }
   }
 }

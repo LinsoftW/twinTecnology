@@ -1,52 +1,29 @@
 <template>
-  <div>
-    <div class="container-fluid" v-if="!detalle">
-      <!-- <div>
+  <!-- <div> -->
+  <div class="container-fluid" v-if="!detalle">
+    <!-- <div>
         <div id="interactive" class="viewport"></div>
         <button @click="startScanner">Iniciar Escaneo</button>
         <p v-if="barcode">Código de barras detectado: {{ barcode }}</p>
       </div> -->
-      <!-- <ImageBarcodeReader @decode="onDecode" @error="onError" /> -->
-      <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-2 text-gray-800">INVENTARIO</h1>
-        <!-- <img src="/cargando2.gif" style="width: 40px; height:40px" v-if="esperando" > -->
-        <div class="row">
-          <div class="col-md-12 justify-content-between">
-            <!-- <router-link class="button" to="/gest_inventario"> -->
-            <!-- <a @click="abrirModalAddProd()" href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm"
-              v-b-tooltip.hover title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar productos </a> -->
-            <!-- </router-link> -->
-            <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" v-b-tooltip.hover
-              title="Generar resumen diario"><i class="fas fa-download fa-sm "></i> Excel</a> -->
-            <!-- <a @click="CargaMasiva()" href="#" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm m-2"
-              v-b-tooltip.hover title="Agregar productos según archivo"><i class="fas fa-upload fa-sm "></i> Carga
-              masiva</a> -->
-            <!-- <a @click="ImprimirDoc()" href="#" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm"
-              v-b-tooltip.hover title="Imprimir"><i class="fas fa-print fa-sm "></i> Imprimir</a> -->
-            <!-- <a @click="escanea = true" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
-              v-b-tooltip.hover data-toggle="modal" data-target="#escanearCode" title="Escanear código de barras"><i
-                class="fa fa-barcode fa-sm "></i> Escanear</a> -->
-          </div>
-        </div>
+    <!-- <ImageBarcodeReader @decode="onDecode" @error="onError" /> -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+      <h1 class="h3 mb-2 text-gray-800 text-center">INVENTARIO</h1>
 
+    </div>
 
-        <!-- <router-link class="button" to="/gest_inventario">
-          <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" v-b-tooltip.hover
-            title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar productos</a>
-        </router-link> -->
+    <!-- TABLA INVENTARIOS -->
+    <!-- codigo, descripcion, cantidad -->
+    <!-- permitir seleccionar que quiere mostrar -->
+    <!-- poner todos los datos en la tabla inventario -->
+    <!-- elementos de busqueda -->
+    <!-- por Sucursal -->
+    <!-- por codigo -->
+    <!-- por cantidad -->
+    <!--Opciones de busqueda -->
+    <!-- <div class=""> -->
+    <div class="row">
 
-      </div>
-
-      <!-- TABLA INVENTARIOS -->
-      <!-- codigo, descripcion, cantidad -->
-      <!-- permitir seleccionar que quiere mostrar -->
-      <!-- poner todos los datos en la tabla inventario -->
-      <!-- elementos de busqueda -->
-      <!-- por Sucursal -->
-      <!-- por codigo -->
-      <!-- por cantidad -->
-      <!--Opciones de busqueda -->
-      <!-- <div class=""> -->
       <div class="col-xl-6 col-lg-12">
         <div class="card shadow mb-4">
           <!-- Card Header - Dropdown -->
@@ -58,11 +35,11 @@
             <div class="container-fluid row">
               <!-- <div class="col-xl-4 col-lg-3">
 
-                <label>Etiqueta</label>
-                <input type="text" class="form-control form-control-sm" placeholder="Ej: La Habana"
-                  v-model="critBusq[0]">
+                  <label>Etiqueta</label>
+                  <input type="text" class="form-control form-control-sm" placeholder="Ej: La Habana"
+                    v-model="critBusq[0]">
 
-              </div> -->
+                </div> -->
               <div class="col-xl-6 col-lg-3">
                 <label>Código</label>
                 <input type="text" class="form-control form-control-sm" placeholder="Ej: 0000" v-model="critBusq[1]">
@@ -74,22 +51,22 @@
               </div>
               <!-- {{ critBusq }} -->
               <!-- <div class="col-xl-2 col-lg-3">
-                <label>Por categoría</label>
-                <select class="form-control form-control-sm" name="" id="" placeholder="Por cantidades">
-                  <option value="">Zapatos</option>
-                  <option value="">Pantalones</option>
-                </select>
-              </div> -->
+                  <label>Por categoría</label>
+                  <select class="form-control form-control-sm" name="" id="" placeholder="Por cantidades">
+                    <option value="">Zapatos</option>
+                    <option value="">Pantalones</option>
+                  </select>
+                </div> -->
               <!-- <div class="col-xl-2 col-lg-3">
-                <label>Ventas desde</label>
-                <VueDatePicker v-model="date"></VueDatePicker>
+                  <label>Ventas desde</label>
+                  <VueDatePicker v-model="date"></VueDatePicker>
 
-              </div> -->
+                </div> -->
               <!-- <div class="col-xl-2 col-lg-3">
-                <label>Ventas hasta</label>
-                <VueDatePicker v-model="date2"></VueDatePicker>
+                  <label>Ventas hasta</label>
+                  <VueDatePicker v-model="date2"></VueDatePicker>
 
-              </div> -->
+                </div> -->
             </div>
           </div>
         </div>
@@ -98,39 +75,39 @@
 
         <!-- Elementos a mostrar en las columnas de la tabla -->
         <!-- <div class="col-xl-6 col-lg-12">
-        <div class="mb-2">
+          <div class="mb-2">
 
-          <div class=" justify-content-between">
-            <h6 class="m-0 text-info">Columnas a mostrar</h6>
-          </div>
+            <div class=" justify-content-between">
+              <h6 class="m-0 text-info">Columnas a mostrar</h6>
+            </div>
 
-          <div class="card-body shadow">
-            <div class="container-fluid row">
-              <div class="col-xl-3 col-lg-4">
-                <label>Por Sucursal</label>
-                <select class="form-control form-control-sm" name="" id="" placeholder="Por Sucursales">
-                  <option value="">Sucursal 1</option>
-                  <option value="">Sucursal 2</option>
-                </select>
-              </div>
-              <div class="col-xl-3 col-lg-4">
-                <label>Por código</label>
-                <select class="form-control form-control-sm" name="" id="" placeholder="Por codigos">
-                  <option value="">Código 1</option>
-                  <option value="">Código 2</option>
-                </select>
-              </div>
-              <div class="col-xl-3 col-lg-4">
-                <label>Por cantidad</label>
-                <select class="form-control form-control-sm" name="" id="" placeholder="Por cantidades">
-                  <option value="">5</option>
-                  <option value="">10</option>
-                </select>
+            <div class="card-body shadow">
+              <div class="container-fluid row">
+                <div class="col-xl-3 col-lg-4">
+                  <label>Por Sucursal</label>
+                  <select class="form-control form-control-sm" name="" id="" placeholder="Por Sucursales">
+                    <option value="">Sucursal 1</option>
+                    <option value="">Sucursal 2</option>
+                  </select>
+                </div>
+                <div class="col-xl-3 col-lg-4">
+                  <label>Por código</label>
+                  <select class="form-control form-control-sm" name="" id="" placeholder="Por codigos">
+                    <option value="">Código 1</option>
+                    <option value="">Código 2</option>
+                  </select>
+                </div>
+                <div class="col-xl-3 col-lg-4">
+                  <label>Por cantidad</label>
+                  <select class="form-control form-control-sm" name="" id="" placeholder="Por cantidades">
+                    <option value="">5</option>
+                    <option value="">10</option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div> -->
+        </div> -->
       </div>
       <!-- Nuevo Listado productos -->
       <div class="col-xl-12 col-lg-12">
@@ -140,9 +117,9 @@
             <h6 class="m-0 font-weight-bold text-info"><i class="fa fa-list-ul"></i> PRODUCTOS EN STOCK</h6>
           </a>
           <!-- <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-              <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-edit"></i> DEPARTAMENTOS</h6>
-              <button class="btn btn-info" @click="abrirModalAddProd()"> <span class="fa fa-plus"></span> Nuevo</button>
-            </div> -->
+                <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-edit"></i> DEPARTAMENTOS</h6>
+                <button class="btn btn-info" @click="abrirModalAddProd()"> <span class="fa fa-plus"></span> Nuevo</button>
+              </div> -->
           <!-- Card Body -->
           <div class="collapse show" id="collapseCardExample">
             <div class="card-body">
@@ -166,16 +143,14 @@
                       </span>
                       <span class="text">PDF</span>
                     </a>
-                    <a @click="ExportExcel()" class="btn btn-secondary btn-sm btn-icon-split"
-                      :class="disabledProductos">
+                    <a @click="ExportExcel()" class="btn btn-secondary btn-sm btn-icon-split" :class="disabledProductos">
                       <span class="icon text-white-50">
                         <i class="fas fa-download"></i>
                       </span>
                       <span class="text">Excel</span>
                     </a>
                     <button class="btn btn-primary btn-sm dropdown-toggle m-2" type="button" id="dropdownMenuButton"
-                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-b-tooltip.hover
-                      title="Agregar">
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-b-tooltip.hover title="Agregar">
                       <span class="icon text-white-50">
                         <i class="fas fa-plus" v-b-tooltip.hover title="Agregar"></i>
                       </span>
@@ -193,31 +168,30 @@
                       </router-link>
 
                     </div>
-                    <a @click="EliminarSelecc()" class="btn btn-danger btn-sm btn-icon-split"
-                      :class="disabledProductos">
+                    <a @click="EliminarSelecc()" class="btn btn-danger btn-sm btn-icon-split" :class="disabledProductos">
                       <span class="icon text-white">
                         <i class="fas fa-trash"></i>
                       </span>
                       <span class="text text-white">Eliminar seleccionados</span>
                     </a>
                     <!-- <a @click="abrirModalAddProd()" href="#" class="d-sm-inline-block btn btn-sm btn-info shadow-sm"
-                    v-b-tooltip.hover title="Agregar producto"><i class="fas fa-plus fa-sm "></i> Agregar productos </a> -->
+                      v-b-tooltip.hover title="Agregar producto"><i class="fas fa-plus fa-sm "></i> Agregar productos </a> -->
                     <!-- <a @click="EliminarSelecc()" href="#" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm m-2"
-                      v-b-tooltip.hover title="Eliminar seleccionados"><i class="fas fa-trash fa-sm "></i> Eliminar
-                      seleccionados </a> -->
+                        v-b-tooltip.hover title="Eliminar seleccionados"><i class="fas fa-trash fa-sm "></i> Eliminar
+                        seleccionados </a> -->
                     <!-- </router-link> -->
                     <!-- <a @click="ExportExcel()" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
-                    v-b-tooltip.hover title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a> -->
+                      v-b-tooltip.hover title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a> -->
                   </div>
                   <!-- </div> -->
                 </div>
                 <!-- <div class="col-md-3 col-xl-3 col-lg-3">
-                <span class="text-info">Filtrar por columna: </span>
-                <select v-model="searchField" @change="cuandoCambie()" class="form-control form-control-user">
-                  <option>Tipo</option>
-                  <option>Código</option>
-                </select>
-              </div> -->
+                  <span class="text-info">Filtrar por columna: </span>
+                  <select v-model="searchField" @change="cuandoCambie()" class="form-control form-control-user">
+                    <option>Tipo</option>
+                    <option>Código</option>
+                  </select>
+                </div> -->
                 <div class="col-md-6 col-xl-6 col-lg-12">
                   <span class="text-info">Buscar: </span>
                   <input class="form-control form-control-user" type="text" v-model="searchValue"
@@ -231,29 +205,30 @@
                 :search-field="searchField" :search-value="searchValue" @click-row="showRow" :rows-per-page="5"
                 :loading="Store.esperandoProductos" :key="actualizaTabla">
                 <template #item-image="item">
-                  <a data-toggle="modal" data-target="#verImagen"
-                    @click="obtenDescripcion(item.attributes.imagen_path)">
+                  <a data-toggle="modal" data-target="#verImagen" @click="obtenDescripcion(item.attributes.imagen_path)">
                     <!-- "{{ obtenImagen(item.id) }}" -->
                     <!-- {{ item.attributes.imagen_path }} -->
-                    <img :src="urlAuditoria + '/' + item.attributes.imagen_path" alt="No image"
-                      class="img img-thumbnail" style="width: 50px; height: 50px;" />
+                    <img v-if="item.attributes.imagen_path != ''" :src="urlAuditoria + '/' + item.attributes.imagen_path"
+                      alt="No image" class="img img-thumbnail" style="width: 50px; height: 50px;" />
+                    <img v-else src="/productos.jpg" alt="No image" class="img img-thumbnail"
+                      style="width: 50px; height: 50px;" />
                   </a>
 
                 </template>
                 <!-- <template #item-rows>
-                <a>Filas por paginas</a>
-              </template> -->
+                  <a>Filas por paginas</a>
+                </template> -->
                 <template #item-opciones="item">
                   <div class="operation-wrapper">
                     <!-- <button class="btn btn-success btn-sm btn-circle" @click="Aumentar(item)" v-b-tooltip.hover
-                      title="Aumentar / Disminuir"><span class="fas fa-plus"></span> / <span
-                        class="fas fa-minus"></span></button> -->
+                        title="Aumentar / Disminuir"><span class="fas fa-plus"></span> / <span
+                          class="fas fa-minus"></span></button> -->
                     <button class="btn btn-primary btn-sm btn-circle ml-1" data-toggle="modal"
                       data-target="#agregaProducto" @click="clickEditarProducto(item.id)" v-b-tooltip.hover
                       title="Modificar"><span class="fas fa-edit"></span></button>
 
                     <!-- <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
-                    title="Restar"><span class="fas fa-minus"></span></button> -->
+                      title="Restar"><span class="fas fa-minus"></span></button> -->
 
                     <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode"
                       @click="generarCodeBar(item.relationships.departamento.data.id, item.relationships.articulo.data.id, item.id)"
@@ -303,9 +278,9 @@
             <h6 class="m-0 font-weight-bold text-info"><i class="fa fa-list-ul"></i> LOTES</h6>
           </a>
           <!-- <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-              <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-edit"></i> DEPARTAMENTOS</h6>
-              <button class="btn btn-info" @click="abrirModalAddProd()"> <span class="fa fa-plus"></span> Nuevo</button>
-            </div> -->
+                <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-edit"></i> DEPARTAMENTOS</h6>
+                <button class="btn btn-info" @click="abrirModalAddProd()"> <span class="fa fa-plus"></span> Nuevo</button>
+              </div> -->
           <!-- Card Body -->
           <div class="collapse show" id="collapseCardExample1">
             <div class="card-body">
@@ -322,63 +297,63 @@
                       <span class="text">Nuevo</span>
                     </a>
                     <!-- <a @click="generar_pdf1()" class="btn btn-secondary btn-sm btn-icon-split m-2"
-                      :class="disabledProductos">
-                      <span class="icon text-white-50">
-                        <i class="fas fa-file-pdf"></i>
-                      </span>
-                      <span class="text">PDF</span>
-                    </a>
-                    <a @click="ExportExcel1()" class="btn btn-secondary btn-sm btn-icon-split"
-                      :class="disabledProductos">
-                      <span class="icon text-white-50">
-                        <i class="fas fa-download"></i>
-                      </span>
-                      <span class="text">Excel</span>
-                    </a> -->
+                        :class="disabledProductos">
+                        <span class="icon text-white-50">
+                          <i class="fas fa-file-pdf"></i>
+                        </span>
+                        <span class="text">PDF</span>
+                      </a>
+                      <a @click="ExportExcel1()" class="btn btn-secondary btn-sm btn-icon-split"
+                        :class="disabledProductos">
+                        <span class="icon text-white-50">
+                          <i class="fas fa-download"></i>
+                        </span>
+                        <span class="text">Excel</span>
+                      </a> -->
                     <!-- <button class="btn btn-primary btn-sm dropdown-toggle m-2" type="button" id="dropdownMenuButton"
-                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <span class="icon text-white-50">
-                        <i class="fas fa-plus"></i>
-                      </span>
-                      <span class="text"> Agregar</span>
-                    </button> -->
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="icon text-white-50">
+                          <i class="fas fa-plus"></i>
+                        </span>
+                        <span class="text"> Agregar</span>
+                      </button> -->
                     <!-- <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
-                      <router-link class="button" to="/categorias">
-                        <a class="dropdown-item" href="#"><span class="fa fa-list-alt"></span> Clasificaciones</a>
-                      </router-link>
-                      <router-link class="button" to="/gest_nomencladores">
-                        <a class="dropdown-item" href="#"><span class="fas fa-ruler-horizontal"></span> Magnitudes</a>
-                      </router-link>
-                      <router-link class="button" to="/ubicaciones">
-                        <a class="dropdown-item" href="#"><span class="fa fa-map-marker-alt"></span> Ubicaciones</a>
-                      </router-link>
+                        <router-link class="button" to="/categorias">
+                          <a class="dropdown-item" href="#"><span class="fa fa-list-alt"></span> Clasificaciones</a>
+                        </router-link>
+                        <router-link class="button" to="/gest_nomencladores">
+                          <a class="dropdown-item" href="#"><span class="fas fa-ruler-horizontal"></span> Magnitudes</a>
+                        </router-link>
+                        <router-link class="button" to="/ubicaciones">
+                          <a class="dropdown-item" href="#"><span class="fa fa-map-marker-alt"></span> Ubicaciones</a>
+                        </router-link>
 
-                    </div> -->
+                      </div> -->
                     <!-- <a @click="EliminarSelecc()" class="btn btn-danger btn-sm btn-icon-split"
-                      :class="disabledProductos">
-                      <span class="icon text-white">
-                        <i class="fas fa-trash"></i>
-                      </span>
-                      <span class="text text-white">Eliminar seleccionados</span>
-                    </a> -->
+                        :class="disabledProductos">
+                        <span class="icon text-white">
+                          <i class="fas fa-trash"></i>
+                        </span>
+                        <span class="text text-white">Eliminar seleccionados</span>
+                      </a> -->
                     <!-- <a @click="abrirModalAddProd()" href="#" class="d-sm-inline-block btn btn-sm btn-info shadow-sm"
-                    v-b-tooltip.hover title="Agregar producto"><i class="fas fa-plus fa-sm "></i> Agregar productos </a> -->
+                      v-b-tooltip.hover title="Agregar producto"><i class="fas fa-plus fa-sm "></i> Agregar productos </a> -->
                     <!-- <a @click="EliminarSelecc()" href="#" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm m-2"
-                      v-b-tooltip.hover title="Eliminar seleccionados"><i class="fas fa-trash fa-sm "></i> Eliminar
-                      seleccionados </a> -->
+                        v-b-tooltip.hover title="Eliminar seleccionados"><i class="fas fa-trash fa-sm "></i> Eliminar
+                        seleccionados </a> -->
                     <!-- </router-link> -->
                     <!-- <a @click="ExportExcel()" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
-                    v-b-tooltip.hover title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a> -->
+                      v-b-tooltip.hover title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a> -->
                   </div>
                   <!-- </div> -->
                 </div>
                 <!-- <div class="col-md-3 col-xl-3 col-lg-3">
-                <span class="text-info">Filtrar por columna: </span>
-                <select v-model="searchField" @change="cuandoCambie()" class="form-control form-control-user">
-                  <option>Tipo</option>
-                  <option>Código</option>
-                </select>
-              </div> -->
+                  <span class="text-info">Filtrar por columna: </span>
+                  <select v-model="searchField" @change="cuandoCambie()" class="form-control form-control-user">
+                    <option>Tipo</option>
+                    <option>Código</option>
+                  </select>
+                </div> -->
                 <div class="col-md-6 col-xl-6 col-lg-12">
                   <span class="text-info">Buscar: </span>
                   <input class="form-control form-control-user" type="text" v-model="searchValue2"
@@ -391,16 +366,16 @@
                 header-text-direction="center" body-text-direction="center" :search-field="searchField2"
                 :search-value="searchValue2" :rows-per-page="5" :loading="Store.esperandoLotes">
                 <!-- <template #item-image="item">
-                  <a data-toggle="modal" data-target="#verImagen"
-                    @click="obtenDescripcion(item.attributes.descripcion)">
-                    <img src="/inventario.jpg" alt="No image" class="img img-thumbnail"
-                      style="width: 50px; height: 50px;" />
-                  </a>
+                    <a data-toggle="modal" data-target="#verImagen"
+                      @click="obtenDescripcion(item.attributes.descripcion)">
+                      <img src="/inventario.jpg" alt="No image" class="img img-thumbnail"
+                        style="width: 50px; height: 50px;" />
+                    </a>
 
-                </template> -->
+                  </template> -->
                 <!-- <template #item-rows>
-                <a>Filas por paginas</a>
-              </template> -->
+                  <a>Filas por paginas</a>
+                </template> -->
                 <template #item-opciones="item">
                   <div class="operation-wrapper">
                     <!-- @click="Aumentar(item)" -->
@@ -412,17 +387,17 @@
                         class="fas fa-edit"></span></button>
 
                     <!-- <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
-                    title="Restar"><span class="fas fa-minus"></span></button> -->
+                      title="Restar"><span class="fas fa-minus"></span></button> -->
 
                     <!-- <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode"
-                      @click="generarCodeBar(item.relationships.departamento.data.id, item.relationships.articulo.data.id, item.id)"
-                      v-b-tooltip.hover title="Código de barra"><span class="fas fas fa-barcode"></span></button> -->
+                        @click="generarCodeBar(item.relationships.departamento.data.id, item.relationships.articulo.data.id, item.id)"
+                        v-b-tooltip.hover title="Código de barra"><span class="fas fas fa-barcode"></span></button> -->
                     <!-- <router-link to="/detalles"> -->
                     <!-- <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Detalles(item)" v-b-tooltip.hover
-                      title="Detalles"><span class="fa fa-eye"></span></button> -->
+                        title="Detalles"><span class="fa fa-eye"></span></button> -->
                     <button class="btn btn-danger btn-sm btn-circle ml-1"
-                      @click="borrarUL(item.id, item.attributes.descripcion, 1)" v-b-tooltip.hover
-                      title="Eliminar"><span class="fas fas fa-trash-alt"></span></button>
+                      @click="borrarUL(item.id, item.attributes.descripcion, 1)" v-b-tooltip.hover title="Eliminar"><span
+                        class="fas fas fa-trash-alt"></span></button>
                     <!-- </router-link> -->
                   </div>
                 </template>
@@ -433,11 +408,11 @@
                   {{ item.attributes.precio_venta }} {{ obtenMoneda(item.attributes.moneda_venta) }}
                 </template>
                 <!-- <template #item-departamento="item">
-                  {{ obtenDepartamento(item.relationships.departamento.data.id) }}
-                </template> -->
+                    {{ obtenDepartamento(item.relationships.departamento.data.id) }}
+                  </template> -->
                 <!-- <template #item-etiqueta="item">
-                  {{ obtenEtiqueta(item.relationships.etiquetas.data.id) }}
-                </template> -->
+                    {{ obtenEtiqueta(item.relationships.etiquetas.data.id) }}
+                  </template> -->
                 <template #loading>
                   <img src="/cargando4.gif" style="width: 100px; height: 80px;" />
                 </template>
@@ -455,10 +430,10 @@
     </div>
     <div class="container-fluid" v-if="detalle">
       <!-- <div>
-        <div id="interactive" class="viewport"></div>
-        <button @click="startScanner">Iniciar Escaneo</button>
-        <p v-if="barcode">Código de barras detectado: {{ barcode }}</p>
-      </div> -->
+          <div id="interactive" class="viewport"></div>
+          <button @click="startScanner">Iniciar Escaneo</button>
+          <p v-if="barcode">Código de barras detectado: {{ barcode }}</p>
+        </div> -->
       <!-- <ImageBarcodeReader @decode="onDecode" @error="onError" /> -->
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-2 text-gray-800">DETALLES</h1>
@@ -467,26 +442,26 @@
           <div class="col-md-12 justify-content-between">
             <!-- <router-link class="button" to="/gest_inventario"> -->
             <!-- <a @click="abrirModalAddProd()" href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm"
-              v-b-tooltip.hover title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar productos </a> -->
+                v-b-tooltip.hover title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar productos </a> -->
             <!-- </router-link> -->
             <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" v-b-tooltip.hover
-              title="Generar resumen diario"><i class="fas fa-download fa-sm "></i> Excel</a> -->
+                title="Generar resumen diario"><i class="fas fa-download fa-sm "></i> Excel</a> -->
             <!-- <a @click="CargaMasiva()" href="#" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm m-2"
-              v-b-tooltip.hover title="Agregar productos según archivo"><i class="fas fa-upload fa-sm "></i> Carga
-              masiva</a> -->
+                v-b-tooltip.hover title="Agregar productos según archivo"><i class="fas fa-upload fa-sm "></i> Carga
+                masiva</a> -->
             <!-- <a @click="ImprimirDoc()" href="#" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm"
-              v-b-tooltip.hover title="Imprimir"><i class="fas fa-print fa-sm "></i> Imprimir</a> -->
+                v-b-tooltip.hover title="Imprimir"><i class="fas fa-print fa-sm "></i> Imprimir</a> -->
             <!-- <a @click="escanea = true" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
-              v-b-tooltip.hover data-toggle="modal" data-target="#escanearCode" title="Escanear código de barras"><i
-                class="fa fa-barcode fa-sm "></i> Escanear</a> -->
+                v-b-tooltip.hover data-toggle="modal" data-target="#escanearCode" title="Escanear código de barras"><i
+                  class="fa fa-barcode fa-sm "></i> Escanear</a> -->
           </div>
         </div>
 
 
         <!-- <router-link class="button" to="/gest_inventario">
-          <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" v-b-tooltip.hover
-            title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar productos</a>
-        </router-link> -->
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" v-b-tooltip.hover
+              title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar productos</a>
+          </router-link> -->
 
       </div>
 
@@ -510,9 +485,9 @@
             </h6>
           </a>
           <!-- <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-              <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-edit"></i> DEPARTAMENTOS</h6>
-              <button class="btn btn-info" @click="abrirModalAddProd()"> <span class="fa fa-plus"></span> Nuevo</button>
-            </div> -->
+                <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-edit"></i> DEPARTAMENTOS</h6>
+                <button class="btn btn-info" @click="abrirModalAddProd()"> <span class="fa fa-plus"></span> Nuevo</button>
+              </div> -->
           <!-- Card Body -->
           <div class="collapse show" id="collapseCardExample">
             <div class="card-body">
@@ -551,13 +526,13 @@
                           <td>{{ obtenEtiqueta(idProd) }}</td>
                         </tr>
                         <!-- <tr>
-                          <th>Departamento: </th>
-                          <td>{{ obtenDepartamento(idProd) }}</td>
-                        </tr> -->
+                            <th>Departamento: </th>
+                            <td>{{ obtenDepartamento(idProd) }}</td>
+                          </tr> -->
                         <!-- <tr>
-                          <th>Ubicación: </th>
-                          <td>{{ ubicaProd }}</td>
-                        </tr> -->
+                            <th>Ubicación: </th>
+                            <td>{{ ubicaProd }}</td>
+                          </tr> -->
 
                         <tr>
                           <th>Descripción: </th>
@@ -574,20 +549,20 @@
                     </table>
                   </div>
                   <!-- <strong><label for="n">Nombre: </label></strong>
-                  <label for="n1"> {{ nombreProd }}</label>
-                  <strong><label for="n">Nombre: </label></strong>
-                  <label for="n1"> {{ nombreProd }}</label> -->
+                    <label for="n1"> {{ nombreProd }}</label>
+                    <strong><label for="n">Nombre: </label></strong>
+                    <label for="n1"> {{ nombreProd }}</label> -->
                   <!-- </div> -->
                 </div>
-                <div class="col-md-6 col-xl-6 col-lg-6">
+                <div class="col-md-6 col-xl-6 col-lg-6 text-center">
                   <!-- <div class="row"> -->
                   <img :src="urlAuditoria + '/' + image_path" alt="No image" class="img img-thumbnail m-5"
                     style="width: 80%; height:80%;" />
 
                   <!-- <strong><label for="n">Nombre: </label></strong>
-                  <label for="n1"> {{ nombreProd }}</label>
-                  <strong><label for="n">Nombre: </label></strong>
-                  <label for="n1"> {{ nombreProd }}</label> -->
+                    <label for="n1"> {{ nombreProd }}</label>
+                    <strong><label for="n">Nombre: </label></strong>
+                    <label for="n1"> {{ nombreProd }}</label> -->
                   <!-- </div> -->
                 </div>
                 <div class="container">
@@ -602,12 +577,12 @@
                   </div>
                 </div>
                 <!-- <div class="col-md-3 col-xl-3 col-lg-3">
-                <span class="text-info">Filtrar por columna: </span>
-                <select v-model="searchField" @change="cuandoCambie()" class="form-control form-control-user">
-                  <option>Tipo</option>
-                  <option>Código</option>
-                </select>
-              </div> -->
+                  <span class="text-info">Filtrar por columna: </span>
+                  <select v-model="searchField" @change="cuandoCambie()" class="form-control form-control-user">
+                    <option>Tipo</option>
+                    <option>Código</option>
+                  </select>
+                </div> -->
 
               </div>
               <br>
@@ -618,120 +593,121 @@
       </div>
 
     </div>
-    <!-- Logout Modal-->
-    <div :class="'modal fade ' + showModal" id="filasColumnas" tabindex="-1" role="dialog"
-      aria-labelledby="exampleModalLabel" :aria-hidden="activaHide" :arial-modal="activaModal" :style="displayModal">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Seleccione las columnas que desea visualizar</h5>
-            <button class="close" type="button" data-dismiss="modal" aria-label="Close" @click="abrirModal()">
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <h3 style="text-align: center;">Columnas a mostrar</h3>
+    </div>
+  <!-- Logout Modal-->
+  <div :class="'modal fade ' + showModal" id="filasColumnas" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" :aria-hidden="activaHide" :arial-modal="activaModal" :style="displayModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Seleccione las columnas que desea visualizar</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close" @click="abrirModal()">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h3 style="text-align: center;">Columnas a mostrar</h3>
 
-            <ol>
-              <!-- <li><input type="checkbox" name="foto" :checked="siFoto" @change="quitarFoto"> Foto</li> -->
-              <li><input type="checkbox" name="codigo" :checked="sicodigo" @change="quitarcodigo"> Código</li>
-              <li><input type="checkbox" name="sucursal" :checked="sisucursal" @change="quitarSucursal"> Sucursal</li>
-              <li><input type="checkbox" name="descripcion" :checked="sidescripcion" @change="quitardescripcion">
-                Descripción</li>
-              <li><input type="checkbox" name="observaciones" :checked="siobservaciones" @change="quitarobservacion">
-                Observaciones</li>
-              <!-- <li><input type="checkbox" name="estado" :checked="siestado" @change="quitarestado"> Estado</li> -->
-              <li><input type="checkbox" name="acciones" :checked="siacciones" @change="quitaracciones"> Acciones</li>
-            </ol>
+          <ol>
+            <!-- <li><input type="checkbox" name="foto" :checked="siFoto" @change="quitarFoto"> Foto</li> -->
+            <li><input type="checkbox" name="codigo" :checked="sicodigo" @change="quitarcodigo"> Código</li>
+            <li><input type="checkbox" name="sucursal" :checked="sisucursal" @change="quitarSucursal"> Sucursal</li>
+            <li><input type="checkbox" name="descripcion" :checked="sidescripcion" @change="quitardescripcion">
+              Descripción</li>
+            <li><input type="checkbox" name="observaciones" :checked="siobservaciones" @change="quitarobservacion">
+              Observaciones</li>
+            <!-- <li><input type="checkbox" name="estado" :checked="siestado" @change="quitarestado"> Estado</li> -->
+            <li><input type="checkbox" name="acciones" :checked="siacciones" @change="quitaracciones"> Acciones</li>
+          </ol>
 
-          </div>
-          <div class="modal-footer">
-            <!-- <a class="btn btn-info" @click="AColumnas">Aceptar</a> -->
-            <a class="btn btn-primary btn-sm" @click="AColumnas">Ninguna</a>
-            <a class="btn btn-info btn-sm" @click="MostrarTodas">Todas</a>
-            <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal"
-              @click="abrirModal()">Cerrar</button>
-          </div>
+        </div>
+        <div class="modal-footer">
+          <!-- <a class="btn btn-info" @click="AColumnas">Aceptar</a> -->
+          <a class="btn btn-primary btn-sm" @click="AColumnas">Ninguna</a>
+          <a class="btn btn-info btn-sm" @click="MostrarTodas">Todas</a>
+          <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal"
+            @click="abrirModal()">Cerrar</button>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Logout Modal-->
-    <div :class="'modal fade ' + showModal1" id="BarCode" tabindex="-1" role="dialog"
-      aria-labelledby="exampleModalLabel" :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title text-info" id="exampleModalLabel">Código de barra</h5>
-            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true" class="text-info">×</span>
-            </button>
-          </div>
-          <div class="modal-body text-center">
-            <vue-barcode :value="cod" tag="svg"></vue-barcode>
+  <!-- Logout Modal-->
+  <div :class="'modal fade ' + showModal1" id="BarCode" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-info" id="exampleModalLabel">Código de barra</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="text-info">×</span>
+          </button>
+        </div>
+        <div class="modal-body text-center">
+          <vue-barcode :value="cod" tag="svg"></vue-barcode>
 
-          </div>
-          <div class="modal-footer">
-            <!-- <a class="btn btn-info" @click="AColumnas">Aceptar</a> -->
-            <button class="btn btn-info btn-sm" type="button" data-dismiss="modal">Cerrar</button>
-          </div>
+        </div>
+        <div class="modal-footer">
+          <!-- <a class="btn btn-info" @click="AColumnas">Aceptar</a> -->
+          <button class="btn btn-info btn-sm" type="button" data-dismiss="modal">Cerrar</button>
         </div>
       </div>
     </div>
+  </div>
 
 
-    <!-- Editar producto Modal-->
-    <div @click="beforeDestroy()" :class="'modal fade ' + showModal2" id="escanearCode" tabindex="-1" role="dialog"
-      aria-labelledby="exampleModalLabel" :aria-hidden="activaHide2" :arial-modal="activaModal2" :style="displayModal2">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <!-- <div class="modal-header">
+  <!-- Editar producto Modal-->
+  <div @click="beforeDestroy()" :class="'modal fade ' + showModal2" id="escanearCode" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" :aria-hidden="activaHide2" :arial-modal="activaModal2" :style="displayModal2">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <!-- <div class="modal-header">
             <h5 class="modal-title text-info" id="exampleModalLabel">Apunte la cámara hacia el código de barra
             </h5>
             <button class="close" type="button" data-dismiss="modal" aria-label="Close" @click="beforeDestroy()">
               <span aria-hidden="true" class="text-info">×</span>
             </button>
           </div> -->
-          <!-- <div class="modal-body text-center"> -->
-          <!-- <vue-barcode :value="cod" tag="svg"></vue-barcode> -->
-          <!-- <div class="row col-lg-12 text-center"> -->
+        <!-- <div class="modal-body text-center"> -->
+        <!-- <vue-barcode :value="cod" tag="svg"></vue-barcode> -->
+        <!-- <div class="row col-lg-12 text-center"> -->
 
-          <div class="text-center">
-            <!-- <div data-barcode-canvas class="barcode-canvas"></div>
+        <div class="text-center">
+          <!-- <div data-barcode-canvas class="barcode-canvas"></div>
             <div data-barcode-msg class="barcode-message"></div> -->
-            <div id="interactive" class="viewport"></div><br>
-            <div class="row">
-              <div class="col-xl-4">
-                <button class="btn btn-primary mx-2" @click="startScanner">Iniciar Escaneo</button>
-              </div>
-              <div class="col-xl-4">
-                <button class="btn btn-danger" @click="beforeDestroy">Detener Escaneo</button>
-              </div>
-              <div class="col-xl-4">
-                <button class="btn btn-info" @click="beforeDestroy()" data-dismiss="modal">Cerrar</button>
-              </div>
+          <div id="interactive" class="viewport"></div><br>
+          <div class="row">
+            <div class="col-xl-4">
+              <button class="btn btn-primary mx-2" @click="startScanner">Iniciar Escaneo</button>
             </div>
-            <br>
-            <p v-if="barcode">Código de barras detectado: {{ barcode }}</p>
+            <div class="col-xl-4">
+              <button class="btn btn-danger" @click="beforeDestroy">Detener Escaneo</button>
+            </div>
+            <div class="col-xl-4">
+              <button class="btn btn-info" @click="beforeDestroy()" data-dismiss="modal">Cerrar</button>
+            </div>
           </div>
-          <!-- <StreamBarcodeReader v-if="escanea" torch no-front-cameras @decode="onDecode" @loaded="onLoaded"
+          <br>
+          <p v-if="barcode">Código de barras detectado: {{ barcode }}</p>
+        </div>
+        <!-- <StreamBarcodeReader v-if="escanea" torch no-front-cameras @decode="onDecode" @loaded="onLoaded"
             style="width: 100%; height:100%" />
           <h2 v-if="escanea" style="color:white">Código: {{ decodedText }}</h2> -->
-          <!-- </div> -->
-          <!-- <ImageBarcodeReader @decode="onDecode" @error="onError" /> -->
+        <!-- </div> -->
+        <!-- <ImageBarcodeReader @decode="onDecode" @error="onError" /> -->
 
-        </div>
+      </div>
 
-        <!-- </div>
+      <!-- </div>
         <div class="modal-footer">
           <a class="btn btn-info btn-sm" @click="beforeDestroy()" data-dismiss="modal">Cerrar</a>
 
         </div> -->
-      </div>
-
     </div>
-    <!-- <AddProducto v-show="popup" @cerrar="abrirModalAddProd()" /> -->
+
   </div>
+  <!-- <AddProducto v-show="popup" @cerrar="abrirModalAddProd()" /> -->
+  <!-- </div> -->
 
   <div :class="'modal fade ' + showModal1" id="verImagen" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
@@ -1220,7 +1196,7 @@
         <div class="modal-header">
           <h5 class="modal-title text-info" id="exampleModalLabel">LOTE (<label style="color: red;">{{
             Store.formLotes.data.attributes.descripcion
-              }}</label>) </h5>
+          }}</label>) </h5>
           <!-- <h5 class="modal-title text-info text-center" id="exampleModalLabel" v-if="editar == true"><span
               class="fa fa-edit"></span>
             MODIFICAR LOS DATOS DEL LOTE <br>(<label style="color: red;">{{
@@ -1555,7 +1531,7 @@ const Detalles = (dato) => {
   medidProd.value = obtenMedida(dato.relationships.medida.data.id)
   artiProd.value = obtenarticulo(dato.relationships.articulo.data.id)
   descProd.value = dato.attributes.descripcion;
-  image_path.value = dato.attributes.image_path;
+  image_path.value = dato.attributes.imagen_path;
   // cantProd.value = dato.attributes.cantidad;
   minProd.value = dato.attributes.minimo;
   // ubicaProd.value = obtenUbicacion(dato.relationships.ubicacion.data.id)
@@ -1851,7 +1827,7 @@ const Asignar_Imagen = async (id) => {
   // }
   // console.log(id)
   const response1 = await obtenerDatos(1)
-  console.log(response1)
+  // console.log(response1)
   for (let index = 0; index < response1.length; index++) {
     if (id == response1[index].id) {
       Store.formProductos.data.attributes.descripcion = response1[index].attributes.descripcion;
@@ -1870,6 +1846,7 @@ const Asignar_Imagen = async (id) => {
   Store.formProductos.data.attributes.observacion = '';
   Store.formProductos.data.attributes.articulo_id = ''
   Store.formProductos.data.attributes.minimo = '';
+  Store.formProductos.data.attributes.imagen_path = '';
   Store.EditProductos(response)
   itemsProductos1.value = [];
   itemsProductos1.value = Store.itemsProductos;
@@ -1880,15 +1857,10 @@ const errores = ref({ descripcion: "", observacion: "", articulo_id: "", ubicaci
 const agregarUProducto = async (n) => {
   if (Store.formProductos.data.attributes.descripcion != '' && Store.formProductos.data.attributes.articulo_id != 0) {
     // editando.value = true;
+    Store.formProductos.data.attributes.imagen_path = '';
     if (n == 1) {
-      // console.log(imgPerfil.value)
-      // Store.formImagen.data.attributes.file = imgPerfil.value;
       GuardarProductoC.value = 'Guardando...';
       disabledProductoBtn.value = 'disabled';
-      // Store.formProductos.id = Store.nextIDProducto + 1;
-      // Store.producto_imagen_id = 0;
-      // console.log(Store.formProductos);
-      // Agregar_Productos();
       Store.cambiaEstado(1)
       const response = await GuardarDatos(Store.formProductos, 1);
       // console.log(response)
@@ -1896,7 +1868,7 @@ const agregarUProducto = async (n) => {
         Store.cambiaEstado(1)
         disabledProductoBtn.value = '';
         GuardarProductoC.value = 'Agregar y continuar';
-        errores.value.descripcion = "Este dato ya existe en el sistema";
+        // errores.value.descripcion = "Este dato ya existe en el sistema";
         ErrorFull("Error realizando operación, vuelva a intentarlo.", "top-start")
       } else {
         disabledProductoBtn.value = '';
@@ -1905,6 +1877,7 @@ const agregarUProducto = async (n) => {
         Store.formProductos.data.attributes.descripcion = '';
         Store.formProductos.data.attributes.articulo_id = '';
         Store.formProductos.data.attributes.observacion = '';
+        Store.formProductos.data.attributes.imagen_path = '';
         Store.AddProductos(response)
         Asignar_Imagen(response.id);
         itemsProductos1.value = Store.itemsProductos;
@@ -1931,7 +1904,7 @@ const agregarUProducto = async (n) => {
         Store.cambiaEstado(1)
         disabledProductoBtn.value = '';
         GuardarProducto.value = 'Agregar';
-        errores.value.descripcion = "Este dato ya existe en el sistema";
+        // errores.value.descripcion = "Este dato ya existe en el sistema";
         ErrorFull("Error realizando operación, vuelva a intentarlo.", "top-start")
       } else {
         disabledProductoBtn.value = '';
@@ -1940,6 +1913,7 @@ const agregarUProducto = async (n) => {
         Store.formProductos.data.attributes.descripcion = '';
         Store.formProductos.data.attributes.articulo_id = '';
         Store.formProductos.data.attributes.observacion = '';
+        Store.formProductos.data.attributes.imagen_path = '';
         Store.AddProductos(response)
         Asignar_Imagen(response.id);
         itemsProductos1.value = Store.itemsProductos;
@@ -3326,6 +3300,11 @@ h1 {
     h1.h3.mb-2.text-gray-800 {
       font-size: small;
       font-weight: 600;
+    }
+
+    .container-fluid {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
     }
   }
 }

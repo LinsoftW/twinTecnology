@@ -7,7 +7,7 @@
       </div> -->
     <!-- <ImageBarcodeReader @decode="onDecode" @error="onError" /> -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-      <h1 class="h3 mb-2 text-gray-800">PERFIL DE USUARIO</h1>
+      <h1 class="h3 mb-2 text-gray-800 text-center">PERFIL DE USUARIO</h1>
       <!-- <img src="/cargando2.gif" style="width: 40px; height:40px" > -->
 
       <!-- <router-link class="button" to="/gest_inventario">
@@ -272,7 +272,7 @@ const guardar = async () => {
   // console.log(Store.formPersonas)
   if ((Store.formPersonas.data.attributes.alias != '') && (Store.formPersonas.data.attributes.email != '') && (Store.formPersonas.data.attributes.movil != '')) {
     // console.log(IDPersona.value)
-    const response = await EditarDatos(IDPersona.value,Store.formPersonas, 13);
+    const response = await EditarDatos(IDPersona.value, Store.formPersonas, 13);
     // console.log(response);
     if (response != null) {
       const response1 = await obtenerDatos(14);
@@ -282,7 +282,7 @@ const guardar = async () => {
       localStorage.removeItem('userName')
       localStorage.setItem('userName', Store.formPersonas.data.attributes.alias)
       successFull("Datos de usuario modificados satisfactoriamente.", "top-end")
-    }else{
+    } else {
       ErrorFull("Error modificando los datos del usuario. Vuelva a intentarlo.", "top-start")
     }
     modifica.value = !modifica.value;
@@ -571,6 +571,11 @@ h1 {
     h1.h3.mb-2.text-gray-800 {
       font-size: small;
       font-weight: 600;
+    }
+
+    .container-fluid {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
     }
   }
 }

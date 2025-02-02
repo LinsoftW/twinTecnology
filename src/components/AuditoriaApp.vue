@@ -7,184 +7,152 @@
       </div> -->
     <!-- <ImageBarcodeReader @decode="onDecode" @error="onError" /> -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-      <h1 class="h3 mb-2 text-gray-800">AUDITORÍA</h1>
-      <!-- <img src="/cargando2.gif" style="width: 40px; height:40px" v-if="esperando" > -->
-      <div class="row">
-        <div class="col-md-12 justify-content-between">
-          <!-- <router-link class="button" to="/gest_inventario"> -->
-          <!-- <a @click="abrirModalAddProd()" href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm"
-              v-b-tooltip.hover title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar productos </a> -->
-          <!-- </router-link> -->
-          <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" v-b-tooltip.hover
-              title="Generar resumen diario"><i class="fas fa-download fa-sm "></i> Excel</a> -->
-          <!-- <a @click="CargaMasiva()" href="#" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm m-2"
-              v-b-tooltip.hover title="Agregar productos según archivo"><i class="fas fa-upload fa-sm "></i> Carga
-              masiva</a> -->
-          <!-- <a @click="ImprimirDoc()" href="#" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm"
-              v-b-tooltip.hover title="Imprimir"><i class="fas fa-print fa-sm "></i> Imprimir</a> -->
-          <!-- <a @click="escanea = true" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
-              v-b-tooltip.hover data-toggle="modal" data-target="#escanearCode" title="Escanear código de barras"><i
-                class="fa fa-barcode fa-sm "></i> Escanear</a> -->
-        </div>
-      </div>
+      <h1 class="h3 mb-2 text-gray-800 text-center">AUDITORÍA</h1>
 
-      <!-- <router-link class="button" to="/gest_inventario">
-          <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" v-b-tooltip.hover
-            title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar productos</a>
-        </router-link> -->
     </div>
     <!-- Nuevo Listado productos -->
-    <div class="col-xl-12 col-lg-12">
-      <div class="card shadow mb-4">
-        <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button"
-          aria-expanded="true" aria-controls="collapseCardExample">
-          <h6 class="m-0 font-weight-bold text-info"><i class="fa fa-list-ul"></i> OPERACIONES REALIZADAS</h6>
-        </a>
-        <!-- <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-              <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-edit"></i> DEPARTAMENTOS</h6>
-              <button class="btn btn-info" @click="abrirModalAddProd()"> <span class="fa fa-plus"></span> Nuevo</button>
-            </div> -->
-        <!-- Card Body -->
-        <div class="collapse show" id="collapseCardExample">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-6 col-xl-6 col-lg-6">
-                <!-- <div class="row"> -->
-                <div class="justify-content-between">
-                  <!-- <router-link class="button" to="/gest_inventario"> -->
-                  <!-- <a data-toggle="modal" @click="agrega()" data-target="#agregaProducto"
-                      class="btn btn-info btn-sm btn-icon-split" :class="disabledProductos">
-                      <span class="icon text-white-50">
-                        <i class="fas fa-plus"></i>
-                      </span>
-                      <span class="text">Nuevo</span>
-                    </a>
-                    <a @click="generar_pdf()" class="btn btn-secondary btn-sm btn-icon-split m-2"
-                      :class="disabledProductos">
-                      <span class="icon text-white-50">
-                        <i class="fas fa-file-pdf"></i>
-                      </span>
-                      <span class="text">PDF</span>
-                    </a>
-                    <a @click="ExportExcel()" class="btn btn-secondary btn-sm btn-icon-split"
-                      :class="disabledProductos">
-                      <span class="icon text-white-50">
-                        <i class="fas fa-download"></i>
-                      </span>
-                      <span class="text">Excel</span>
-                    </a>
-                    <button class="btn btn-primary btn-sm dropdown-toggle m-2" type="button" id="dropdownMenuButton"
-                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <span class="icon text-white-50">
-                        <i class="fas fa-plus"></i>
-                      </span>
-                      <span class="text"> Agregar</span>
-                    </button>
-                    <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
-                      <router-link class="button" to="/categorias">
-                        <a class="dropdown-item" href="#"><span class="fa fa-list-alt"></span> Clasificaciones</a>
-                      </router-link>
-                      <router-link class="button" to="/gest_nomencladores">
-                        <a class="dropdown-item" href="#"><span class="fas fa-ruler-horizontal"></span> Magnitudes</a>
-                      </router-link>
-                      <router-link class="button" to="/ubicaciones">
-                        <a class="dropdown-item" href="#"><span class="fa fa-map-marker-alt"></span> Ubicaciones</a>
-                      </router-link>
+    <div class="row">
 
-                    </div>
-                    <a @click="EliminarSelecc()" class="btn btn-danger btn-sm btn-icon-split"
-                      :class="disabledProductos">
-                      <span class="icon text-white">
-                        <i class="fas fa-trash"></i>
-                      </span>
-                      <span class="text text-white">Eliminar seleccionados</span>
-                    </a> -->
-                  <!-- <a @click="abrirModalAddProd()" href="#" class="d-sm-inline-block btn btn-sm btn-info shadow-sm"
-                    v-b-tooltip.hover title="Agregar producto"><i class="fas fa-plus fa-sm "></i> Agregar productos </a> -->
-                  <!-- <a @click="EliminarSelecc()" href="#" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm m-2"
-                      v-b-tooltip.hover title="Eliminar seleccionados"><i class="fas fa-trash fa-sm "></i> Eliminar
-                      seleccionados </a> -->
-                  <!-- </router-link> -->
-                  <!-- <a @click="ExportExcel()" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
-                    v-b-tooltip.hover title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a> -->
+      <div class="col-xl-12 col-lg-12">
+        <div class="card shadow mb-4">
+          <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button"
+            aria-expanded="true" aria-controls="collapseCardExample">
+            <h6 class="m-0 font-weight-bold text-info"><i class="fa fa-list-ul"></i> OPERACIONES REALIZADAS</h6>
+          </a>
+          <!-- <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                 <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-edit"></i> DEPARTAMENTOS</h6>
+                 <button class="btn btn-info" @click="abrirModalAddProd()"> <span class="fa fa-plus"></span> Nuevo</button>
+               </div> -->
+          <!-- Card Body -->
+          <div class="collapse show" id="collapseCardExample">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6 col-xl-6 col-lg-6">
+                  <!-- <div class="row"> -->
+                  <div class="justify-content-between">
+                    <!-- <router-link class="button" to="/gest_inventario"> -->
+                    <!-- <a data-toggle="modal" @click="agrega()" data-target="#agregaProducto"
+                         class="btn btn-info btn-sm btn-icon-split" :class="disabledProductos">
+                         <span class="icon text-white-50">
+                           <i class="fas fa-plus"></i>
+                         </span>
+                         <span class="text">Nuevo</span>
+                       </a>
+                       <a @click="generar_pdf()" class="btn btn-secondary btn-sm btn-icon-split m-2"
+                         :class="disabledProductos">
+                         <span class="icon text-white-50">
+                           <i class="fas fa-file-pdf"></i>
+                         </span>
+                         <span class="text">PDF</span>
+                       </a>
+                       <a @click="ExportExcel()" class="btn btn-secondary btn-sm btn-icon-split"
+                         :class="disabledProductos">
+                         <span class="icon text-white-50">
+                           <i class="fas fa-download"></i>
+                         </span>
+                         <span class="text">Excel</span>
+                       </a>
+                       <button class="btn btn-primary btn-sm dropdown-toggle m-2" type="button" id="dropdownMenuButton"
+                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                         <span class="icon text-white-50">
+                           <i class="fas fa-plus"></i>
+                         </span>
+                         <span class="text"> Agregar</span>
+                       </button>
+                       <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
+                         <router-link class="button" to="/categorias">
+                           <a class="dropdown-item" href="#"><span class="fa fa-list-alt"></span> Clasificaciones</a>
+                         </router-link>
+                         <router-link class="button" to="/gest_nomencladores">
+                           <a class="dropdown-item" href="#"><span class="fas fa-ruler-horizontal"></span> Magnitudes</a>
+                         </router-link>
+                         <router-link class="button" to="/ubicaciones">
+                           <a class="dropdown-item" href="#"><span class="fa fa-map-marker-alt"></span> Ubicaciones</a>
+                         </router-link>
+
+                       </div>
+                       <a @click="EliminarSelecc()" class="btn btn-danger btn-sm btn-icon-split"
+                         :class="disabledProductos">
+                         <span class="icon text-white">
+                           <i class="fas fa-trash"></i>
+                         </span>
+                         <span class="text text-white">Eliminar seleccionados</span>
+                       </a> -->
+                    <!-- <a @click="abrirModalAddProd()" href="#" class="d-sm-inline-block btn btn-sm btn-info shadow-sm"
+                       v-b-tooltip.hover title="Agregar producto"><i class="fas fa-plus fa-sm "></i> Agregar productos </a> -->
+                    <!-- <a @click="EliminarSelecc()" href="#" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm m-2"
+                         v-b-tooltip.hover title="Eliminar seleccionados"><i class="fas fa-trash fa-sm "></i> Eliminar
+                         seleccionados </a> -->
+                    <!-- </router-link> -->
+                    <!-- <a @click="ExportExcel()" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
+                       v-b-tooltip.hover title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a> -->
+                  </div>
+                  <!-- </div> -->
                 </div>
-                <!-- </div> -->
-              </div>
-              <!-- <div class="col-md-3 col-xl-3 col-lg-3">
-                <span class="text-info">Filtrar por columna: </span>
-                <select v-model="searchField" @change="cuandoCambie()" class="form-control form-control-user">
-                  <option>Tipo</option>
-                  <option>Código</option>
-                </select>
-              </div> -->
-              <div class="col-md-6 col-xl-6 col-lg-12">
-                <span class="text-info">Buscar: </span>
-                <input class="form-control form-control-user" type="text" v-model="searchValue"
-                  placeholder="Qué desea buscar" />
-              </div>
-            </div>
-            <br>
-
-            <EasyDataTable :headers="headers" :items="itemsAuditorias1" buttons-pagination border-cell
-               header-text-direction="center" body-text-direction="center"
-              :search-field="searchField" :search-value="searchValue" @click-row="showRow" :rows-per-page="5"
-              :loading="Store.esperandoAuditoria">
-              <!-- <template #item-image="item">
-                  <a data-toggle="modal" data-target="#verImagen"
-                    @click="obtenDescripcion(item.attributes.descripcion)">
-
-                    <img :src="obtenImagen(item.id)" alt="No image" class="img img-thumbnail"
-                      style="width: 50px; height: 50px;" />
-                  </a>
-
-                </template> -->
-              <!-- <template #item-rows>
-                <a>Filas por paginas</a>
-              </template> -->
-              <!-- <template #item-opciones="item">
-                <div class="operation-wrapper">
-                  <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Detalles(item)" v-b-tooltip.hover
-                    title="Detalles"><span class="fa fa-eye"></span></button>
+                <!-- <div class="col-md-3 col-xl-3 col-lg-3">
+                   <span class="text-info">Filtrar por columna: </span>
+                   <select v-model="searchField" @change="cuandoCambie()" class="form-control form-control-user">
+                     <option>Tipo</option>
+                     <option>Código</option>
+                   </select>
+                 </div> -->
+                <div class="col-md-6 col-xl-6 col-lg-12">
+                  <span class="text-info">Buscar: </span>
+                  <input class="form-control form-control-user" type="text" v-model="searchValue"
+                    placeholder="Qué desea buscar" />
                 </div>
-              </template> -->
-              <!-- <template #item-codigo="item">
-                  {{ item.relationships.departamento.data.id }}{{ item.relationships.articulo.data.id }}{{ item.id }}
+              </div>
+              <br>
+
+              <EasyDataTable :headers="headers" :items="itemsAuditorias1" buttons-pagination border-cell
+                header-text-direction="center" body-text-direction="center" :search-field="searchField"
+                :search-value="searchValue" @click-row="showRow" :rows-per-page="5" :loading="Store.esperandoAuditoria">
+                <!-- <template #item-image="item">
+                     <a data-toggle="modal" data-target="#verImagen"
+                       @click="obtenDescripcion(item.attributes.descripcion)">
+
+                       <img :src="obtenImagen(item.id)" alt="No image" class="img img-thumbnail"
+                         style="width: 50px; height: 50px;" />
+                     </a>
+
+                   </template> -->
+                <!-- <template #item-rows>
+                   <a>Filas por paginas</a>
+                 </template> -->
+                <!-- <template #item-opciones="item">
+                   <div class="operation-wrapper">
+                     <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Detalles(item)" v-b-tooltip.hover
+                       title="Detalles"><span class="fa fa-eye"></span></button>
+                   </div>
+                 </template> -->
+                <!-- <template #item-codigo="item">
+                     {{ item.relationships.departamento.data.id }}{{ item.relationships.articulo.data.id }}{{ item.id }}
+                   </template>
+                   <template #item-departamento="item">
+                     {{ obtenDepartamento(item.relationships.departamento.data.id) }}
+                   </template> -->
+                <template #item-operacion="item">
+                  <!-- {{ item.meta.foreign_keys_instances.operacion_id }} -->
+                  {{ obtenOperacion(item.meta.foreign_keys_instances.operacion_id) }}
                 </template>
-                <template #item-departamento="item">
-                  {{ obtenDepartamento(item.relationships.departamento.data.id) }}
-                </template> -->
-              <template #item-operacion="item">
-                <!-- {{ item.meta.foreign_keys_instances.operacion_id }} -->
-                {{ obtenOperacion(item.meta.foreign_keys_instances.operacion_id) }}
-              </template>
-              <template #item-lote="item">
-                <!-- {{ item.meta.foreign_keys_instances.lot_id }} -->
-                {{ obtenLote(item.meta.foreign_keys_instances.lot_id) }}
-              </template>
-              <template #loading>
-                <img src="/cargando4.gif" style="width: 100px; height: 80px;" />
-              </template>
-              <template #empty-message>
-                <a>No hay datos que mostrar</a>
-              </template>
+                <template #item-lote="item">
+                  <!-- {{ item.meta.foreign_keys_instances.lot_id }} -->
+                  {{ obtenLote(item.meta.foreign_keys_instances.lot_id) }}
+                </template>
+                <template #loading>
+                  <img src="/cargando4.gif" style="width: 100px; height: 80px;" />
+                </template>
+                <template #empty-message>
+                  <a>No hay datos que mostrar</a>
+                </template>
 
-            </EasyDataTable>
+              </EasyDataTable>
 
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- TABLA INVENTARIOS -->
-    <!-- codigo, descripcion, cantidad -->
-    <!-- permitir seleccionar que quiere mostrar -->
-    <!-- poner todos los datos en la tabla inventario -->
-    <!-- elementos de busqueda -->
-    <!-- por Sucursal -->
-    <!-- por codigo -->
-    <!-- por cantidad -->
-    <!--Opciones de busqueda -->
-    <!-- <div class=""> -->
-    <!-- Nuevo Listado productos -->
 
   </div>
 
@@ -223,20 +191,20 @@ const itemsOperaciones1 = ref([]);
 const itemsLotes1 = ref([])
 
 const obtenOperacion = (id) => {
-    for (let index = 0; index < itemsOperaciones1.value.length; index++) {
-        if ((id == itemsOperaciones1.value[index].id)) {
-          return itemsOperaciones1.value[index].attributes.operacion
-        }
+  for (let index = 0; index < itemsOperaciones1.value.length; index++) {
+    if ((id == itemsOperaciones1.value[index].id)) {
+      return itemsOperaciones1.value[index].attributes.operacion
     }
   }
+}
 
 const obtenLote = (id) => {
-    for (let index = 0; index < itemsLotes1.value.length; index++) {
-        if ((id == itemsLotes1.value[index].id)) {
-          return itemsLotes1.value[index].attributes.descripcion
-        }
+  for (let index = 0; index < itemsLotes1.value.length; index++) {
+    if ((id == itemsLotes1.value[index].id)) {
+      return itemsLotes1.value[index].attributes.descripcion
     }
   }
+}
 
 const generar_pdf = async () => {
 
@@ -396,6 +364,7 @@ onMounted(async () => {
     // ipPublica.value = localStorage.getItem('Host_back');
     if (localStorage.getItem('Carg_datAu') == '0') {
       const response = await obtenerDatos(15);
+      console.log("Auditorias:", response);
       if (response.length > 0) {
         Store.setListadoAuditorias(response)
       }
@@ -439,12 +408,17 @@ onMounted(async () => {
 
 </script>
 <style lang="scss" scoped>
-
-div,h1 {
+div,
+h1 {
   @media (max-width: 1024px) {
     h1.h3.mb-2.text-gray-800 {
       font-size: small;
       font-weight: 600;
+    }
+
+    .container-fluid {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
     }
   }
 }

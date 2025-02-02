@@ -32,12 +32,12 @@
 
       </context-menu-item>
 
-      <context-menu-item @click="handleOption('Opción 5')">
+      <!-- <context-menu-item @click="handleOption('Opción 5')">
 
         <i class="fa fa-cog text-info" aria-hidden="true"></i> Configurar sitio
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-      </context-menu-item>
+      </context-menu-item> -->
       <context-menu-sperator />
       <context-menu-group label="INVENTARIO">
         <context-menu-item @click="handleOption('Opción 6')">
@@ -922,13 +922,13 @@
                   </a>
                 </router-link>
 
-                <a class="dropdown-item">
+                <!-- <a class="dropdown-item">
 
                   <i class="fas fa-cog fa-sm fa-fw mr-2 text-gray-400"></i>
 
                   Configurar sitio
 
-                </a>
+                </a> -->
 
                 <!-- <a class="dropdown-item" href="#" data-toggle="modal" data-target="#sendEmail">
 
@@ -1353,60 +1353,62 @@ import { error } from 'jquery';
 
 // Fin quasar
 
-const inactivityTimer = ref(null);
+// TIEMPO DE INACTIVIDAD DE LA PAGINA
 
-const startInactivityTimer = () => {
-  inactivityTimer.value = setTimeout(handleInactivity, Store.tiempoInactivo * 60 * 1000); // 10 minutos
-}
-const resetTimer = () => {
-  clearInactivityTimer();
-  startInactivityTimer();
-}
-const clearInactivityTimer = () => {
-  if (inactivityTimer.value) {
-    clearTimeout(inactivityTimer.value);
-    inactivityTimer.value = null;
-  }
-}
+// const inactivityTimer = ref(null);
 
-const handleInactivity = () => {
-  // Acción a tomar cuando se detecte inactividad
-  // alert('No has interactuado con la página en 10 minutos. La sesión se cerrará.');
-  // ErrorFull('No has interactuado con la página en 10 minutos. La sesión se cerrará.', "top-start")
-  Swal.fire({
-    title: "Alerta de seguridad!!!",
-    text: "No has interactuado con la página en 10 minutos. La sesión se cerrará.",
-    icon: "warning",
-    allowOutsideClick: false,
-    // showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Aceptar",
-    // cancelButtonText: "Cancelar"
-  }).then((result) => {
-    if (result.isConfirmed) {
-      Store.limpiarDatos()
-      localStorage.removeItem('Carg_datA'); // Articulos
-      localStorage.removeItem('Carg_datD'); // Departamentos
-      localStorage.removeItem('Carg_datMe'); // Unidades de medida
-      localStorage.removeItem('Carg_datM'); // Magitudes
-      localStorage.removeItem('Carg_datP'); // Productos
-      localStorage.removeItem('Carg_datS'); // Sucursales
-      localStorage.removeItem('Carg_datU'); // Ubicaciones
-      localStorage.removeItem('Carg_datE'); // Etiquetas
-      localStorage.removeItem('Carg_datL'); // Lotes
-      localStorage.removeItem('Carg_datMo'); // Monedas
-      localStorage.removeItem('Carg_datIM'); // Imagenes
-      localStorage.removeItem('Carg_datEP'); // Etiqueta productos
-      localStorage.removeItem('Carg_datAu'); // Auditoria
-      localStorage.clear();
-      Store.$reset();
-      // Aquí puedes redirigir al usuario, cerrar la sesión, etc.
-      router.push('/login')
-    }
-  });
-  // router.push('/login'); // Redirige a la página de cierre de sesión
-}
+// const startInactivityTimer = () => {
+//   inactivityTimer.value = setTimeout(handleInactivity, Store.tiempoInactivo * 60 * 1000); // 10 minutos
+// }
+// const resetTimer = () => {
+//   clearInactivityTimer();
+//   startInactivityTimer();
+// }
+// const clearInactivityTimer = () => {
+//   if (inactivityTimer.value) {
+//     clearTimeout(inactivityTimer.value);
+//     inactivityTimer.value = null;
+//   }
+// }
+
+// const handleInactivity = () => {
+//   // Acción a tomar cuando se detecte inactividad
+//   // alert('No has interactuado con la página en 10 minutos. La sesión se cerrará.');
+//   // ErrorFull('No has interactuado con la página en 10 minutos. La sesión se cerrará.', "top-start")
+//   Swal.fire({
+//     title: "Alerta de seguridad!!!",
+//     text: "No has interactuado con la página en 10 minutos. La sesión se cerrará.",
+//     icon: "warning",
+//     allowOutsideClick: false,
+//     // showCancelButton: true,
+//     confirmButtonColor: "#3085d6",
+//     cancelButtonColor: "#d33",
+//     confirmButtonText: "Aceptar",
+//     // cancelButtonText: "Cancelar"
+//   }).then((result) => {
+//     if (result.isConfirmed) {
+//       Store.limpiarDatos()
+//       localStorage.removeItem('Carg_datA'); // Articulos
+//       localStorage.removeItem('Carg_datD'); // Departamentos
+//       localStorage.removeItem('Carg_datMe'); // Unidades de medida
+//       localStorage.removeItem('Carg_datM'); // Magitudes
+//       localStorage.removeItem('Carg_datP'); // Productos
+//       localStorage.removeItem('Carg_datS'); // Sucursales
+//       localStorage.removeItem('Carg_datU'); // Ubicaciones
+//       localStorage.removeItem('Carg_datE'); // Etiquetas
+//       localStorage.removeItem('Carg_datL'); // Lotes
+//       localStorage.removeItem('Carg_datMo'); // Monedas
+//       localStorage.removeItem('Carg_datIM'); // Imagenes
+//       localStorage.removeItem('Carg_datEP'); // Etiqueta productos
+//       localStorage.removeItem('Carg_datAu'); // Auditoria
+//       localStorage.clear();
+//       Store.$reset();
+//       // Aquí puedes redirigir al usuario, cerrar la sesión, etc.
+//       router.push('/login')
+//     }
+//   });
+//   // router.push('/login'); // Redirige a la página de cierre de sesión
+// }
 
 // const show = ref('');
 const handleFloatingButtonClick = (event) => {
@@ -2162,7 +2164,33 @@ const evitarRecargar = () => {
 const destruirRecarga = () => {
   window.removeEventListener("beforeunload", event => {
     if (!editando.value) return
-
+    Store.limpiarDatos()
+    localStorage.removeItem('Carg_datA'); // Articulos
+    localStorage.removeItem('Carg_datD'); // Departamentos
+    localStorage.removeItem('Carg_datMe'); // Unidades de medida
+    localStorage.removeItem('Carg_datM'); // Magitudes
+    localStorage.removeItem('Carg_datP'); // Productos
+    localStorage.removeItem('Carg_datS'); // Sucursales
+    localStorage.removeItem('Carg_datU'); // Ubicaciones
+    localStorage.removeItem('Carg_datE'); // Etiquetas
+    localStorage.removeItem('Carg_datL'); // Lotes
+    localStorage.removeItem('Carg_datMo'); // Monedas
+    localStorage.removeItem('Carg_datIM'); // Imagenes
+    localStorage.removeItem('Carg_datEP'); // Etiqueta productos
+    localStorage.removeItem('Carg_datAu'); // Auditoria
+    localStorage.setItem('Carg_datA', '0'); // Articulos
+    localStorage.setItem('Carg_datD', '0'); // Departamentos
+    localStorage.setItem('Carg_datMe', '0'); // Unidades de medida
+    localStorage.setItem('Carg_datM', '0'); // Magitudes
+    localStorage.setItem('Carg_datP', '0'); // Productos
+    localStorage.setItem('Carg_datS', '0'); // Sucursales
+    localStorage.setItem('Carg_datU', '0'); // Ubicaciones
+    localStorage.setItem('Carg_datE', '0'); // Etiquetas
+    localStorage.setItem('Carg_datL', '0'); // Lotes
+    localStorage.setItem('Carg_datMo', '0'); // Monedas
+    localStorage.setItem('Carg_datIM', '0'); // Imagenes
+    localStorage.setItem('Carg_datEP', '0'); // Etiqueta productos
+    localStorage.setItem('Carg_datAu', '0'); // Auditorias
     event.preventDefault()
     // console.log('Cargadoooo')
     // Chrome requires returnValue to be set.
@@ -2180,35 +2208,25 @@ onUnmounted(async () => {
   destruirRecarga()
 })
 
-const loadTime = ref(0);
+// const loadTime = ref(0);
 
-const tiempoActivo = () => {
-  if (performance && performance.timing) {
-    const timing = performance.timing;
-    loadTime.value = timing.loadEventEnd - timing.navigationStart;
-  }
-  // console.log(loadTime.value)
-}
+// const tiempoActivo = () => {
+//   if (performance && performance.timing) {
+//     const timing = performance.timing;
+//     loadTime.value = timing.loadEventEnd - timing.navigationStart;
+//   }
+//   // console.log(loadTime.value)
+// }
 
 onMounted(async () => {
-  // tiempoActivo();
-  startInactivityTimer();
+  // tiempo de inactividad
+  // startInactivityTimer();
   // Escuchar más eventos si es necesario
-  window.addEventListener('scroll', resetTimer);
+  // window.addEventListener('scroll', resetTimer);
   Ctoggled.value = 'toggled';
   editando.value = true;
   evitarRecargar();
-  // beforeRouteLeave()
   if (localStorage.getItem('userName')) {
-    // if (localStorage.getItem('Carg_datIM') == '0') {
-    //   const response2 = await obtenerDatos(12);
-    //   // console.log(response2)
-    //   if (response2 != null) {
-    //     Store.setListadoImagen(response2);
-    //     localStorage.setItem("Carg_datP", "1");
-    //   }
-    //   // itemsImagenes1.value = Store.itemsImagen;
-    // }
     if (localStorage.getItem('Carg_datP') == '0') {
       // cargando los productos
       Store.cambiaEstado(1)
@@ -2282,8 +2300,8 @@ onMounted(async () => {
 })
 
 onBeforeMount(async () => {
-  clearInactivityTimer();
-  window.removeEventListener('scroll', resetTimer);
+  // clearInactivityTimer();
+  // window.removeEventListener('scroll', resetTimer);
 })
 
 const route = useRoute();
@@ -2391,6 +2409,14 @@ const cargarImagen = async () => {
 
   .sidebar.toggled {
     text-transform: none;
+  }
+
+}
+
+@media (max-width: 1024px) {
+  .container-fluid {
+    padding-left: initial;
+    padding-right: initial;
   }
 }
 
