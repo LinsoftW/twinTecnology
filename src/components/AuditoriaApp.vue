@@ -364,7 +364,7 @@ onMounted(async () => {
     // ipPublica.value = localStorage.getItem('Host_back');
     if (localStorage.getItem('Carg_datAu') == '0') {
       const response = await obtenerDatos(15);
-      console.log("Auditorias:", response);
+      // console.log("Auditorias:", response);
       if (response.length > 0) {
         Store.setListadoAuditorias(response)
       }
