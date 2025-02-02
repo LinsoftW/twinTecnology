@@ -143,14 +143,16 @@
                       </span>
                       <span class="text">PDF</span>
                     </a>
-                    <a @click="ExportExcel()" class="btn btn-secondary btn-sm btn-icon-split" :class="disabledProductos">
+                    <a @click="ExportExcel()" class="btn btn-secondary btn-sm btn-icon-split"
+                      :class="disabledProductos">
                       <span class="icon text-white-50">
                         <i class="fas fa-download"></i>
                       </span>
                       <span class="text">Excel</span>
                     </a>
                     <button class="btn btn-primary btn-sm dropdown-toggle m-2" type="button" id="dropdownMenuButton"
-                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-b-tooltip.hover title="Agregar">
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-b-tooltip.hover
+                      title="Agregar">
                       <span class="icon text-white-50">
                         <i class="fas fa-plus" v-b-tooltip.hover title="Agregar"></i>
                       </span>
@@ -168,7 +170,8 @@
                       </router-link>
 
                     </div>
-                    <a @click="EliminarSelecc()" class="btn btn-danger btn-sm btn-icon-split" :class="disabledProductos">
+                    <a @click="EliminarSelecc()" class="btn btn-danger btn-sm btn-icon-split"
+                      :class="disabledProductos">
                       <span class="icon text-white">
                         <i class="fas fa-trash"></i>
                       </span>
@@ -205,11 +208,13 @@
                 :search-field="searchField" :search-value="searchValue" @click-row="showRow" :rows-per-page="5"
                 :loading="Store.esperandoProductos" :key="actualizaTabla">
                 <template #item-image="item">
-                  <a data-toggle="modal" data-target="#verImagen" @click="obtenDescripcion(item.attributes.imagen_path)">
+                  <a data-toggle="modal" data-target="#verImagen"
+                    @click="obtenDescripcion(item.attributes.imagen_path)">
                     <!-- "{{ obtenImagen(item.id) }}" -->
                     <!-- {{ item.attributes.imagen_path }} -->
-                    <img v-if="item.attributes.imagen_path != ''" :src="urlAuditoria + '/' + item.attributes.imagen_path"
-                      alt="No image" class="img img-thumbnail" style="width: 50px; height: 50px;" />
+                    <img v-if="item.attributes.imagen_path != ''"
+                      :src="urlAuditoria + '/' + item.attributes.imagen_path" alt="No image" class="img img-thumbnail"
+                      style="width: 50px; height: 50px;" />
                     <img v-else src="/productos.jpg" alt="No image" class="img img-thumbnail"
                       style="width: 50px; height: 50px;" />
                   </a>
@@ -396,8 +401,8 @@
                     <!-- <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Detalles(item)" v-b-tooltip.hover
                         title="Detalles"><span class="fa fa-eye"></span></button> -->
                     <button class="btn btn-danger btn-sm btn-circle ml-1"
-                      @click="borrarUL(item.id, item.attributes.descripcion, 1)" v-b-tooltip.hover title="Eliminar"><span
-                        class="fas fas fa-trash-alt"></span></button>
+                      @click="borrarUL(item.id, item.attributes.descripcion, 1)" v-b-tooltip.hover
+                      title="Eliminar"><span class="fas fas fa-trash-alt"></span></button>
                     <!-- </router-link> -->
                   </div>
                 </template>
@@ -428,55 +433,32 @@
       </div>
 
     </div>
-    <div class="container-fluid" v-if="detalle">
-      <!-- <div>
-          <div id="interactive" class="viewport"></div>
-          <button @click="startScanner">Iniciar Escaneo</button>
-          <p v-if="barcode">Código de barras detectado: {{ barcode }}</p>
-        </div> -->
-      <!-- <ImageBarcodeReader @decode="onDecode" @error="onError" /> -->
-      <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-2 text-gray-800">DETALLES</h1>
-        <!-- <img src="/cargando2.gif" style="width: 40px; height:40px" v-if="esperando" > -->
-        <div class="row">
-          <div class="col-md-12 justify-content-between">
-            <!-- <router-link class="button" to="/gest_inventario"> -->
-            <!-- <a @click="abrirModalAddProd()" href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm"
-                v-b-tooltip.hover title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar productos </a> -->
-            <!-- </router-link> -->
-            <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" v-b-tooltip.hover
-                title="Generar resumen diario"><i class="fas fa-download fa-sm "></i> Excel</a> -->
-            <!-- <a @click="CargaMasiva()" href="#" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm m-2"
-                v-b-tooltip.hover title="Agregar productos según archivo"><i class="fas fa-upload fa-sm "></i> Carga
-                masiva</a> -->
-            <!-- <a @click="ImprimirDoc()" href="#" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm"
-                v-b-tooltip.hover title="Imprimir"><i class="fas fa-print fa-sm "></i> Imprimir</a> -->
-            <!-- <a @click="escanea = true" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
-                v-b-tooltip.hover data-toggle="modal" data-target="#escanearCode" title="Escanear código de barras"><i
-                  class="fa fa-barcode fa-sm "></i> Escanear</a> -->
-          </div>
-        </div>
+  </div>
+  <div class="container-fluid" v-if="detalle">
+    <!-- <div>
+        <div id="interactive" class="viewport"></div>
+        <button @click="startScanner">Iniciar Escaneo</button>
+        <p v-if="barcode">Código de barras detectado: {{ barcode }}</p>
+      </div> -->
+    <!-- <ImageBarcodeReader @decode="onDecode" @error="onError" /> -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+      <h1 class="h3 mb-2 text-gray-800 text-center">DETALLES</h1>
+    </div>
 
+    <!-- TABLA INVENTARIOS -->
+    <!-- codigo, descripcion, cantidad -->
+    <!-- permitir seleccionar que quiere mostrar -->
+    <!-- poner todos los datos en la tabla inventario -->
+    <!-- elementos de busqueda -->
+    <!-- por Sucursal -->
+    <!-- por codigo -->
+    <!-- por cantidad -->
+    <!--Opciones de busqueda -->
+    <!-- <div class=""> -->
 
-        <!-- <router-link class="button" to="/gest_inventario">
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" v-b-tooltip.hover
-              title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar productos</a>
-          </router-link> -->
+    <!-- Nuevo Listado productos -->
+    <div class="row">
 
-      </div>
-
-      <!-- TABLA INVENTARIOS -->
-      <!-- codigo, descripcion, cantidad -->
-      <!-- permitir seleccionar que quiere mostrar -->
-      <!-- poner todos los datos en la tabla inventario -->
-      <!-- elementos de busqueda -->
-      <!-- por Sucursal -->
-      <!-- por codigo -->
-      <!-- por cantidad -->
-      <!--Opciones de busqueda -->
-      <!-- <div class=""> -->
-
-      <!-- Nuevo Listado productos -->
       <div class="col-xl-12 col-lg-12">
         <div class="card shadow mb-4">
           <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button"
@@ -485,9 +467,9 @@
             </h6>
           </a>
           <!-- <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-edit"></i> DEPARTAMENTOS</h6>
-                <button class="btn btn-info" @click="abrirModalAddProd()"> <span class="fa fa-plus"></span> Nuevo</button>
-              </div> -->
+                 <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-edit"></i> DEPARTAMENTOS</h6>
+                 <button class="btn btn-info" @click="abrirModalAddProd()"> <span class="fa fa-plus"></span> Nuevo</button>
+               </div> -->
           <!-- Card Body -->
           <div class="collapse show" id="collapseCardExample">
             <div class="card-body">
@@ -526,13 +508,13 @@
                           <td>{{ obtenEtiqueta(idProd) }}</td>
                         </tr>
                         <!-- <tr>
-                            <th>Departamento: </th>
-                            <td>{{ obtenDepartamento(idProd) }}</td>
-                          </tr> -->
+                             <th>Departamento: </th>
+                             <td>{{ obtenDepartamento(idProd) }}</td>
+                           </tr> -->
                         <!-- <tr>
-                            <th>Ubicación: </th>
-                            <td>{{ ubicaProd }}</td>
-                          </tr> -->
+                             <th>Ubicación: </th>
+                             <td>{{ ubicaProd }}</td>
+                           </tr> -->
 
                         <tr>
                           <th>Descripción: </th>
@@ -549,9 +531,9 @@
                     </table>
                   </div>
                   <!-- <strong><label for="n">Nombre: </label></strong>
-                    <label for="n1"> {{ nombreProd }}</label>
-                    <strong><label for="n">Nombre: </label></strong>
-                    <label for="n1"> {{ nombreProd }}</label> -->
+                     <label for="n1"> {{ nombreProd }}</label>
+                     <strong><label for="n">Nombre: </label></strong>
+                     <label for="n1"> {{ nombreProd }}</label> -->
                   <!-- </div> -->
                 </div>
                 <div class="col-md-6 col-xl-6 col-lg-6 text-center">
@@ -560,9 +542,9 @@
                     style="width: 80%; height:80%;" />
 
                   <!-- <strong><label for="n">Nombre: </label></strong>
-                    <label for="n1"> {{ nombreProd }}</label>
-                    <strong><label for="n">Nombre: </label></strong>
-                    <label for="n1"> {{ nombreProd }}</label> -->
+                     <label for="n1"> {{ nombreProd }}</label>
+                     <strong><label for="n">Nombre: </label></strong>
+                     <label for="n1"> {{ nombreProd }}</label> -->
                   <!-- </div> -->
                 </div>
                 <div class="container">
@@ -577,12 +559,12 @@
                   </div>
                 </div>
                 <!-- <div class="col-md-3 col-xl-3 col-lg-3">
-                  <span class="text-info">Filtrar por columna: </span>
-                  <select v-model="searchField" @change="cuandoCambie()" class="form-control form-control-user">
-                    <option>Tipo</option>
-                    <option>Código</option>
-                  </select>
-                </div> -->
+                   <span class="text-info">Filtrar por columna: </span>
+                   <select v-model="searchField" @change="cuandoCambie()" class="form-control form-control-user">
+                     <option>Tipo</option>
+                     <option>Código</option>
+                   </select>
+                 </div> -->
 
               </div>
               <br>
@@ -591,9 +573,9 @@
           </div>
         </div>
       </div>
+    </div>
 
-    </div>
-    </div>
+  </div>
   <!-- Logout Modal-->
   <div :class="'modal fade ' + showModal" id="filasColumnas" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" :aria-hidden="activaHide" :arial-modal="activaModal" :style="displayModal">
@@ -1196,7 +1178,7 @@
         <div class="modal-header">
           <h5 class="modal-title text-info" id="exampleModalLabel">LOTE (<label style="color: red;">{{
             Store.formLotes.data.attributes.descripcion
-          }}</label>) </h5>
+              }}</label>) </h5>
           <!-- <h5 class="modal-title text-info text-center" id="exampleModalLabel" v-if="editar == true"><span
               class="fa fa-edit"></span>
             MODIFICAR LOS DATOS DEL LOTE <br>(<label style="color: red;">{{
