@@ -398,7 +398,12 @@ const autenticate = async () => {
   // }
   // console.log(response)
   if (ValidacionEmail() == "OKKK") {
+    // consulto el correo y la contraseña
     const response = await obtenerDatos(14);
+    const passw = await obtenerDatos(17);
+    // si existen obtengo el token y le doy acceso
+    // Cuando cierre la sesion le borro el token
+    // console.log(passw)
     for (let index = 0; index < response.length; index++) {
       if (form.correo == response[index].attributes.email) {
         localStorage.setItem("userName", response[index].attributes.alias);

@@ -849,8 +849,8 @@ export default {
               attributes: {
                 descripcion: element[1],
                 observacion: element[2],
-                articulo_id: element[3],
-                minimo: element[4],
+                articulo_id: element[4],
+                minimo: element[3],
               }
             })
           }

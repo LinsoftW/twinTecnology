@@ -152,7 +152,7 @@
                     </a>
                     <button class="btn btn-primary btn-sm dropdown-toggle m-2" type="button" id="dropdownMenuButton"
                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-b-tooltip.hover
-                      title="Agregar">
+                      title="Agregar" :class="disabledProductos">
                       <span class="icon text-white-50">
                         <i class="fas fa-plus" v-b-tooltip.hover title="Agregar"></i>
                       </span>
@@ -203,7 +203,7 @@
               </div>
               <br>
 
-              <EasyDataTable :headers="headers" :items="itemsProductos1" buttons-pagination border-cell
+              <EasyDataTable :headers="headers" :items="itemsProductos1" buttons-pagination border-cell :labels="label"
                 v-model:items-selected="itemsSelected" header-text-direction="center" body-text-direction="center"
                 :search-field="searchField" :search-value="searchValue" @click-row="showRow" :rows-per-page="5"
                 :loading="Store.esperandoProductos" :key="actualizaTabla">
@@ -264,7 +264,7 @@
                 <template #empty-message>
                   <a>No hay datos que mostrar</a>
                 </template>
-                <template #empty-pagination__rows-per-page>
+                <template #rows-per-page>
                   <a>Filas por página</a>
                 </template>
 
@@ -783,7 +783,8 @@
           <form class="user">
             <div class="row">
               <div class="col-lg-12">
-                <img v-if="imgPerfil" class="img-profile rounded-circle" v-bind:src="imgPerfil"
+                <img v-if="Store.formProductos.data.attributes.imagen_path" class="img-profile rounded-circle"
+                  v-bind:src="urlAuditoria + '/' + Store.formProductos.data.attributes.imagen_path"
                   style="width: 150px; height: 150px">
                 <img v-else class="img-profile rounded-circle" src="/src/assets/new/img/undraw_profile.svg"
                   style="width: 150px; height: 150px">
@@ -792,7 +793,8 @@
               <div class="col-lg-12">
 
                 <label for="avatar">Seleccione una imagen:</label>
-                <input type="file" id="file" name="file" accept="image/png, image/jpeg" @change="cargarImagen()" />
+                <input type="file" id="file" name="file" accept="image/png, image/jpeg, image/jpg"
+                  @change="cargarImagen()" />
               </div>
             </div>
             <hr>
@@ -1178,7 +1180,7 @@
         <div class="modal-header">
           <h5 class="modal-title text-info" id="exampleModalLabel">LOTE (<label style="color: red;">{{
             Store.formLotes.data.attributes.descripcion
-              }}</label>) </h5>
+          }}</label>) </h5>
           <!-- <h5 class="modal-title text-info text-center" id="exampleModalLabel" v-if="editar == true"><span
               class="fa fa-edit"></span>
             MODIFICAR LOS DATOS DEL LOTE <br>(<label style="color: red;">{{
@@ -1358,6 +1360,7 @@ import Swal from 'sweetalert2';
 // import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import * as XLSX from 'xlsx';
+import router from '@/router';
 // import Quagga from 'quagga';
 import { useStoreAxios } from '@/store/AxiosStore';
 import { ErrorFull, successFull } from './controler/ControlerApp';
@@ -1366,10 +1369,6 @@ import { EditarDatos, EliminarDatos, GuardarDatos, obtenerDatos, subirImagen, ur
 import jsPDF from 'jspdf';
 // import { event } from 'jquery';
 import ClickRowArgument from 'vue3-easy-data-table';
-// import { ClickRowArgument } from "vue3-easy-data-table";
-// import autoTable from 'jspdf-autotable';
-// import { almacenDatosProductos, GuardarDatos, obtenerArticulos, obtenerProductos, obtenerUbicaciones } from './service/servicio';
-// import { disabledProductos, esperandoProductos, formProductos, itemsProductos, listadoArticulos, listadoMedida, listadoProductos, listadoUbicaciones, loadingP } from './controler/ControlerApp';
 const Store = useStoreAxios()
 
 const detalle = ref(false)
@@ -1474,16 +1473,23 @@ const aceptarCambio = async () => {
   // console.log(IdLote.value)
   const response2 = await GuardarDatos(Store.formInventario, 14, IdLote.value);
   // console.log(response2)
-  Store.formLotes.data.attributes.cantidad = response2.attributes.cantidad;
-  // const response = await EditarDatos(IdLote.value, Store.formLotes, 10);
-  Store.EditLotes(response2)
-  itemsLotes1.value = Store.itemsLotes;
-  successFull("Cantidad modificada satisfactoriamente.", "top-end")
-  Store.formLotes.data.attributes.cantidad = '';
-  Store.formInventario.data.attributes.justificacion = '';
-  Store.cambiaEstado(9);
-  disabledLoteBtn.value = '';
-  AceptarAD.value = 'Aceptar';
+  if (response2 != null) {
+    Store.formLotes.data.attributes.cantidad = response2.attributes.cantidad;
+    // const response = await EditarDatos(IdLote.value, Store.formLotes, 10);
+    Store.EditLotes(response2)
+    itemsLotes1.value = Store.itemsLotes;
+    successFull("Cantidad modificada satisfactoriamente.", "top-end")
+    Store.formLotes.data.attributes.cantidad = '';
+    Store.formInventario.data.attributes.justificacion = '';
+    Store.cambiaEstado(9);
+    disabledLoteBtn.value = '';
+    AceptarAD.value = 'Aceptar';
+  } else {
+    ErrorFull("Error realizando operación. Vuelva a intentarlo", "top-start");
+    Store.cambiaEstado(9);
+    disabledLoteBtn.value = '';
+    AceptarAD.value = 'Aceptar';
+  }
 }
 
 const nombreProd = ref('');
@@ -1639,6 +1645,13 @@ const agrega = () => {
 }
 
 let y = 0;
+
+const label = {
+  rowsPerPage: 'Filas por página',
+  // noResults: 'No se encontraron resultados',
+  // loading: 'Cargando...',
+  // Agrega más etiquetas según sea necesario
+}
 
 const obtenMedida = (id) => {
   for (let index = 0; index < itemsMedidas1.value.length; index++) {
@@ -1798,40 +1811,61 @@ const verificar_error = (n) => {
 
 const Asignar_Imagen = async (id) => {
   var data = new FormData();
-  data.append('imagen', imgPerfil.value);
-  // data.append('_method', 'PUT');
-  // console.log(data)
-  const response4 = await subirImagen(id, data);
-  // console.log(id+"."+nombreIMG.value)
-  // if (response4 != null) {
-  // } else {
-  //   Store.formProductos.data.attributes.imagen_path = 1;
-  // }
-  // console.log(id)
-  const response1 = await obtenerDatos(1)
-  // console.log(response1)
-  for (let index = 0; index < response1.length; index++) {
-    if (id == response1[index].id) {
-      Store.formProductos.data.attributes.descripcion = response1[index].attributes.descripcion;
-      Store.formProductos.data.attributes.observacion = response1[index].attributes.observacion;
-      Store.formProductos.data.attributes.articulo_id = response1[index].relationships.articulo.data.id;
-      Store.formProductos.data.attributes.minimo = response1[index].attributes.minimo;
+  if (imgPerfil.value) {
+    data.append('imagen', imgPerfil.value);
+    data.append('_method', 'PUT');
+    // console.log(data)
+    const response4 = await subirImagen(id, data);
+    const response1 = await obtenerDatos(1)
+    // console.log(response1)
+    for (let index = 0; index < response1.length; index++) {
+      if (id == response1[index].id) {
+        Store.formProductos.data.attributes.descripcion = response1[index].attributes.descripcion;
+        Store.formProductos.data.attributes.observacion = response1[index].attributes.observacion;
+        Store.formProductos.data.attributes.articulo_id = response1[index].relationships.articulo.data.id;
+        Store.formProductos.data.attributes.minimo = response1[index].attributes.minimo;
+      }
     }
+    Store.formProductos.data.attributes.imagen_path = "back/resources/imagenes/inventario/productos/" + id + "." + nombreIMG.value;
+    // Store.formProductos.data.attributes.producto_imagen_id = 1;
+    // console.log(Store.formProductos)
+    const response = await EditarDatos(id, Store.formProductos, 1);
+    // console.log(response)
+    editar.value = false;
+    Store.formProductos.data.attributes.descripcion = ''
+    Store.formProductos.data.attributes.observacion = '';
+    Store.formProductos.data.attributes.articulo_id = ''
+    Store.formProductos.data.attributes.minimo = '';
+    Store.formProductos.data.attributes.imagen_path = '';
+    Store.EditProductos(response)
+    itemsProductos1.value = [];
+    itemsProductos1.value = Store.itemsProductos;
+  } else {
+    const response1 = await obtenerDatos(1)
+    // console.log(response1)
+    for (let index = 0; index < response1.length; index++) {
+      if (id == response1[index].id) {
+        Store.formProductos.data.attributes.descripcion = response1[index].attributes.descripcion;
+        Store.formProductos.data.attributes.observacion = response1[index].attributes.observacion;
+        Store.formProductos.data.attributes.articulo_id = response1[index].relationships.articulo.data.id;
+        Store.formProductos.data.attributes.minimo = response1[index].attributes.minimo;
+      }
+    }
+    Store.formProductos.data.attributes.imagen_path = "back/resources/imagenes/inventario/productos/productos.jpg";
+    // Store.formProductos.data.attributes.producto_imagen_id = 1;
+    // console.log(Store.formProductos)
+    const response = await EditarDatos(id, Store.formProductos, 1);
+    // console.log(response)
+    editar.value = false;
+    Store.formProductos.data.attributes.descripcion = ''
+    Store.formProductos.data.attributes.observacion = '';
+    Store.formProductos.data.attributes.articulo_id = ''
+    Store.formProductos.data.attributes.minimo = '';
+    Store.formProductos.data.attributes.imagen_path = '';
+    Store.EditProductos(response)
+    itemsProductos1.value = [];
+    itemsProductos1.value = Store.itemsProductos;
   }
-  Store.formProductos.data.attributes.imagen_path = "back/resources/imagenes/inventario/productos/" + id + "." + nombreIMG.value;
-  // Store.formProductos.data.attributes.producto_imagen_id = 1;
-  // console.log(Store.formProductos)
-  const response = await EditarDatos(id, Store.formProductos, 1);
-  // console.log(response)
-  editar.value = false;
-  Store.formProductos.data.attributes.descripcion = ''
-  Store.formProductos.data.attributes.observacion = '';
-  Store.formProductos.data.attributes.articulo_id = ''
-  Store.formProductos.data.attributes.minimo = '';
-  Store.formProductos.data.attributes.imagen_path = '';
-  Store.EditProductos(response)
-  itemsProductos1.value = [];
-  itemsProductos1.value = Store.itemsProductos;
 }
 
 const errores = ref({ descripcion: "", observacion: "", articulo_id: "", ubicacion_id: "", cantidad: "", descripLote: "", precio_compra: "", precio_venta: "", moneda_compra: "", moneda_venta: "", producto_id: "", obsvacLote: "" })
@@ -1839,7 +1873,7 @@ const errores = ref({ descripcion: "", observacion: "", articulo_id: "", ubicaci
 const agregarUProducto = async (n) => {
   if (Store.formProductos.data.attributes.descripcion != '' && Store.formProductos.data.attributes.articulo_id != 0) {
     // editando.value = true;
-    Store.formProductos.data.attributes.imagen_path = '';
+    Store.formProductos.data.attributes.imagen_path = Store.formProductos.data.attributes.descripcion;
     if (n == 1) {
       GuardarProductoC.value = 'Guardando...';
       disabledProductoBtn.value = 'disabled';
@@ -1872,13 +1906,11 @@ const agregarUProducto = async (n) => {
         GuardarProductoC.value = 'Agregar y continuar';
         disabledProductoBtn.value = '';
         Store.cambiaEstado(1)
+        // Agregar_Productos()
       }
     } else {
       GuardarProducto.value = 'Guardando...';
       disabledProductoBtn.value = 'disabled';
-      // Store.formProductos.id = Store.nextIDProducto + 1;
-      // console.log(Store.formProductos);
-      // Agregar_Productos();
       Store.cambiaEstado(1)
       const response = await GuardarDatos(Store.formProductos, 1);
       // console.log(response)
@@ -1909,9 +1941,6 @@ const agregarUProducto = async (n) => {
         Store.cambiaEstado(1)
       }
     }
-
-    // editando.value = false;
-
   } else {
     // editando.value = false;
     if (Store.formProductos.data.attributes.descripcion == '') {
@@ -2259,7 +2288,10 @@ const editarU = async () => {
   Store.cambiaEstado(1);
   btnModificarM.value = 'Actualizando...'
   deactiva.value = 'disabled';
-  // console.log(Store.formProductos.id)
+  // console.log(Store.formProductos)
+  if (Store.formProductos.data.attributes.imagen_path == "" || Store.formProductos.data.attributes.imagen_path == null) {
+    Store.formProductos.data.attributes.imagen_path = "back/resources/imagenes/inventario/productos/" + Store.id + ".png";
+  }
   const response = await EditarDatos(Store.id, Store.formProductos, 1);
   // console.log(response)
   editar.value = false;
@@ -2274,9 +2306,26 @@ const editarU = async () => {
   if (detalle.value == true) {
     detalle.value = false;
   }
-  Store.formEtiquetaProducto.data.attributes.producto_id = response.id;
-  Store.formEtiquetaProducto.data.attributes.etiqueta_id = etiqueta_R.value;
-  const response2 = await EditarDatos(Store.formEtiquetaProducto, 12);
+  // console.log(etiqueta_R.value)
+  let esta = 0;
+  const etiq = await obtenerDatos(13)
+  // console.log(etiq)
+  for (let index = 0; index < etiq.length; index++) {
+    if (etiq[index].meta.foreign_keys_instances.producto_id == Store.id) {
+      esta = 1;
+      break;
+    }
+  }
+  if (esta == 1) {
+    Store.formEtiquetaProducto.data.attributes.producto_id = response.id;
+    Store.formEtiquetaProducto.data.attributes.etiqueta_id = etiqueta_R.value;
+    const response2 = await EditarDatos(Store.formEtiquetaProducto, 12);
+  } else {
+    Store.formEtiquetaProducto.data.attributes.producto_id = response.id;
+    Store.formEtiquetaProducto.data.attributes.etiqueta_id = etiqueta_R.value;
+    const etiqGuardada = await GuardarDatos(Store.formEtiquetaProducto, 13)
+    // console.log(etiqGuardada)
+  }
   // console.log(Store.formEtiquetaProducto)
   successFull("Producto modificado satisfactoriamente.", "top-end")
   Store.cambiaEstado(1);
@@ -2324,7 +2373,6 @@ const showRow = (item = ClickRowArgument) => {
     }
   }
   itemsLotes1.value = NewLote;
-  // console.log(itemsLotes1.value)
 }
 
 const EliminarSelecc = () => {
@@ -2483,7 +2531,12 @@ const clickEditarProducto = async (idSelect) => {
       Store.formProductos.data.attributes.minimo = itemsProductos1.value[index].attributes.minimo;
       Store.formProductos.data.attributes.observacion = itemsProductos1.value[index].attributes.observacion;
       Store.formProductos.data.attributes.articulo_id = itemsProductos1.value[index].relationships.articulo.data.id;
-      etiqueta_R.value = itemsProductos1.value[index].relationships.etiquetas.data[0].id;
+      Store.formProductos.data.attributes.imagen_path = itemsProductos1.value[index].attributes.imagen_path;
+      if (itemsProductos1.value[index].relationships.etiquetas.data[0] == null) {
+        etiqueta_R.value = 0;
+      } else {
+        etiqueta_R.value = itemsProductos1.value[index].relationships.etiquetas.data[0].id;
+      }
       break;
     }
   }

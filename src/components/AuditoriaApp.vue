@@ -172,13 +172,14 @@ import Swal from 'sweetalert2';
 // import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import * as XLSX from 'xlsx';
-import Quagga from 'quagga';
+// import Quagga from 'quagga';
+import router from '@/router';
 import { useStoreAxios } from '@/store/AxiosStore';
-import { ErrorFull, successFull } from './controler/ControlerApp';
+// import { ErrorFull, successFull } from './controler/ControlerApp';
 // import { EditarDatos, EliminarDatos, GuardarDatos, GuardarMinimos, obtenerDatos } from './helper/useAxios';
-import { data } from 'jquery';
+// import { data } from 'jquery';
 import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
+// import autoTable from 'jspdf-autotable';
 import { obtenerDatos } from './helper/useAxios';
 const Store = useStoreAxios()
 

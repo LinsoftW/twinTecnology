@@ -573,12 +573,12 @@
 
             <div class="input-group">
 
-              <input type="text" class="form-control bg-light border-0 small" placeholder="Que desea buscar..."
-                aria-label="Search" aria-describedby="basic-addon2">
+              <input type="text" class="form-control bg-light border-0 small" v-model="paginaBuscar" @keyup="buscarPag"
+                placeholder="Que desea buscar..." aria-label="Search" aria-describedby="basic-addon2">
 
               <div class="input-group-append">
 
-                <button :class="'btn btn-' + Cosc_Clar" type="button">
+                <button :class="'btn btn-' + Cosc_Clar" type="button" @click="buscarPag">
 
                   <i class="fas fa-search fa-sm"></i>
 
@@ -619,11 +619,11 @@
                   <div class="input-group">
 
                     <input type="text" class="form-control bg-light border-0 small" placeholder="Que desea buscar..."
-                      aria-label="Search" aria-describedby="basic-addon2">
+                      aria-label="Search" aria-describedby="basic-addon2" v-model="paginaBuscar" @keyup="buscarPag">
 
                     <div class="input-group-append">
 
-                      <button :class="'btn btn-' + Cosc_Clar" type="button">
+                      <button :class="'btn btn-' + Cosc_Clar" type="button" @click="buscarPag">
 
                         <i class="fas fa-search fa-sm"></i>
 
@@ -1320,7 +1320,7 @@ import InicioApp from '@/components/InicioApp.vue';
 import InventarioApp from '@/components/InventarioApp.vue';
 import PedidosApp from '@/components/PedidosApp.vue';
 import router from '@/router';
-import { onBeforeMount, onUnmounted, ref, watch, watchEffect } from 'vue';
+import { computed, onBeforeMount, onUnmounted, ref, watch, watchEffect } from 'vue';
 import { useRoute } from 'vue-router'
 import { onMounted } from 'vue';
 import SucursalApp from '@/components/SucursalApp.vue';
@@ -1506,236 +1506,6 @@ const actualizar = async () => {
     Kauditoria.value = Kauditoria.value + 1;
     Kubicaciones.value = Kubicaciones.value + 1;
     Kcategorias.value = Kcategorias.value + 1;
-    //   // if (localStorage.getItem('Carg_datIM') == '0') {
-    //   //   const response2 = await obtenerDatos(12);
-    //   //   // console.log(response2)
-    //   //   if (response2 != null) {
-    //   //     Store.setListadoImagen(response2);
-    //   //     localStorage.setItem("Carg_datP", "1");
-    //   //   }
-    //   //   // itemsImagenes1.value = Store.itemsImagen;
-    //   // }
-    //   if (localStorage.getItem('Carg_datP') == '0') {
-    //     // cargando los productos
-    //     Store.cambiaEstado(1)
-    //     const response = await obtenerDatos(1);
-    //     // console.log(response)
-    //     if (response == null) {
-    //       Store.cambiaEstado(1)
-    //       ErrorFull("Error de red, intente más tarde.", "top-start")
-    //     } else {
-    //       Store.setCantidadProductos(response.length)
-    //       if (response.length > 0) {
-    //         Store.setListadoProductos(response)
-    //         localStorage.setItem("LProductos", response);
-    //       }
-    //       for (let index = 0; index < response.length; index++) {
-    //         Store.nextIDProducto = response[index].id;
-    //       }
-    //       // console.log(Store.nextIDProducto + 1)
-    //       localStorage.setItem("Carg_datP", "1");
-    //       Store.cambiaEstado(1);
-    //     }
-    //   }
-    //   if (localStorage.getItem('Carg_datD') == '0') {
-    //     // cargando los departamentos
-    //     Store.cambiaEstado(2)
-    //     const response = await obtenerDatos(6);
-    //     if (!response) {
-    //       Store.cambiaEstado(2)
-    //       // ErrorFull("Error de red, intente más tarde.", "top-start")
-    //     } else {
-    //       Store.setCantidadDepartamentos(response.length)
-    //       if (response.length > 0) {
-    //         Store.setListadoDepartamentos(response)
-    //         localStorage.setItem("LDepartamentos", response);
-    //       }
-    //       for (let index = 0; index < response.length; index++) {
-    //         Store.nextIDDepartamento = response[index].id;
-    //       }
-    //       // console.log(Store.nextIDDepartamento)
-    //       localStorage.setItem("Carg_datD", "1");
-    //       Store.cambiaEstado(2);
-    //     }
-
-    //   }
-
-    //   if (localStorage.getItem('Carg_datA') == '0') {
-    //     // cargando los articulos
-    //     Store.cambiaEstado(3)
-    //     const response = await obtenerDatos(5);
-    //     if (!response) {
-    //       Store.cambiaEstado(3)
-    //       ErrorFull("Error de red, intente más tarde.", "top-start")
-    //     } else {
-    //       Store.setCantidadArticulos(response.length)
-    //       if (response.length > 0) {
-    //         Store.setListadoArticulos(response)
-    //         localStorage.setItem("LArticulos", response);
-    //       }
-    //       for (let index = 0; index < response.length; index++) {
-    //         Store.nextIDArticulo = response[index].id;
-    //       }
-    //       // console.log(Store.nextIDArticulo)
-    //       localStorage.setItem("Carg_datA", "1");
-    //       Store.cambiaEstado(3)
-    //     }
-    //   }
-
-    //   if (localStorage.getItem('Carg_datAu') == '0') {
-    //     const response = await obtenerDatos(15);
-    //     if (response.length > 0) {
-    //       Store.setListadoAuditorias(response)
-    //     }
-    //     Store.cambiaEstado(10)
-    //     localStorage.setItem("Carg_datAu", "1");
-    //     itemsAuditorias1.value = Store.itemsAuditorias;
-    //     Store.cambiaEstado(10)
-
-    //   } else {
-    //     Store.cambiaEstado(10)
-    //     itemsAuditorias1.value = Store.itemsAuditorias;
-    //     Store.cambiaEstado(10)
-    //   }
-
-    //   // cargando lotes
-    //   if (localStorage.getItem("Carg_datL") == '0') {
-    //     const response = await obtenerDatos(10);
-    //     if (response.length > 0) {
-    //       // Store.cambiaEstado(9)
-    //       Store.setListadoLotes(response)
-    //       localStorage.setItem("Carg_datL", "1");
-    //       itemsLotes1.value = Store.itemsLotes;
-    //       // Store.cambiaEstado(9)
-    //     }
-    //   } else {
-    //     itemsLotes1.value = Store.itemsLotes;
-    //   }
-
-    //   const response2 = await obtenerDatos(16);
-    //   if (response2.length > 0) {
-    //     Store.setListadoOperaciones(response2)
-    //     itemsOperaciones1.value = Store.itemsOperaciones;
-    //   }
-
-    //   if (localStorage.getItem("Carg_datMe") == "0") {
-
-    //     const response = await obtenerDatos(3);
-    //     if (!response) {
-
-    //     } else {
-    //       if (response.length > 0) {
-    //         Store.setListadoMedidas(response)
-    //       }
-    //       for (let index = 0; index < response.length; index++) {
-    //         Store.nextIDMedida = response[index].id;
-    //       }
-
-    //       localStorage.setItem("Carg_datMe", "1");
-    //       itemsMedida1.value = Store.itemsMedidas;
-    //     }
-
-    //   } else {
-    //     itemsMedida1.value = Store.itemsMedidas;
-    //   }
-
-    //   if (localStorage.getItem('Carg_datE') == '0') {
-    //     Store.cambiaEstado(5);
-    //     const response = await obtenerDatos(8);
-    //     if (!response) {
-    //       Store.cambiaEstado(5);
-    //     } else {
-    //       if (response.length > 0) {
-    //         Store.setListadoEtiquetas(response)
-    //       }
-    //       for (let index = 0; index < response.length; index++) {
-    //         Store.nextIDEtiqueta = response[index].id;
-    //       }
-    //       localStorage.setItem("Carg_datE", "1");
-    //       itemsEtiqueta1.value = Store.itemsEtiquetas;
-    //       Store.cambiaEstado(5);
-    //     }
-    //   } else {
-    //     Store.cambiaEstado(5);
-    //     itemsEtiqueta1.value = Store.itemsEtiquetas;
-    //     Store.cambiaEstado(5);
-    //   }
-
-    //   if (localStorage.getItem('Carg_datS') == '0') {
-    //     // Sucursales
-    //     Store.cambiaEstado(4)
-    //     const response = await obtenerDatos(2);
-    //     if (response.length > 0) {
-    //       Store.setListadoSucursales(response)
-    //     }
-    //     // for (let index = 0; index < response.length; index++) {
-    //     //   store.nextIDSucursal = response[index].id;
-    //     // }
-    //     localStorage.setItem("Carg_datS", "1");
-    //     itemsSucursales1.value = Store.itemsSucursales;
-    //     Store.cambiaEstado(4)
-
-    //   } else {
-    //     Store.cambiaEstado(4)
-    //     itemsSucursales1.value = Store.itemsSucursales;
-    //     Store.cambiaEstado(4)
-    //   }
-
-    //   if (localStorage.getItem('Carg_datU') == '0') {
-    //     // Ubicaciones
-    //     Store.cambiaEstado(7)
-    //     const response = await obtenerDatos(7);
-    //     if (response.length > 0) {
-    //       Store.setListadoUbicaciones(response)
-    //     }
-    //     // for (let index = 0; index < response.length; index++) {
-    //     //   store.nextIDUbicacion = response[index].id;
-    //     // }
-    //     localStorage.setItem("Carg_datU", "1");
-    //     itemsUbicaciones1.value = Store.itemsUbicaciones;
-    //     Store.cambiaEstado(7)
-
-    //   } else {
-    //     Store.cambiaEstado(7)
-    //     itemsUbicaciones1.value = Store.itemsUbicaciones;
-    //     Store.cambiaEstado(7)
-    //   }
-
-    //   // cargando monedas
-    //   if (localStorage.getItem("Carg_datMo") == "0") {
-
-    //     const response = await obtenerDatos(11);
-    //     if (!response) {
-
-    //     } else {
-    //       if (response.length > 0) {
-    //         Store.setListadoMonedas(response)
-    //       }
-    //       localStorage.setItem("Carg_datMo", "1");
-    //       itemsMoneda1.value = Store.itemsMonedas;
-    //     }
-
-    //   } else {
-    //     itemsMoneda1.value = Store.itemsMonedas;
-    //   }
-
-    //   if (localStorage.getItem('Carg_datM') == '0') {
-    //     // MAGNITUDES
-    //     Store.cambiaEstado(8)
-    //     const response = await obtenerDatos(4);
-    //     if (response.length > 0) {
-    //       Store.setListadoMagnitud(response)
-    //     }
-    //     localStorage.setItem("Carg_datM", "1");
-    //     itemsMagnitud1.value = Store.itemsMagnitudes;
-    //     Store.cambiaEstado(8)
-
-    //   } else {
-    //     Store.cambiaEstado(8)
-    //     itemsMagnitud1.value = Store.itemsMagnitudes;
-    //     Store.cambiaEstado(8)
-    //   }
-
   } else {
     router.push('/login');
   }
@@ -1780,6 +1550,45 @@ const handleOption = (option) => {
 };
 
 const Store = useStoreAxios();
+
+const paginaBuscar = ref('');
+
+const vistas = ref('inventario')
+const ArrVistas = ref([
+  'inventario',
+  'gest_nomencladores',
+  'auditoria',
+  'cmasiva',
+  'ubicaciones',
+  'categorias',
+  'perfil',
+  'inicio'
+])
+
+const coincidencias = ref([]);
+
+const buscarPag = () => {
+  if (!paginaBuscar.value) {
+    return [];
+  }
+  coincidencias.value = [];
+  const regex = new RegExp(paginaBuscar.value, 'gi');
+  for (let index = 0; index < ArrVistas.value.length; index++) {
+    let x = ArrVistas.value[index].match(regex) || [];
+    coincidencias.value.push(x);
+  }
+  let posicion = ref([]);
+  for (let index = 0; index < coincidencias.value.length; index++) {
+    posicion.value.push(coincidencias.value[index].length);
+  }
+  for (let index = 0; index < posicion.value.length; index++) {
+    if (posicion.value[index] == 1) {
+      router.push('/' + ArrVistas.value[index]);
+      break;
+    }
+  }
+  return 0;
+}
 
 const Kinicio = ref(0);
 const Kpedidos = ref(0);
@@ -1906,6 +1715,7 @@ const errores = ref({ descripcion: "", observacion: "", articulo_id: "", ubicaci
 const consultar = async (n) => {
   //Productos
   if (n == 1) {
+    actualizar()
     // Agregar productos
     // if (Store.formProductos.data.attributes.descripcion != '' && Store.formProductos.data.attributes.articulo_id != 0 && Store.formProductos.data.attributes.observacion != '' && Store.formProductos.data.attributes.ubicacion_id != "" && Store.formProductos.data.attributes.cantidad != "") {
     // console.log("OKKKK")

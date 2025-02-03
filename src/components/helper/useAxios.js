@@ -18,12 +18,17 @@ const endpointEp = [];
 const endpointOp = [];
 const endpointPe = [];
 
-export const urlAuditoria = "http://www.twintechnology.cu/inventory/api";
-export const url = "http://www.twintechnology.cu/inventory/api/inventario";
-export const urlImagen = "http://www.twintechnology.cu/inventory/api/imagen/producto_imagenes";
-// export const url = "http://localhost/inventory/api/inventario";
-// export const urlAuditoria = "http://localhost/inventory/api";
-// export const urlImagen = "http://localhost/inventory/api/inventario/productos";
+// Nube
+// export const urlAuditoria = "http://www.twintechnology.cu/inventory/api";
+// export const url = "http://www.twintechnology.cu/inventory/api/inventario";
+// export const urlImagen = "http://www.twintechnology.cu/inventory/api/imagen/producto_imagenes";
+// export const urlPersonas = urlAuditoria + "/autenticacion/";
+
+// Local
+export const url = "http://localhost/inventory/api/inventario";
+export const urlAuditoria = "http://localhost/inventory/api";
+export const urlPersonas = urlAuditoria + "/autenticacion/";
+export const urlImagen = "http://localhost/inventory/api/inventario/productos";
 
 // const urlUploadImagen = "http://www.twintechnology.cu/inventory/api/imagen/producto_imagenes/upload";
 
@@ -218,7 +223,7 @@ export async function obtenerDatos(n) {
       //   return cache.get(endpointPe);
       // }
       try {
-        const response = await axiosInstance.get('/personas');
+        const response = await axios.get(urlPersonas + 'personas');
         // cache.set(endpointPe, response.data.data);
         return response.data.data;
       } catch (error) {
@@ -244,6 +249,18 @@ export async function obtenerDatos(n) {
       try {
         const response = await axiosInstance.get('/operaciones');
         // cache.set(endpointOp, response.data.data);
+        return response.data.data;
+      } catch (error) {
+        throw error;
+      }
+      break;
+    case 17:
+      // if (cache.has(endpointPe)) {
+      //   return cache.get(endpointPe);
+      // }
+      try {
+        const response = await axios.get(urlPersonas + 'passwords');
+        // cache.set(endpointPe, response.data.data);
         return response.data.data;
       } catch (error) {
         throw error;
@@ -610,7 +627,7 @@ export async function EliminarDatos(id, n) {
   }
 }
 
-export async function subirImagen(id,imagen) {
+export async function subirImagen(id, imagen) {
   try {
     const response = axios.post(url + `/productos/${id}?function[name]=upload_image`, imagen);
     return response
@@ -726,7 +743,7 @@ export async function EditarDatos(id, datos, n) {
     case 12:
       try {
         const dato = await obtenerDatos(13);
-        console.log(dato)
+        // console.log(dato)
         const response = await axiosInstance.patch(`${url}/etiqueta_productos/${id}`, datos);
         return response.data.data;
       } catch (error) {
