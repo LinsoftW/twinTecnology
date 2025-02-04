@@ -1813,7 +1813,7 @@ const Asignar_Imagen = async (id) => {
   var data = new FormData();
   if (imgPerfil.value) {
     data.append('imagen', imgPerfil.value);
-    data.append('_method', 'PUT');
+    data.append('_method', 'POST');
     // console.log(data)
     const response4 = await subirImagen(id, data);
     const response1 = await obtenerDatos(1)
@@ -2368,8 +2368,10 @@ const showRow = (item = ClickRowArgument) => {
   const NewLote = [];
   for (let index = 0; index < Store.getListadoLotes().value.length; index++) {
     const element = Store.getListadoLotes().value[index];
-    if (element.relationships.producto.data.id == item.id) {
-      NewLote.push(Store.getListadoLotes().value[index])
+    if(element.relationships.producto.data != null){
+      if (element.relationships.producto.data.id == item.id) {
+        NewLote.push(Store.getListadoLotes().value[index])
+      }
     }
   }
   itemsLotes1.value = NewLote;

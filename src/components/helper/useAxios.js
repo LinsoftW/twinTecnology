@@ -19,16 +19,16 @@ const endpointOp = [];
 const endpointPe = [];
 
 // Nube
-// export const urlAuditoria = "http://www.twintechnology.cu/inventory/api";
-// export const url = "http://www.twintechnology.cu/inventory/api/inventario";
-// export const urlImagen = "http://www.twintechnology.cu/inventory/api/imagen/producto_imagenes";
-// export const urlPersonas = urlAuditoria + "/autenticacion/";
+export const urlAuditoria = "http://www.twintechnology.cu/inventory/api";
+export const url = "http://www.twintechnology.cu/inventory/api/inventario";
+export const urlImagen = "http://www.twintechnology.cu/inventory/api/imagen/producto_imagenes";
+export const urlPersonas = urlAuditoria + "/autenticacion/";
 
 // Local
-export const url = "http://localhost/inventory/api/inventario";
-export const urlAuditoria = "http://localhost/inventory/api";
-export const urlPersonas = urlAuditoria + "/autenticacion/";
-export const urlImagen = "http://localhost/inventory/api/inventario/productos";
+// export const url = "http://localhost/inventory/api/inventario";
+// export const urlAuditoria = "http://localhost/inventory/api";
+// export const urlPersonas = urlAuditoria + "/autenticacion/";
+// export const urlImagen = "http://localhost/inventory/api/inventario/productos";
 
 // const urlUploadImagen = "http://www.twintechnology.cu/inventory/api/imagen/producto_imagenes/upload";
 
