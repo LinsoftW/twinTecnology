@@ -1813,7 +1813,7 @@ const Asignar_Imagen = async (id) => {
   var data = new FormData();
   if (imgPerfil.value) {
     data.append('imagen', imgPerfil.value);
-    data.append('_method', 'POST');
+    // data.append('_method', 'POST');
     // console.log(data)
     const response4 = await subirImagen(id, data);
     const response1 = await obtenerDatos(1)
@@ -1963,6 +1963,11 @@ const agregarUProducto = async (n) => {
       errores.value.cantidad = 'Este campo es obligatorio';
     } else {
       errores.value.cantidad = "";
+    }
+    if (etiqueta_R.value == '') {
+      errores.value.etiqueta = 'Este campo es obligatorio';
+    } else {
+      errores.value.etiqueta = "";
     }
     GuardarProducto.value = 'Agregar';
     disabledProductoBtn.value = ''
