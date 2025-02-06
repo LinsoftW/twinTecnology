@@ -629,11 +629,11 @@ export async function EliminarDatos(id, n) {
 
 export async function subirImagen(id, imagen) {
   try {
-    const response = axiosInstance.post(url + `/productos/${id}?function[name]=upload_image`, imagen, {
+    // console.log(imagen)
+    const response = axiosInstance.post(`/productos/${id}?function[name]=upload_image`, imagen, {
           headers: {
-            'Content-Type': 'multipart/form-data',
-            'Accept': 'application/json',
-          },
+            'Content-Type': 'multipart/form-data'
+          }
         });
     return response
   } catch (error) {

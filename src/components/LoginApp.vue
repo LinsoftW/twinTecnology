@@ -51,8 +51,10 @@
                       </div>
                     </div> -->
                     <!-- <hr> -->
-                    <a @click="autenticate" class="btn btn-info btn-user btn-block">
-                      <i class="fa fa-check"></i> Continuar
+                    <a @click="autenticate" class="btn btn-info btn-user btn-block" :class="disable">
+                      <i v-if="disable == 'disabled'" class="fa fa-spinner fa-spin" style="font-size:24px" aria-hidden="true"></i>
+                      <i class="fa fa-check" v-if="disable == ''"></i> {{Continuar}}
+
                     </a>
                   </form>
                   <hr>
@@ -380,23 +382,13 @@ function validaApellidos2() {
 
 const accesoRegistro = ref(true);
 
-const autenticate = async () => {
-  // for (let index = 0; index < listado.value.length; index++) {
-  //   if (form.nombre == listado.value[index].direccion && form.passw == listado.value[index].password) {
-  //     localStorage.setItem("userName", form.nombre);
-  //     successFull('Bienvenido al sistema', 'top-end');
-  //     router.push('/inicio');
-  //     break
-  //   }else {
-  //   Swal.fire({
-  //     icon: "error",
-  //     title: "Oops...",
-  //     text: "Error de autenticación",
-  //   });
-  // }
+const disable = ref('')
 
-  // }
-  // console.log(response)
+const Continuar = ref('Entrar')
+
+const autenticate = async () => {
+disable.value = 'disabled'
+Continuar.value = 'Autenticando...'
   if (ValidacionEmail() == "OKKK") {
     // consulto el correo y la contraseña
     const response = await obtenerDatos(14);
@@ -424,6 +416,7 @@ const autenticate = async () => {
       }
 
     }
+    disable.value = ''
     // if (form.correo == 'admin@admin.co' && form.passw == '123') {
     // }
   } else {
@@ -444,7 +437,8 @@ const autenticate = async () => {
     emailError.value = '';
 
   }
-
+disable.value = ''
+Continuar.value = 'Entrar'
 }
 
 // let timerInterval;

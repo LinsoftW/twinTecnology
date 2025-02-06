@@ -1394,11 +1394,12 @@ const nombreIMG = ref("");
 
 const cargarImagen = async () => {
   let file = document.getElementById("file").files[0];
+  imgPerfil.value = file;
   nombreIMG.value = file.name.split('.').pop();
   if (file) {
     const reader = new FileReader();
     reader.onload = (e) => {
-      imgPerfil.value = e.target.result;
+      // imgPerfil.value = e.target.result;
       // console.log(imgPerfil.value)
     };
     reader.readAsDataURL(file);
@@ -1792,32 +1793,15 @@ const verificar_error = (n) => {
     default:
       break;
   }
-  // if (formProductos.data.attributes.descripcion != '') {
-  //   errores.value.descripcion = "";
-  // }
-  // if (formProductos.data.attributes.observacion != '') {
-  //   errores.value.observacion = "";
-  // }
-  // if (formProductos.data.attributes.articulo_id != 0) {
-  //   errores.value.articulo_id = -1;
-  // }
-  // if (formProductos.data.attributes.ubicacion_id != 0) {
-  //   errores.value.ubicacion_id = -1;
-  // }
-  // if (formProductos.data.attributes.cantidad != 0) {
-  //   errores.value.cantidad = -1;
-  // }
 }
 
 const Asignar_Imagen = async (id) => {
   var data = new FormData();
   if (imgPerfil.value) {
     data.append('imagen', imgPerfil.value);
-    // data.append('_method', 'POST');
-    // console.log(data)
     const response4 = await subirImagen(id, data);
+    imgPerfil.value = ""
     const response1 = await obtenerDatos(1)
-    // console.log(response1)
     for (let index = 0; index < response1.length; index++) {
       if (id == response1[index].id) {
         Store.formProductos.data.attributes.descripcion = response1[index].attributes.descripcion;
@@ -1827,10 +1811,7 @@ const Asignar_Imagen = async (id) => {
       }
     }
     Store.formProductos.data.attributes.imagen_path = "back/resources/imagenes/inventario/productos/" + id + "." + nombreIMG.value;
-    // Store.formProductos.data.attributes.producto_imagen_id = 1;
-    // console.log(Store.formProductos)
     const response = await EditarDatos(id, Store.formProductos, 1);
-    // console.log(response)
     editar.value = false;
     Store.formProductos.data.attributes.descripcion = ''
     Store.formProductos.data.attributes.observacion = '';
@@ -1842,7 +1823,6 @@ const Asignar_Imagen = async (id) => {
     itemsProductos1.value = Store.itemsProductos;
   } else {
     const response1 = await obtenerDatos(1)
-    // console.log(response1)
     for (let index = 0; index < response1.length; index++) {
       if (id == response1[index].id) {
         Store.formProductos.data.attributes.descripcion = response1[index].attributes.descripcion;
@@ -1852,10 +1832,7 @@ const Asignar_Imagen = async (id) => {
       }
     }
     Store.formProductos.data.attributes.imagen_path = "back/resources/imagenes/inventario/productos/productos.jpg";
-    // Store.formProductos.data.attributes.producto_imagen_id = 1;
-    // console.log(Store.formProductos)
     const response = await EditarDatos(id, Store.formProductos, 1);
-    // console.log(response)
     editar.value = false;
     Store.formProductos.data.attributes.descripcion = ''
     Store.formProductos.data.attributes.observacion = '';
@@ -1872,19 +1849,19 @@ const errores = ref({ descripcion: "", observacion: "", articulo_id: "", ubicaci
 
 const agregarUProducto = async (n) => {
   if (Store.formProductos.data.attributes.descripcion != '' && Store.formProductos.data.attributes.articulo_id != 0) {
-    // editando.value = true;
     Store.formProductos.data.attributes.imagen_path = Store.formProductos.data.attributes.descripcion;
     if (n == 1) {
       GuardarProductoC.value = 'Guardando...';
       disabledProductoBtn.value = 'disabled';
       Store.cambiaEstado(1)
+      if (Store.formProductos.data.attributes.minimo == '') {
+        Store.formProductos.data.attributes.minimo = 0;
+      }
       const response = await GuardarDatos(Store.formProductos, 1);
-      // console.log(response)
       if (response == null) {
         Store.cambiaEstado(1)
         disabledProductoBtn.value = '';
         GuardarProductoC.value = 'Agregar y continuar';
-        // errores.value.descripcion = "Este dato ya existe en el sistema";
         ErrorFull("Error realizando operación, vuelva a intentarlo.", "top-start")
       } else {
         disabledProductoBtn.value = '';
@@ -1898,7 +1875,6 @@ const agregarUProducto = async (n) => {
         Asignar_Imagen(response.id);
         itemsProductos1.value = Store.itemsProductos;
         actualizaTabla.value = actualizaTabla.value + 1;
-        // Store.cambiaEstado(1)
         Store.formEtiquetaProducto.data.attributes.producto_id = response.id;
         Store.formEtiquetaProducto.data.attributes.etiqueta_id = etiqueta_R.value;
         const response2 = await GuardarDatos(Store.formEtiquetaProducto, 13);
@@ -1913,12 +1889,10 @@ const agregarUProducto = async (n) => {
       disabledProductoBtn.value = 'disabled';
       Store.cambiaEstado(1)
       const response = await GuardarDatos(Store.formProductos, 1);
-      // console.log(response)
       if (response == null) {
         Store.cambiaEstado(1)
         disabledProductoBtn.value = '';
         GuardarProducto.value = 'Agregar';
-        // errores.value.descripcion = "Este dato ya existe en el sistema";
         ErrorFull("Error realizando operación, vuelva a intentarlo.", "top-start")
       } else {
         disabledProductoBtn.value = '';
@@ -1942,7 +1916,6 @@ const agregarUProducto = async (n) => {
       }
     }
   } else {
-    // editando.value = false;
     if (Store.formProductos.data.attributes.descripcion == '') {
       errores.value.descripcion = "Este campo es obligatorio";
     } else {
@@ -1971,7 +1944,6 @@ const agregarUProducto = async (n) => {
     }
     GuardarProducto.value = 'Agregar';
     disabledProductoBtn.value = ''
-    // Store.cambiaEstado(1)
     ErrorFull("Debe llenar todos los campos obligatorios", "top-start")
   }
 
@@ -1979,7 +1951,6 @@ const agregarUProducto = async (n) => {
 
 const agregarULote = async (n) => {
   if (Store.formLotes.data.attributes.descripcion != '' && Store.formLotes.data.attributes.producto_id != 0 && Store.formLotes.data.attributes.ubicacion_id != 0) {
-    // editando.value = true;
     if (n == 1) {
       GuardarMag.value = 'Guardando...';
       disabledProductoBtn.value = 'disabled';
@@ -2294,9 +2265,6 @@ const editarU = async () => {
   btnModificarM.value = 'Actualizando...'
   deactiva.value = 'disabled';
   // console.log(Store.formProductos)
-  if (Store.formProductos.data.attributes.imagen_path == "" || Store.formProductos.data.attributes.imagen_path == null) {
-    Store.formProductos.data.attributes.imagen_path = "back/resources/imagenes/inventario/productos/" + Store.id + ".png";
-  }
   const response = await EditarDatos(Store.id, Store.formProductos, 1);
   // console.log(response)
   editar.value = false;
@@ -2305,7 +2273,13 @@ const editarU = async () => {
   Store.formProductos.data.attributes.articulo_id = ''
   Store.formProductos.data.attributes.minimo = '';
   Store.EditProductos(response)
+  if (Store.formProductos.data.attributes.imagen_path == "" || Store.formProductos.data.attributes.imagen_path == null) {
+    Store.formProductos.data.attributes.imagen_path = "back/resources/imagenes/inventario/productos/" + Store.id + ".png";
+  }else{
+    Asignar_Imagen(Store.id)
+  }
   itemsProductos1.value = Store.itemsProductos;
+  actualizaTabla.value = actualizaTabla.value + 1;
   btnModificarM.value = 'Modificar'
   deactiva.value = '';
   if (detalle.value == true) {

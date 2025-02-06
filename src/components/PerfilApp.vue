@@ -48,6 +48,12 @@
                 <div v-if="modifica == false" class="col-md-8 col-xl-8 col-lg-8 text-center">
                   <img src="/src/assets/new/img/undraw_profile.svg" class="img img-thumbnail img-profile rounded-circle"
                     style="height: 150px; width:150px" alt="">
+                  <!-- <div class="col-lg-12">
+
+                    <label for="avatar">Seleccione una imagen:</label><br>
+                    <input type="file" id="file" name="file" accept="image/png, image/jpeg, image/jpg"
+                      @change="cargarImagen()" />
+                  </div> -->
                   <hr>
                   <div v-for="(i, index) in itemsPersonas1">
                     <strong v-if="i.attributes.alias == Store.formPersonas.data.attributes.alias">Alias:</strong> <label
@@ -250,10 +256,11 @@ let imgPerfil = ref("");
 
 const cargarImagen = async () => {
   let file = document.getElementById("file").files[0];
+  imgPerfil.value = file;
   if (file) {
     const reader = new FileReader();
     reader.onload = (e) => {
-      imgPerfil.value = e.target.result;
+      // imgPerfil.value = e.target.result;
       // console.log(imgPerfil.value)
     };
     reader.readAsDataURL(file);
@@ -269,6 +276,17 @@ const Modificar = () => {
   errores.value.movil = '';
 }
 
+const Asignar_Imagen = async (alias) => {
+  var data = new FormData();
+  if (imgPerfil.value) {
+    data.append('imagen', imgPerfil.value);
+    // data.append('_method', 'POST');
+    // console.log(data)
+    const response4 = await subirImagen(id, data);
+    imgPerfil.value = ""
+  }
+}
+
 const guardar = async () => {
   // console.log(Store.formPersonas)
   if ((Store.formPersonas.data.attributes.alias != '') && (Store.formPersonas.data.attributes.email != '') && (Store.formPersonas.data.attributes.movil != '')) {
@@ -279,6 +297,7 @@ const guardar = async () => {
       const response1 = await obtenerDatos(14);
       itemsPersonas1.value = [];
       itemsPersonas1.value = response1;
+      // Asignar_Imagen(Store.formPersonas.data.attributes.alias)
       // console.log(response1)
       localStorage.removeItem('userName')
       localStorage.setItem('userName', Store.formPersonas.data.attributes.alias)
