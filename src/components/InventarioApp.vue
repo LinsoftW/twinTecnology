@@ -124,7 +124,7 @@
           <div class="collapse show" id="collapseCardExample">
             <div class="card-body">
               <div class="row">
-                <div class="col-md-6 col-xl-6 col-lg-6">
+                <div class="col-md-7 col-xl-7 col-lg-7">
                   <!-- <div class="row"> -->
                   <div class="justify-content-between">
                     <!-- <router-link class="button" to="/gest_inventario"> -->
@@ -177,6 +177,15 @@
                       </span>
                       <span class="text text-white">Eliminar seleccionados</span>
                     </a>
+                    <a @click="actualizarProducto()" class="btn btn-success btn-sm btn-icon-split m-2"
+                      :class="disabledProductos">
+                      <span class="icon text-white">
+                        <i v-if="actualizaTablaP == false" class="fas fa-refresh"></i>
+                        <i v-else class="fa fa-spinner fa-spin"></i>
+                      </span>
+                      <span v-if="actualizaTablaP == false" class="text text-white">{{ Actualizar }}</span>
+                      <span v-else class="text text-white">{{ Actualizar }}</span>
+                    </a>
                     <!-- <a @click="abrirModalAddProd()" href="#" class="d-sm-inline-block btn btn-sm btn-info shadow-sm"
                       v-b-tooltip.hover title="Agregar producto"><i class="fas fa-plus fa-sm "></i> Agregar productos </a> -->
                     <!-- <a @click="EliminarSelecc()" href="#" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm m-2"
@@ -195,7 +204,7 @@
                     <option>Código</option>
                   </select>
                 </div> -->
-                <div class="col-md-6 col-xl-6 col-lg-12">
+                <div class="col-md-5 col-xl-5 col-lg-12">
                   <span class="text-info">Buscar: </span>
                   <input class="form-control form-control-user" type="text" v-model="searchValue"
                     placeholder="Qué desea buscar" />
@@ -239,8 +248,8 @@
                       @click="generarCodeBar(item.relationships.departamento.data.id, item.relationships.articulo.data.id, item.id)"
                       v-b-tooltip.hover title="Código de barra"><span class="fas fas fa-barcode"></span></button>
                     <!-- <router-link to="/detalles"> -->
-                    <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Detalles(item)" v-b-tooltip.hover
-                      title="Detalles"><span class="fa fa-eye"></span></button>
+                    <!-- <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Detalles(item)" v-b-tooltip.hover
+                      title="Detalles"><span class="fa fa-eye"></span></button> -->
                     <button class="btn btn-danger btn-sm btn-circle ml-1"
                       @click="borrarU(item.id, item.attributes.descripcion, 1)" v-b-tooltip.hover title="Eliminar"><span
                         class="fas fas fa-trash-alt"></span></button>
@@ -767,9 +776,11 @@
           <h5 class="modal-title text-info" id="exampleModalLabel" v-if="editar == false">NUEVO PRODUCTO</h5>
           <h5 class="modal-title text-info text-center" id="exampleModalLabel" v-if="editar == true"><span
               class="fa fa-edit"></span>
-            MODIFICAR LOS DATOS DEL PRODUCTO <br>(<label style="color: red;">{{
+            MODIFICAR LOS DATOS DEL PRODUCTO
+            <!-- <br>(<label style="color: red;">{{
               Store.formProductos.data.attributes.descripcion
-            }}</label>)</h5>
+            }}</label>) -->
+          </h5>
 
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true" class="text-info">×</span>
@@ -785,9 +796,9 @@
               <div class="col-lg-12">
                 <img v-if="Store.formProductos.data.attributes.imagen_path" class="img-profile rounded-circle"
                   v-bind:src="urlAuditoria + '/' + Store.formProductos.data.attributes.imagen_path"
-                  style="width: 150px; height: 150px">
+                  style="width: 100px; height: 100px">
                 <img v-else class="img-profile rounded-circle" src="/src/assets/new/img/undraw_profile.svg"
-                  style="width: 150px; height: 150px">
+                  style="width: 100px; height: 100px">
 
               </div>
               <div class="col-lg-12">
@@ -800,13 +811,21 @@
             <hr>
 
             <div class="row">
-              <div class="form-group col-lg-12 text-left">
+              <div class="form-group col-lg-8 text-left">
                 <label class="text-info">Descripción del producto: <label style="color: red;">*</label></label>
                 <input type="text" class="form-control" id="descripcionP" @change="verificar_error(1)"
                   aria-describedby="emailHelp" v-model="Store.formProductos.data.attributes.descripcion"
                   placeholder="Ej: Blusa" required>
                 <span style="color: red;">{{ errores.descripcion }}</span>
               </div>
+              <div class="form-group col-lg-4 text-left">
+                <label class="text-info">Mínimo en Stock: <label style="color: red;">&nbsp;</label></label>
+                <input type="text" class="form-control" id="minimo" v-model="Store.formProductos.data.attributes.minimo"
+                  aria-describedby="emailHelp" value="0" placeholder="Ej: 5" required>
+                <!-- <span style="color: red;">{{ errores.descripcion }}</span> -->
+              </div>
+            </div>
+            <div class="row">
               <div class="form-group col-lg-12 text-left">
                 <label class="text-info">Observaciones: </label>
                 <input type="text" class="form-control" id="observacionP" aria-describedby="emailHelp"
@@ -816,11 +835,8 @@
 
             </div>
             <div class="row">
-              <div class="form-group col-lg-12 text-left">
-                <label class="text-info ">Seleccione el artículo: <label style="color: red;">*</label>&nbsp; &nbsp;
-                  &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;
-                  &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;
-                  &nbsp;&nbsp; &nbsp; &nbsp;
+              <div class="form-group col-lg-6 text-left">
+                <label class="text-info ">Seleccione el artículo: <label style="color: red;">*</label>
                   <!-- <router-link class="button" to="/categorias">
                     <button class="btn btn-danger" v-b-tooltip.hover title="Agregar artículo"><span
                         class="fa fa-plus"></span></button>
@@ -834,11 +850,8 @@
                 </select>
                 <span style="color: red;">{{ errores.articulo_id }}</span>
               </div>
-              <div class="form-group col-lg-12 text-left">
-                <label class="text-info ">Seleccione una etiqueta: <label style="color: red;">*</label>&nbsp; &nbsp;
-                  &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;
-                  &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;
-                  &nbsp;&nbsp; &nbsp; &nbsp;
+              <div class="form-group col-lg-6 text-left">
+                <label class="text-info ">Seleccione una etiqueta: <label style="color: red;">*</label>
                   <!-- <router-link class="button" to="/categorias">
                     <button class="btn btn-danger" v-b-tooltip.hover title="Agregar artículo"><span
                         class="fa fa-plus"></span></button>
@@ -875,46 +888,32 @@
 
 
             </div> -->
-            <div class="row">
-              <div class="form-group col-lg-6 text-left">
-                <!-- <label class="text-info">Cantidad:</label>
-                <input type="text" class="form-control" id="cantidadP" aria-describedby="emailHelp"
-                  v-model="Store.formProductos.data.attributes.minimo" placeholder="Ej: 5" value="0" required> -->
-
-              </div>
-              <div class="form-group col-lg-12 text-left">
-                <label class="text-info">Mínimo en Stock: </label>
-                <input type="text" class="form-control" id="minimo" v-model="Store.formProductos.data.attributes.minimo"
-                  aria-describedby="emailHelp" value="0" placeholder="Ej: 5" required>
-
-              </div>
-            </div>
             <div class="text-center">
               <h1 class="h6 text-gray-900 mb-3">CAMPOS OBLIGATORIOS (<label style="color: red;">*</label>)
               </h1>
             </div>
 
             <div class="row">
-              <div v-if="editar == false" class="form-group h4 col-lg-2">
+              <div v-if="editar" class=" col-lg-1">
 
               </div>
-              <div v-if="editar == false" class="form-group h4 col-lg-5">
+              <div v-if="editar == false" class="col-lg-5">
                 <a @click="agregarUProducto(1)" class="btn btn-primary btn-block" :class="disabledProductoBtn">
-                  {{ GuardarProductoC }}
+                  <span>{{ GuardarProductoC }}</span>
                 </a>
               </div>
-              <div v-if="editar == false" class="form-group h4 col-lg-3">
-                <a @click="agregarUProducto(2)" class="btn btn-info btn-block" data-dismiss="modal" aria-label="close"
+              <div v-if="editar == false" class="col-lg-3">
+                <a @click="agregarUProducto(2)" class="btn btn-info" data-dismiss="modal" aria-label="close"
                   :class="disabledProductoBtn">
                   {{ GuardarProducto }}
                 </a>
               </div>
-              <div v-if="editar" class="form-group h4 col-lg-6">
-                <a @click="editarU()" class="btn btn-info btn-block" :class="deactiva">
+              <div v-if="editar" class="form-group col-lg-5">
+                <a @click="editarU()" class="btn btn-info" :class="deactiva">
                   {{ btnModificarM }}
                 </a>
               </div>
-              <div v-if="editar" class="form-group h4 col-lg-6">
+              <div class="form-group col-lg-4">
                 <a class="btn btn-danger btn-block" data-dismiss="modal" aria-label="close" @click="cancelarU()"
                   :class="deactiva">
                   Cancelar
@@ -962,9 +961,11 @@
           <h5 class="modal-title text-info" id="exampleModalLabel" v-if="editar == false">NUEVO LOTE</h5>
           <h5 class="modal-title text-info text-center" id="exampleModalLabel" v-if="editar == true"><span
               class="fa fa-edit"></span>
-            MODIFICAR LOS DATOS DEL LOTE <br>(<label style="color: red;">{{
+            MODIFICAR LOS DATOS DEL LOTE
+            <!-- <br>(<label style="color: red;">{{
               Store.formLotes.data.attributes.descripcion
-            }}</label>)</h5>
+            }}</label>) -->
+          </h5>
           <!-- <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
             style="text-align: center;">
             <h6 class="m-0 font-weight-bold text-info" v-if="editar == false"><span class="fa fa-plus"></span>
@@ -990,22 +991,16 @@
                 <form class="user">
 
                   <div class="row">
-                    <div class="form-group col-lg-12 text-left">
+                    <div class="form-group col-lg-6 text-left">
                       <label class="text-info">Descripción: <label style="color: red;">*</label></label>
                       <input @change="verificar_error(6)" type="text" class="form-control" id="sucursal"
                         aria-describedby="emailHelp" v-model="Store.formLotes.data.attributes.descripcion"
                         placeholder="Ej: Lote de productos" required>
                       <span style="color: red;">{{ errores.descripLote }}</span>
                     </div>
-                    <div class="form-group col-lg-12 text-left">
+                    <div class="form-group col-lg-6 text-left">
                       <!-- <label class="text-info">Producto: <label style="color: red;">*</label></label> -->
-                      <label class="text-info ">Seleccione el producto: <label style="color: red;">*</label>&nbsp;
-                        &nbsp;
-                        &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
-                        &nbsp;
-                        &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
-                        &nbsp;
-                        &nbsp;&nbsp; &nbsp; &nbsp;
+                      <label class="text-info ">Seleccione el producto: <label style="color: red;">*</label>
                       </label>
                       <select name="produc" id="produc" @change="verificar_error(7)"
                         style="width: 100%; text-align:center" placeholder="Ej: Lapicez"
@@ -1015,15 +1010,14 @@
                       </select>
                       <span style="color: red;">{{ errores.producto_id }}</span>
                     </div>
-
-                    <div class="form-group col-lg-12 text-left">
-                      <label class="text-info">Cantidad: </label>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-lg-6 text-left">
+                      <label class="text-info">Cantidad: <label style="color: red;">&nbsp;</label></label>
                       <input type="text" class="form-control" id="sucursal" aria-describedby="emailHelp"
                         v-model="Store.formLotes.data.attributes.cantidad" placeholder="Ej: 25" required>
 
                     </div>
-                  </div>
-                  <div class="row">
                     <div class="form-group col-lg-6 text-left">
                       <label class="text-info">Ubicación: <label style="color: red;">*</label></label>
                       <select name="produc" id="produc" @change="verificar_error(8)"
@@ -1034,12 +1028,9 @@
                       </select>
                       <span style="color: red;">{{ errores.ubicacion_id }}</span>
                     </div>
-                    <div class="form-group col-lg-6 text-left">
-                      <label class="text-info">Fecha de compra: </label>
-                      <input type="datetime-local" class="form-control" id="fechaC" aria-describedby="emailHelp"
-                        v-model="Store.formLotes.data.attributes.fecha_compra" placeholder="Ej: 10/10/2024" required>
-                    </div>
+
                   </div>
+                  <!-- </div> -->
                   <div class="row">
                     <div class="form-group col-lg-6 text-left">
                       <label class="text-info">Precio de compra: </label>
@@ -1073,7 +1064,15 @@
                       </select>
 
                     </div>
-                    <div class="form-group col-lg-12 text-left">
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-lg-6 text-left">
+                      <label class="text-info">Fecha de compra: <label style="color: red;">*</label></label>
+                      <input type="datetime-local" class="form-control" id="fechaC" aria-describedby="emailHelp"
+                        v-model="Store.formLotes.data.attributes.fecha_compra" placeholder="Ej: 10/10/2024" required>
+                      <span style="color: red;">{{ errores.fecha_compra }}</span>
+                    </div>
+                    <div class="form-group col-lg-6 text-left">
                       <label class="text-info">Observaciones: </label>
                       <textarea class="form-control" id="observaciones"
                         v-model="Store.formLotes.data.attributes.observacion"
@@ -1180,7 +1179,7 @@
         <div class="modal-header">
           <h5 class="modal-title text-info" id="exampleModalLabel">LOTE (<label style="color: red;">{{
             Store.formLotes.data.attributes.descripcion
-          }}</label>) </h5>
+              }}</label>) </h5>
           <!-- <h5 class="modal-title text-info text-center" id="exampleModalLabel" v-if="editar == true"><span
               class="fa fa-edit"></span>
             MODIFICAR LOS DATOS DEL LOTE <br>(<label style="color: red;">{{
@@ -1364,7 +1363,7 @@ import router from '@/router';
 // import Quagga from 'quagga';
 import { useStoreAxios } from '@/store/AxiosStore';
 import { ErrorFull, successFull } from './controler/ControlerApp';
-import { EditarDatos, EliminarDatos, GuardarDatos, obtenerDatos, subirImagen, url, urlAuditoria } from './helper/useAxios';
+import { ActualizarImagen, Delete_Imagen, EditarDatos, EliminarDatos, GuardarDatos, obtenerDatos, subirImagen, url, urlAuditoria } from './helper/useAxios';
 // import { data } from 'jquery';
 import jsPDF from 'jspdf';
 // import { event } from 'jquery';
@@ -1445,10 +1444,16 @@ const generar_pdf = async () => {
 const NombreProducto = ref('');
 const fileName = ref('');
 const obtenDescripcion = (d) => {
-  NombreProducto.value = d;
-  const segments = NombreProducto.value.split('/');
-  // Toma el último segmento que es el nombre del archivo
-  fileName.value = segments.pop();
+  // console.log(d)
+  if (d != null) {
+    NombreProducto.value = d;
+    const segments = NombreProducto.value.split('/');
+    // Toma el último segmento que es el nombre del archivo
+    fileName.value = segments.pop();
+  } else {
+    NombreProducto.value = "Sin imagen"
+    fileName.value = NombreProducto.value;
+  }
 }
 
 const disabledProductos = ref('')
@@ -1508,6 +1513,241 @@ const GuardarMag = ref('Agregar')
 
 const Atras = () => {
   detalle.value = false;
+}
+
+const Actualizar = ref('Actualizar')
+
+const actualizarProducto = async () => {
+  actualizaTablaP.value = true;
+  Actualizar.value = 'Actualizando...'
+  let bienActualizado = false;
+  localStorage.removeItem('Carg_datA'); // Articulos
+  localStorage.removeItem('Carg_datD'); // Departamentos
+  // localStorage.removeItem('Carg_datMe'); // Unidades de medida
+  // localStorage.removeItem('Carg_datM'); // Magitudes
+  localStorage.removeItem('Carg_datP'); // Productos
+  // localStorage.removeItem('Carg_datS'); // Sucursales
+  // localStorage.removeItem('Carg_datU'); // Ubicaciones
+  localStorage.removeItem('Carg_datE'); // Etiquetas
+  localStorage.removeItem('Carg_datL'); // Lotes
+  localStorage.removeItem('Carg_datMo'); // Monedas
+  // localStorage.removeItem('Carg_datIM'); // Imagenes
+  localStorage.removeItem('Carg_datEP'); // Etiqueta productos
+  // localStorage.removeItem('Carg_datAu'); // Auditoria
+  localStorage.removeItem('Carg_datPe'); // Personas
+  localStorage.setItem('Carg_datA', '0'); // Articulos
+  localStorage.setItem('Carg_datD', '0'); // Departamentos
+  // localStorage.setItem('Carg_datMe', '0'); // Unidades de medida
+  // localStorage.setItem('Carg_datM', '0'); // Magitudes
+  localStorage.setItem('Carg_datP', '0'); // Productos
+  // localStorage.setItem('Carg_datS', '0'); // Sucursales
+  // localStorage.setItem('Carg_datU', '0'); // Ubicaciones
+  localStorage.setItem('Carg_datE', '0'); // Etiquetas
+  localStorage.setItem('Carg_datL', '0'); // Lotes
+  localStorage.setItem('Carg_datMo', '0'); // Monedas
+  // localStorage.setItem('Carg_datIM', '0'); // Imagenes
+  localStorage.setItem('Carg_datEP', '0'); // Etiqueta productos
+  // localStorage.setItem('Carg_datAu', '0'); // Auditorias
+  // localStorage.setItem('Carg_datPe', '0'); // Personas
+
+  if (localStorage.getItem('userName')) {
+    // Cargando productos
+    // console.log(Store.itemsProductos)
+    if (localStorage.getItem('Carg_datP') == '0') {
+      disabledProductos.value = 'disabled';
+      Store.cambiaEstado(1)
+      const response = await obtenerDatos(1);
+      if (response.length > 0) {
+        Store.setListadoProductos(response)
+        bienActualizado = true;
+      } else {
+        bienActualizado = false;
+      }
+      localStorage.setItem("Carg_datP", "1");
+      // localStorage.setItem("LProductos", Store.itemsProductos);
+      itemsProductos1.value = Store.itemsProductos;
+      Store.cambiaEstado(1)
+
+    } else {
+      Store.cambiaEstado(1)
+      itemsProductos1.value = Store.itemsProductos;
+      Store.cambiaEstado(1)
+    }
+    // cargando imagenes
+    if (localStorage.getItem('Carg_datIM') == '0') {
+      const response2 = await obtenerDatos(12);
+      // console.log(response2)
+      if (response2 != null) {
+        Store.setListadoImagen(response2);
+        itemsImagenes1.value = Store.itemsImagen;
+        localStorage.setItem("Carg_datIM", "1");
+        bienActualizado = true;
+      }
+    } else {
+      itemsImagenes1.value = Store.itemsImagen;
+    }
+
+    // cargando articulos
+    if (localStorage.getItem('Carg_datA') == '0') {
+      Store.cambiaEstado(3)
+      const response = await obtenerDatos(5);
+      if (response.length > 0) {
+        Store.setListadoArticulos(response)
+        bienActualizado = true;
+      } else {
+        bienActualizado = false;
+      }
+      localStorage.setItem("Carg_datA", "1");
+      itemsArticulos1.value = Store.itemsArticulos;
+      Store.cambiaEstado(3)
+
+    } else {
+      Store.cambiaEstado(3)
+      itemsArticulos1.value = Store.itemsArticulos;
+      Store.cambiaEstado(3)
+    }
+    // cargando lotes
+    if (localStorage.getItem("Carg_datL") == '0') {
+      const response = await obtenerDatos(10);
+      if (response.length > 0) {
+        Store.cambiaEstado(9)
+        Store.setListadoLotes(response)
+        localStorage.setItem("Carg_datL", "1");
+        itemsLotes1.value = Store.itemsLotes;
+        Store.cambiaEstado(9)
+        bienActualizado = true;
+      } else {
+        bienActualizado = false;
+      }
+    } else {
+      Store.cambiaEstado(9)
+      itemsLotes1.value = Store.itemsLotes;
+      Store.cambiaEstado(9)
+
+    }
+    // cargando unidades de medidas
+    if (localStorage.getItem("Carg_datMe") == "0") {
+
+      const response = await obtenerDatos(3);
+      if (!response) {
+
+      } else {
+        if (response.length > 0) {
+          Store.setListadoMedidas(response)
+          bienActualizado = true;
+        } else {
+          bienActualizado = false;
+        }
+        localStorage.setItem("Carg_datMe", "1");
+        itemsMedidas1.value = Store.itemsMedidas;
+      }
+
+    } else {
+      itemsMedidas1.value = Store.itemsMedidas;
+    }
+    // cargando monedas
+    if (localStorage.getItem("Carg_datMo") == "0") {
+
+      const response = await obtenerDatos(11);
+      if (!response) {
+
+      } else {
+        if (response.length > 0) {
+          Store.setListadoMonedas(response)
+          bienActualizado = true;
+        } else {
+          bienActualizado = false;
+        }
+        localStorage.setItem("Carg_datMo", "1");
+        itemsMoneda1.value = Store.itemsMonedas;
+      }
+
+    } else {
+      itemsMoneda1.value = Store.itemsMonedas;
+    }
+    // cargando departamentos
+    if (localStorage.getItem('Carg_datD') == '0') {
+      Store.cambiaEstado(2);
+      const response = await obtenerDatos(6);
+      if (!response) {
+        Store.cambiaEstado(2);
+      } else {
+        if (response.length > 0) {
+          Store.setListadoDepartamentos(response)
+          bienActualizado = true;
+        } else {
+          bienActualizado = false;
+        }
+        localStorage.setItem("Carg_datD", "1");
+        itemsDeparta1.value = Store.itemsDepartamentos;
+        Store.cambiaEstado(2);
+      }
+    } else {
+      Store.cambiaEstado(2);
+      itemsDeparta1.value = Store.itemsDepartamentos;
+      Store.cambiaEstado(2);
+    }
+    // cargando etiquetas
+    if (localStorage.getItem('Carg_datE') == '0') {
+      Store.cambiaEstado(5);
+      const response = await obtenerDatos(8);
+      if (!response) {
+        Store.cambiaEstado(5);
+      } else {
+        if (response.length > 0) {
+          Store.setListadoEtiquetas(response)
+          bienActualizado = true;
+        } else {
+          bienActualizado = false;
+        }
+        // for (let index = 0; index < response.length; index++) {
+        //   Store.nextIDEtiqueta = response[index].id;
+        // }
+        localStorage.setItem("Carg_datE", "1");
+        itemsEtiqueta1.value = Store.itemsEtiquetas;
+        Store.cambiaEstado(5);
+      }
+    } else {
+      Store.cambiaEstado(5);
+      itemsEtiqueta1.value = Store.itemsEtiquetas;
+      Store.cambiaEstado(5);
+    }
+
+    // cargando etiqueta_productos
+    if (localStorage.getItem('Carg_datEP') == '0') {
+      // Store.cambiaEstado(5);
+      const response = await obtenerDatos(13);
+      if (!response) {
+        // Store.cambiaEstado(5);
+      } else {
+        if (response.length > 0) {
+          Store.setListadoEtiquetasProductos(response)
+          bienActualizado = true;
+        } else {
+          bienActualizado = false;
+        }
+        // for (let index = 0; index < response.length; index++) {
+        //   Store.nextIDEtiqueta = response[index].id;
+        // }
+        localStorage.setItem("Carg_datEP", "1");
+        itemsEtiquetaProductos1.value = Store.itemsEtiquetasProductos;
+        // Store.cambiaEstado(5);
+      }
+    } else {
+      // Store.cambiaEstado(5);
+      itemsEtiquetaProductos1.value = Store.itemsEtiquetasProductos;
+      // Store.cambiaEstado(5);
+    }
+
+    disabledProductos.value = '';
+    actualizaTablaP.value = false;
+    Actualizar.value = 'Actualizar'
+    if (bienActualizado == true) {
+      successFull("Datos actualizados satisfactoriamente.", "top-end")
+    } else {
+      ErrorFull("Hubo un error actualizando los datos. Vuelva a intentarlo.", "top-start")
+    }
+  }
 }
 
 const Detalles = (dato) => {
@@ -1630,6 +1870,10 @@ const agrega = () => {
   errores.value.descripcion = "";
   errores.value.observacion = "";
   errores.value.cantidad = "";
+  errores.value.fecha_compra = "";
+  errores.value.etiqueta = "";
+  errores.value.producto_id = "";
+  errores.value.descripLote = "";
   Store.formProductos.data.attributes.articulo_id = "";
   Store.formProductos.data.attributes.descripcion = "";
   Store.formProductos.data.attributes.observacion = "";
@@ -1795,6 +2039,56 @@ const verificar_error = (n) => {
   }
 }
 
+const Modificar_Imagen = async (id) => {
+  var data = new FormData();
+  if (imgPerfil.value) {
+    data.append('imagen', imgPerfil.value);
+    const response4 = await ActualizarImagen(id, data);
+    imgPerfil.value = ""
+    const response1 = await obtenerDatos(1)
+    for (let index = 0; index < response1.length; index++) {
+      if (id == response1[index].id) {
+        Store.formProductos.data.attributes.descripcion = response1[index].attributes.descripcion;
+        Store.formProductos.data.attributes.observacion = response1[index].attributes.observacion;
+        Store.formProductos.data.attributes.articulo_id = response1[index].relationships.articulo.data.id;
+        Store.formProductos.data.attributes.minimo = response1[index].attributes.minimo;
+      }
+    }
+    Store.formProductos.data.attributes.imagen_path = "back/resources/imagenes/inventario/productos/" + id + "." + nombreIMG.value;
+    const response = await EditarDatos(id, Store.formProductos, 1);
+    editar.value = false;
+    Store.formProductos.data.attributes.descripcion = ''
+    Store.formProductos.data.attributes.observacion = '';
+    Store.formProductos.data.attributes.articulo_id = ''
+    Store.formProductos.data.attributes.minimo = '';
+    Store.formProductos.data.attributes.imagen_path = '';
+    Store.EditProductos(response)
+    itemsProductos1.value = [];
+    itemsProductos1.value = Store.itemsProductos;
+  } else {
+    const response1 = await obtenerDatos(1)
+    for (let index = 0; index < response1.length; index++) {
+      if (id == response1[index].id) {
+        Store.formProductos.data.attributes.descripcion = response1[index].attributes.descripcion;
+        Store.formProductos.data.attributes.observacion = response1[index].attributes.observacion;
+        Store.formProductos.data.attributes.articulo_id = response1[index].relationships.articulo.data.id;
+        Store.formProductos.data.attributes.minimo = response1[index].attributes.minimo;
+      }
+    }
+    Store.formProductos.data.attributes.imagen_path = "back/resources/imagenes/inventario/productos/productos.jpg";
+    const response = await EditarDatos(id, Store.formProductos, 1);
+    editar.value = false;
+    Store.formProductos.data.attributes.descripcion = ''
+    Store.formProductos.data.attributes.observacion = '';
+    Store.formProductos.data.attributes.articulo_id = ''
+    Store.formProductos.data.attributes.minimo = '';
+    Store.formProductos.data.attributes.imagen_path = '';
+    Store.EditProductos(response)
+    itemsProductos1.value = [];
+    itemsProductos1.value = Store.itemsProductos;
+  }
+}
+
 const Asignar_Imagen = async (id) => {
   var data = new FormData();
   if (imgPerfil.value) {
@@ -1845,7 +2139,7 @@ const Asignar_Imagen = async (id) => {
   }
 }
 
-const errores = ref({ descripcion: "", observacion: "", articulo_id: "", ubicacion_id: "", cantidad: "", descripLote: "", precio_compra: "", precio_venta: "", moneda_compra: "", moneda_venta: "", producto_id: "", obsvacLote: "" })
+const errores = ref({ descripcion: "", observacion: "", articulo_id: "", ubicacion_id: "", cantidad: "", descripLote: "", precio_compra: "", precio_venta: "", moneda_compra: "", moneda_venta: "", producto_id: "", obsvacLote: "", fecha_compra: "" })
 
 const agregarUProducto = async (n) => {
   if (Store.formProductos.data.attributes.descripcion != '' && Store.formProductos.data.attributes.articulo_id != 0) {
@@ -1950,7 +2244,7 @@ const agregarUProducto = async (n) => {
 }
 
 const agregarULote = async (n) => {
-  if (Store.formLotes.data.attributes.descripcion != '' && Store.formLotes.data.attributes.producto_id != 0 && Store.formLotes.data.attributes.ubicacion_id != 0) {
+  if (Store.formLotes.data.attributes.descripcion != '' && Store.formLotes.data.attributes.producto_id != 0 && Store.formLotes.data.attributes.ubicacion_id != 0 && Store.formLotes.data.attributes.fecha_compra != "") {
     if (n == 1) {
       GuardarMag.value = 'Guardando...';
       disabledProductoBtn.value = 'disabled';
@@ -2054,6 +2348,11 @@ const agregarULote = async (n) => {
       errores.value.ubicacion_id = 'Este campo es obligatorio';
     } else {
       errores.value.ubicacion_id = "";
+    }
+    if (Store.formLotes.data.attributes.fecha_compra == '') {
+      errores.value.fecha_compra = 'Este campo es obligatorio';
+    } else {
+      errores.value.fecha_compra = "";
     }
     GuardarMag.value = 'Agregar';
     disabledProductoBtn.value = ''
@@ -2275,8 +2574,8 @@ const editarU = async () => {
   Store.EditProductos(response)
   if (Store.formProductos.data.attributes.imagen_path == "" || Store.formProductos.data.attributes.imagen_path == null) {
     Store.formProductos.data.attributes.imagen_path = "back/resources/imagenes/inventario/productos/" + Store.id + ".png";
-  }else{
-    Asignar_Imagen(Store.id)
+  } else {
+    Modificar_Imagen(Store.id)
   }
   itemsProductos1.value = Store.itemsProductos;
   actualizaTabla.value = actualizaTabla.value + 1;
@@ -2289,25 +2588,30 @@ const editarU = async () => {
   let esta = 0;
   const etiq = await obtenerDatos(13)
   // console.log(etiq)
-  for (let index = 0; index < etiq.length; index++) {
-    if (etiq[index].meta.foreign_keys_instances.producto_id == Store.id) {
-      esta = 1;
-      break;
+  if (etiq != null) {
+    for (let index = 0; index < etiq.length; index++) {
+      if (etiq[index].meta.foreign_keys_instances.producto_id == Store.id) {
+        esta = 1;
+        break;
+      }
     }
-  }
-  if (esta == 1) {
-    Store.formEtiquetaProducto.data.attributes.producto_id = response.id;
-    Store.formEtiquetaProducto.data.attributes.etiqueta_id = etiqueta_R.value;
-    const response2 = await EditarDatos(Store.formEtiquetaProducto, 12);
+    if (esta == 1) {
+      Store.formEtiquetaProducto.data.attributes.producto_id = response.id;
+      Store.formEtiquetaProducto.data.attributes.etiqueta_id = etiqueta_R.value;
+      const response2 = await EditarDatos(Store.formEtiquetaProducto, 12);
+    } else {
+      Store.formEtiquetaProducto.data.attributes.producto_id = response.id;
+      Store.formEtiquetaProducto.data.attributes.etiqueta_id = etiqueta_R.value;
+      const etiqGuardada = await GuardarDatos(Store.formEtiquetaProducto, 13)
+      // console.log(etiqGuardada)
+    }
+    // console.log(Store.formEtiquetaProducto)
+    successFull("Producto modificado satisfactoriamente.", "top-end")
+    Store.cambiaEstado(1);
   } else {
-    Store.formEtiquetaProducto.data.attributes.producto_id = response.id;
-    Store.formEtiquetaProducto.data.attributes.etiqueta_id = etiqueta_R.value;
-    const etiqGuardada = await GuardarDatos(Store.formEtiquetaProducto, 13)
-    // console.log(etiqGuardada)
+    Store.cambiaEstado(1);
+    successFull("Producto modificado satisfactoriamente.", "top-end")
   }
-  // console.log(Store.formEtiquetaProducto)
-  successFull("Producto modificado satisfactoriamente.", "top-end")
-  Store.cambiaEstado(1);
 }
 
 const editarULote = async () => {
@@ -2347,7 +2651,7 @@ const showRow = (item = ClickRowArgument) => {
   const NewLote = [];
   for (let index = 0; index < Store.getListadoLotes().value.length; index++) {
     const element = Store.getListadoLotes().value[index];
-    if(element.relationships.producto.data != null){
+    if (element.relationships.producto.data != null) {
       if (element.relationships.producto.data.id == item.id) {
         NewLote.push(Store.getListadoLotes().value[index])
       }
@@ -2467,6 +2771,8 @@ const items = ref([]);
 const esperando = ref(false);
 
 const loading = ref(false)
+
+const actualizaTablaP = ref(false)
 
 // const loadingP = ref(false)
 
@@ -2895,6 +3201,10 @@ const cancelarU = () => {
   Store.formProductos.data.attributes.observacion = '';
 }
 
+const EliminarImagen = async (id) => {
+  Delete_Imagen(id)
+}
+
 const borrarU = async (id, correo, caso) => {
   let correcto = true;
   if (caso == 1) {
@@ -2909,7 +3219,10 @@ const borrarU = async (id, correo, caso) => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         Store.cambiaEstado(1);
+        // const r = await EliminarImagen(id)
+        // console.log(id)
         const response = await EliminarDatos(id, 1);
+        // console.log(response)
         if (response == null) {
           Store.cambiaEstado(1);
         } else {

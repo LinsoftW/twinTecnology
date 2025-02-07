@@ -631,10 +631,34 @@ export async function subirImagen(id, imagen) {
   try {
     // console.log(imagen)
     const response = axiosInstance.post(`/productos/${id}?function[name]=upload_image`, imagen, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        });
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    return response
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function ActualizarImagen(id, imagen) {
+  try {
+    // console.log(imagen)
+    const response = axiosInstance.post(`/productos/${id}?function[name]=update_image`, imagen, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    return response
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function Delete_Imagen(id) {
+  try {
+    // console.log(imagen)
+    const response = axiosInstance.post(`/productos/${id}?function[name]=delete_image`);
     return response
   } catch (error) {
     throw error;
