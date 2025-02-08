@@ -366,7 +366,7 @@ onMounted(async () => {
     if (localStorage.getItem('Carg_datAu') == '0') {
       const response = await obtenerDatos(15);
       // console.log("Auditorias:", response);
-      if (response.length > 0) {
+      if (response != null) {
         Store.setListadoAuditorias(response)
       }
       Store.cambiaEstado(10)
@@ -383,7 +383,7 @@ onMounted(async () => {
     // cargando lotes
     if (localStorage.getItem("Carg_datL") == '0') {
       const response = await obtenerDatos(10);
-      if (response.length > 0) {
+      if (response != null) {
         // Store.cambiaEstado(9)
         Store.setListadoLotes(response)
         localStorage.setItem("Carg_datL", "1");
@@ -395,7 +395,7 @@ onMounted(async () => {
     }
 
     const response2 = await obtenerDatos(16);
-    if (response2.length > 0) {
+    if (response2 != null) {
       Store.setListadoOperaciones(response2)
       itemsOperaciones1.value = Store.itemsOperaciones;
     }

@@ -363,6 +363,14 @@
 
             </router-link>
 
+            <router-link class="button" to="/user" v-if="admin" @click="obtenerLinkA(9)">
+
+              <a class="collapse-item" v-bind:class="ActivaLink(9)" :key="9"> <i class="fa fa-user"></i>
+
+                Usuarios</a>
+
+            </router-link>
+
 
 
             <!-- <router-link class="button" to="/gest_inventario">
@@ -2027,14 +2035,19 @@ onUnmounted(async () => {
 //   }
 //   // console.log(loadTime.value)
 // }
+const admin = ref('');
 
 onMounted(async () => {
   // tiempo de inactividad
   // startInactivityTimer();
   // Escuchar más eventos si es necesario
   // window.addEventListener('scroll', resetTimer);
+  if (localStorage.getItem('userName') == 'admin') {
+    admin.value = 'admin';
+  }
   Ctoggled.value = 'toggled';
   editando.value = true;
+  let buenaConsulta = false;
   evitarRecargar();
   if (localStorage.getItem('userName')) {
     if (localStorage.getItem('Carg_datP') == '0') {
@@ -2044,16 +2057,18 @@ onMounted(async () => {
       // console.log(response)
       if (response == null) {
         Store.cambiaEstado(1)
-        ErrorFull("Error de red, intente más tarde.", "top-start")
+        buenaConsulta = false;
+        // ErrorFull("Error de red, intente más tarde.", "top-start")
       } else {
         Store.setCantidadProductos(response.length)
         if (response.length > 0) {
           Store.setListadoProductos(response)
           localStorage.setItem("LProductos", response);
         }
-        for (let index = 0; index < response.length; index++) {
-          Store.nextIDProducto = response[index].id;
-        }
+        buenaConsulta = true;
+        // for (let index = 0; index < response.length; index++) {
+        //   Store.nextIDProducto = response[index].id;
+        // }
         // console.log(Store.nextIDProducto + 1)
         localStorage.setItem("Carg_datP", "1");
         Store.cambiaEstado(1);
@@ -2063,8 +2078,9 @@ onMounted(async () => {
       // cargando los departamentos
       Store.cambiaEstado(2)
       const response = await obtenerDatos(6);
-      if (!response) {
+      if (response == null) {
         Store.cambiaEstado(2)
+        buenaConsulta = false;
         // ErrorFull("Error de red, intente más tarde.", "top-start")
       } else {
         Store.setCantidadDepartamentos(response.length)
@@ -2072,9 +2088,10 @@ onMounted(async () => {
           Store.setListadoDepartamentos(response)
           localStorage.setItem("LDepartamentos", response);
         }
-        for (let index = 0; index < response.length; index++) {
-          Store.nextIDDepartamento = response[index].id;
-        }
+        buenaConsulta = true;
+        // for (let index = 0; index < response.length; index++) {
+        //   Store.nextIDDepartamento = response[index].id;
+        // }
         // console.log(Store.nextIDDepartamento)
         localStorage.setItem("Carg_datD", "1");
         Store.cambiaEstado(2);
@@ -2086,15 +2103,17 @@ onMounted(async () => {
       // cargando los articulos
       Store.cambiaEstado(3)
       const response = await obtenerDatos(5);
-      if (!response) {
+      if (response == null) {
         Store.cambiaEstado(3)
-        ErrorFull("Error de red, intente más tarde.", "top-start")
+        buenaConsulta = false;
+        // ErrorFull("Error de red, intente más tarde.", "top-start")
       } else {
         Store.setCantidadArticulos(response.length)
         if (response.length > 0) {
           Store.setListadoArticulos(response)
           localStorage.setItem("LArticulos", response);
         }
+        buenaConsulta = true;
         // for (let index = 0; index < response.length; index++) {
         //     Store.nextIDArticulo = response[index].id;
         // }
@@ -2103,6 +2122,12 @@ onMounted(async () => {
         Store.cambiaEstado(3)
       }
     }
+
+    if (buenaConsulta == false) {
+      ErrorFull("Error de red, intente más tarde.", "top-start")
+    } else (
+      successFull("Datos cargados satisfactoriamente.", "top-end")
+    )
 
   } else {
     router.push('/login');

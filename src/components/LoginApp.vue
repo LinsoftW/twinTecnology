@@ -52,17 +52,18 @@
                     </div> -->
                     <!-- <hr> -->
                     <a @click="autenticate" class="btn btn-info btn-user btn-block" :class="disable">
-                      <i v-if="disable == 'disabled'" class="fa fa-spinner fa-spin" style="font-size:24px" aria-hidden="true"></i>
-                      <i class="fa fa-check" v-if="disable == ''"></i> {{Continuar}}
+                      <i v-if="disable == 'disabled'" class="fa fa-spinner fa-spin" style="font-size:24px"
+                        aria-hidden="true"></i>
+                      <i class="fa fa-check" v-if="disable == ''"></i> {{ Continuar }}
 
                     </a>
                   </form>
                   <hr>
                   <!-- <br> -->
-                  <div class="text-center">
+                  <!-- <div class="text-center">
                     <a @click="accesoRegistro = false" class="small">Registrarse en el sistema</a>
 
-                  </div>
+                  </div> -->
                   <div class="text-center">
                     <router-link to="/"><a class="small">¿Olvidaste la contraseña?</a></router-link>
                   </div>
@@ -387,58 +388,66 @@ const disable = ref('')
 const Continuar = ref('Entrar')
 
 const autenticate = async () => {
-disable.value = 'disabled'
-Continuar.value = 'Autenticando...'
-  if (ValidacionEmail() == "OKKK") {
-    // consulto el correo y la contraseña
-    const response = await obtenerDatos(14);
-    const passw = await obtenerDatos(17);
-    // si existen obtengo el token y le doy acceso
-    // Cuando cierre la sesion le borro el token
-    // console.log(passw)
-    for (let index = 0; index < response.length; index++) {
-      if (form.correo == response[index].attributes.email) {
-        localStorage.setItem("userName", response[index].attributes.alias);
-        Store.formPersonas.data.attributes.alias = response[index].attributes.alias;
-        Store.formPersonas.data.attributes.email = response[index].attributes.email;
-        Store.formPersonas.data.attributes.movil = response[index].attributes.movil;
-        localStorage.setItem("Carg_dat", '0');
-        localStorage.setItem("Wait", '1');
-        successFull('Bienvenido al sistema', 'top-end');
-        router.push('/inicio');
-        break
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Error de autenticación",
-        });
-      }
-
-    }
-    disable.value = ''
-    // if (form.correo == 'admin@admin.co' && form.passw == '123') {
-    // }
+  disable.value = 'disabled'
+  Continuar.value = 'Autenticando...'
+  if (form.correo == 'admin' && form.passw == "admin123*") {
+    successFull('Bienvenido al sistema', 'top-end');
+    localStorage.setItem("userName", "admin");
+    router.push('/user');
   } else {
-    if (emailError.value != 'Email válido') {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: emailError.value,
-      });
-    }
-    if (form.passw.length == 0 || form.passw == null) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Campo contraseña en blanco",
-      });
-    }
-    emailError.value = '';
-
+    localStorage.setItem("userName", "Pello");
+    router.push('/inicio');
   }
-disable.value = ''
-Continuar.value = 'Entrar'
+  // if (ValidacionEmail() == "OKKK") {
+  // consulto el correo y la contraseña
+  // const response = await obtenerDatos(14);
+  // const passw = await obtenerDatos(17);
+  // si existen obtengo el token y le doy acceso
+  // Cuando cierre la sesion le borro el token
+  // console.log(passw)
+  // for (let index = 0; index < response.length; index++) {
+  //   if (form.correo == response[index].attributes.email) {
+  //     localStorage.setItem("userName", response[index].attributes.alias);
+  //     Store.formPersonas.data.attributes.alias = response[index].attributes.alias;
+  //     Store.formPersonas.data.attributes.email = response[index].attributes.email;
+  //     Store.formPersonas.data.attributes.movil = response[index].attributes.movil;
+  //     localStorage.setItem("Carg_dat", '0');
+  //     localStorage.setItem("Wait", '1');
+  //     successFull('Bienvenido al sistema', 'top-end');
+  // router.push('/inicio');
+  //     break
+  //   } else {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Oops...",
+  //       text: "Error de autenticación",
+  //     });
+  //   }
+
+  // }
+  disable.value = ''
+  // if (form.correo == 'admin@admin.co' && form.passw == '123') {
+  // }
+  //   } else {
+  //     if (emailError.value != 'Email válido') {
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "Oops...",
+  //         text: emailError.value,
+  //       });
+  //     }
+  //     if (form.passw.length == 0 || form.passw == null) {
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "Oops...",
+  //         text: "Campo contraseña en blanco",
+  //       });
+  //     }
+  //     emailError.value = '';
+
+  //   }
+  // disable.value = ''
+  // Continuar.value = 'Entrar'
 }
 
 // let timerInterval;

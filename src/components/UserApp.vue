@@ -1,11 +1,7 @@
 <template>
   <div class="container-fluid">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-      <h1 class="h3 mb-0 text-gray-800">TRABAJADORES</h1>
-      <router-link class="button" to="/gest_user">
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" v-b-tooltip.hover
-        title="Generar resumen diario"><i class="fas fa-plus fa-sm"></i> Agregar trabajador</a>
-      </router-link>
+      <h1 class="h3 mb-2 text-gray-800 text-center">USUARIOS</h1>
 
     </div>
 
@@ -15,7 +11,7 @@
         <div class="card shadow mb-4">
           <!-- Card Header - Dropdown -->
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-info">LISTADO DE TRABAJADORES</h6>
+            <h6 class="m-0 font-weight-bold text-info">LISTADO DE USUARIOS</h6>
             <div class="dropdown no-arrow">
               <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
@@ -24,7 +20,7 @@
               <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                 aria-labelledby="dropdownMenuLink">
                 <div class="dropdown-header">Acciones:</div>
-                <a class="dropdown-item" href="#"><span class="fa fa-phone"></span> Llamar</a>
+                <a class="dropdown-item" href="#"><span class="fa fa-cog"></span> Permisos</a>
                 <a class="dropdown-item" href="#"><span class="fa fa-comments"></span> Enviar mensaje</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#"><span class="fa fa-trash"></span> Eliminar todos</a>
@@ -33,77 +29,93 @@
           </div>
           <!-- Card Body -->
           <div class="card-body">
+            <div class="row">
+              <div class="col-md-7">
+                <a data-toggle="modal" @click="agrega()" data-target="#agregaUsuario"
+                  class="btn btn-info btn-sm btn-icon-split" :class="disabledProductos">
+                  <span class="icon text-white-50">
+                    <i class="fas fa-plus"></i>
+                  </span>
+                  <!-- d-md-none -->
+                  <span :class="`text`">Nuevo usuario</span>
+                </a>
+              </div>
+              <!-- <div class="col-md-7"> -->
+                <div class="col-md-5 col-xl-5 col-lg-12">
+                  <span class="text-info">Buscar: </span>
+                  <input class="form-control form-control-user" type="text" v-model="searchValue"
+                    placeholder="Qué desea buscar" />
+                </div>
+              <!-- </div> -->
+            </div>
+            <br>
+            <!-- <hr> -->
 
             <!-- Personas -->
-            <div class="table-responsive">
-              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="10">
-                <thead>
-                  <tr>
-                    <th>NO</th>
-                    <th>FOTO</th>
-                    <th>CORREO</th>
-                    <th>NOMBRE</th>
-                    <th>ROL</th>
-                    <th>ACCIONES</th>
+            <EasyDataTable :headers="headers" :items="itemsPersonas1" buttons-pagination border-cell :labels="label"
+              v-model:items-selected="itemsSelected" header-text-direction="center" body-text-direction="center"
+              :search-field="searchField" :search-value="searchValue" @click-row="showRow" :rows-per-page="5"
+              :loading="Store.esperandoProductos" :key="actualizaTabla">
+              <template #item-image="item">
+                <a data-toggle="modal" data-target="#verImagen" @click="obtenDescripcion(item.attributes.imagen_path)">
+                  <!-- "{{ obtenImagen(item.id) }}" -->
+                  <!-- {{ item.attributes.imagen_path }} -->
+                  <img v-if="item.attributes.imagen_path != ''" :src="urlAuditoria + '/' + item.attributes.imagen_path"
+                    alt="No image" class="img img-thumbnail" style="width: 50px; height: 50px;" />
+                  <img v-else src="/productos.jpg" alt="No image" class="img img-thumbnail"
+                    style="width: 50px; height: 50px;" />
+                </a>
 
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- <tr>
-                    <th><img class="img-profile rounded-circle" src="../assets/new/img/undraw_profile_1.svg"> <i
-                        class="fas fa-circle text-info"></i></th>
-                    <th>Moraima</th>
-                    <th>Manager</th>
-                    <th>100</th>
-                  </tr>
-                  <tr>
-                    <th><img class="img-profile rounded-circle" src="../assets/new/img/undraw_profile_2.svg"><i
-                        class="fas fa-circle text-success"></i></th>
-                    <th>Pepe</th>
-                    <th>Gestora</th>
-                    <th>59.10</th>
-                  </tr> -->
-                  <tr v-for="datos in datosPaginados" :key="datos.idcorreo">
-                    <td style="text-align: end;"><img class="img-profile rounded-circle img-thumbnail"
-                        src="../assets/new/img/undraw_profile_1.svg"> <i class="fas fa-circle text-primary"></i></td>
-                    <td>{{ datos.direccion }}</td>
-                    <td>{{ datos.codigo }}</td>
-                    <td style="text-align: center;">
-                      <button class="btn btn-success btn-sm btn-circle" @click="clickEditar(datos.idcorreo)"
-                        v-b-tooltip.hover title="Editar"><span class="fas fa-edit"></span></button>&nbsp;
-                      <button class="btn btn-danger btn-sm btn-circle" @click="borrarU(datos.idcorreo, datos.direccion)"
-                        v-b-tooltip.hover title="Eliminar"><span class="fas fa-trash"></span></button>
-                    </td>
-                  </tr>
+              </template>
+              <!-- <template #item-rows>
+                  <a>Filas por paginas</a>
+                </template> -->
+              <template #item-opciones="item">
+                <div class="operation-wrapper">
+                  <!-- <button class="btn btn-success btn-sm btn-circle" @click="Aumentar(item)" v-b-tooltip.hover
+                        title="Aumentar / Disminuir"><span class="fas fa-plus"></span> / <span
+                          class="fas fa-minus"></span></button> -->
+                  <button class="btn btn-primary btn-sm btn-circle ml-1" data-toggle="modal"
+                    data-target="#agregaProducto" @click="clickEditarProducto(item.id)" v-b-tooltip.hover
+                    title="Modificar"><span class="fas fa-edit"></span></button>
 
-                </tbody>
-              </table>
-              <div class="text-center">
-                <nav aria-label="Page navigation example" style="text-align: center;">
-                  <label>Mostrando &nbsp;</label>
-                  <select style="width: 60px" @change="consultar()" v-model="elementPagina">
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                  </select>
+                  <!-- <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
+                      title="Restar"><span class="fas fa-minus"></span></button> -->
 
-                  <label>&nbsp;registros </label>
-                  <ul class="pagination Mestilo btn-sm">
+                  <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode"
+                    @click="generarCodeBar(item.relationships.departamento.data.id, item.relationships.articulo.data.id, item.id)"
+                    v-b-tooltip.hover title="Código de barra"><span class="fas fas fa-barcode"></span></button>
+                  <!-- <router-link to="/detalles"> -->
+                  <!-- <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Detalles(item)" v-b-tooltip.hover
+                      title="Detalles"><span class="fa fa-eye"></span></button> -->
+                  <button class="btn btn-danger btn-sm btn-circle ml-1"
+                    @click="borrarU(item.id, item.attributes.descripcion, 1)" v-b-tooltip.hover title="Eliminar"><span
+                      class="fas fas fa-trash-alt"></span></button>
+                  <!-- </router-link> -->
+                </div>
+              </template>
+              <template #item-codigo="item">
+                {{ item.relationships.departamento.data.id }}{{ item.relationships.articulo.data.id }}{{ item.id }}
+              </template>
+              <template #item-departamento="item">
+                {{ obtenDepartamento(item.relationships.departamento.data.id) }}
+                <!-- item.relationships.medida.data.id -->
+              </template>
+              <template #item-etiqueta="item">
+                <!-- {{item}} -->
+                {{ obtenEtiqueta(item.id) }}
+              </template>
+              <template #loading>
+                <img src="/cargando4.gif" style="width: 100px; height: 80px;" />
+              </template>
+              <template #empty-message>
+                <a>No hay datos que mostrar</a>
+              </template>
+              <template #rows-per-page>
+                <a>Filas por página</a>
+              </template>
 
-                    <li class="page-item" :class="`${disableA}`" @click="obtenerAnterior"><a class="page-link"
-                        href="#">Anterior</a></li>
-                    <li v-for="pagina in cantidad" class="page-item" v-bind:class="isActivo(pagina)" :key="pagina"
-                      @click="obtenerPagina(pagina)"><a class="page-link" href="#">{{ pagina
-                        }}</a></li>
-                    <li class="page-item" :class="`${disableS}`" @click="obtenerSiguiente"><a class="page-link"
-                        href="#">Siguiente</a></li>
-                  </ul>
-                </nav>
-              </div>
-
-            </div>
+            </EasyDataTable>
 
             <div class="mt-4 text-center small">
               <span class="mr-2">
@@ -122,6 +134,160 @@
 
     </div>
 
+    <!-- Logout Modal-->
+    <div :class="'modal fade ' + showModal1" id="agregaUsuario" tabindex="-1" role="dialog"
+      aria-labelledby="exampleModalLabel" :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-info" id="exampleModalLabel" v-if="editar == false">NUEVO USUARIO</h5>
+            <h5 class="modal-title text-info text-center" id="exampleModalLabel" v-if="editar == true"><span
+                class="fa fa-edit"></span>
+              MODIFICAR LOS DATOS DEL USUARIO
+              <!-- <br>(<label style="color: red;">{{
+              Store.formProductos.data.attributes.descripcion
+            }}</label>) -->
+            </h5>
+
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true" class="text-info">×</span>
+            </button>
+          </div>
+          <div class="modal-body text-center">
+            <!-- <div class="text-center">
+            <h1 class="h6 text-gray-900 mb-4"><i>CAMPOS OBLIGATORIOS</i> (<label style="color: red;">*</label>)
+            </h1>
+          </div> -->
+            <form class="user">
+              <div class="row">
+                <div class="col-lg-12">
+                  <!-- <img v-if="Store.formPersonas.data.attributes.imagen_path" class="img-profile rounded-circle"
+                  v-bind:src="urlAuditoria + '/' + Store.formProductos.data.attributes.imagen_path"
+                  style="width: 100px; height: 100px"> -->
+                  <img class="img-profile rounded-circle" src="/src/assets/new/img/undraw_profile.svg"
+                    style="width: 100px; height: 100px">
+
+                </div>
+                <div class="col-lg-12">
+
+                  <label for="avatar">Seleccione una imagen:</label>
+                  <input type="file" id="file" name="file" accept="image/png, image/jpeg, image/jpg"
+                    @change="cargarImagen()" />
+                </div>
+              </div>
+              <hr>
+
+              <div class="row">
+                <div class="form-group col-lg-6 text-left">
+                  <label class="text-info">Alias: <label style="color: red;">*</label></label>
+                  <input type="text" class="form-control" id="descripcionP" @change="verificar_error(1)"
+                    aria-describedby="emailHelp" v-model="Store.formPersonas.data.attributes.alias"
+                    placeholder="Ej: Pepe" required>
+                  <span style="color: red;">{{ errores.alias }}</span>
+                </div>
+                <div class="form-group col-lg-6 text-left">
+                  <label class="text-info">Número telefónico: <label style="color: red;">*</label></label>
+                  <input type="text" class="form-control" id="observacionP" aria-describedby="emailHelp"
+                    v-model="Store.formProductos.data.attributes.movil" placeholder="Ej: 00000000">
+                  <!-- <span style="color: red;">{{ errores.observacion }}</span> -->
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-lg-12 text-left">
+                  <label class="text-info">Correo electrónico: <label style="color: red;">*</label></label>
+                  <input type="text" class="form-control" id="minimo" v-model="Store.formPersonas.data.attributes.email"
+                    aria-describedby="emailHelp" value="" placeholder="Ej: pepe@pepe.pe" required>
+                  <span style="color: red;">{{ errores.email }}</span>
+                </div>
+
+
+              </div>
+              <!-- <div class="row">
+                <div class="col-lg-11 text-left">
+                  <label for="d" class="text-info">Seleccione el artículo:</label>
+                </div>
+                <div class="col-lg-1">
+                  <label for="d" class="text-left"><button class="btn btn-danger"><span class="fa fa-plus"></span></button></label>
+                </div>
+              </div> -->
+              <!-- <div class="row">
+              <div class="form-group col-lg-12 text-left">
+                <label class="text-info">Seleccione la ubicación: <label style="color: red;">*</label></label>
+                <select name="articulo" id="articulo" @change="verificar_error(4)"
+                  style="width: 100%; text-align:center" placeholder="Artículo" class="text-gray-900 form-control"
+                  v-model="Store.formProductos.data.attributes.ubicacion_id">
+                  <option v-for="dato in itemsUbicaciones1" :key="dato.id" :value="dato.id">{{
+                    dato.attributes.ubicacion }}</option>
+                </select>
+                <span style="color: red;">{{ errores.ubicacion_id }}</span>
+              </div>
+
+
+            </div> -->
+              <div class="text-center">
+                <h1 class="h6 text-gray-900 mb-3">CAMPOS OBLIGATORIOS (<label style="color: red;">*</label>)
+                </h1>
+              </div>
+
+              <div class="row">
+                <div v-if="editar == false" class=" col-lg-2">
+
+                </div>
+                <div v-if="editar == false" class="col-lg-4">
+                  <a @click="agregarUProducto(1)" class="btn btn-primary btn-block" :class="disabledProductoBtn">
+                    <span>{{ AgregarPersona }}</span>
+                  </a>
+                </div>
+                <!-- <div v-if="editar == false" class="col-lg-3">
+                <a @click="agregarUProducto(2)" class="btn btn-info" data-dismiss="modal" aria-label="close"
+                  :class="disabledProductoBtn">
+                  {{ GuardarProducto }}
+                </a>
+              </div> -->
+                <div v-if="editar" class="form-group col-lg-4">
+                  <a @click="editarU()" class="btn btn-info" :class="deactiva">
+                    {{ btnModificarM }}
+                  </a>
+                </div>
+                <div class="form-group col-lg-4">
+                  <a class="btn btn-danger btn-block" data-dismiss="modal" aria-label="close" @click="cancelarU()"
+                    :class="deactiva">
+                    Cancelar
+                  </a>
+                </div>
+              </div>
+
+
+            </form>
+
+            <!-- <div>
+            <card class="card-section" style="width: 450px; margin: auto">
+              <h1>Contact Form</h1>
+              <form ref="values" @submit.prevent="sendEmail">
+                <div class="form-group">
+                  <KInput class="form-input" :style="{ width: '290px' }" name="name" v-model="user_name"
+                    placeholder="Name"></KInput>
+                </div>
+                <div class="form-group">
+                  <KInput class="form-input" :style="{ width: '290px' }" name="email" v-model="user_email"
+                    placeholder="email address"></KInput>
+                </div>
+                <div class="form-group">
+                  <kTextarea class="form-input" :style="{ width: '290px' }" name="message" v-model="user_message"
+                    placeholder="Message" :rows="4" />
+                </div>
+                <div class="example-col">
+                  <kButton :style="{ width: '100px' }" id="submit-btn">Submit form</kButton>
+                </div>
+              </form>
+            </card>
+          </div> -->
+            <!-- <vue-barcode :value="cod" tag="svg"></vue-barcode> -->
+          </div>
+
+        </div>
+      </div>
+    </div>
 
 
   </div>
@@ -129,10 +295,127 @@
 </template>
 <script setup>
 import router from '@/router';
-import { onMounted } from 'vue';
+import { useStoreAxios } from '@/store/AxiosStore';
+import { onMounted, ref } from 'vue';
+import { obtenerDatos } from './helper/useAxios';
 
-onMounted(() => {
+const Store = useStoreAxios()
+
+const editar = ref(false)
+
+const searchField = ref(["id", "attributes.descripcion", "attributes.observacion"]);
+
+const searchField2 = ref(["id", "attributes.descripcion", "attributes.observacion", "attributes.cantidad"]);
+
+const disabledProductos = ref('')
+
+// const searchField1 = ref('')
+
+const searchValue = ref("");
+
+// const searchValue2 = ref("");
+
+const itemsPersonas1 = ref([])
+
+const AgregarPersona = ref('Agregar')
+
+const errores = ref({ alias: "", email: "", movil: "" })
+
+const headers = [
+  { text: "NO", value: "id", width: 50, sortable: true },
+  { text: "IMAGEN", value: "image" },
+  { text: "ALIAS", value: "attributes.alias" },
+  { text: "CORREO", value: "attributes.email", width: 250 },
+  { text: "ESTADO", value: "estado" },
+  // { text: "CANTIDAD", value: "cantidad" },
+  // { text: "P.COMPRA", value: "precioc", sortable: true },
+  // { text: "MÍNIMO STOCK", value: "attributes.minimo", sortable: true },
+  // { text: "U_MEDIDA", value: "unidad" },
+  // { text: "VENTAS", value: "cantV", sortable: true },
+  { text: "OPCIONES", value: "opciones", width: 200 }
+];
+
+const verificar_error = (n) => {
+  switch (n) {
+    case 1:
+      if (Store.formProductos.data.attributes.alias != '') {
+        errores.value.alias = "";
+      } else {
+        errores.value.alias = "Este campo es obligatorio"
+      }
+      break;
+    case 2:
+      if (Store.formProductos.data.attributes.email != '') {
+        errores.value.email = "";
+      } else {
+        errores.value.email = "Este campo es obligatorio"
+      }
+      break;
+    // case 3:
+    //   if (Store.formProductos.data.attributes.articulo_id != 0) {
+    //     errores.value.articulo_id = "";
+    //   } else {
+    //     errores.value.articulo_id = "Este campo es obligatorio"
+    //   }
+    //   break;
+    // case 5:
+    //   if (Store.formProductos.data.attributes.cantidad != 0) {
+    //     errores.value.cantidad = "";
+    //   } else {
+    //     errores.value.cantidad = "Este campo es obligatorio"
+    //   }
+    //   break;
+
+    // case 6:
+    //   if (Store.formLotes.data.attributes.descripcion != 0) {
+    //     errores.value.descripLote = "";
+    //   } else {
+    //     errores.value.descripLote = "Este campo es obligatorio"
+    //   }
+    //   break;
+    // case 7:
+    //   if (Store.formLotes.data.attributes.producto_id != 0) {
+    //     errores.value.producto_id = "";
+    //   } else {
+    //     errores.value.producto_id = "Este campo es obligatorio"
+    //   }
+    //   break;
+    // case 8:
+    //   if (Store.formLotes.data.attributes.ubicacion_id != 0) {
+    //     errores.value.ubicacion_id = "";
+    //   } else {
+    //     errores.value.ubicacion_id = "Este campo es obligatorio"
+    //   }
+    //   break;
+    // case 9:
+    //   if (etiqueta_R != 0) {
+    //     errores.value.etiqueta = "";
+    //   } else {
+    //     errores.value.etiqueta = "Este campo es obligatorio"
+    //   }
+    //   break;
+    default:
+      break;
+  }
+}
+
+onMounted(async () => {
   if (localStorage.getItem('userName')) {
+    if (localStorage.getItem('Carg_datPe') == '0') {
+      const response = await obtenerDatos(14);
+      if (response != null) {
+        Store.setListadoPersonas(response)
+      }
+      Store.cambiaEstado(11)
+      localStorage.setItem("Carg_datPe", "1");
+      itemsPersonas1.value = Store.itemsPersonas;
+      Store.cambiaEstado(11)
+
+    } else {
+      Store.cambiaEstado(11)
+      itemsPersonas1.value = Store.itemsPersonas;
+      Store.cambiaEstado(11)
+    }
     // listado.value = JSON.parse(localStorage.getItem('ListadoCache'));
     // obtenerListadoLimpio();
     // listadoSucursales.value = JSON.parse(localStorage.getItem('ListadoCacheSucursal'));
@@ -145,4 +428,29 @@ onMounted(() => {
 })
 
 </script>
-<style lang="scss"></style>
+<style lang="scss" scoped>
+a,
+span {
+
+  @media (max-width: 1024px) {
+    span.text {
+      display: none;
+    }
+  }
+}
+
+div,
+h1 {
+  @media (max-width: 1024px) {
+    h1.h3.mb-2.text-gray-800 {
+      font-size: small;
+      font-weight: 600;
+    }
+
+    .container-fluid {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+  }
+}
+</style>

@@ -547,7 +547,7 @@ onMounted(async () => {
     // ipPublica.value = localStorage.getItem('Host_back');
     if (localStorage.getItem('Carg_datPe') == '0') {
       const response = await obtenerDatos(14);
-      if (response.length > 0) {
+      if (response != null) {
         Store.setListadoPersonas(response)
       }
       // Store.cambiaEstado(10)

@@ -1606,7 +1606,7 @@ onMounted(async () => {
       // MAGNITUDES
       store.cambiaEstado(8)
       const response = await obtenerDatos(4);
-      if (response.length > 0) {
+      if (response != null) {
         store.setListadoMagnitud(response)
       }
       // for (let index = 0; index < response.length; index++) {
@@ -1625,12 +1625,12 @@ onMounted(async () => {
     if (localStorage.getItem('Carg_datMe') == '0') {
       store.cambiaEstado(6)
       const response = await obtenerDatos(3);
-      if (response.length > 0) {
+      if (response != null) {
         store.setListadoMedidas(response)
       }
-      for (let index = 0; index < response.length; index++) {
-        store.nextIDMedida = response[index].id;
-      }
+      // for (let index = 0; index < response.length; index++) {
+      //   store.nextIDMedida = response[index].id;
+      // }
       localStorage.setItem("Carg_datMe", "1");
       itemsMedida1.value = store.itemsMedidas;
       store.cambiaEstado(6)

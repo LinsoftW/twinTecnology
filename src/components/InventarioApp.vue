@@ -908,7 +908,7 @@
                   {{ GuardarProducto }}
                 </a>
               </div>
-              <div v-if="editar" class="form-group col-lg-5">
+              <div v-if="editar" class="form-group col-lg-3">
                 <a @click="editarU()" class="btn btn-info" :class="deactiva">
                   {{ btnModificarM }}
                 </a>
@@ -1557,7 +1557,7 @@ const actualizarProducto = async () => {
       disabledProductos.value = 'disabled';
       Store.cambiaEstado(1)
       const response = await obtenerDatos(1);
-      if (response.length > 0) {
+      if (response != null) {
         Store.setListadoProductos(response)
         bienActualizado = true;
       } else {
@@ -1591,7 +1591,7 @@ const actualizarProducto = async () => {
     if (localStorage.getItem('Carg_datA') == '0') {
       Store.cambiaEstado(3)
       const response = await obtenerDatos(5);
-      if (response.length > 0) {
+      if (response != null) {
         Store.setListadoArticulos(response)
         bienActualizado = true;
       } else {
@@ -1609,7 +1609,7 @@ const actualizarProducto = async () => {
     // cargando lotes
     if (localStorage.getItem("Carg_datL") == '0') {
       const response = await obtenerDatos(10);
-      if (response.length > 0) {
+      if (response != null) {
         Store.cambiaEstado(9)
         Store.setListadoLotes(response)
         localStorage.setItem("Carg_datL", "1");
@@ -1629,7 +1629,7 @@ const actualizarProducto = async () => {
     if (localStorage.getItem("Carg_datMe") == "0") {
 
       const response = await obtenerDatos(3);
-      if (!response) {
+      if (response == null) {
 
       } else {
         if (response.length > 0) {
@@ -1649,7 +1649,7 @@ const actualizarProducto = async () => {
     if (localStorage.getItem("Carg_datMo") == "0") {
 
       const response = await obtenerDatos(11);
-      if (!response) {
+      if (response == null) {
 
       } else {
         if (response.length > 0) {
@@ -1669,7 +1669,7 @@ const actualizarProducto = async () => {
     if (localStorage.getItem('Carg_datD') == '0') {
       Store.cambiaEstado(2);
       const response = await obtenerDatos(6);
-      if (!response) {
+      if (response == null) {
         Store.cambiaEstado(2);
       } else {
         if (response.length > 0) {
@@ -1691,7 +1691,7 @@ const actualizarProducto = async () => {
     if (localStorage.getItem('Carg_datE') == '0') {
       Store.cambiaEstado(5);
       const response = await obtenerDatos(8);
-      if (!response) {
+      if (response == null) {
         Store.cambiaEstado(5);
       } else {
         if (response.length > 0) {
@@ -1717,7 +1717,7 @@ const actualizarProducto = async () => {
     if (localStorage.getItem('Carg_datEP') == '0') {
       // Store.cambiaEstado(5);
       const response = await obtenerDatos(13);
-      if (!response) {
+      if (response == null) {
         // Store.cambiaEstado(5);
       } else {
         if (response.length > 0) {
@@ -3419,7 +3419,7 @@ onMounted(async () => {
       disabledProductos.value = 'disabled';
       Store.cambiaEstado(1)
       const response = await obtenerDatos(1);
-      if (response.length > 0) {
+      if (response != null) {
         Store.setListadoProductos(response)
       }
       localStorage.setItem("Carg_datP", "1");
@@ -3449,7 +3449,7 @@ onMounted(async () => {
     if (localStorage.getItem('Carg_datA') == '0') {
       Store.cambiaEstado(3)
       const response = await obtenerDatos(5);
-      if (response.length > 0) {
+      if (response != null) {
         Store.setListadoArticulos(response)
       }
       localStorage.setItem("Carg_datA", "1");
@@ -3464,7 +3464,7 @@ onMounted(async () => {
     // cargando lotes
     if (localStorage.getItem("Carg_datL") == '0') {
       const response = await obtenerDatos(10);
-      if (response.length > 0) {
+      if (response != null) {
         Store.cambiaEstado(9)
         Store.setListadoLotes(response)
         localStorage.setItem("Carg_datL", "1");
@@ -3484,7 +3484,7 @@ onMounted(async () => {
       if (!response) {
 
       } else {
-        if (response.length > 0) {
+        if (response != null) {
           Store.setListadoMedidas(response)
         }
         localStorage.setItem("Carg_datMe", "1");
@@ -3501,7 +3501,7 @@ onMounted(async () => {
       if (!response) {
 
       } else {
-        if (response.length > 0) {
+        if (response != null) {
           Store.setListadoMonedas(response)
         }
         localStorage.setItem("Carg_datMo", "1");
@@ -3515,7 +3515,7 @@ onMounted(async () => {
     if (localStorage.getItem('Carg_datD') == '0') {
       Store.cambiaEstado(2);
       const response = await obtenerDatos(6);
-      if (!response) {
+      if (response == null) {
         Store.cambiaEstado(2);
       } else {
         if (response.length > 0) {
@@ -3534,7 +3534,7 @@ onMounted(async () => {
     if (localStorage.getItem('Carg_datE') == '0') {
       Store.cambiaEstado(5);
       const response = await obtenerDatos(8);
-      if (!response) {
+      if (response == null) {
         Store.cambiaEstado(5);
       } else {
         if (response.length > 0) {
@@ -3557,15 +3557,15 @@ onMounted(async () => {
     if (localStorage.getItem('Carg_datEP') == '0') {
       // Store.cambiaEstado(5);
       const response = await obtenerDatos(13);
-      if (!response) {
+      if (response == null) {
         // Store.cambiaEstado(5);
       } else {
         if (response.length > 0) {
           Store.setListadoEtiquetasProductos(response)
         }
-        for (let index = 0; index < response.length; index++) {
-          Store.nextIDEtiqueta = response[index].id;
-        }
+        // for (let index = 0; index < response.length; index++) {
+        //   Store.nextIDEtiqueta = response[index].id;
+        // }
         localStorage.setItem("Carg_datEP", "1");
         itemsEtiquetaProductos1.value = Store.itemsEtiquetasProductos;
         // Store.cambiaEstado(5);
@@ -3581,12 +3581,12 @@ onMounted(async () => {
       // Ubicaciones
       Store.cambiaEstado(7)
       const response = await obtenerDatos(7);
-      if (response.length > 0) {
+      if (response != null) {
         Store.setListadoUbicaciones(response)
       }
-      for (let index = 0; index < response.length; index++) {
-        Store.nextIDUbicacion = response[index].id;
-      }
+      // for (let index = 0; index < response.length; index++) {
+      //   Store.nextIDUbicacion = response[index].id;
+      // }
       localStorage.setItem("Carg_datU", "1");
       itemsUbicaciones1.value = Store.itemsUbicaciones;
       Store.cambiaEstado(7)
@@ -3598,7 +3598,7 @@ onMounted(async () => {
     }
     // console.log(itemsEtiqueta1.value)
     const response2 = await obtenerDatos(16);
-    if (response2.length > 0) {
+    if (response2 != null) {
       Store.setListadoOperaciones(response2)
       itemsOperaciones1.value = Store.itemsOperaciones;
     }

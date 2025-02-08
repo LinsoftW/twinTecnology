@@ -18,6 +18,7 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
   const esperandoEtiquetas = ref(false);
   const esperandoLotes = ref(false);
   const esperandoAuditoria = ref(false)
+  const esperandoPersonas = ref(false)
   const listadoDepartamentos = ref([]);
   const listadoArticulos = ref([]);
   const listadoProductos = ref([]);
@@ -145,6 +146,9 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
         break;
       case 10:
         return esperandoAuditoria.value = !esperandoAuditoria.value;
+        break;
+      case 11:
+        return esperandoPersonas.value = !esperandoPersonas.value;
         break;
       default:
         break;
@@ -970,7 +974,7 @@ export const useStoreAxios = defineStore('StoreAxios', () => {
     setListadoArticulos, setListadoLotes, setListadoEtiquetasProductos, setListadoDepartamentos, setListadoEtiquetas, setListadoMedidas, setListadoMonedas, setListadoMagnitud, setListadoProductos,
     setListadoSucursales, setListadoUbicaciones, getListadoArticulos, getListadoLotes, getListadoDepartamentos, getListadoEtiquetas, getListadoMagnitud,
     getListadoMedidas, getListadoProductos, getListadoSucursales, getListadoUbicaciones,
-    esperandoArticulos, esperandoDepartamentos, esperandoLotes, itemsLotes, itemsMonedas, esperandoProductos, esperandoMedidas, esperandoEtiquetas, esperandoAuditoria, esperandoMagnitudes, esperandoSucursales, esperandoUbicaciones, loadingP, loadingA, loadingD, loadingE, loadingM, loadingMe, loadingS, loadingUb,
+    esperandoArticulos, esperandoDepartamentos, esperandoLotes, itemsLotes, itemsMonedas, esperandoProductos, esperandoMedidas, esperandoEtiquetas,esperandoPersonas, esperandoAuditoria, esperandoMagnitudes, esperandoSucursales, esperandoUbicaciones, loadingP, loadingA, loadingD, loadingE, loadingM, loadingMe, loadingS, loadingUb,
     itemsProductos, itemsDepartamentos, itemsMagnitudes, itemsArticulos, itemsEtiquetas, itemsUbicaciones, itemsMedidas, itemsSucursales, itemsEtiquetasProductos, listadoEtiquetasProductos,
     cambiaEstado, AddMagnitud, AddProductos, EditProductos, AddMoneda, DeleteMoneda, EditMoneda, DeleteMagnitud, AddAuditoria, DeleteProducto, AddMedida, AddLotes, DeleteMedida, EditLotes, EditMagnitud, EditMedida, AddDepartamento, DeleteDepartamento, EditDepartamento,
     AddArticulo, DeleteArticulo, EditArticulo, AddSucursal, DeleteSucursal, DeleteLotes, EditEtiquetaProducto, DeleteEtiquetaProducto,AddPersonas, DeletePersonas, EditPersonas, setListadoPersonas, listadoPersonas,itemsPersonas, AddEtiquetaProducto, EditSucursal, AddUbicaciones, DeleteUbicaciones, EditUbicaciones, AddImagen, setListadoImagen, DeleteImagen, EditImagen, formSucursal, formUbicaciones,
