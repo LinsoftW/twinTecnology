@@ -23,7 +23,7 @@
 
                 <div class="h5 mb-0 font-weight-bold text-gray-800">{{ store.cantidadProductos }}</div>
                 <div class="text-md font-weight-bold text-primary mb-1">
-                  Productos registrados</div>
+                  PRODUCTOS REGISTRADOS</div>
               </div>
               <div class="col-auto">
                 <i class="fas fa-poll-h fa-3x text-gray-300" v-if="!store.esperandoProductos"></i>
@@ -54,7 +54,7 @@
                   class="img-profile rounded-circle"> -->
                 <div class="h5 mb-0 font-weight-bold text-gray-800">{{ store.cantidadDepartamentos }}</div>
                 <div class="text-md font-weight-bold text-success mb-1">
-                  Departamentos</div>
+                  DEPARTAMENTOS</div>
               </div>
               <div class="col-auto">
                 <i class="fas fa-shopping-bag fa-3x text-gray-300" v-if="!store.esperandoDepartamentos"></i>
@@ -79,7 +79,7 @@
               <div class="col mr-2">
                 <div class="h5 mb-0 font-weight-bold text-gray-800">{{ store.cantidadArticulos }}</div>
                 <div class="text-md font-weight-bold text-warning mb-1">
-                  Tipos de artículos</div>
+                  TIPOS DE ARTÍCULOS</div>
               </div>
               <div class="col-auto">
                 <i class="fas fa-cart-plus fa-3x text-gray-300" v-if="!store.esperandoArticulos"></i>

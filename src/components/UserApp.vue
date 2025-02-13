@@ -7,7 +7,7 @@
 
     <!-- Usuarios -->
     <div class="row">
-      <div class="col-xl-12 col-lg-5">
+      <div class="col-xl-12 col-lg-12">
         <div class="card shadow mb-4">
           <!-- Card Header - Dropdown -->
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -41,21 +41,183 @@
                 </a>
               </div>
               <!-- <div class="col-md-7"> -->
-                <div class="col-md-5 col-xl-5 col-lg-12">
-                  <span class="text-info">Buscar: </span>
-                  <input class="form-control form-control-user" type="text" v-model="searchValue"
-                    placeholder="Qué desea buscar" />
-                </div>
+              <div class="col-md-5 col-xl-5 col-lg-12">
+                <span class="text-info">Buscar: </span>
+                <input class="form-control form-control-user" type="text" v-model="searchValue"
+                  placeholder="Qué desea buscar" />
+              </div>
               <!-- </div> -->
             </div>
             <br>
             <!-- <hr> -->
 
+            <!-- Probandooo -->
+            <!-- <div class="row">
+              <table class="main composition">
+                <tr>
+                  <th></th>
+                  <th>Per 4 Pack(200G)</th>
+                  <th class="per-100g">Per 100g</th>
+                  <th class="per-50g">Per Buttery(50G)</th>
+                </tr>
+
+                <tr>
+                  <th>Calories</th>
+                  <td>724</td>
+                  <td class="per-100g">362</td>
+                  <td class="per-50g">181</td>
+                </tr>
+
+                <tr>
+                  <th>Fat</th>
+                  <td>43.1g</td>
+                  <td class="per-100g">21.6g</td>
+                  <td class="per-50g">10.8g</td>
+                </tr>
+
+                <tr>
+                  <th>Saturated</th>
+                  <td>15.7g</td>
+                  <td class="per-100g">7.9g</td>
+                  <td class="per-50g">3.9g</td>
+                </tr>
+
+                <tr>
+                  <th>Sodium</th>
+                  <td>1,941.9mg</td>
+                  <td class="per-100g">971mg</td>
+                  <td class="per-50g">485.5mg</td>
+                </tr>
+
+                <tr>
+                  <th>Carbohydrates</th>
+                  <td>78.6g</td>
+                  <td class="per-100g">39.3g</td>
+                  <td class="per-50g">19.7g</td>
+                </tr>
+
+                <tr>
+                  <th>Fiber</th>
+                  <td>0g</td>
+                  <td class="per-100g">0g</td>
+                  <td class="per-50g">0g</td>
+                </tr>
+
+                <tr>
+                  <th>Sugar</th>
+                  <td>10.9g</td>
+                  <td class="per-100g">5.5g</td>
+                  <td class="per-50g">2.7g</td>
+                </tr>
+
+                <tr>
+                  <th>Protein</th>
+                  <td>10.5g</td>
+                  <td class="per-100g">5.3g</td>
+                  <td class="per-50g">2.6g</td>
+                </tr>
+              </table>
+
+              <table class="mobile per-100g composition">
+                <tr>
+                  <th></th>
+                  <th class="per-100g">Per 100g</th>
+                </tr>
+
+                <tr>
+                  <th>Calories</th>
+                  <td class="per-100g">362</td>
+                </tr>
+
+                <tr>
+                  <th>Fat</th>
+                  <td class="per-100g">21.6g</td>
+                </tr>
+
+                <tr>
+                  <th>Saturated</th>
+                  <td class="per-100g">7.9g</td>
+                </tr>
+
+                <tr>
+                  <th>Sodium</th>
+                  <td class="per-100g">971mg</td>
+                </tr>
+
+                <tr>
+                  <th>Carbohydrates</th>
+                  <td class="per-100g">39.3g</td>
+                </tr>
+
+                <tr>
+                  <th>Fiber</th>
+                  <td class="per-100g">0g</td>
+                </tr>
+
+                <tr>
+                  <th>Sugar</th>
+                  <td class="per-100g">5.5g</td>
+                </tr>
+
+                <tr>
+                  <th>Protein</th>
+                  <td class="per-100g">5.3g</td>
+                </tr>
+              </table>
+
+              <table class="mobile per-50g composition">
+                <tr>
+                  <th></th>
+                  <th class="per-50g">Per Buttery(50G)</th>
+                </tr>
+
+                <tr>
+                  <th>Calories</th>
+                  <td class="per-50g">181</td>
+                </tr>
+
+                <tr>
+                  <th>Fat</th>
+                  <td class="per-50g">10.8g</td>
+                </tr>
+
+                <tr>
+                  <th>Saturated</th>
+                  <td class="per-50g">3.9g</td>
+                </tr>
+
+                <tr>
+                  <th>Sodium</th>
+                  <td class="per-50g">485.5mg</td>
+                </tr>
+
+                <tr>
+                  <th>Carbohydrates</th>
+                  <td class="per-50g">19.7g</td>
+                </tr>
+
+                <tr>
+                  <th>Fiber</th>
+                  <td class="per-50g">0g</td>
+                </tr>
+
+                <tr>
+                  <th>Sugar</th>
+                  <td class="per-50g">2.7g</td>
+                </tr>
+
+                <tr>
+                  <th>Protein</th>
+                  <td class="per-50g">2.6g</td>
+                </tr>
+              </table>
+            </div> -->
+
             <!-- Personas -->
             <EasyDataTable :headers="headers" :items="itemsPersonas1" buttons-pagination border-cell :labels="label"
               v-model:items-selected="itemsSelected" header-text-direction="center" body-text-direction="center"
               :search-field="searchField" :search-value="searchValue" @click-row="showRow" :rows-per-page="5"
-              :loading="Store.esperandoProductos" :key="actualizaTabla">
+              :loading="Store.esperandoProductos" :key="actualizaTabla" responsive="true">
               <template #item-image="item">
                 <a data-toggle="modal" data-target="#verImagen" @click="obtenDescripcion(item.attributes.imagen_path)">
                   <!-- "{{ obtenImagen(item.id) }}" -->
@@ -67,7 +229,18 @@
                 </a>
 
               </template>
-              <!-- <template #item-rows>
+              <!-- <template #rowsPerPageOptions="{ prevPage, nextPage, isFirstPage, isLastPage, rowsPerPageOptions }">
+                <button :disabled="isFirstPage" @click="prevPage">
+                  Anterior
+                </button>
+                <button :disabled="isLastPage" @click="nextPage">
+                  Siguiente
+                </button>
+                <label :disabled="rowsPerPageOptions" @click="nextPage">
+                  Siguiente
+                </label>
+              </template> -->
+              <!-- <template #rowsPerPageOptions>
                   <a>Filas por paginas</a>
                 </template> -->
               <template #item-opciones="item">
@@ -82,9 +255,9 @@
                   <!-- <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
                       title="Restar"><span class="fas fa-minus"></span></button> -->
 
-                  <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode"
+                  <!-- <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode"
                     @click="generarCodeBar(item.relationships.departamento.data.id, item.relationships.articulo.data.id, item.id)"
-                    v-b-tooltip.hover title="Código de barra"><span class="fas fas fa-barcode"></span></button>
+                    v-b-tooltip.hover title="Código de barra"><span class="fas fas fa-barcode"></span></button> -->
                   <!-- <router-link to="/detalles"> -->
                   <!-- <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Detalles(item)" v-b-tooltip.hover
                       title="Detalles"><span class="fa fa-eye"></span></button> -->
@@ -111,9 +284,9 @@
               <template #empty-message>
                 <a>No hay datos que mostrar</a>
               </template>
-              <template #rows-per-page>
+              <!-- <template #empty-rowsPerPageOptions>
                 <a>Filas por página</a>
-              </template>
+              </template> -->
 
             </EasyDataTable>
 
@@ -122,11 +295,11 @@
                 <i class="fas fa-circle text-primary"></i> Activo
               </span>
               <span class="mr-2">
-                <i class="fas fa-circle text-success"></i> En espera
+                <i class="fas fa-circle text-default"></i> Inactivo
               </span>
-              <span class="mr-2">
+              <!-- <span class="mr-2">
                 <i class="fas fa-circle text-info"></i> Baja
-              </span>
+              </span> -->
             </div>
           </div>
         </div>
@@ -199,8 +372,20 @@
                     aria-describedby="emailHelp" value="" placeholder="Ej: pepe@pepe.pe" required>
                   <span style="color: red;">{{ errores.email }}</span>
                 </div>
-
-
+              </div>
+              <div class="row">
+                <div class="form-group col-lg-6 text-left">
+                  <label class="text-info">Contraseña: <label style="color: red;">*</label></label>
+                  <input type="password" class="form-control" id="minimo" v-model="formPassword.data.password"
+                    aria-describedby="emailHelp" value="" placeholder="Contraseña" required>
+                  <span style="color: red;">{{ errores.password }}</span>
+                </div>
+                <div class="form-group col-lg-6 text-left">
+                  <label class="text-info">Repita la contraseña: <label style="color: red;">*</label></label>
+                  <input type="password" class="form-control" id="minimo" v-model="formPassword.data.password2"
+                    aria-describedby="emailHelp" value="" placeholder="Repetir contraseña" required>
+                  <span style="color: red;">{{ errores.password2 }}</span>
+                </div>
               </div>
               <!-- <div class="row">
                 <div class="col-lg-11 text-left">
@@ -228,8 +413,34 @@
                 <h1 class="h6 text-gray-900 mb-3">CAMPOS OBLIGATORIOS (<label style="color: red;">*</label>)
                 </h1>
               </div>
-
               <div class="row">
+                <div class="col-md-12 col-xl-12 col-lg-12">
+                  <div class="justify-content-between">
+                    <a v-if="editar == false" @click="agregarUPersona()" class="btn btn-info btn-icon-split m-2"
+                      :class="disabledDepartamentodBtn">
+                      <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                      </span>
+                      <span :class="`text`">{{ AgregarPersona }}</span>
+                    </a>
+                    <a data-dismiss="modal" aria-label="close" v-if="editar" @click="editarUPersona()"
+                      class="btn btn-primary btn-icon-split m-2" :class="btnModificarClass">
+                      <span class="icon text-white-50">
+                        <i class="fas fa-edit"></i>
+                      </span>
+                      <span :class="`text`">{{ btnModificar }}</span>
+                    </a>
+                    <a class="btn btn-danger btn-icon-split" data-dismiss="modal" aria-label="close"
+                      :class="btnModificarClass" @click="cancelarU()">
+                      <span class="icon text-white">
+                        <i class="fas fa-close"></i>
+                      </span>
+                      <span class="text text-white">Cancelar</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="row">
                 <div v-if="editar == false" class=" col-lg-2">
 
                 </div>
@@ -238,12 +449,7 @@
                     <span>{{ AgregarPersona }}</span>
                   </a>
                 </div>
-                <!-- <div v-if="editar == false" class="col-lg-3">
-                <a @click="agregarUProducto(2)" class="btn btn-info" data-dismiss="modal" aria-label="close"
-                  :class="disabledProductoBtn">
-                  {{ GuardarProducto }}
-                </a>
-              </div> -->
+
                 <div v-if="editar" class="form-group col-lg-4">
                   <a @click="editarU()" class="btn btn-info" :class="deactiva">
                     {{ btnModificarM }}
@@ -255,7 +461,7 @@
                     Cancelar
                   </a>
                 </div>
-              </div>
+              </div> -->
 
 
             </form>
@@ -296,7 +502,7 @@
 <script setup>
 import router from '@/router';
 import { useStoreAxios } from '@/store/AxiosStore';
-import { onMounted, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { obtenerDatos } from './helper/useAxios';
 
 const Store = useStoreAxios()
@@ -319,7 +525,29 @@ const itemsPersonas1 = ref([])
 
 const AgregarPersona = ref('Agregar')
 
-const errores = ref({ alias: "", email: "", movil: "" })
+const formPassword = reactive({
+  data: {
+    id: '',
+    password: '',
+    password2: ''
+  }
+})
+
+const agrega = () => {
+  editar.value = false
+  errores.value.password = "";
+  errores.value.password2 = "";
+  errores.value.movil = "";
+  errores.value.alias = "";
+  errores.value.email = "";
+  formPassword.data.password = "";
+  formPassword.data.password2 = "";
+  Store.formPersonas.data.attributes.alias = "";
+  Store.formProductos.data.attributes.movil = "";
+  Store.formProductos.data.attributes.email = "";
+}
+
+const errores = ref({ alias: "", email: "", movil: "", password: "", password2: "" })
 
 const headers = [
   { text: "NO", value: "id", width: 50, sortable: true },
@@ -453,4 +681,62 @@ h1 {
     }
   }
 }
+
+/*table.main {
+  width: 600px;
+}
+
+table.mobile {
+  display: none;
+}
+
+table.composition {
+  border: none;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 7px 10px 10px 10px;
+}
+
+th {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 90%;
+  bottom-border: 2px solid #111111;
+  border-top: 1px solid #999;
+  text-align: left;
+}
+
+tr:nth-child(2n) {
+  background-color: #efefef;
+}
+
+tr:hover {
+  background-color: #c3e6e5;
+}
+
+@media screen and (max-width: 600px) {
+  table.main .per-50g {
+    display: none;
+  }
+
+  table.main .per-100g {
+    display: none;
+  }
+
+  table.mobile {
+    display: table;
+  }
+
+  table.composition {
+    width: 100%;
+  }
+
+  table.composition td {
+    width: 50%;
+  }
+}*/
 </style>

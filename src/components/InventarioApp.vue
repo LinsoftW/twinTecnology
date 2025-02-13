@@ -1,5 +1,4 @@
 <template>
-  <!-- <div> -->
   <div class="container-fluid" v-if="!detalle">
     <!-- <div>
         <div id="interactive" class="viewport"></div>
@@ -163,7 +162,8 @@
                         <a class="dropdown-item" href="#"><span class="fa fa-list-alt"></span> Clasificaciones</a>
                       </router-link>
                       <router-link class="button" to="/gest_nomencladores">
-                        <a class="dropdown-item" href="#"><span class="fas fa-ruler-horizontal"></span> Magnitudes</a>
+                        <a class="dropdown-item" href="#"><span class="fas fa-ruler-horizontal"></span>
+                          Magnitudes</a>
                       </router-link>
                       <router-link class="button" to="/ubicaciones">
                         <a class="dropdown-item" href="#"><span class="fa fa-map-marker-alt"></span> Ubicaciones</a>
@@ -257,7 +257,8 @@
                   </div>
                 </template>
                 <template #item-codigo="item">
-                  {{ item.relationships.departamento.data.id }}{{ item.relationships.articulo.data.id }}{{ item.id }}
+                  {{ item.relationships.departamento.data.id }}{{ item.relationships.articulo.data.id }}{{ item.id
+                  }}
                 </template>
                 <template #item-departamento="item">
                   {{ obtenDepartamento(item.relationships.departamento.data.id) }}
@@ -563,7 +564,8 @@
                       @click="clickEditarProducto(idProd)" v-b-tooltip.hover title="Modificar"><span
                         class="fas fa-edit"></span> Modificar</button>
                     <button class="btn btn-danger btn-sm m-1" @click="borrarU(idProd, nombreProd, 1)" v-b-tooltip.hover
-                      title="Eliminar"><span class="fas fas fa-trash-alt"></span> Eliminar</button>
+                      title="Eliminar"><span class="fas fas fa-trash-alt"></span>
+                      Eliminar</button>
                     <button class="btn btn-info btn-sm m-1" @click="Atras()"> Atrás</button>
                   </div>
                 </div>
@@ -894,7 +896,42 @@
             </div>
 
             <div class="row">
-              <div v-if="editar" class=" col-lg-1">
+              <div class="col-md-12 col-xl-12 col-lg-12">
+                <div class="justify-content-between">
+                  <a v-if="editar == false" @click="agregarUProducto(1)" class="btn btn-primary btn-sm btn-icon-split"
+                    :class="disabledProductoBtn">
+                    <span class="icon text-white-50">
+                      <i class="fas fa-plus"></i>
+                    </span>
+                    <span :class="`text`">{{ GuardarProductoC }}</span>
+                  </a>
+                  <a data-dismiss="modal" aria-label="close" v-if="editar == false" @click="agregarUProducto(2)"
+                    class="btn btn-info btn-sm btn-icon-split m-2" :class="disabledProductoBtn">
+                    <span class="icon text-white-50">
+                      <i class="fas fa-plus"></i>
+                    </span>
+                    <span :class="`text`">{{ GuardarProducto }}</span>
+                  </a>
+                  <a data-dismiss="modal" aria-label="close" v-if="editar" @click="editarU()"
+                    class="btn btn-primary btn-sm btn-icon-split m-2" :class="disabledProductoBtn">
+                    <span class="icon text-white-50">
+                      <i class="fas fa-edit"></i>
+                    </span>
+                    <span :class="`text`">{{ btnModificarM }}</span>
+                  </a>
+                  <a class="btn btn-danger btn-sm btn-icon-split" data-dismiss="modal" aria-label="close"
+                    :class="disabledProductoBtn" @click="cancelarU()">
+                    <span class="icon text-white">
+                      <i class="fas fa-close"></i>
+                    </span>
+                    <span class="text text-white">Cancelar</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="row">
+              <div v-if="editar" class=" col-lg-2">
 
               </div>
               <div v-if="editar == false" class="col-lg-5">
@@ -908,18 +945,18 @@
                   {{ GuardarProducto }}
                 </a>
               </div>
-              <div v-if="editar" class="form-group col-lg-3">
-                <a @click="editarU()" class="btn btn-info" :class="deactiva">
+              <div v-if="editar" class="form-group col-lg-4">
+                <a @click="editarU()" class="btn btn-info" :class="deactiva" data-dismiss="modal" aria-label="close">
                   {{ btnModificarM }}
                 </a>
               </div>
-              <div class="form-group col-lg-4">
+              <div class="form-group col-lg-3">
                 <a class="btn btn-danger btn-block" data-dismiss="modal" aria-label="close" @click="cancelarU()"
-                  :class="deactiva">
+                  :class="disabledProductoBtn">
                   Cancelar
                 </a>
               </div>
-            </div>
+            </div> -->
 
 
           </form>
@@ -1092,6 +1129,33 @@
                 </h1>
               </div>
               <div class="row">
+                <div class="col-md-12 col-xl-12 col-lg-12">
+                  <div class="justify-content-between">
+                    <a v-if="editar == false" @click="agregarULote(1)" class="btn btn-info btn-icon-split m-2"
+                      :class="disabledProductoBtn">
+                      <span class="icon text-white-50">
+                      <i class="fas fa-plus"></i>
+                    </span>
+                      <span :class="`text`">{{ GuardarMag }}</span>
+                    </a>
+                    <a data-dismiss="modal" aria-label="close" v-if="editar" @click="editarULote()"
+                      class="btn btn-primary btn-icon-split m-2" :class="disabledProductoBtn">
+                      <span class="icon text-white-50">
+                      <i class="fas fa-edit"></i>
+                    </span>
+                      <span :class="`text`">{{ btnModificarL }}</span>
+                    </a>
+                    <a class="btn btn-danger btn-icon-split" data-dismiss="modal" aria-label="close"
+                      :class="disabledProductoBtn" @click="cancelarU()">
+                      <span class="icon text-white">
+                      <i class="fas fa-close"></i>
+                    </span>
+                      <span class="text text-white">Cancelar</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="row">
 
                 <div v-if="editar == false" class="form-group h4 col-lg-3">
 
@@ -1113,7 +1177,7 @@
                     Cancelar
                   </a>
                 </div>
-              </div>
+              </div> -->
             </div>
 
             <!-- <div class="modal-footer" style="text-align: center;"> -->
@@ -1230,7 +1294,8 @@
                         &nbsp;
                         &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
                         &nbsp;
-                        &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
+                        &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;
+                        &nbsp;&nbsp;
                         &nbsp;
                         &nbsp;&nbsp; &nbsp; &nbsp;
                       </label>
@@ -1343,6 +1408,8 @@
       </div>
     </div>
   </div>
+  <!-- <div> -->
+
   <!-- <template v-if="esperando">
     <div v-on="loadingA('Actualizando datos...')">
 

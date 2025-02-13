@@ -32,7 +32,8 @@
                         </span>
                         <span class="text">PDF</span>
                       </a>
-                      <a @click="ExportExcel()" class="btn btn-secondary btn-sm btn-icon-split" :class="disabledMagnitud">
+                      <a @click="ExportExcel()" class="btn btn-secondary btn-sm btn-icon-split"
+                        :class="disabledMagnitud">
                         <span class="icon text-white-50">
                           <i class="fas fa-download"></i>
                         </span>
@@ -52,7 +53,7 @@
                 <EasyDataTable table-class-name="customize-table" :headers="headersSucursales" :items="itemsSucursales1"
                   buttons-pagination border-cell v-model:items-selected="itemsSelected" header-text-direction="center"
                   body-text-direction="center" :search-field="searchField" :search-value="searchValue"
-                 :rows-per-page="5" show-index :loading="loading">
+                  :rows-per-page="5" show-index :loading="loading">
 
 
 
@@ -205,8 +206,7 @@
                 <EasyDataTable table-class-name="customize-table" :headers="headersUbicaciones"
                   :items="itemsUbicaciones1" buttons-pagination border-cell v-model:items-selected="itemsSelected"
                   header-text-direction="center" body-text-direction="center" :search-field="searchFieldMedida"
-                  :search-value="searchValueMedida" :rows-per-page="5" :loading="loadingU"
-                  show-index>
+                  :search-value="searchValueMedida" :rows-per-page="5" :loading="loadingU" show-index>
                   <template #empty-message>
                     <a>No hay datos que mostrar</a>
                   </template>
@@ -375,6 +375,33 @@
                 </h1>
               </div>
               <div class="row">
+                <div class="col-md-12 col-xl-12 col-lg-12">
+                  <div class="justify-content-between">
+                    <a v-if="editar == false" @click="agregarU()" class="btn btn-info btn-icon-split m-2"
+                      :class="disabledMagnitudBtn">
+                      <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                      </span>
+                      <span :class="`text`">{{ GuardarMag }}</span>
+                    </a>
+                    <a data-dismiss="modal" aria-label="close" v-if="editar" @click="editarU()"
+                      class="btn btn-primary btn-icon-split m-2" :class="btnModificarClass">
+                      <span class="icon text-white-50">
+                        <i class="fas fa-edit"></i>
+                      </span>
+                      <span :class="`text`">{{ btnModificar }}</span>
+                    </a>
+                    <a class="btn btn-danger btn-icon-split" data-dismiss="modal" aria-label="close"
+                      :class="btnModificarClass" @click="cancelarU()">
+                      <span class="icon text-white">
+                        <i class="fas fa-close"></i>
+                      </span>
+                      <span class="text text-white">Cancelar</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="row">
 
                 <div v-if="editar == false" class="form-group h4 col-lg-3">
 
@@ -395,7 +422,7 @@
                     Cancelar
                   </a>
                 </div>
-              </div>
+              </div> -->
             </div>
 
             <!-- <div class="modal-footer" style="text-align: center;"> -->
@@ -523,8 +550,34 @@
               <h1 class="h6 text-gray-900 mb-4"><i>CAMPOS OBLIGATORIOS</i> (<label style="color: red;">*</label>)
               </h1>
             </div>
-
             <div class="row">
+              <div class="col-md-12 col-xl-12 col-lg-12">
+                <div class="justify-content-between">
+                  <a v-if="editar == false" @click="agregarUMedida()" class="btn btn-info btn-icon-split m-2"
+                    :class="disabledMedidaBtn">
+                    <span class="icon text-white-50">
+                      <i class="fas fa-plus"></i>
+                    </span>
+                    <span :class="`text`">{{ GuardarMedida }}</span>
+                  </a>
+                  <a data-dismiss="modal" aria-label="close" v-if="editar" @click="editarUMedida()"
+                    class="btn btn-primary btn-icon-split m-2" :class="deactiva">
+                    <span class="icon text-white-50">
+                      <i class="fas fa-edit"></i>
+                    </span>
+                    <span :class="`text`">{{ btnModificarM }}</span>
+                  </a>
+                  <a class="btn btn-danger btn-icon-split" data-dismiss="modal" aria-label="close"
+                    :class="deactiva" @click="cancelarUMedida()">
+                    <span class="icon text-white">
+                      <i class="fas fa-close"></i>
+                    </span>
+                    <span class="text text-white">Cancelar</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="row">
               <div v-if="editar == false" class="form-group h4 col-lg-3">
 
               </div>
@@ -544,7 +597,7 @@
                   Cancelar
                 </a>
               </div>
-            </div>
+            </div> -->
 
 
           </form>
@@ -973,7 +1026,7 @@ const generar_pdfU = async () => {
     { title: "Fecha actualización", dataKey: "fechaU" }
   ]
 
-  doc.autoTable({columns: columnas, body: nuevoArreglo.value})
+  doc.autoTable({ columns: columnas, body: nuevoArreglo.value })
   // const doc = new jsPDF({
   //   orientation: "landscape",
   //   unit: "in",
@@ -1015,7 +1068,7 @@ const generar_pdfS = async () => {
     { title: "Fecha actualización", dataKey: "fechaU" }
   ]
 
-  doc.autoTable({columns: columnas, body: nuevoArreglo.value})
+  doc.autoTable({ columns: columnas, body: nuevoArreglo.value })
   // const doc = new jsPDF({
   //   orientation: "landscape",
   //   unit: "in",
@@ -1764,7 +1817,7 @@ onMounted(async () => {
       // Sucursales
       store.cambiaEstado(4)
       const response = await obtenerDatos(2);
-      if (response.length > 0) {
+      if (response != null) {
         store.setListadoSucursales(response)
       }
       // for (let index = 0; index < response.length; index++) {
@@ -1784,7 +1837,7 @@ onMounted(async () => {
       // Ubicaciones
       store.cambiaEstado(7)
       const response = await obtenerDatos(7);
-      if (response.length > 0) {
+      if (response != null) {
         store.setListadoUbicaciones(response)
       }
       // for (let index = 0; index < response.length; index++) {
@@ -1841,7 +1894,8 @@ const itemsSucursales = ref([]);
 
 </script>
 <style lang="scss" scoped>
-a,span {
+a,
+span {
 
   @media (max-width: 1024px) {
     span.text {
@@ -1850,7 +1904,8 @@ a,span {
   }
 }
 
-div,h1 {
+div,
+h1 {
   @media (max-width: 1024px) {
     h1.h3.mb-0.text-gray-800 {
       font-size: small;

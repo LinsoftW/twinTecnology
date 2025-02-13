@@ -363,9 +363,9 @@
 
             </router-link>
 
-            <router-link class="button" to="/user" v-if="admin" @click="obtenerLinkA(9)">
+            <router-link class="button" to="/user" v-if="admin" @click="obtenerLinkA(11)">
 
-              <a class="collapse-item" v-bind:class="ActivaLink(9)" :key="9"> <i class="fa fa-user"></i>
+              <a class="collapse-item" v-bind:class="ActivaLink(11)" :key="11"> <i class="fa fa-user"></i>
 
                 Usuarios</a>
 
@@ -1048,6 +1048,8 @@
 
         </div>
 
+        <!-- <slot name="inventario" /> -->
+
         <div v-if="route.path == '/inventario'">
 
           <InventarioApp :key="Kinventario" @consultar="consultar" />
@@ -1570,7 +1572,8 @@ const ArrVistas = ref([
   'ubicaciones',
   'categorias',
   'perfil',
-  'inicio'
+  'inicio',
+  'user'
 ])
 
 const coincidencias = ref([]);
@@ -1711,6 +1714,14 @@ const ActivaLink = (valor) => {
   // }
   show2.value = '';
   if (valor == link.value) {
+    // console.log(valor)
+    // link.value = alink;
+    collapsed.value = 'collapsed';
+    activa.value = false;
+    show.value = '';
+    collapsed2.value = 'collapsed';
+    activa2.value = false;
+    show2.value = '';
     return 'active'
   } else {
     return ''

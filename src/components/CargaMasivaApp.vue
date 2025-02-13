@@ -82,6 +82,10 @@
                       </div> -->
 
                 <div class="col-xl-2 col-lg-6 col-md-6 col-sm-4">
+                  <!-- <div id="app"> -->
+                    <!-- <ProgressBar :progress="progress" />
+                    <button @click="increaseProgress">Aumentar Progreso</button> -->
+                  <!-- </div> -->
 
                   <button v-if="cargado"
                     class="form-control form-control-user d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
@@ -224,32 +228,29 @@
 
                   <div class="spreadsheet-container">
 
-                    <div class="row form-control-user text-center" v-if="editaItem">
-                      <!-- <div class="col-md-1"></div> -->
-                      <!-- <div v-for="(i, x) in headers2" class=" m-2">
-                                                <label v-if="i.text != 'OPCIONES'" :for="x" class="text-info">{{ i.text }}</label>
-                                            </div> -->
-                      <div v-for="(ite, index) in itemEditar.dat" class="input-container m-2">
+                    <!-- <div class="row form-control-user text-center" v-if="editaItem"> -->
+
+                    <!-- <div v-for="(ite, index) in itemEditar.dat" class="input-container m-2">
                         <label class="text-info">{{ ite }}</label>
                         <input type="text" :value="ite" :key="index" v-if="index == 0" disabled :id="index"
                           class="form-control form-control-user" @change="archivaValor(index)">
                         <input type="text" :value="ite" :key="index" v-if="index != 0" :id="index"
                           class="form-control form-control-user" @change="archivaValor(index)">
 
-                      </div>
+                      </div> -->
 
 
 
-                      <div class="text-center row m-1">
+                    <!-- <div class="text-center row m-1">
 
                         <button v-if="editaItem" class="d-sm-inline-block btn btn-sm btn-info shadow-sm"
                           @click="guardaCambio()">Actualizar</button>
 
-                      </div>
+                      </div> -->
 
-                      <!-- </div> -->
+                    <!-- </div> -->
 
-                    </div><br>
+                    <!-- </div><br> -->
 
                     <EasyDataTable :headers="headers2" :items="item" buttons-pagination border-cell
                       v-model:items-selected="itemsSelected" header-text-direction="center" body-text-direction="center"
@@ -262,7 +263,7 @@
                       </template>
                       <template #item-opciones="item">
                         <button class="btn btn-primary btn-sm btn-circle ml-1" data-toggle="modal"
-                          data-target="#agregaProducto" @click="editar(item)" v-b-tooltip.hover title="Modificar"><span
+                          data-target="#modificaFila" @click="editar(item)" v-b-tooltip.hover title="Modificar"><span
                             class="fas fa-edit"></span></button>
 
                         <button disabled class="btn btn-danger btn-sm btn-circle ml-1" @click="borrarU(item)"
@@ -414,48 +415,95 @@
 
     </div>
     <!-- Logout Modal-->
-    <div :class="'modal fade ' + showModal" id="filasColumnas" tabindex="-1" role="dialog"
-      aria-labelledby="exampleModalLabel" :aria-hidden="activaHide" :arial-modal="activaModal" :style="displayModal">
+    <!-- <AddProducto v-show="popup" @cerrar="abrirModalAddProd()" /> -->
+    <div :class="'modal fade ' + showModal1" id="modificaFila" tabindex="-1" role="dialog"
+      aria-labelledby="exampleModalLabel" :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Seleccione las columnas que desea visualizar</h5>
-            <button class="close" type="button" data-dismiss="modal" aria-label="Close" @click="abrirModal()">
-              <span aria-hidden="true">×</span>
+            <h5 class="modal-title text-info" id="exampleModalLabel">MODIFICA LOS PARÁMETROS DE
+              LA
+              FILA</h5>
+
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true" class="text-info">×</span>
             </button>
           </div>
-          <div class="modal-body">
-            <h3 style="text-align: center;">Columnas a mostrar</h3>
+          <div class="modal-body text-center">
 
-            <ol>
-              <!-- <li><input type="checkbox" name="foto" :checked="siFoto" @change="quitarFoto"> Foto</li> -->
-              <li><input type="checkbox" name="codigo" :checked="sicodigo" @change="quitarcodigo"> Código
-              </li>
-              <li><input type="checkbox" name="sucursal" :checked="sisucursal" @change="quitarSucursal">
-                Sucursal
-              </li>
-              <li><input type="checkbox" name="descripcion" :checked="sidescripcion" @change="quitardescripcion">
-                Descripción</li>
-              <li><input type="checkbox" name="observaciones" :checked="siobservaciones" @change="quitarobservacion">
-                Observaciones</li>
-              <!-- <li><input type="checkbox" name="estado" :checked="siestado" @change="quitarestado"> Estado</li> -->
-              <li><input type="checkbox" name="acciones" :checked="siacciones" @change="quitaracciones">
-                Acciones
-              </li>
-            </ol>
+            <form class="user">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div v-for="(ite, index) in itemEditar.dat" class="input-container m-1">
+                    <div class="col-md-12">
+                      <label class="text-info" v-if="index != 0">{{ ite }}</label>
+                      <!-- <input type="text" :value="ite" :key="index" v-if="index == 0" disabled :id="index"
+                        class="form-control form-control-user" @change="archivaValor(index)"> -->
+                      <input type="text" :value="ite" :key="index" v-if="index != 0" :id="index" class="form-control "
+                        @change="archivaValor(index)">
+                      <br>
+                    </div>
 
+
+                  </div>
+
+                </div>
+
+              </div>
+              <br>
+
+              <div class="row">
+                <div class="col-md-12 col-xl-12 col-lg-12">
+                  <div class="justify-content-between">
+                    <a data-dismiss="modal" aria-label="close" @click="guardaCambio()"
+                      class="btn btn-info btn-icon-split" :class="disabledProductoBtn">
+                      <span class="icon text-white-50">
+                        <i class="fas fa-edit"></i>
+                      </span>
+                      <span :class="`text`">Modificar</span>
+                    </a>
+                    <a class="btn btn-danger btn-icon-split m-2" data-dismiss="modal" aria-label="close"
+                      :class="disabledProductoBtn">
+                      <span class="icon text-white">
+                        <i class="fas fa-close"></i>
+                      </span>
+                      <span class="text text-white">Cancelar</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+
+            </form>
+
+            <!-- <div>
+            <card class="card-section" style="width: 450px; margin: auto">
+              <h1>Contact Form</h1>
+              <form ref="values" @submit.prevent="sendEmail">
+                <div class="form-group">
+                  <KInput class="form-input" :style="{ width: '290px' }" name="name" v-model="user_name"
+                    placeholder="Name"></KInput>
+                </div>
+                <div class="form-group">
+                  <KInput class="form-input" :style="{ width: '290px' }" name="email" v-model="user_email"
+                    placeholder="email address"></KInput>
+                </div>
+                <div class="form-group">
+                  <kTextarea class="form-input" :style="{ width: '290px' }" name="message" v-model="user_message"
+                    placeholder="Message" :rows="4" />
+                </div>
+                <div class="example-col">
+                  <kButton :style="{ width: '100px' }" id="submit-btn">Submit form</kButton>
+                </div>
+              </form>
+            </card>
+          </div> -->
+            <!-- <vue-barcode :value="cod" tag="svg"></vue-barcode> -->
           </div>
-          <div class="modal-footer">
-            <!-- <a class="btn btn-info" @click="AColumnas">Aceptar</a> -->
-            <a class="btn btn-primary btn-sm" @click="AColumnas">Ninguna</a>
-            <a class="btn btn-info btn-sm" @click="MostrarTodas">Todas</a>
-            <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal"
-              @click="abrirModal()">Cerrar</button>
-          </div>
+
         </div>
       </div>
     </div>
-    <AddProducto v-show="popup" @cerrar="abrirModalAddProd()" />
   </div>
   <template v-if="esperando">
     <div v-on="loading('Cargando datos del archivo excel...')">
@@ -491,6 +539,11 @@ import {
 import {
   ref
 } from 'vue';
+import ProgressBar from './BarProgressApp.vue';
+
+// const progress = ref(1000);
+
+// const ActualizarFila = ref('Modificar')
 
 // const searchField = ref("attributes.codigo");
 
@@ -521,11 +574,14 @@ export default {
     return {
       sheetName: 'Sales Data',
       hostClass: 'spreadsheet',
+      progress : 1000,
       // autoGenerateColumns: true,
       // width: 200,
       // visible: true,
       // resizable: true,
       // priceFormatter: "$ #.00",
+      ActualizarFila: "Modificar",
+      disabledProductoBtn: '',
       item: [],
       sheetData: [],
       sheetsData: [],
@@ -546,6 +602,11 @@ export default {
     }
   },
   methods: {
+    increaseProgress() {
+      if (this.progress < 1000) {
+        this.progress += 10;
+      }
+    },
     editar(item) {
       this.editaItem = true;
       this.itemEditar.dat = [];
