@@ -30,7 +30,7 @@
       <!-- <div class=""> -->
       <div class="row">
 
-        <div class="col-xl-12 col-lg-12">
+        <div class="col-xl-8 col-lg-8">
 
           <div class="card shadow mb-4">
 
@@ -62,7 +62,7 @@
 
                       </div> -->
 
-                <div class="col-xl-8 col-lg-6 col-md-6">
+                <div class="col-xl-10 col-lg-10 col-md-10">
 
                   <!-- <label>Por Sucursal</label> -->
 
@@ -83,7 +83,7 @@
 
                 <div class="col-xl-2 col-lg-6 col-md-6 col-sm-4">
                   <!-- <div id="app"> -->
-                    <!-- <ProgressBar :progress="progress" />
+                  <!-- <ProgressBar :progress="progress" />
                     <button @click="increaseProgress">Aumentar Progreso</button> -->
                   <!-- </div> -->
 
@@ -266,8 +266,8 @@
                           data-target="#modificaFila" @click="editar(item)" v-b-tooltip.hover title="Modificar"><span
                             class="fas fa-edit"></span></button>
 
-                        <button disabled class="btn btn-danger btn-sm btn-circle ml-1" @click="borrarU(item)"
-                          v-b-tooltip.hover title="Eliminar"><span class="fas fas fa-trash-alt"></span></button>
+                        <button class="btn btn-danger btn-sm btn-circle ml-1" @click="borrarU(item)" v-b-tooltip.hover
+                          title="Eliminar"><span class="fas fas fa-trash-alt"></span></button>
                       </template>
 
                       <template #loading>
@@ -436,7 +436,7 @@
                 <div class="col-lg-12">
                   <div v-for="(ite, index) in itemEditar.dat" class="input-container m-1">
                     <div class="col-md-12">
-                      <label class="text-info" v-if="index != 0">{{ ite }}</label>
+                      <label class="text-info" v-if="index != 0">{{ headers2[index].text }}</label>
                       <!-- <input type="text" :value="ite" :key="index" v-if="index == 0" disabled :id="index"
                         class="form-control form-control-user" @change="archivaValor(index)"> -->
                       <input type="text" :value="ite" :key="index" v-if="index != 0" :id="index" class="form-control "
@@ -574,7 +574,7 @@ export default {
     return {
       sheetName: 'Sales Data',
       hostClass: 'spreadsheet',
-      progress : 1000,
+      progress: 1000,
       // autoGenerateColumns: true,
       // width: 200,
       // visible: true,
@@ -635,37 +635,46 @@ export default {
       })
     },
     borrarU(item) {
-      this.itemEditar = []
-      for (let index = 0; index < this.getObjectSize(item) - 1; index++) {
-        this.itemEditar.push(item[index])
-      }
-      for (let index = 0; index < this.listados.length; index++) {
-        if (this.listados[index][1] == this.itemEditar[1]) {
-          this.posicion = index;
-        }
-      }
-      // this.listados.forEach((i, x) => {
-      //   if (i == this.posicion) {
-      //     this.listados.pop();
-      //     // break
-      //   } else {
-      //     listadoProductos.value.splice(i, 1)
-      //   }
-      // })
-      // console.log(this.listados[index][1])
-      for (let index = 0; index < this.listados.length; index++) {
-        if (item[1] == this.listados[index][1]) {
-          if (index == this.listados.length - 1) {
-            this.listados.pop();
-            break
+      // this.eliminar()
+      Swal.fire({
+        title: "Eliminar registro!!!",
+        text: "Está seguro que desea eliminar el registro seleccionado.",
+        icon: "warning",
+        showCancelButton: true,
+        allowOutsideClick: false,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.itemEditar = []
+          for (let index = 0; index < this.getObjectSize(item) - 1; index++) {
+            this.itemEditar.push(item[index])
+          }
+          for (let index = 0; index < this.listados.length; index++) {
+            if (this.listados[index][1] == this.itemEditar[1]) {
+              this.posicion = index;
+            }
+          }
+          for (let index = 0; index < this.listados.length; index++) {
+            if (item[1] == this.listados[index][1]) {
+              if (index == this.listados.length - 1) {
+                this.listados.pop();
+                break
+              } else {
+                this.listados.splice(index, 1)
+              }
+            }
+          }
+          if (this.listados.length > 0) {
+            this.preparar_Guardar(this.listados)
+            successFull('Registro eliminado satisfactoriamente.', 'top-end')
           } else {
-            this.listados.splice(index, 1)
+            successFull('Registro eliminado satisfactoriamente.', 'top-end')
           }
         }
-        // itemsProductos.value.push(listadoProductos.value[index])
-      }
-      // console.log(this.listados)
-      this.preparar_Guardar(this.listados)
+      });
     },
     guardaCambio() {
       this.editaItem = false;
@@ -809,6 +818,39 @@ export default {
         icon: "error",
         title: mensaje
       })
+    },
+    eliminar() {
+      Swal.fire({
+        title: "Salir del sistema!!!",
+        text: "Está seguro que desea salir del sistema.",
+        icon: "question",
+        showCancelButton: true,
+        allowOutsideClick: false,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Salir",
+        cancelButtonText: "Cancelar"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Store.limpiarDatos()
+          localStorage.removeItem('Carg_datA'); // Articulos
+          localStorage.removeItem('Carg_datD'); // Departamentos
+          localStorage.removeItem('Carg_datMe'); // Unidades de medida
+          localStorage.removeItem('Carg_datM'); // Magitudes
+          localStorage.removeItem('Carg_datP'); // Productos
+          localStorage.removeItem('Carg_datS'); // Sucursales
+          localStorage.removeItem('Carg_datU'); // Ubicaciones
+          localStorage.removeItem('Carg_datE'); // Etiquetas
+          localStorage.removeItem('Carg_datL'); // Lotes
+          localStorage.removeItem('Carg_datMo'); // Monedas
+          localStorage.removeItem('Carg_datIM'); // Imagenes
+          localStorage.removeItem('Carg_datEP'); // Etiqueta productos
+          localStorage.removeItem('Carg_datAu'); // Auditoria
+          localStorage.clear();
+          Store.$reset();
+          router.push('/login')
+        }
+      });
     },
     preparar_Guardar(listado) {
       this.store.NewlistadoAgregar.data = [];
@@ -957,6 +999,8 @@ export default {
                 localStorage.setItem("Carg_datA", "0");
                 this.store.cambiaEstado(3)
               }
+              // this.headers2 = []
+              // this.item = []
               // Fin actualizacion
             } else {
               this.ErrorFull("Hubo un error agregando los datos. Verifíquelos y vuelva a intentarlo.", "top-start")
@@ -1121,7 +1165,9 @@ export default {
       } else {
 
       }
-
+      this.headers2 = []
+      this.item = []
+      document.getElementById('archivoExcel').value = ''
       // console.log(response)
     }
   },

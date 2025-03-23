@@ -51,9 +51,9 @@
                 <br>
                 <!--Tabla -->
                 <EasyDataTable table-class-name="customize-table" :headers="headersSucursales" :items="itemsSucursales1"
-                  buttons-pagination border-cell v-model:items-selected="itemsSelected" header-text-direction="center"
-                  body-text-direction="center" :search-field="searchField" :search-value="searchValue"
-                  :rows-per-page="5" show-index :loading="loading">
+                  buttons-pagination border-cell header-text-direction="center" body-text-direction="center"
+                  :search-field="searchField" :search-value="searchValue" :rows-per-page="5" show-index
+                  :loading="loading">
 
 
 
@@ -204,9 +204,9 @@
 
                 <!--Tabla -->
                 <EasyDataTable table-class-name="customize-table" :headers="headersUbicaciones"
-                  :items="itemsUbicaciones1" buttons-pagination border-cell v-model:items-selected="itemsSelected"
-                  header-text-direction="center" body-text-direction="center" :search-field="searchFieldMedida"
-                  :search-value="searchValueMedida" :rows-per-page="5" :loading="loadingU" show-index>
+                  :items="itemsUbicaciones1" buttons-pagination border-cell header-text-direction="center"
+                  body-text-direction="center" :search-field="searchFieldMedida" :search-value="searchValueMedida"
+                  :rows-per-page="5" :loading="loadingU" show-index>
                   <template #empty-message>
                     <a>No hay datos que mostrar</a>
                   </template>
@@ -567,8 +567,8 @@
                     </span>
                     <span :class="`text`">{{ btnModificarM }}</span>
                   </a>
-                  <a class="btn btn-danger btn-icon-split" data-dismiss="modal" aria-label="close"
-                    :class="deactiva" @click="cancelarUMedida()">
+                  <a class="btn btn-danger btn-icon-split" data-dismiss="modal" aria-label="close" :class="deactiva"
+                    @click="cancelarUMedida()">
                     <span class="icon text-white">
                       <i class="fas fa-close"></i>
                     </span>
@@ -707,55 +707,59 @@ const obtenSucursal = (id) => {
 const nuevoArreglo = ref([]);
 const elementos = ref([]);
 function ExportExcel() {
-  elementos.value = []
-  nuevoArreglo.value = []
-  for (let index = 0; index < itemsSucursales1.value.length; index++) {
-    elementos.value.TIPO = itemsSucursales1.value[index].type;
-    elementos.value.SUCURSAL = itemsSucursales1.value[index].attributes.sucursal;
-    elementos.value.ABREVIATURA = itemsSucursales1.value[index].attributes.abreviatura;
-    elementos.value.DESCRIPCIÓN = itemsSucursales1.value[index].attributes.descripcion;
-    elementos.value.OBSERVACIÓN = itemsSucursales1.value[index].attributes.observacion;
-    elementos.value.CREADO = itemsSucursales1.value[index].attributes.timestamps.created_at;
-    elementos.value.MODIFICADO = itemsSucursales1.value[index].attributes.timestamps.updated_at;
-    nuevoArreglo.value.push(elementos.value)
+  if (itemsSucursales1.value.length > 0) {
     elementos.value = []
+    nuevoArreglo.value = []
+    for (let index = 0; index < itemsSucursales1.value.length; index++) {
+      elementos.value.TIPO = itemsSucursales1.value[index].type;
+      elementos.value.SUCURSAL = itemsSucursales1.value[index].attributes.sucursal;
+      elementos.value.ABREVIATURA = itemsSucursales1.value[index].attributes.abreviatura;
+      elementos.value.DESCRIPCIÓN = itemsSucursales1.value[index].attributes.descripcion;
+      elementos.value.OBSERVACIÓN = itemsSucursales1.value[index].attributes.observacion;
+      elementos.value.CREADO = itemsSucursales1.value[index].attributes.timestamps.created_at;
+      elementos.value.MODIFICADO = itemsSucursales1.value[index].attributes.timestamps.updated_at;
+      nuevoArreglo.value.push(elementos.value)
+      elementos.value = []
+    }
+    // console.log(nuevoArreglo)
+    const worksheet = XLSX.utils.json_to_sheet(nuevoArreglo.value);
+    const workbook = XLSX.utils.book_new();
+    // // Abriendo el excel
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+    // // Generar el archivo
+    const fileName = 'Sucursales.xlsx';
+    // // Guardar el archivo execl
+    XLSX.writeFile(workbook, fileName);
+    successFull("Documento creado satisfactoriamente.", "top-end")
   }
-  // console.log(nuevoArreglo)
-  const worksheet = XLSX.utils.json_to_sheet(nuevoArreglo.value);
-  const workbook = XLSX.utils.book_new();
-  // // Abriendo el excel
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
-  // // Generar el archivo
-  const fileName = 'Sucursales.xlsx';
-  // // Guardar el archivo execl
-  XLSX.writeFile(workbook, fileName);
-  successFull("Documento creado satisfactoriamente.", "top-end")
 }
 // Fin
 
 function ExportExcelMedidas() {
-  elementos.value = []
-  nuevoArreglo.value = []
-  for (let index = 0; index < itemsUbicaciones1.value.length; index++) {
-    elementos.value.TIPO = itemsUbicaciones1.value[index].type;
-    elementos.value.UBICACIÓN = itemsUbicaciones1.value[index].attributes.ubicacion;
-    elementos.value.DESCRIPCIÓN = itemsUbicaciones1.value[index].attributes.descripcion;
-    elementos.value.OBSERVACIÓN = itemsUbicaciones1.value[index].attributes.observacion;
-    elementos.value.CREADO = itemsUbicaciones1.value[index].attributes.timestamps.created_at;
-    elementos.value.MODIFICADO = itemsUbicaciones1.value[index].attributes.timestamps.updated_at;
-    nuevoArreglo.value.push(elementos.value)
+  if (itemsUbicaciones1.value.length > 0) {
     elementos.value = []
+    nuevoArreglo.value = []
+    for (let index = 0; index < itemsUbicaciones1.value.length; index++) {
+      elementos.value.TIPO = itemsUbicaciones1.value[index].type;
+      elementos.value.UBICACIÓN = itemsUbicaciones1.value[index].attributes.ubicacion;
+      elementos.value.DESCRIPCIÓN = itemsUbicaciones1.value[index].attributes.descripcion;
+      elementos.value.OBSERVACIÓN = itemsUbicaciones1.value[index].attributes.observacion;
+      elementos.value.CREADO = itemsUbicaciones1.value[index].attributes.timestamps.created_at;
+      elementos.value.MODIFICADO = itemsUbicaciones1.value[index].attributes.timestamps.updated_at;
+      nuevoArreglo.value.push(elementos.value)
+      elementos.value = []
+    }
+    // console.log(nuevoArreglo)
+    const worksheet = XLSX.utils.json_to_sheet(nuevoArreglo.value);
+    const workbook = XLSX.utils.book_new();
+    // // Abriendo el excel
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+    // // Generar el archivo
+    const fileName = 'Ubicaciones.xlsx';
+    // // Guardar el archivo execl
+    XLSX.writeFile(workbook, fileName);
+    successFull("Documento creado satisfactoriamente.", "top-end")
   }
-  // console.log(nuevoArreglo)
-  const worksheet = XLSX.utils.json_to_sheet(nuevoArreglo.value);
-  const workbook = XLSX.utils.book_new();
-  // // Abriendo el excel
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
-  // // Generar el archivo
-  const fileName = 'Ubicaciones.xlsx';
-  // // Guardar el archivo execl
-  XLSX.writeFile(workbook, fileName);
-  successFull("Documento creado satisfactoriamente.", "top-end")
 }
 
 const IdMagnitud = ref(0);
@@ -777,7 +781,8 @@ const EliminarTodos = () => {
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
-    confirmButtonText: "Sí, eliminar"
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar"
   }).then((result) => {
     if (result.isConfirmed) {
       esperando.value = true;
@@ -811,7 +816,8 @@ const EliminarTodosMedidas = () => {
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
-    confirmButtonText: "Sí, eliminar"
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar"
   }).then((result) => {
     if (result.isConfirmed) {
       esperando.value = true;
@@ -1000,87 +1006,86 @@ const agrega = () => {
 }
 
 const generar_pdfU = async () => {
+  if (itemsUbicaciones1.value.length > 0) {
+    let nuevoArreglo = ref([]);
 
-  let nuevoArreglo = ref([]);
+    for (let index = 0; index < itemsUbicaciones1.value.length; index++) {
+      nuevoArreglo.value.push({
+        id: itemsUbicaciones1.value[index].id,
+        ubicacion: itemsUbicaciones1.value[index].attributes.ubicacion,
+        descripcion: itemsUbicaciones1.value[index].attributes.descripcion,
+        // codigo: itemsDeparta1.value[index].relationships.departamento.data.id.toString() + itemsDeparta1.value[index].relationships.articulo.data.id.toString() + itemsDeparta1.value[index].id.toString(),
+        observacion: itemsUbicaciones1.value[index].attributes.observacion,
+        fechaC: itemsUbicaciones1.value[index].attributes.timestamps.created_at,
+        fechaU: itemsUbicaciones1.value[index].attributes.timestamps.updated_at
+      })
+    }
 
-  for (let index = 0; index < itemsUbicaciones1.value.length; index++) {
-    nuevoArreglo.value.push({
-      id: itemsUbicaciones1.value[index].id,
-      ubicacion: itemsUbicaciones1.value[index].attributes.ubicacion,
-      descripcion: itemsUbicaciones1.value[index].attributes.descripcion,
-      // codigo: itemsDeparta1.value[index].relationships.departamento.data.id.toString() + itemsDeparta1.value[index].relationships.articulo.data.id.toString() + itemsDeparta1.value[index].id.toString(),
-      observacion: itemsUbicaciones1.value[index].attributes.observacion,
-      fechaC: itemsUbicaciones1.value[index].attributes.timestamps.created_at,
-      fechaU: itemsUbicaciones1.value[index].attributes.timestamps.updated_at
-    })
+    const doc = new jsPDF('p', 'pt');
+
+    let columnas = [
+      { title: "No", dataKey: "id" },
+      { title: "Nombre", dataKey: "ubicacion" },
+      { title: "Descripción", dataKey: "descripcion" },
+      { title: "Observación", dataKey: "observacion" },
+      { title: "Fecha creación", dataKey: "fechaC" },
+      { title: "Fecha actualización", dataKey: "fechaU" }
+    ]
+
+    doc.autoTable({ columns: columnas, body: nuevoArreglo.value })
+    // const doc = new jsPDF({
+    //   orientation: "landscape",
+    //   unit: "in",
+    //   format: [10, 10]
+    // });
+
+    doc.text("Listado de ubicaciones", 220, 25);
+    doc.save("Ubicaciones.pdf");
   }
-
-  const doc = new jsPDF('p', 'pt');
-
-  let columnas = [
-    { title: "No", dataKey: "id" },
-    { title: "Nombre", dataKey: "ubicacion" },
-    { title: "Descripción", dataKey: "descripcion" },
-    { title: "Observación", dataKey: "observacion" },
-    { title: "Fecha creación", dataKey: "fechaC" },
-    { title: "Fecha actualización", dataKey: "fechaU" }
-  ]
-
-  doc.autoTable({ columns: columnas, body: nuevoArreglo.value })
-  // const doc = new jsPDF({
-  //   orientation: "landscape",
-  //   unit: "in",
-  //   format: [10, 10]
-  // });
-
-  doc.text("Listado de ubicaciones", 220, 25);
-  doc.save("Ubicaciones.pdf");
-
   // cerrarAlert();
 
 
 }
 
 const generar_pdfS = async () => {
+  if (itemsSucursales1.value.length > 0) {
+    let nuevoArreglo = ref([]);
 
-  let nuevoArreglo = ref([]);
+    for (let index = 0; index < itemsSucursales1.value.length; index++) {
+      nuevoArreglo.value.push({
+        id: itemsSucursales1.value[index].id,
+        sucursal: itemsSucursales1.value[index].attributes.sucursal,
+        descripcion: itemsSucursales1.value[index].attributes.descripcion,
+        // codigo: itemsDeparta1.value[index].relationships.departamento.data.id.toString() + itemsDeparta1.value[index].relationships.articulo.data.id.toString() + itemsDeparta1.value[index].id.toString(),
+        observacion: itemsSucursales1.value[index].attributes.observacion,
+        fechaC: itemsSucursales1.value[index].attributes.timestamps.created_at,
+        fechaU: itemsSucursales1.value[index].attributes.timestamps.updated_at
+      })
+    }
 
-  for (let index = 0; index < itemsSucursales1.value.length; index++) {
-    nuevoArreglo.value.push({
-      id: itemsSucursales1.value[index].id,
-      sucursal: itemsSucursales1.value[index].attributes.sucursal,
-      descripcion: itemsSucursales1.value[index].attributes.descripcion,
-      // codigo: itemsDeparta1.value[index].relationships.departamento.data.id.toString() + itemsDeparta1.value[index].relationships.articulo.data.id.toString() + itemsDeparta1.value[index].id.toString(),
-      observacion: itemsSucursales1.value[index].attributes.observacion,
-      fechaC: itemsSucursales1.value[index].attributes.timestamps.created_at,
-      fechaU: itemsSucursales1.value[index].attributes.timestamps.updated_at
-    })
+    const doc = new jsPDF('p', 'pt');
+
+    let columnas = [
+      { title: "No", dataKey: "id" },
+      { title: "Nombre", dataKey: "sucursal" },
+      { title: "Descripción", dataKey: "descripcion" },
+      { title: "Observación", dataKey: "observacion" },
+      { title: "Fecha creación", dataKey: "fechaC" },
+      { title: "Fecha actualización", dataKey: "fechaU" }
+    ]
+
+    doc.autoTable({ columns: columnas, body: nuevoArreglo.value })
+    // const doc = new jsPDF({
+    //   orientation: "landscape",
+    //   unit: "in",
+    //   format: [10, 10]
+    // });
+
+    doc.text("Listado de sucursales", 220, 25);
+    doc.save("Sucursales.pdf");
   }
 
-  const doc = new jsPDF('p', 'pt');
-
-  let columnas = [
-    { title: "No", dataKey: "id" },
-    { title: "Nombre", dataKey: "sucursal" },
-    { title: "Descripción", dataKey: "descripcion" },
-    { title: "Observación", dataKey: "observacion" },
-    { title: "Fecha creación", dataKey: "fechaC" },
-    { title: "Fecha actualización", dataKey: "fechaU" }
-  ]
-
-  doc.autoTable({ columns: columnas, body: nuevoArreglo.value })
-  // const doc = new jsPDF({
-  //   orientation: "landscape",
-  //   unit: "in",
-  //   format: [10, 10]
-  // });
-
-  doc.text("Listado de sucursales", 220, 25);
-  doc.save("Sucursales.pdf");
-
   // cerrarAlert();
-
-
 }
 
 let GuardarMag = ref('Agregar')
@@ -1662,7 +1667,8 @@ const borrarU = (id, correo) => {
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
-    confirmButtonText: "Sí, eliminar"
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar"
   }).then(async (result) => {
     if (result.isConfirmed) {
       store.cambiaEstado(4);
@@ -1688,7 +1694,8 @@ const borrarUMedida = (id, correo) => {
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
-    confirmButtonText: "Sí, eliminar"
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar"
   }).then(async (result) => {
     if (result.isConfirmed) {
       store.cambiaEstado(7);

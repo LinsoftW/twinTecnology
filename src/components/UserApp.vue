@@ -431,7 +431,7 @@
                       <span :class="`text`">{{ btnModificar }}</span>
                     </a>
                     <a class="btn btn-danger btn-icon-split" data-dismiss="modal" aria-label="close"
-                      :class="btnModificarClass" @click="cancelarU()">
+                      :class="btnModificarClass" >
                       <span class="icon text-white">
                         <i class="fas fa-close"></i>
                       </span>

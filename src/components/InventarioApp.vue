@@ -1134,22 +1134,22 @@
                     <a v-if="editar == false" @click="agregarULote(1)" class="btn btn-info btn-icon-split m-2"
                       :class="disabledProductoBtn">
                       <span class="icon text-white-50">
-                      <i class="fas fa-plus"></i>
-                    </span>
+                        <i class="fas fa-plus"></i>
+                      </span>
                       <span :class="`text`">{{ GuardarMag }}</span>
                     </a>
                     <a data-dismiss="modal" aria-label="close" v-if="editar" @click="editarULote()"
                       class="btn btn-primary btn-icon-split m-2" :class="disabledProductoBtn">
                       <span class="icon text-white-50">
-                      <i class="fas fa-edit"></i>
-                    </span>
+                        <i class="fas fa-edit"></i>
+                      </span>
                       <span :class="`text`">{{ btnModificarL }}</span>
                     </a>
                     <a class="btn btn-danger btn-icon-split" data-dismiss="modal" aria-label="close"
                       :class="disabledProductoBtn" @click="cancelarU()">
                       <span class="icon text-white">
-                      <i class="fas fa-close"></i>
-                    </span>
+                        <i class="fas fa-close"></i>
+                      </span>
                       <span class="text text-white">Cancelar</span>
                     </a>
                   </div>
@@ -1462,6 +1462,7 @@ const cargarImagen = async () => {
   let file = document.getElementById("file").files[0];
   imgPerfil.value = file;
   nombreIMG.value = file.name.split('.').pop();
+  // Store.formProductos.data.attributes.imagen_path = file;
   if (file) {
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -1478,34 +1479,35 @@ const actualizaTabla = ref(0)
 
 const generar_pdf = async () => {
 
+  if (itemsProductos1.value.length > 0) {
   let nuevoArreglo = ref([]);
+    for (let index = 0; index < itemsProductos1.value.length; index++) {
+      nuevoArreglo.value.push({
+        id: itemsProductos1.value[index].id,
+        descripcion: itemsProductos1.value[index].attributes.descripcion,
+        codigo: itemsProductos1.value[index].relationships.departamento.data.id.toString() + itemsProductos1.value[index].relationships.articulo.data.id.toString() + itemsProductos1.value[index].id.toString(),
+        observacion: itemsProductos1.value[index].attributes.observacion,
+        medida: obtenMedida(itemsProductos1.value[index].relationships.medida.data.id),
+        minimo: itemsProductos1.value[index].attributes.minimo
+      })
+    }
 
-  for (let index = 0; index < itemsProductos1.value.length; index++) {
-    nuevoArreglo.value.push({
-      id: itemsProductos1.value[index].id,
-      descripcion: itemsProductos1.value[index].attributes.descripcion,
-      codigo: itemsProductos1.value[index].relationships.departamento.data.id.toString() + itemsProductos1.value[index].relationships.articulo.data.id.toString() + itemsProductos1.value[index].id.toString(),
-      observacion: itemsProductos1.value[index].attributes.observacion,
-      medida: obtenMedida(itemsProductos1.value[index].relationships.medida.data.id),
-      minimo: itemsProductos1.value[index].attributes.minimo
-    })
+    const doc = new jsPDF('p', 'pt');
+
+    let columnas = [
+      { title: "No", dataKey: "id" },
+      { title: "Código", dataKey: "codigo" },
+      // { title: "En Stock", dataKey: "cantidad" },
+      { title: "Mínimo stock", dataKey: "minimo" },
+      { title: "Descripción", dataKey: "descripcion" },
+      { title: "Observación", dataKey: "observacion" }
+    ]
+
+    doc.autoTable({ columns: columnas, body: nuevoArreglo.value })
+
+    doc.text("Listado de productos", 220, 25);
+    doc.save("Productos.pdf");
   }
-
-  const doc = new jsPDF('p', 'pt');
-
-  let columnas = [
-    { title: "No", dataKey: "id" },
-    { title: "Código", dataKey: "codigo" },
-    { title: "En Stock", dataKey: "cantidad" },
-    { title: "Mínimo stock", dataKey: "minimo" },
-    { title: "Descripción", dataKey: "descripcion" },
-    { title: "Observación", dataKey: "observacion" }
-  ]
-
-  doc.autoTable({ columns: columnas, body: nuevoArreglo.value })
-
-  doc.text("Listado de productos", 220, 25);
-  doc.save("Productos.pdf");
 }
 
 const NombreProducto = ref('');
@@ -1939,6 +1941,7 @@ const agrega = () => {
   errores.value.cantidad = "";
   errores.value.fecha_compra = "";
   errores.value.etiqueta = "";
+  errores.value.etiqueta_id = "";
   errores.value.producto_id = "";
   errores.value.descripLote = "";
   Store.formProductos.data.attributes.articulo_id = "";
@@ -2113,6 +2116,7 @@ const Modificar_Imagen = async (id) => {
     const response4 = await ActualizarImagen(id, data);
     imgPerfil.value = ""
     const response1 = await obtenerDatos(1)
+    // console.log(response1)
     for (let index = 0; index < response1.length; index++) {
       if (id == response1[index].id) {
         Store.formProductos.data.attributes.descripcion = response1[index].attributes.descripcion;
@@ -2566,29 +2570,31 @@ const elementos = ref([]);
 function ExportExcel() {
   // emit('consultar', 2);
   // console.log(items.value)
-  elementos.value = []
-  nuevoArreglo.value = []
-  for (let index = 0; index < itemsProductos1.value.length; index++) {
-    elementos.value.TIPO = itemsProductos1.value[index].type;
-    elementos.value.CÓDIGO = itemsProductos1.value[index].relationships.departamento.data.id.toString() + itemsProductos1.value[index].relationships.articulo.data.id.toString() + itemsProductos1.value[index].id.toString()
-    elementos.value.MINIMO = itemsProductos1.value[index].attributes.minimo;
-    elementos.value.DESCRIPCIÓN = itemsProductos1.value[index].attributes.descripcion;
-    elementos.value.OBSERVACIÓN = itemsProductos1.value[index].attributes.observacion;
-    elementos.value.U_MEDIDA = obtenMedida(itemsProductos1.value[index].relationships.medida.data.id)
-    nuevoArreglo.value.push(elementos.value)
+  if (itemsProductos1.value.length > 0) {
     elementos.value = []
+    nuevoArreglo.value = []
+    for (let index = 0; index < itemsProductos1.value.length; index++) {
+      elementos.value.TIPO = itemsProductos1.value[index].type;
+      elementos.value.CÓDIGO = itemsProductos1.value[index].relationships.departamento.data.id.toString() + itemsProductos1.value[index].relationships.articulo.data.id.toString() + itemsProductos1.value[index].id.toString()
+      elementos.value.MINIMO = itemsProductos1.value[index].attributes.minimo;
+      elementos.value.DESCRIPCIÓN = itemsProductos1.value[index].attributes.descripcion;
+      elementos.value.OBSERVACIÓN = itemsProductos1.value[index].attributes.observacion;
+      elementos.value.U_MEDIDA = obtenMedida(itemsProductos1.value[index].relationships.medida.data.id)
+      nuevoArreglo.value.push(elementos.value)
+      elementos.value = []
+    }
+    // console.log(nuevoArreglo)
+    const worksheet = XLSX.utils.json_to_sheet(nuevoArreglo.value);
+    // console.log(worksheet)
+    const workbook = XLSX.utils.book_new();
+    // // Abriendo el excel
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+    // // Generar el archivo
+    const fileName = 'Productos.xlsx';
+    // // Guardar el archivo execl
+    XLSX.writeFile(workbook, fileName);
+    successFull("Documento creado satisfactoriamente.", "top-end")
   }
-  // console.log(nuevoArreglo)
-  const worksheet = XLSX.utils.json_to_sheet(nuevoArreglo.value);
-  // console.log(worksheet)
-  const workbook = XLSX.utils.book_new();
-  // // Abriendo el excel
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
-  // // Generar el archivo
-  const fileName = 'Productos.xlsx';
-  // // Guardar el archivo execl
-  XLSX.writeFile(workbook, fileName);
-  successFull("Documento creado satisfactoriamente.", "top-end")
 }
 
 function ImprimirDoc() {
@@ -2631,6 +2637,7 @@ const editarU = async () => {
   btnModificarM.value = 'Actualizando...'
   deactiva.value = 'disabled';
   // console.log(Store.formProductos)
+  // console.log(Store.formProductos.data.attributes.imagen_path)
   const response = await EditarDatos(Store.id, Store.formProductos, 1);
   // console.log(response)
   editar.value = false;
@@ -2638,11 +2645,16 @@ const editarU = async () => {
   Store.formProductos.data.attributes.observacion = '';
   Store.formProductos.data.attributes.articulo_id = ''
   Store.formProductos.data.attributes.minimo = '';
+  Store.formProductos.data.attributes.imagen_path = '';
   Store.EditProductos(response)
-  if (Store.formProductos.data.attributes.imagen_path == "" || Store.formProductos.data.attributes.imagen_path == null) {
+  // console.log(Store.formProductos.data.attributes.imagen_path)
+  if (response.attributes.imagen_path == "" || response.attributes.imagen_path == null) {
     Store.formProductos.data.attributes.imagen_path = "back/resources/imagenes/inventario/productos/" + Store.id + ".png";
   } else {
-    Modificar_Imagen(Store.id)
+    // console.log(response.attributes.imagen_path +' === ' +Store.formProductos.data.attributes.imagen_path)
+    if (response.attributes.imagen_path != Store.formProductos.data.attributes.imagen_path || response.attributes.imagen_path == 'back/resources/imagenes/inventario/productos/productos.jpg') {
+      Modificar_Imagen(Store.id)
+    }
   }
   itemsProductos1.value = Store.itemsProductos;
   actualizaTabla.value = actualizaTabla.value + 1;
@@ -3282,7 +3294,8 @@ const borrarU = async (id, correo, caso) => {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Sí, eliminar"
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar"
     }).then(async (result) => {
       if (result.isConfirmed) {
         Store.cambiaEstado(1);
@@ -3405,7 +3418,8 @@ const borrarUL = async (id, correo, caso) => {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Sí, eliminar"
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar"
     }).then(async (result) => {
       if (result.isConfirmed) {
         Store.cambiaEstado(9);

@@ -90,7 +90,7 @@
 
       <!-- Sidebar - Brand -->
 
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" >
 
         <div class="sidebar-brand-icon rotate-n-15">
 
@@ -2134,11 +2134,12 @@ onMounted(async () => {
       }
     }
 
-    if (buenaConsulta == false) {
-      ErrorFull("Error de red, intente más tarde.", "top-start")
-    } else (
-      successFull("Datos cargados satisfactoriamente.", "top-end")
-    )
+    // if (buenaConsulta == false) {
+    //   ErrorFull("Error cargando algunos datos, intente nuevamente.", "top-start")
+    // } else (
+    //   successFull("Datos cargados satisfactoriamente.", "top-end")
+    // )
+    successFull("Datos cargados satisfactoriamente.", "top-end")
 
   } else {
     router.push('/login');

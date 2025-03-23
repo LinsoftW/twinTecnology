@@ -323,22 +323,22 @@
                     <a v-if="editar == false" @click="agregarU()" class="btn btn-info btn-icon-split m-2"
                       :class="disabledDepartamentodBtn">
                       <span class="icon text-white-50">
-                      <i class="fas fa-plus"></i>
-                    </span>
+                        <i class="fas fa-plus"></i>
+                      </span>
                       <span :class="`text`">{{ GuardarDep }}</span>
                     </a>
                     <a data-dismiss="modal" aria-label="close" v-if="editar" @click="editarU()"
                       class="btn btn-primary btn-icon-split m-2" :class="btnModificarClass">
                       <span class="icon text-white-50">
-                      <i class="fas fa-edit"></i>
-                    </span>
+                        <i class="fas fa-edit"></i>
+                      </span>
                       <span :class="`text`">{{ btnModificar }}</span>
                     </a>
                     <a class="btn btn-danger btn-icon-split" data-dismiss="modal" aria-label="close"
                       :class="btnModificarClass" @click="cancelarU()">
                       <span class="icon text-white">
-                      <i class="fas fa-close"></i>
-                    </span>
+                        <i class="fas fa-close"></i>
+                      </span>
                       <span class="text text-white">Cancelar</span>
                     </a>
                   </div>
@@ -457,22 +457,22 @@
                     <a v-if="editar == false" @click="agregarUArticulo()" class="btn btn-info btn-icon-split m-2"
                       :class="disabledDepartamentodBtn">
                       <span class="icon text-white-50">
-                      <i class="fas fa-plus"></i>
-                    </span>
+                        <i class="fas fa-plus"></i>
+                      </span>
                       <span :class="`text`">{{ GuardarArt }}</span>
                     </a>
                     <a data-dismiss="modal" aria-label="close" v-if="editar" @click="editarUArticulo()"
                       class="btn btn-primary btn-icon-split m-2" :class="btnModificarClass">
                       <span class="icon text-white-50">
-                      <i class="fas fa-edit"></i>
-                    </span>
+                        <i class="fas fa-edit"></i>
+                      </span>
                       <span :class="`text`">{{ btnModificar }}</span>
                     </a>
                     <a class="btn btn-danger btn-icon-split" data-dismiss="modal" aria-label="close"
                       :class="btnModificarClass" @click="cancelarU()">
                       <span class="icon text-white">
-                      <i class="fas fa-close"></i>
-                    </span>
+                        <i class="fas fa-close"></i>
+                      </span>
                       <span class="text text-white">Cancelar</span>
                     </a>
                   </div>
@@ -571,22 +571,22 @@
                     <a v-if="editar == false" @click="agregarUEtiqueta()" class="btn btn-info btn-icon-split m-2"
                       :class="disabledDepartamentodBtn">
                       <span class="icon text-white-50">
-                      <i class="fas fa-plus"></i>
-                    </span>
+                        <i class="fas fa-plus"></i>
+                      </span>
                       <span :class="`text`">{{ GuardarArt }}</span>
                     </a>
                     <a data-dismiss="modal" aria-label="close" v-if="editar" @click="editarUEtiqueta()"
                       class="btn btn-primary btn-icon-split m-2" :class="btnModificarClass">
                       <span class="icon text-white-50">
-                      <i class="fas fa-edit"></i>
-                    </span>
+                        <i class="fas fa-edit"></i>
+                      </span>
                       <span :class="`text`">{{ btnModificar }}</span>
                     </a>
                     <a class="btn btn-danger btn-icon-split" data-dismiss="modal" aria-label="close"
                       :class="btnModificarClass" @click="cancelarU()">
                       <span class="icon text-white">
-                      <i class="fas fa-close"></i>
-                    </span>
+                        <i class="fas fa-close"></i>
+                      </span>
                       <span class="text text-white">Cancelar</span>
                     </a>
                   </div>
@@ -728,126 +728,126 @@ const actualizaArt = () => {
 }
 
 const generar_pdf = async () => {
+  if (itemsDeparta1.value.length > 0) {
+    let nuevoArreglo = ref([]);
 
-  let nuevoArreglo = ref([]);
+    for (let index = 0; index < itemsDeparta1.value.length; index++) {
+      nuevoArreglo.value.push({
+        id: itemsDeparta1.value[index].id,
+        departamento: itemsDeparta1.value[index].attributes.departamento,
+        descripcion: itemsDeparta1.value[index].attributes.descripcion,
+        // codigo: itemsDeparta1.value[index].relationships.departamento.data.id.toString() + itemsDeparta1.value[index].relationships.articulo.data.id.toString() + itemsDeparta1.value[index].id.toString(),
+        observacion: itemsDeparta1.value[index].attributes.observacion,
+        fechaC: itemsDeparta1.value[index].attributes.timestamps.created_at,
+        fechaU: itemsDeparta1.value[index].attributes.timestamps.updated_at
+      })
+    }
 
-  for (let index = 0; index < itemsDeparta1.value.length; index++) {
-    nuevoArreglo.value.push({
-      id: itemsDeparta1.value[index].id,
-      departamento: itemsDeparta1.value[index].attributes.departamento,
-      descripcion: itemsDeparta1.value[index].attributes.descripcion,
-      // codigo: itemsDeparta1.value[index].relationships.departamento.data.id.toString() + itemsDeparta1.value[index].relationships.articulo.data.id.toString() + itemsDeparta1.value[index].id.toString(),
-      observacion: itemsDeparta1.value[index].attributes.observacion,
-      fechaC: itemsDeparta1.value[index].attributes.timestamps.created_at,
-      fechaU: itemsDeparta1.value[index].attributes.timestamps.updated_at
-    })
+    const doc = new jsPDF('p', 'pt');
+
+    let columnas = [
+      { title: "No", dataKey: "id" },
+      { title: "Nombre", dataKey: "departamento" },
+      { title: "Descripción", dataKey: "descripcion" },
+      { title: "Observación", dataKey: "observacion" },
+      { title: "Fecha creación", dataKey: "fechaC" },
+      { title: "Fecha actualización", dataKey: "fechaU" }
+    ]
+
+    doc.autoTable({ columns: columnas, body: nuevoArreglo.value })
+    // const doc = new jsPDF({
+    //   orientation: "landscape",
+    //   unit: "in",
+    //   format: [10, 10]
+    // });
+
+    doc.text("Listado de departamentos", 220, 25);
+    doc.save("Departamentos.pdf");
   }
-
-  const doc = new jsPDF('p', 'pt');
-
-  let columnas = [
-    { title: "No", dataKey: "id" },
-    { title: "Nombre", dataKey: "departamento" },
-    { title: "Descripción", dataKey: "descripcion" },
-    { title: "Observación", dataKey: "observacion" },
-    { title: "Fecha creación", dataKey: "fechaC" },
-    { title: "Fecha actualización", dataKey: "fechaU" }
-  ]
-
-  doc.autoTable({ columns: columnas, body: nuevoArreglo.value })
-  // const doc = new jsPDF({
-  //   orientation: "landscape",
-  //   unit: "in",
-  //   format: [10, 10]
-  // });
-
-  doc.text("Listado de departamentos", 220, 25);
-  doc.save("Departamentos.pdf");
-
   // cerrarAlert();
 
 
 }
 
 const generar_pdfA = async () => {
+  if (itemsArticulos1.value.length > 0) {
+    let nuevoArreglo = ref([]);
 
-  let nuevoArreglo = ref([]);
+    for (let index = 0; index < itemsArticulos1.value.length; index++) {
+      nuevoArreglo.value.push({
+        id: itemsArticulos1.value[index].id,
+        articulo: itemsArticulos1.value[index].attributes.articulo,
+        descripcion: itemsArticulos1.value[index].attributes.descripcion,
+        // codigo: itemsDeparta1.value[index].relationships.departamento.data.id.toString() + itemsDeparta1.value[index].relationships.articulo.data.id.toString() + itemsDeparta1.value[index].id.toString(),
+        observacion: itemsArticulos1.value[index].attributes.observacion,
+        fechaC: itemsArticulos1.value[index].attributes.timestamps.created_at,
+        fechaU: itemsArticulos1.value[index].attributes.timestamps.updated_at
+      })
+    }
 
-  for (let index = 0; index < itemsArticulos1.value.length; index++) {
-    nuevoArreglo.value.push({
-      id: itemsArticulos1.value[index].id,
-      articulo: itemsArticulos1.value[index].attributes.articulo,
-      descripcion: itemsArticulos1.value[index].attributes.descripcion,
-      // codigo: itemsDeparta1.value[index].relationships.departamento.data.id.toString() + itemsDeparta1.value[index].relationships.articulo.data.id.toString() + itemsDeparta1.value[index].id.toString(),
-      observacion: itemsArticulos1.value[index].attributes.observacion,
-      fechaC: itemsArticulos1.value[index].attributes.timestamps.created_at,
-      fechaU: itemsArticulos1.value[index].attributes.timestamps.updated_at
-    })
+    const doc = new jsPDF('p', 'pt');
+
+    let columnas = [
+      { header: "No", dataKey: "id" },
+      { header: "Nombre", dataKey: "articulo" },
+      { header: "Descripción", dataKey: "descripcion" },
+      { header: "Observación", dataKey: "observacion" },
+      { header: "Fecha creación", dataKey: "fechaC" },
+      { header: "Fecha actualización", dataKey: "fechaU" }
+    ]
+
+    doc.autoTable({ columns: columnas, body: nuevoArreglo.value })
+    // const doc = new jsPDF({
+    //   orientation: "landscape",
+    //   unit: "in",
+    //   format: [10, 10]
+    // });
+
+    doc.text("Listado de artículos", 220, 25);
+    doc.save("Articulos.pdf");
   }
-
-  const doc = new jsPDF('p', 'pt');
-
-  let columnas = [
-    { header: "No", dataKey: "id" },
-    { header: "Nombre", dataKey: "articulo" },
-    { header: "Descripción", dataKey: "descripcion" },
-    { header: "Observación", dataKey: "observacion" },
-    { header: "Fecha creación", dataKey: "fechaC" },
-    { header: "Fecha actualización", dataKey: "fechaU" }
-  ]
-
-  doc.autoTable({ columns: columnas, body: nuevoArreglo.value })
-  // const doc = new jsPDF({
-  //   orientation: "landscape",
-  //   unit: "in",
-  //   format: [10, 10]
-  // });
-
-  doc.text("Listado de artículos", 220, 25);
-  doc.save("Articulos.pdf");
-
   // cerrarAlert();
 
 
 }
 
 const generar_pdfE = async () => {
+  if (itemsEtiqueta1.value.length > 0) {
+    let nuevoArreglo = ref([]);
 
-  let nuevoArreglo = ref([]);
+    for (let index = 0; index < itemsEtiqueta1.value.length; index++) {
+      nuevoArreglo.value.push({
+        id: itemsEtiqueta1.value[index].id,
+        etiqueta: itemsEtiqueta1.value[index].attributes.etiqueta,
+        descripcion: itemsEtiqueta1.value[index].attributes.descripcion,
+        // codigo: itemsDeparta1.value[index].relationships.departamento.data.id.toString() + itemsDeparta1.value[index].relationships.articulo.data.id.toString() + itemsDeparta1.value[index].id.toString(),
+        observacion: itemsEtiqueta1.value[index].attributes.observacion,
+        fechaC: itemsEtiqueta1.value[index].attributes.timestamps.created_at,
+        fechaU: itemsEtiqueta1.value[index].attributes.timestamps.updated_at
+      })
+    }
 
-  for (let index = 0; index < itemsEtiqueta1.value.length; index++) {
-    nuevoArreglo.value.push({
-      id: itemsEtiqueta1.value[index].id,
-      etiqueta: itemsEtiqueta1.value[index].attributes.etiqueta,
-      descripcion: itemsEtiqueta1.value[index].attributes.descripcion,
-      // codigo: itemsDeparta1.value[index].relationships.departamento.data.id.toString() + itemsDeparta1.value[index].relationships.articulo.data.id.toString() + itemsDeparta1.value[index].id.toString(),
-      observacion: itemsEtiqueta1.value[index].attributes.observacion,
-      fechaC: itemsEtiqueta1.value[index].attributes.timestamps.created_at,
-      fechaU: itemsEtiqueta1.value[index].attributes.timestamps.updated_at
-    })
+    const doc = new jsPDF('p', 'pt');
+
+    let columnas = [
+      { title: "No", dataKey: "id" },
+      { title: "Nombre", dataKey: "etiqueta" },
+      { title: "Descripción", dataKey: "descripcion" },
+      { title: "Observación", dataKey: "observacion" },
+      { title: "Fecha creación", dataKey: "fechaC" },
+      { title: "Fecha actualización", dataKey: "fechaU" }
+    ]
+
+    doc.autoTable({ columns: columnas, body: nuevoArreglo.value })
+    // const doc = new jsPDF({
+    //   orientation: "landscape",
+    //   unit: "in",
+    //   format: [10, 10]
+    // });
+
+    doc.text("Listado de etiquetas", 220, 25);
+    doc.save("Etiquetas.pdf");
   }
-
-  const doc = new jsPDF('p', 'pt');
-
-  let columnas = [
-    { title: "No", dataKey: "id" },
-    { title: "Nombre", dataKey: "etiqueta" },
-    { title: "Descripción", dataKey: "descripcion" },
-    { title: "Observación", dataKey: "observacion" },
-    { title: "Fecha creación", dataKey: "fechaC" },
-    { title: "Fecha actualización", dataKey: "fechaU" }
-  ]
-
-  doc.autoTable({ columns: columnas, body: nuevoArreglo.value })
-  // const doc = new jsPDF({
-  //   orientation: "landscape",
-  //   unit: "in",
-  //   format: [10, 10]
-  // });
-
-  doc.text("Listado de etiquetas", 220, 25);
-  doc.save("Etiquetas.pdf");
-
   // cerrarAlert();
 
 
@@ -1678,7 +1678,8 @@ const borrarU = (id, correo) => {
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
-    confirmButtonText: "Sí, eliminar"
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar"
   }).then(async (result) => {
     if (result.isConfirmed) {
       store.cambiaEstado(2);
@@ -1705,7 +1706,8 @@ const borrarUArticulo = (id, correo) => {
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
-    confirmButtonText: "Sí, eliminar"
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar"
   }).then(async (result) => {
     if (result.isConfirmed) {
       store.cambiaEstado(3);
@@ -1879,78 +1881,84 @@ const actualizar_datos = () => {
 const nuevoArreglo = ref([]);
 const elementos = ref([]);
 function ExportExcel() {
-  elementos.value = []
-  nuevoArreglo.value = []
-  for (let index = 0; index < itemsDeparta1.value.length; index++) {
-    elementos.value.TIPO = itemsDeparta1.value[index].type;
-    elementos.value.DEPARTAMENTO = itemsDeparta1.value[index].attributes.departamento;
-    elementos.value.DESCRIPCIÓN = itemsDeparta1.value[index].attributes.descripcion;
-    elementos.value.OBSERVACIÓN = itemsDeparta1.value[index].attributes.observacion;
-    elementos.value.CREATED_AT = itemsDeparta1.value[index].attributes.timestamps.created_at;
-    elementos.value.UPDATE_AT = itemsDeparta1.value[index].attributes.timestamps.updated_at;
-    nuevoArreglo.value.push(elementos.value)
+  if (itemsDeparta1.value.length > 0) {
     elementos.value = []
+    nuevoArreglo.value = []
+    for (let index = 0; index < itemsDeparta1.value.length; index++) {
+      elementos.value.TIPO = itemsDeparta1.value[index].type;
+      elementos.value.DEPARTAMENTO = itemsDeparta1.value[index].attributes.departamento;
+      elementos.value.DESCRIPCIÓN = itemsDeparta1.value[index].attributes.descripcion;
+      elementos.value.OBSERVACIÓN = itemsDeparta1.value[index].attributes.observacion;
+      elementos.value.CREATED_AT = itemsDeparta1.value[index].attributes.timestamps.created_at;
+      elementos.value.UPDATE_AT = itemsDeparta1.value[index].attributes.timestamps.updated_at;
+      nuevoArreglo.value.push(elementos.value)
+      elementos.value = []
+    }
+    // console.log(nuevoArreglo)
+    const worksheet = XLSX.utils.json_to_sheet(nuevoArreglo.value);
+    const workbook = XLSX.utils.book_new();
+    // // Abriendo el excel
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+    // // Generar el archivo
+    const fileName = 'Departamentos.xlsx';
+    // // Guardar el archivo execl
+    XLSX.writeFile(workbook, fileName);
+    successFull("Documento creado satisfactoriamente.", "top-end")
   }
-  // console.log(nuevoArreglo)
-  const worksheet = XLSX.utils.json_to_sheet(nuevoArreglo.value);
-  const workbook = XLSX.utils.book_new();
-  // // Abriendo el excel
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
-  // // Generar el archivo
-  const fileName = 'Departamentos.xlsx';
-  // // Guardar el archivo execl
-  XLSX.writeFile(workbook, fileName);
-  successFull("Documento creado satisfactoriamente.", "top-end")
 }
 
 function ExportExcelArticulos() {
-  elementos.value = []
-  nuevoArreglo.value = []
-  for (let index = 0; index < itemsArticulos1.value.length; index++) {
-    elementos.value.TIPO = itemsArticulos1.value[index].type;
-    elementos.value.ARTÍCULO = itemsArticulos1.value[index].attributes.articulo;
-    elementos.value.DESCRIPCIÓN = itemsArticulos1.value[index].attributes.descripcion;
-    elementos.value.OBSERVACIÓN = itemsArticulos1.value[index].attributes.observacion;
-    elementos.value.CREADO = itemsArticulos1.value[index].attributes.timestamps.created_at;
-    elementos.value.MODIFICADO = itemsArticulos1.value[index].attributes.timestamps.updated_at;
-    nuevoArreglo.value.push(elementos.value)
+  if (itemsArticulos1.value.length > 0) {
     elementos.value = []
+    nuevoArreglo.value = []
+    for (let index = 0; index < itemsArticulos1.value.length; index++) {
+      elementos.value.TIPO = itemsArticulos1.value[index].type;
+      elementos.value.ARTÍCULO = itemsArticulos1.value[index].attributes.articulo;
+      elementos.value.DESCRIPCIÓN = itemsArticulos1.value[index].attributes.descripcion;
+      elementos.value.OBSERVACIÓN = itemsArticulos1.value[index].attributes.observacion;
+      elementos.value.CREADO = itemsArticulos1.value[index].attributes.timestamps.created_at;
+      elementos.value.MODIFICADO = itemsArticulos1.value[index].attributes.timestamps.updated_at;
+      nuevoArreglo.value.push(elementos.value)
+      elementos.value = []
+    }
+    // console.log(nuevoArreglo)
+    const worksheet = XLSX.utils.json_to_sheet(nuevoArreglo.value);
+    const workbook = XLSX.utils.book_new();
+    // // Abriendo el excel
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+    // // Generar el archivo
+    const fileName = 'Articulos.xlsx';
+    // // Guardar el archivo execl
+    XLSX.writeFile(workbook, fileName);
+    successFull("Documento creado satisfactoriamente.", "top-end")
   }
-  // console.log(nuevoArreglo)
-  const worksheet = XLSX.utils.json_to_sheet(nuevoArreglo.value);
-  const workbook = XLSX.utils.book_new();
-  // // Abriendo el excel
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
-  // // Generar el archivo
-  const fileName = 'Articulos.xlsx';
-  // // Guardar el archivo execl
-  XLSX.writeFile(workbook, fileName);
-  successFull("Documento creado satisfactoriamente.", "top-end")
 }
 
 function ExportExcelEtiqueta() {
-  elementos.value = []
-  nuevoArreglo.value = []
-  for (let index = 0; index < itemsEtiqueta1.value.length; index++) {
-    elementos.value.TIPO = itemsEtiqueta1.value[index].type;
-    elementos.value.ETIQUETA = itemsEtiqueta1.value[index].attributes.etiqueta;
-    elementos.value.DESCRIPCIÓN = itemsEtiqueta1.value[index].attributes.descripcion;
-    elementos.value.OBSERVACIÓN = itemsEtiqueta1.value[index].attributes.observacion;
-    elementos.value.CREATED_AT = itemsEtiqueta1.value[index].attributes.timestamps.created_at;
-    elementos.value.UPDATE_AT = itemsEtiqueta1.value[index].attributes.timestamps.updated_at;
-    nuevoArreglo.value.push(elementos.value)
+  if (itemsEtiqueta1.value.length > 0) {
     elementos.value = []
+    nuevoArreglo.value = []
+    for (let index = 0; index < itemsEtiqueta1.value.length; index++) {
+      elementos.value.TIPO = itemsEtiqueta1.value[index].type;
+      elementos.value.ETIQUETA = itemsEtiqueta1.value[index].attributes.etiqueta;
+      elementos.value.DESCRIPCIÓN = itemsEtiqueta1.value[index].attributes.descripcion;
+      elementos.value.OBSERVACIÓN = itemsEtiqueta1.value[index].attributes.observacion;
+      elementos.value.CREATED_AT = itemsEtiqueta1.value[index].attributes.timestamps.created_at;
+      elementos.value.UPDATE_AT = itemsEtiqueta1.value[index].attributes.timestamps.updated_at;
+      nuevoArreglo.value.push(elementos.value)
+      elementos.value = []
+    }
+    // console.log(nuevoArreglo)
+    const worksheet = XLSX.utils.json_to_sheet(nuevoArreglo.value);
+    const workbook = XLSX.utils.book_new();
+    // // Abriendo el excel
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+    // // Generar el archivo
+    const fileName = 'Etiquetas.xlsx';
+    // // Guardar el archivo execl
+    XLSX.writeFile(workbook, fileName);
+    successFull("Documento creado satisfactoriamente.", "top-end")
   }
-  // console.log(nuevoArreglo)
-  const worksheet = XLSX.utils.json_to_sheet(nuevoArreglo.value);
-  const workbook = XLSX.utils.book_new();
-  // // Abriendo el excel
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
-  // // Generar el archivo
-  const fileName = 'Etiquetas.xlsx';
-  // // Guardar el archivo execl
-  XLSX.writeFile(workbook, fileName);
-  successFull("Documento creado satisfactoriamente.", "top-end")
 }
 // Fin
 

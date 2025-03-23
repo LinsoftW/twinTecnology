@@ -22,6 +22,7 @@
                 <!-- <div class="topbar-divider d-none d-sm-block" v-if="esperandoProductos"></div> -->
 
                 <div class="h5 mb-0 font-weight-bold text-gray-800">{{ store.cantidadProductos }}</div>
+                <!-- <div v-else class="h5 mb-0 font-weight-bold text-gray-800">0</div> -->
                 <div class="text-md font-weight-bold text-primary mb-1">
                   PRODUCTOS REGISTRADOS</div>
               </div>
@@ -53,6 +54,7 @@
                 <img src="/cargando2.gif" style="width: 40px; height:40px" v-if="esperandoDepartamentos"
                   class="img-profile rounded-circle"> -->
                 <div class="h5 mb-0 font-weight-bold text-gray-800">{{ store.cantidadDepartamentos }}</div>
+                <!-- <div v-else class="h5 mb-0 font-weight-bold text-gray-800">0</div> -->
                 <div class="text-md font-weight-bold text-success mb-1">
                   DEPARTAMENTOS</div>
               </div>
@@ -170,7 +172,9 @@
 
     <div class="row">
 
-      <div class="col-xl-12 col-lg-12">
+      <div class="col-xl-12 col-lg-12 text-center">
+
+        <!-- <img src="/gestion-de-inventarios-concepto-ilust-min.jpg" alt="" style="width: 50%; height:100%"> -->
 
         <!-- Area Chart -->
         <!-- <div class="card shadow mb-4">
@@ -315,7 +319,7 @@ const testData = {
   labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
   datasets: [
     {
-      data: [30, 40, 60, 70, 5],
+      data: [130, 40, 60, 70, 5],
       backgroundColor: ['#77CEFF', '#0079AF', '#123E6B', '#97B0C4', '#A5C8ED'],
     },
   ],

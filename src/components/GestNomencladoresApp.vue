@@ -377,28 +377,28 @@
                 <h1 class="h6 text-gray-900 mb-4"><i>CAMPOS OBLIGATORIOS</i> (<label style="color: red;">*</label>)
                 </h1>
               </div>
-               <div class="row">
+              <div class="row">
                 <div class="col-md-12 col-xl-12 col-lg-12">
                   <div class="justify-content-between">
                     <a v-if="editar == false" @click="agregarU()" class="btn btn-info btn-icon-split m-2"
                       :class="disabledMagnitudBtn">
                       <span class="icon text-white-50">
-                      <i class="fas fa-plus"></i>
-                    </span>
+                        <i class="fas fa-plus"></i>
+                      </span>
                       <span :class="`text`">{{ GuardarMag }}</span>
                     </a>
                     <a data-dismiss="modal" aria-label="close" v-if="editar" @click="editarU()"
                       class="btn btn-primary btn-icon-split m-2" :class="btnModificarClass">
                       <span class="icon text-white-50">
-                      <i class="fas fa-edit"></i>
-                    </span>
+                        <i class="fas fa-edit"></i>
+                      </span>
                       <span :class="`text`">{{ btnModificar }}</span>
                     </a>
                     <a class="btn btn-danger btn-icon-split" data-dismiss="modal" aria-label="close"
                       :class="btnModificarClass" @click="cancelarU()">
                       <span class="icon text-white">
-                      <i class="fas fa-close"></i>
-                    </span>
+                        <i class="fas fa-close"></i>
+                      </span>
                       <span class="text text-white">Cancelar</span>
                     </a>
                   </div>
@@ -555,33 +555,33 @@
               </h1>
             </div>
 
-             <div class="row">
-                <div class="col-md-12 col-xl-12 col-lg-12">
-                  <div class="justify-content-between">
-                    <a v-if="editar == false" @click="agregarUMedida()" class="btn btn-info btn-icon-split m-2"
-                      :class="disabledMedidaBtn">
-                      <span class="icon text-white-50">
+            <div class="row">
+              <div class="col-md-12 col-xl-12 col-lg-12">
+                <div class="justify-content-between">
+                  <a v-if="editar == false" @click="agregarUMedida()" class="btn btn-info btn-icon-split m-2"
+                    :class="disabledMedidaBtn">
+                    <span class="icon text-white-50">
                       <i class="fas fa-plus"></i>
                     </span>
-                      <span :class="`text`">{{ GuardarMedida }}</span>
-                    </a>
-                    <a data-dismiss="modal" aria-label="close" v-if="editar" @click="editarUMedida()"
-                      class="btn btn-primary btn-icon-split m-2" :class="deactiva">
-                      <span class="icon text-white-50">
+                    <span :class="`text`">{{ GuardarMedida }}</span>
+                  </a>
+                  <a data-dismiss="modal" aria-label="close" v-if="editar" @click="editarUMedida()"
+                    class="btn btn-primary btn-icon-split m-2" :class="deactiva">
+                    <span class="icon text-white-50">
                       <i class="fas fa-edit"></i>
                     </span>
-                      <span :class="`text`">{{ btnModificarM }}</span>
-                    </a>
-                    <a class="btn btn-danger btn-icon-split" data-dismiss="modal" aria-label="close"
-                      :class="deactiva" @click="cancelarU()">
-                      <span class="icon text-white">
+                    <span :class="`text`">{{ btnModificarM }}</span>
+                  </a>
+                  <a class="btn btn-danger btn-icon-split" data-dismiss="modal" aria-label="close" :class="deactiva"
+                    @click="cancelarU()">
+                    <span class="icon text-white">
                       <i class="fas fa-close"></i>
                     </span>
-                      <span class="text text-white">Cancelar</span>
-                    </a>
-                  </div>
+                    <span class="text text-white">Cancelar</span>
+                  </a>
                 </div>
               </div>
+            </div>
             <!-- <div class="row">
               <div v-if="editar == false" class="form-group h4 col-lg-3">
 
@@ -676,7 +676,7 @@ const activaModal1 = ref('')
 
 const displayModal1 = ref('')
 
-// const disabledMagnitud = ref('')
+const disabledMagnitud = ref('')
 
 const disabledMagnitudBtn = ref('')
 
@@ -688,28 +688,30 @@ const disabledMedidaBtn = ref('')
 const nuevoArreglo = ref([]);
 const elementos = ref([]);
 function ExportExcel() {
-  elementos.value = []
-  nuevoArreglo.value = []
-  for (let index = 0; index < itemsMagnitud1.value.length; index++) {
-    elementos.value.TIPO = itemsMagnitud1.value[index].type;
-    elementos.value.MAGNITUD = itemsMagnitud1.value[index].attributes.magnitud;
-    elementos.value.DESCRIPCIÓN = itemsMagnitud1.value[index].attributes.descripcion;
-    elementos.value.OBSERVACIÓN = itemsMagnitud1.value[index].attributes.observacion;
-    elementos.value.CREADO = itemsMagnitud1.value[index].attributes.timestamps.created_at;
-    elementos.value.MODIFICADO = itemsMagnitud1.value[index].attributes.timestamps.updated_at;
-    nuevoArreglo.value.push(elementos.value)
+  if (itemsMagnitud1.value.length > 0) {
     elementos.value = []
+    nuevoArreglo.value = []
+    for (let index = 0; index < itemsMagnitud1.value.length; index++) {
+      elementos.value.TIPO = itemsMagnitud1.value[index].type;
+      elementos.value.MAGNITUD = itemsMagnitud1.value[index].attributes.magnitud;
+      elementos.value.DESCRIPCIÓN = itemsMagnitud1.value[index].attributes.descripcion;
+      elementos.value.OBSERVACIÓN = itemsMagnitud1.value[index].attributes.observacion;
+      elementos.value.CREADO = itemsMagnitud1.value[index].attributes.timestamps.created_at;
+      elementos.value.MODIFICADO = itemsMagnitud1.value[index].attributes.timestamps.updated_at;
+      nuevoArreglo.value.push(elementos.value)
+      elementos.value = []
+    }
+    // console.log(nuevoArreglo)
+    const worksheet = XLSX.utils.json_to_sheet(nuevoArreglo.value);
+    const workbook = XLSX.utils.book_new();
+    // // Abriendo el excel
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+    // // Generar el archivo
+    const fileName = 'Magnitudes.xlsx';
+    // // Guardar el archivo execl
+    XLSX.writeFile(workbook, fileName);
+    successFull("Documento exportado satisfactoriamente.", "top-end")
   }
-  // console.log(nuevoArreglo)
-  const worksheet = XLSX.utils.json_to_sheet(nuevoArreglo.value);
-  const workbook = XLSX.utils.book_new();
-  // // Abriendo el excel
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
-  // // Generar el archivo
-  const fileName = 'Magnitudes.xlsx';
-  // // Guardar el archivo execl
-  XLSX.writeFile(workbook, fileName);
-  successFull("Documento exportado satisfactoriamente.", "top-end")
 }
 // Fin
 
@@ -724,29 +726,31 @@ const obtenMagnitud = (id) => {
 }
 
 function ExportExcelMedidas() {
-  elementos.value = []
-  nuevoArreglo.value = []
-  for (let index = 0; index < itemsMedida1.value.length; index++) {
-    elementos.value.TIPO = itemsMedida1.value[index].type;
-    elementos.value.U_MEDIDA = itemsMedida1.value[index].attributes.medida;
-    elementos.value.DESCRIPCIÓN = itemsMedida1.value[index].attributes.descripcion;
-    elementos.value.OBSERVACIÓN = itemsMedida1.value[index].attributes.observacion;
-    elementos.value.MAGNITUD = obtenMagnitud(itemsMedida1.value[index].relationships.magnitud.data.id);
-    elementos.value.CREADO = itemsMedida1.value[index].attributes.timestamps.created_at;
-    elementos.value.MODIFCADO = itemsMedida1.value[index].attributes.timestamps.updated_at;
-    nuevoArreglo.value.push(elementos.value)
+  if (itemsMedida1.value.length > 0) {
     elementos.value = []
+    nuevoArreglo.value = []
+    for (let index = 0; index < itemsMedida1.value.length; index++) {
+      elementos.value.TIPO = itemsMedida1.value[index].type;
+      elementos.value.U_MEDIDA = itemsMedida1.value[index].attributes.medida;
+      elementos.value.DESCRIPCIÓN = itemsMedida1.value[index].attributes.descripcion;
+      elementos.value.OBSERVACIÓN = itemsMedida1.value[index].attributes.observacion;
+      elementos.value.MAGNITUD = obtenMagnitud(itemsMedida1.value[index].relationships.magnitud.data.id);
+      elementos.value.CREADO = itemsMedida1.value[index].attributes.timestamps.created_at;
+      elementos.value.MODIFCADO = itemsMedida1.value[index].attributes.timestamps.updated_at;
+      nuevoArreglo.value.push(elementos.value)
+      elementos.value = []
+    }
+    // console.log(nuevoArreglo)
+    const worksheet = XLSX.utils.json_to_sheet(nuevoArreglo.value);
+    const workbook = XLSX.utils.book_new();
+    // // Abriendo el excel
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+    // // Generar el archivo
+    const fileName = 'Medidas.xlsx';
+    // // Guardar el archivo execl
+    XLSX.writeFile(workbook, fileName);
+    successFull("Documento exportado satisfactoriamente.", "top-end")
   }
-  // console.log(nuevoArreglo)
-  const worksheet = XLSX.utils.json_to_sheet(nuevoArreglo.value);
-  const workbook = XLSX.utils.book_new();
-  // // Abriendo el excel
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
-  // // Generar el archivo
-  const fileName = 'Medidas.xlsx';
-  // // Guardar el archivo execl
-  XLSX.writeFile(workbook, fileName);
-  successFull("Documento exportado satisfactoriamente.", "top-end")
 }
 
 const IdMagnitud = ref(0);
@@ -760,82 +764,83 @@ const cerrarAlert = () => {
 }
 
 const generar_pdf = async () => {
+  if (itemsMagnitud1.value.length > 0) {
+    let nuevoArreglo = ref([]);
 
-  let nuevoArreglo = ref([]);
+    for (let index = 0; index < itemsMagnitud1.value.length; index++) {
+      nuevoArreglo.value.push({
+        id: itemsMagnitud1.value[index].id,
+        magnitud: itemsMagnitud1.value[index].attributes.magnitud,
+        descripcion: itemsMagnitud1.value[index].attributes.descripcion,
+        // codigo: itemsDeparta1.value[index].relationships.departamento.data.id.toString() + itemsDeparta1.value[index].relationships.articulo.data.id.toString() + itemsDeparta1.value[index].id.toString(),
+        observacion: itemsMagnitud1.value[index].attributes.observacion,
+        fechaC: itemsMagnitud1.value[index].attributes.timestamps.created_at,
+        fechaU: itemsMagnitud1.value[index].attributes.timestamps.updated_at
+      })
+    }
 
-  for (let index = 0; index < itemsMagnitud1.value.length; index++) {
-    nuevoArreglo.value.push({
-      id: itemsMagnitud1.value[index].id,
-      magnitud: itemsMagnitud1.value[index].attributes.magnitud,
-      descripcion: itemsMagnitud1.value[index].attributes.descripcion,
-      // codigo: itemsDeparta1.value[index].relationships.departamento.data.id.toString() + itemsDeparta1.value[index].relationships.articulo.data.id.toString() + itemsDeparta1.value[index].id.toString(),
-      observacion: itemsMagnitud1.value[index].attributes.observacion,
-      fechaC: itemsMagnitud1.value[index].attributes.timestamps.created_at,
-      fechaU: itemsMagnitud1.value[index].attributes.timestamps.updated_at
-    })
+    const doc = new jsPDF('p', 'pt');
+
+    let columnas = [
+      { title: "No", dataKey: "id" },
+      { title: "Nombre", dataKey: "magnitud" },
+      { title: "Descripción", dataKey: "descripcion" },
+      { title: "Observación", dataKey: "observacion" },
+      { title: "Fecha creación", dataKey: "fechaC" },
+      { title: "Fecha actualización", dataKey: "fechaU" }
+    ]
+
+    doc.autoTable({ columns: columnas, body: nuevoArreglo.value })
+    // const doc = new jsPDF({
+    //   orientation: "landscape",
+    //   unit: "in",
+    //   format: [10, 10]
+    // });
+
+    doc.text("Listado de magnitudes", 220, 25);
+    doc.save("Magnitudes.pdf");
+
+    // cerrarAlert();
   }
-
-  const doc = new jsPDF('p', 'pt');
-
-  let columnas = [
-    { title: "No", dataKey: "id" },
-    { title: "Nombre", dataKey: "magnitud" },
-    { title: "Descripción", dataKey: "descripcion" },
-    { title: "Observación", dataKey: "observacion" },
-    { title: "Fecha creación", dataKey: "fechaC" },
-    { title: "Fecha actualización", dataKey: "fechaU" }
-  ]
-
-  doc.autoTable({ columns: columnas, body: nuevoArreglo.value })
-  // const doc = new jsPDF({
-  //   orientation: "landscape",
-  //   unit: "in",
-  //   format: [10, 10]
-  // });
-
-  doc.text("Listado de magnitudes", 220, 25);
-  doc.save("Magnitudes.pdf");
-
-  // cerrarAlert();
-
 
 }
 
 const generar_pdfMed = async () => {
+  if (itemsMedida1.value.length > 0) {
+    let nuevoArreglo = ref([]);
 
-  let nuevoArreglo = ref([]);
+    for (let index = 0; index < itemsMedida1.value.length; index++) {
+      nuevoArreglo.value.push({
+        id: itemsMedida1.value[index].id,
+        medida: itemsMedida1.value[index].attributes.medida,
+        descripcion: itemsMedida1.value[index].attributes.descripcion,
+        observacion: itemsMedida1.value[index].attributes.observacion,
+        fechaC: itemsMedida1.value[index].attributes.timestamps.created_at,
+        fechaU: itemsMedida1.value[index].attributes.timestamps.updated_at
+      })
+    }
 
-  for (let index = 0; index < itemsMedida1.value.length; index++) {
-    nuevoArreglo.value.push({
-      id: itemsMedida1.value[index].id,
-      medida: itemsMedida1.value[index].attributes.medida,
-      descripcion: itemsMedida1.value[index].attributes.descripcion,
-      observacion: itemsMedida1.value[index].attributes.observacion,
-      fechaC: itemsMedida1.value[index].attributes.timestamps.created_at,
-      fechaU: itemsMedida1.value[index].attributes.timestamps.updated_at
-    })
+    const doc = new jsPDF('p', 'pt');
+
+    let columnas = [
+      { title: "No", dataKey: "id" },
+      { title: "Nombre", dataKey: "medida" },
+      { title: "Descripción", dataKey: "descripcion" },
+      { title: "Observación", dataKey: "observacion" },
+      { title: "Fecha creación", dataKey: "fechaC" },
+      { title: "Fecha actualización", dataKey: "fechaU" }
+    ]
+
+    doc.autoTable({ columns: columnas, body: nuevoArreglo.value })
+    // const doc = new jsPDF({
+    //   orientation: "landscape",
+    //   unit: "in",
+    //   format: [10, 10]
+    // });
+
+    doc.text("Listado de unidades de medidas", 220, 25);
+    doc.save("U_Medidas.pdf");
   }
-
-  const doc = new jsPDF('p', 'pt');
-
-  let columnas = [
-    { title: "No", dataKey: "id" },
-    { title: "Nombre", dataKey: "medida" },
-    { title: "Descripción", dataKey: "descripcion" },
-    { title: "Observación", dataKey: "observacion" },
-    { title: "Fecha creación", dataKey: "fechaC" },
-    { title: "Fecha actualización", dataKey: "fechaU" }
-  ]
-
-  doc.autoTable({ columns: columnas, body: nuevoArreglo.value })
-  // const doc = new jsPDF({
-  //   orientation: "landscape",
-  //   unit: "in",
-  //   format: [10, 10]
-  // });
-
-  doc.text("Listado de unidades de medidas", 220, 25);
-  doc.save("U_Medidas.pdf");
 }
 
 const EliminarTodos = () => {
@@ -846,7 +851,8 @@ const EliminarTodos = () => {
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
-    confirmButtonText: "Sí, eliminar"
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar"
   }).then((result) => {
     if (result.isConfirmed) {
       esperando.value = true;
@@ -880,7 +886,8 @@ const EliminarTodosMedidas = () => {
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
-    confirmButtonText: "Sí, eliminar"
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar"
   }).then((result) => {
     if (result.isConfirmed) {
       esperando.value = true;
@@ -1527,7 +1534,8 @@ const borrarU = (id, correo) => {
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
-    confirmButtonText: "Sí, eliminar"
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar"
   }).then(async (result) => {
     if (result.isConfirmed) {
       store.cambiaEstado(8);
@@ -1553,7 +1561,8 @@ const borrarUMedida = (id, correo) => {
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
-    confirmButtonText: "Sí, eliminar"
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar"
   }).then(async (result) => {
     if (result.isConfirmed) {
       store.cambiaEstado(6);

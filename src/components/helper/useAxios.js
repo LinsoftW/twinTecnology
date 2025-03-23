@@ -19,9 +19,9 @@ const endpointOp = [];
 const endpointPe = [];
 
 // Nube
-export const urlAuditoria = "http://www.twintechnology.cu/inventory/api";
-export const url = "http://www.twintechnology.cu/inventory/api/inventario";
-export const urlImagen = "http://www.twintechnology.cu/inventory/api/imagen/producto_imagenes";
+export const urlAuditoria = "http://api.tododetalles.shop/auditoria_inventario";
+export const url = "http://api.tododetalles.shop";
+export const urlImagen = "http://api.tododetalles.shop/imagen/producto_imagenes";
 export const urlPersonas = urlAuditoria + "/autenticacion/";
 
 // Local
@@ -79,7 +79,7 @@ export async function obtenerDatos(n) {
       //   return cache.get(endpointS);
       // }
       try {
-        const response = await axiosInstance.get('/sucursales');
+        const response = await axiosInstance.get('/sucursals');
         // cache.set(endpointS, response.data.data);
         return response.data.data;
       } catch (error) {
@@ -103,7 +103,7 @@ export async function obtenerDatos(n) {
       //   return cache.get(endpointMa);
       // }
       try {
-        const response = await axiosInstance.get('/magnitudes');
+        const response = await axiosInstance.get('/magnituds');
         // cache.set(endpointMa, response.data.data);
         return response.data.data;
       } catch (error) {
@@ -139,7 +139,7 @@ export async function obtenerDatos(n) {
       //   return cache.get(endpointU);
       // }
       try {
-        const response = await axiosInstance.get('/ubicaciones');
+        const response = await axiosInstance.get('/ubicacions');
         // cache.set(endpointU, response.data.data);
         return response.data.data;
       } catch (error) {
@@ -175,7 +175,7 @@ export async function obtenerDatos(n) {
       //   return cache.get(endpointL);
       // }
       try {
-        const response = await axiosInstance.get('/lotes');
+        const response = await axiosInstance.get('/lots');
         // cache.set(endpointL, response.data.data);
         return response.data.data;
       } catch (error) {
@@ -247,7 +247,7 @@ export async function obtenerDatos(n) {
       //   return cache.get(endpointOp);
       // }
       try {
-        const response = await axiosInstance.get('/operaciones');
+        const response = await axiosInstance.get('/operacions');
         // cache.set(endpointOp, response.data.data);
         return response.data.data;
       } catch (error) {
@@ -316,7 +316,7 @@ export async function GuardarDatos(datos, n, i) {
       break;
     case 2:
       try {
-        const response = await axiosInstance.post('/sucursales', datos);
+        const response = await axiosInstance.post('/sucursals', datos);
         return response.data.data;
       } catch (error) {
         throw error;
@@ -332,7 +332,7 @@ export async function GuardarDatos(datos, n, i) {
       break;
     case 4:
       try {
-        const response = await axiosInstance.post('/magnitudes', datos);
+        const response = await axiosInstance.post('/magnituds', datos);
         return response.data.data;
       } catch (error) {
         throw error;
@@ -356,7 +356,7 @@ export async function GuardarDatos(datos, n, i) {
       break;
     case 7:
       try {
-        const response = await axiosInstance.post('/ubicaciones', datos);
+        const response = await axiosInstance.post('/ubicacions', datos);
         return response.data.data;
       } catch (error) {
         throw error;
@@ -380,7 +380,7 @@ export async function GuardarDatos(datos, n, i) {
       break;
     case 10:
       try {
-        const response = await axiosInstance.post('/lotes', datos);
+        const response = await axiosInstance.post('/lots', datos);
         return response.data.data;
       } catch (error) {
         throw error;
@@ -414,7 +414,7 @@ export async function GuardarDatos(datos, n, i) {
       try {
         // /inventario/lots/1?function[name]=ajustar_cantidad
         // console.log(i)
-        const response = await axiosInstanceA.patch(`/inventario/lots/${i}?function[name]=ajustar_cantidad`, datos);
+        const response = await axiosInstanceA.patch(`/lots/${i}?function[name]=ajustar_cantidad`, datos);
         return response.data.data;
       } catch (error) {
         throw error;
@@ -447,7 +447,7 @@ export async function GuardarColecciones(datos, n) {
       break;
     case 2:
       try {
-        const response = await axiosInstance.post('/sucursales', datos);
+        const response = await axiosInstance.post('/sucursals', datos);
         return response.data.data;
       } catch (error) {
         throw error;
@@ -463,7 +463,7 @@ export async function GuardarColecciones(datos, n) {
       break;
     case 4:
       try {
-        const response = await axiosInstance.post('/magnitudes', datos);
+        const response = await axiosInstance.post('/magnituds', datos);
         return response.data.data;
       } catch (error) {
         throw error;
@@ -488,7 +488,7 @@ export async function GuardarColecciones(datos, n) {
       break;
     case 7:
       try {
-        const response = await axiosInstance.post('/ubicaciones', datos);
+        const response = await axiosInstance.post('/ubicacions', datos);
         return response.data.data;
       } catch (error) {
         throw error;
@@ -504,7 +504,7 @@ export async function GuardarColecciones(datos, n) {
       break;
     case 9:
       try {
-        const response = await axiosInstance.post('/lotes', datos);
+        const response = await axiosInstance.post('/lots', datos);
         return response.data.data;
       } catch (error) {
         throw error;
@@ -536,7 +536,7 @@ export async function EliminarDatos(id, n) {
       break;
     case 2:
       try {
-        const response = await axiosInstance.delete(`${url}/sucursales/${id}`);
+        const response = await axiosInstance.delete(`${url}/sucursals/${id}`);
         return response.data.data;
       } catch (error) {
         throw error;
@@ -552,7 +552,7 @@ export async function EliminarDatos(id, n) {
       break;
     case 4:
       try {
-        const response = await axiosInstance.delete(`${url}/magnitudes/${id}`);
+        const response = await axiosInstance.delete(`${url}/magnituds/${id}`);
         return response.data.data;
       } catch (error) {
         throw error;
@@ -576,7 +576,7 @@ export async function EliminarDatos(id, n) {
       break;
     case 7:
       try {
-        const response = await axiosInstance.delete(`${url}/ubicaciones/${id}`);
+        const response = await axiosInstance.delete(`${url}/ubicacions/${id}`);
         return response.data.data;
       } catch (error) {
         throw error;
@@ -592,7 +592,7 @@ export async function EliminarDatos(id, n) {
       break;
     case 9:
       try {
-        const response = await axiosInstance.delete(`${url}/lotes/${id}`);
+        const response = await axiosInstance.delete(`${url}/lots/${id}`);
         return response.data.data;
       } catch (error) {
         throw error;
@@ -697,7 +697,7 @@ export async function EditarDatos(id, datos, n) {
     case 4:
       try {
 
-        const response = await axiosInstance.patch(`${url}/magnitudes/${id}`, datos);
+        const response = await axiosInstance.patch(`${url}/magnituds/${id}`, datos);
         return response.data.data;
       } catch (error) {
         throw error;
@@ -721,7 +721,7 @@ export async function EditarDatos(id, datos, n) {
       break;
     case 7:
       try {
-        const response = await axiosInstance.patch(`${url}/ubicaciones/${id}`, datos);
+        const response = await axiosInstance.patch(`${url}/ubicacions/${id}`, datos);
         return response.data.data;
       } catch (error) {
         throw error;
@@ -755,7 +755,7 @@ export async function EditarDatos(id, datos, n) {
       break;
     case 10:
       try {
-        const response = await axiosInstance.patch(`${url}/lotes/${id}`, datos);
+        const response = await axiosInstance.patch(`${url}/lots/${id}`, datos);
         return response.data.data;
       } catch (error) {
         throw error;

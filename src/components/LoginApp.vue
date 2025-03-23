@@ -28,21 +28,25 @@
                     <div class="form-group text-left">
                       <label style="color: black;"><i class="fa fa-user-circle"></i> Correo
                         electrónico:</label>
-                      <input type="text" class="form-control form-control-user" id="correo" aria-describedby=""
+                      <!-- <input type="text" class="form-control form-control-user" id="correo" aria-describedby=""
                         v-model="form.correo" placeholder="Correo electrónico" @change="ValidacionEmail()"
-                        @keyup="ValidacionEmail()" style="text-transform:lowercase;" value="admin@admin.co">
+                        @keyup="ValidacionEmail()" style="text-transform:lowercase;" value="admin@admin.co"> -->
+                        <input type="text" class="form-control form-control-user" id="correo" aria-describedby=""
+                        v-model="form.correo" placeholder="Nombre de usuario" style="text-transform:lowercase;" value="admin@admin.co">
                       <div class="text-center"><label v-if="emailError" :style="'color: ' + color">{{ emailError
-                          }}</label></div>
+                      }}</label></div>
 
                       <!--<input type="email" class="form-control form-control-user" id="exampleInputEmail"
                           aria-describedby="emailHelp" placeholder="Nombre de usuario o correo electrónico">-->
                     </div>
                     <div class="form-group text-left">
                       <label style="color: black;"><i class="fa fa-key"></i> Contraseña:</label>
-                      <input type="password" v-model="form.passw" class="form-control form-control-user" id="contras"
-                        placeholder="Contraseña" @keyup="ValidarPassWord()" @change="ValidarPassWord()" value="123">
+                      <!-- <input type="password" v-model="form.passw" class="form-control form-control-user" id="contras"
+                        placeholder="Contraseña" @keyup="ValidarPassWord()" @change="ValidarPassWord()" value="123"> -->
+                        <input type="password" v-model="form.passw" class="form-control form-control-user" id="contras"
+                        placeholder="Contraseña">
                       <div class="text-center"><label v-if="passwError" :style="'color: ' + colorP">{{ passwError
-                          }}</label></div>
+                      }}</label></div>
                     </div>
                     <!-- <div class="form-group">
                       <div class="custom-control custom-checkbox small">
@@ -57,6 +61,7 @@
                       <i class="fa fa-check" v-if="disable == ''"></i> {{ Continuar }}
 
                     </a>
+                    <!-- <button @click="recaptcha">Ejecutar reCAPTCHA</button> -->
                   </form>
                   <hr>
                   <!-- <br> -->
@@ -121,7 +126,7 @@
                         v-model="form.correo" placeholder="Ej: pepe@ppe.co" @change="ValidacionEmail()"
                         @keyup="ValidacionEmail()" style="text-transform:lowercase;" value="admin@admin.co">
                       <div class="text-center"><label v-if="emailError" :style="'color: ' + color">{{ emailError
-                          }}</label></div>
+                      }}</label></div>
                     </div>
                     <div class="form-group text-left">
                       <label style="color: black;"><i class="fa fa-user-circle"></i> Nombre:</label>
@@ -129,7 +134,7 @@
                         v-model="form.nombre" placeholder="Ej: Pepe" @change="validaNombre()" @keyup="validaNombre()"
                         value="admin@admin.co">
                       <div class="text-center"><label v-if="nombreError" :style="'color: ' + color">{{ nombreError
-                          }}</label></div>
+                      }}</label></div>
                     </div>
                     <div class="form-group text-left">
                       <label style="color: black;"><i class="fa fa-user-circle"></i> Primer apellido:</label>
@@ -137,7 +142,7 @@
                         v-model="form.apellido1" placeholder="Ej: Perez" @change="validaApellidos1()"
                         @keyup="validaApellidos1()" value="admin@admin.co">
                       <div class="text-center"><label v-if="apellido1Error" :style="'color: ' + color">{{ apellido1Error
-                          }}</label></div>
+                      }}</label></div>
                     </div>
                     <div class="form-group text-left">
                       <label style="color: black;"><i class="fa fa-user-circle"></i> Segundo apellido:</label>
@@ -145,7 +150,7 @@
                         v-model="form.apellido2" placeholder="Ej: Perez" @change="validaApellidos2()"
                         @keyup="validaApellidos2()" value="admin@admin.co">
                       <div class="text-center"><label v-if="apellido2Error" :style="'color: ' + color">{{ apellido2Error
-                          }}</label></div>
+                      }}</label></div>
                     </div>
                     <!-- <div class="form-group text-left">
                       <label style="color: black;"><i class="fa fa-key"></i> Contraseña:</label>
@@ -173,6 +178,7 @@
                         </a>
                       </div>
                     </div>
+
                   </form>
                   <!-- <hr> -->
                   <!-- <br> -->
@@ -218,8 +224,9 @@ import { onMounted, reactive, ref } from 'vue';
 // import axios from 'axios';
 import Swal from 'sweetalert2';
 import { ErrorFull } from './controler/ControlerApp';
-import { obtenerDatos } from './helper/useAxios';
+// import { obtenerDatos } from './helper/useAxios';
 import { useStoreAxios } from '@/store/AxiosStore';
+// import { VueReCaptcha, useReCaptcha } from 'vue-recaptcha-v3';
 
 const Store = useStoreAxios();
 // import ModalApp from './ModalApp.vue';
@@ -390,13 +397,22 @@ const Continuar = ref('Entrar')
 const autenticate = async () => {
   disable.value = 'disabled'
   Continuar.value = 'Autenticando...'
-  if (form.correo == 'admin' && form.passw == "admin123*") {
+  if ((form.correo == 'informatico' && form.passw == "Ceremonia00*")) {
     successFull('Bienvenido al sistema', 'top-end');
     localStorage.setItem("userName", "admin");
     router.push('/user');
-  } else {
-    localStorage.setItem("userName", "Pello");
+  }
+  else if ((form.correo == 'propietario' && form.passw == "propietario123*") || (form.correo == 'almacenero' && form.passw == "almacenero123*")) {
+    localStorage.setItem("userName", form.correo);
     router.push('/inicio');
+  } else{
+    Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Error de autenticación",
+      });
+      disable.value = ''
+      Continuar.value = 'Entrar'
   }
   // if (ValidacionEmail() == "OKKK") {
   // consulto el correo y la contraseña
@@ -425,7 +441,7 @@ const autenticate = async () => {
   //   }
 
   // }
-  disable.value = ''
+  // disable.value = ''
   // if (form.correo == 'admin@admin.co' && form.passw == '123') {
   // }
   //   } else {
