@@ -19,9 +19,9 @@ const endpointOp = [];
 const endpointPe = [];
 
 // Nube
-export const urlAuditoria = "http://api.tododetalles.shop/auditoria_inventario";
-export const url = "http://api.tododetalles.shop";
-export const urlImagen = "http://api.tododetalles.shop/imagen/producto_imagenes";
+export const urlAuditoria = "https://api.tododetalles.shop/auditoria_inventario";
+export const url = "https//api.tododetalles.shop";
+export const urlImagen = "https://api.tododetalles.shop/imagen/producto_imagenes";
 export const urlPersonas = urlAuditoria + "/autenticacion/";
 
 // Local
