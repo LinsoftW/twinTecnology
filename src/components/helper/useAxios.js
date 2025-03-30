@@ -19,16 +19,16 @@ const endpointOp = [];
 const endpointPe = [];
 
 // Nube
-// export const urlAuditoria = "https://api.tododetalles.shop/auditoria_inventario";
-// export const url = "https//api.tododetalles.shop";
-// export const urlImagen = "https://api.tododetalles.shop/imagen/producto_imagenes";
-// export const urlPersonas = urlAuditoria + "/autenticacion/";
+export const urlAuditoria = "https://api.tododetalles.shop/auditoria_inventario";
+export const url = "https://api.tododetalles.shop";
+export const urlImagen = "https://api.tododetalles.shop/imagen/producto_imagenes";
+export const urlPersonas = urlAuditoria + "/autenticacion/";
 
 // Local
-export const urlAuditoria = "https://localhost/auditoria_inventario";
-export const url = "https//localhost";
-export const urlImagen = "https://localhost/imagen/producto_imagenes";
-export const urlPersonas = urlAuditoria + "/autenticacion/";
+// export const urlAuditoria = "https://localhost/auditoria_inventario";
+// export const url = "https//localhost";
+// export const urlImagen = "https://localhost/imagen/producto_imagenes";
+// export const urlPersonas = urlAuditoria + "/autenticacion/";
 
 // const urlUploadImagen = "http://www.twintechnology.cu/inventory/api/imagen/producto_imagenes/upload";
 
