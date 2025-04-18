@@ -60,6 +60,10 @@
           <i class="fa fa-map-marker-alt text-info" aria-hidden="true"></i> Ubicaciones
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </context-menu-item>
+         <context-menu-item @click="handleOption('Opción 11')">
+          <i class="fa fa-money text-info" aria-hidden="true"></i> Monedas
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </context-menu-item>
         <!-- </context-menu-group> -->
       </context-menu-group>
 
@@ -371,6 +375,14 @@
 
             </router-link>
 
+            <router-link class="button" to="/monedas" @click="obtenerLinkA(12)">
+
+              <a class="collapse-item" v-bind:class="ActivaLink(12)" :key="12"> <i class="fa fa-money"></i>
+
+                Monedas</a>
+
+            </router-link>
+
 
 
             <!-- <router-link class="button" to="/gest_inventario">
@@ -577,7 +589,7 @@
 
           <!-- Topbar Search -->
 
-          <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+          <!-- <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
 
             <div class="input-group">
 
@@ -596,7 +608,7 @@
 
             </div>
 
-          </form>
+          </form> -->
 
 
 
@@ -610,19 +622,19 @@
 
             <li class="nav-item dropdown no-arrow d-sm-none">
 
-              <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown"
+              <!-- <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
 
                 <i class="fas fa-search fa-fw"></i>
 
-              </a>
+              </a> -->
 
               <!-- Dropdown - Messages -->
 
-              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+             <!-- <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
                 aria-labelledby="searchDropdown">
 
-                <form class="form-inline mr-auto w-100 navbar-search">
+                 <form class="form-inline mr-auto w-100 navbar-search">
 
                   <div class="input-group">
 
@@ -643,7 +655,7 @@
 
                 </form>
 
-              </div>
+              </div>-->
 
             </li>
 
@@ -1098,6 +1110,12 @@
 
         </div>
 
+        <div v-if="route.path == '/monedas'">
+
+          <MonedasApp :key="Kmonedas" />
+
+        </div>
+
         <div v-if="route.path == '/gest_nomencladores'">
 
           <GestNomencladoresApp :key="Kgest_nomencladores" @actualiza="consultar" />
@@ -1347,14 +1365,15 @@ import emailjs from 'emailjs-com';
 import * as XLSX from 'xlsx';
 import UbicacionesApp from '@/components/UbicacionesApp.vue';
 import { useStoreAxios } from '@/store/AxiosStore';
-import { obtenerDatos } from '../components/helper/useAxios';
+import { obtenerDatos, verificarConexion } from '../components/helper/useAxios';
 import AuditoriaApp from '@/components/AuditoriaApp.vue';
 
 import { ContextMenu, ContextMenuItem } from '@imengyu/vue3-context-menu';
 import PerfilApp from '@/components/PerfilApp.vue';
 import FloatingButton from '@/components/FloatingButton.vue';
 import { event } from 'jquery';
-import { error } from 'jquery';
+import MonedasApp from '@/components/MonedasApp.vue';
+// import { error } from 'jquery';
 // import { useQuasar, useDialogPluginComponent } from 'quasar';
 
 // const { dialogRef, onDialogHide, onDialogOK, onDialogCancel, qTable } = useDialogPluginComponent()
@@ -1421,6 +1440,9 @@ import { error } from 'jquery';
 // }
 
 // const show = ref('');
+// let buenaConsulta = 0;
+localStorage.setItem('buenaConsulta', '0')
+
 const handleFloatingButtonClick = (event) => {
   // Lógica para manejar el clic del botón flotante
   // alert('¡Botón flotante clickeado!');
@@ -1432,8 +1454,10 @@ const handleFloatingButtonClick = (event) => {
 
 const optionsComponent = ref({ zIndex: 3, minWidth: 230, x: 0, y: 0, });
 const showMENU = ref(false);
+
 const onContextMenu = (event) => {
   collapsed.value = 'collapsed';
+  // console.log(collapsed.value)
   activa.value = false;
   show.value = '';
   collapsed2.value = 'collapsed';
@@ -1552,6 +1576,9 @@ const handleOption = (option) => {
       break;
     case 'Opción 10':
       router.push('/ubicaciones');
+      break;
+    case 'Opción 11':
+      router.push('/monedas');
       break;
     default:
       break;
@@ -2058,97 +2085,109 @@ onMounted(async () => {
   }
   Ctoggled.value = 'toggled';
   editando.value = true;
-  let buenaConsulta = false;
+
   evitarRecargar();
-  if (localStorage.getItem('userName')) {
-    if (localStorage.getItem('Carg_datP') == '0') {
-      // cargando los productos
-      Store.cambiaEstado(1)
-      const response = await obtenerDatos(1);
-      // console.log(response)
-      if (response == null) {
-        Store.cambiaEstado(1)
-        buenaConsulta = false;
-        // ErrorFull("Error de red, intente más tarde.", "top-start")
-      } else {
-        Store.setCantidadProductos(response.length)
-        if (response.length > 0) {
-          Store.setListadoProductos(response)
-          localStorage.setItem("LProductos", response);
+  const verConexion = await verificarConexion()
+    if (verConexion){
+      // console.log("Siiii")
+      if (localStorage.getItem('userName')) {
+        if (localStorage.getItem('Carg_datP') == '0') {
+          // cargando los productos
+          Store.cambiaEstado(1)
+          const response = await obtenerDatos(1);
+          // console.log(response)
+          if (response == null) {
+            Store.cambiaEstado(1)
+            // buenaConsulta = false;
+            // ErrorFull("Error de red, intente más tarde.", "top-start")
+          } else {
+            Store.setCantidadProductos(response.length)
+            if (response.length > 0) {
+              Store.setListadoProductos(response)
+              localStorage.setItem("LProductos", response);
+            }
+            localStorage.removeItem('buenaConsulta');
+            localStorage.setItem('buenaConsulta', "1")
+            // for (let index = 0; index < response.length; index++) {
+            //   Store.nextIDProducto = response[index].id;
+            // }
+            // console.log(Store.nextIDProducto + 1)
+            localStorage.removeItem('Carg_datP')
+            localStorage.setItem("Carg_datP", "1");
+            Store.cambiaEstado(1);
+          }
         }
-        buenaConsulta = true;
-        // for (let index = 0; index < response.length; index++) {
-        //   Store.nextIDProducto = response[index].id;
-        // }
-        // console.log(Store.nextIDProducto + 1)
-        localStorage.setItem("Carg_datP", "1");
-        Store.cambiaEstado(1);
-      }
-    }
-    if (localStorage.getItem('Carg_datD') == '0') {
-      // cargando los departamentos
-      Store.cambiaEstado(2)
-      const response = await obtenerDatos(6);
-      if (response == null) {
-        Store.cambiaEstado(2)
-        buenaConsulta = false;
-        // ErrorFull("Error de red, intente más tarde.", "top-start")
-      } else {
-        Store.setCantidadDepartamentos(response.length)
-        if (response.length > 0) {
-          Store.setListadoDepartamentos(response)
-          localStorage.setItem("LDepartamentos", response);
+        if (localStorage.getItem('Carg_datD') == '0') {
+          // cargando los departamentos
+          Store.cambiaEstado(2)
+          const response = await obtenerDatos(6);
+          if (response == null) {
+            Store.cambiaEstado(2)
+            // buenaConsulta = false;
+            // ErrorFull("Error de red, intente más tarde.", "top-start")
+          } else {
+            Store.setCantidadDepartamentos(response.length)
+            if (response.length > 0) {
+              Store.setListadoDepartamentos(response)
+              localStorage.setItem("LDepartamentos", response);
+            }
+            localStorage.removeItem('buenaConsulta');
+            localStorage.setItem('buenaConsulta', "2")
+            // for (let index = 0; index < response.length; index++) {
+            //   Store.nextIDDepartamento = response[index].id;
+            // }
+            // console.log(Store.nextIDDepartamento)
+            localStorage.removeItem('Carg_datD')
+            localStorage.setItem("Carg_datD", "1");
+            Store.cambiaEstado(2);
+          }
+
         }
-        buenaConsulta = true;
-        // for (let index = 0; index < response.length; index++) {
-        //   Store.nextIDDepartamento = response[index].id;
-        // }
-        // console.log(Store.nextIDDepartamento)
-        localStorage.setItem("Carg_datD", "1");
-        Store.cambiaEstado(2);
-      }
 
-    }
-
-    if (localStorage.getItem('Carg_datA') == '0') {
-      // cargando los articulos
-      Store.cambiaEstado(3)
-      const response = await obtenerDatos(5);
-      if (response == null) {
-        Store.cambiaEstado(3)
-        buenaConsulta = false;
-        // ErrorFull("Error de red, intente más tarde.", "top-start")
-      } else {
-        Store.setCantidadArticulos(response.length)
-        if (response.length > 0) {
-          Store.setListadoArticulos(response)
-          localStorage.setItem("LArticulos", response);
+        if (localStorage.getItem('Carg_datA') == '0') {
+          // cargando los articulos
+          Store.cambiaEstado(3)
+          const response = await obtenerDatos(5);
+          if (response == null) {
+            Store.cambiaEstado(3)
+            // buenaConsulta = false;
+            // ErrorFull("Error de red, intente más tarde.", "top-start")
+          } else {
+            Store.setCantidadArticulos(response.length)
+            if (response.length > 0) {
+              Store.setListadoArticulos(response)
+              localStorage.setItem("LArticulos", response);
+            }
+            localStorage.removeItem('buenaConsulta');
+            localStorage.setItem('buenaConsulta', "3")
+            // for (let index = 0; index < response.length; index++) {
+            //     Store.nextIDArticulo = response[index].id;
+            // }
+            // console.log(Store.nextIDArticulo)
+            localStorage.removeItem('Carg_datA')
+            localStorage.setItem("Carg_datA", "1");
+            Store.cambiaEstado(3)
+          }
         }
-        buenaConsulta = true;
-        // for (let index = 0; index < response.length; index++) {
-        //     Store.nextIDArticulo = response[index].id;
-        // }
-        // console.log(Store.nextIDArticulo)
-        localStorage.setItem("Carg_datA", "1");
-        Store.cambiaEstado(3)
+
+        if (localStorage.getItem('buenaConsulta') == '0') {
+          // ErrorFull("Error cargando algunos datos, intente nuevamente.", "top-start")
+        } else  {
+          localStorage.removeItem('buenaConsulta');
+          // localStorage.setItem('buenaConsulta', "1")
+          // console.log("Entro aqui")
+          successFull("Datos cargados satisfactoriamente.", "top-end")
+        }
+        // successFull("Datos cargados satisfactoriamente.", "top-end")
+        // console.log("Montado menu")
+
+      } else {
+        router.push('/login');
       }
+    }else{
+      // console.log("Nooo")
+      ErrorFull("No tiene buena conexión a la red, vuelva a intentarlo más tarde.", "top-start")
     }
-
-    // if (buenaConsulta == false) {
-    //   ErrorFull("Error cargando algunos datos, intente nuevamente.", "top-start")
-    // } else (
-    //   successFull("Datos cargados satisfactoriamente.", "top-end")
-    // )
-    successFull("Datos cargados satisfactoriamente.", "top-end")
-
-  } else {
-    router.push('/login');
-  }
-})
-
-onBeforeMount(async () => {
-  // clearInactivityTimer();
-  // window.removeEventListener('scroll', resetTimer);
 })
 
 const route = useRoute();
@@ -2161,7 +2200,7 @@ const successFull = (mensaje, posicion) => {
     toast: true,
     position: posicion,
     showConfirmButton: false,
-    timer: 1500,
+    timer: 1800,
     //timerProgressBar: true,
   })
   toast.fire({
@@ -2176,7 +2215,7 @@ const ErrorFull = (mensaje, posicion) => {
     toast: true,
     position: posicion,
     showConfirmButton: false,
-    timer: 1500,
+    timer: 1800,
     //timerProgressBar: true,
   })
   toast.fire({

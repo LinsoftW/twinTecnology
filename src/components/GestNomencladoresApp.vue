@@ -19,34 +19,50 @@
                   <div class="col-md-6 col-xl-6 col-lg-12">
                     <div class="justify-content-between">
                       <a data-toggle="modal" @click="agrega()" data-target="#agregaMagnitudes"
-                        class="btn btn-info btn-sm btn-icon-split" :class="disabledMagnitud">
+                        class="btn btn-info btn-sm btn-icon-split" :class="disabledMagnitudBtn">
                         <span class="icon text-white-50">
                           <i class="fas fa-plus"></i>
                         </span>
                         <span class="text">Nuevo</span>
                       </a>
-                      <a @click="generar_pdf()" class="btn btn-secondary btn-sm btn-icon-split m-2"
+                      <!-- <a @click="generar_pdf()" class="btn btn-secondary btn-sm btn-icon-split m-2"
                         :class="disabledProductos">
                         <span class="icon text-white-50">
                           <i class="fas fa-file-pdf"></i>
                         </span>
                         <span class="text">PDF</span>
-                      </a>
-                      <a @click="ExportExcel()" class="btn btn-secondary btn-sm btn-icon-split"
-                        :class="disabledMagnitud">
+                      </a> -->
+                      <a @click="ExportExcel()" class="btn btn-secondary btn-sm btn-icon-split m-2"
+                        :class="disabledMagnitudBtn">
                         <span class="icon text-white-50">
                           <i class="fas fa-download"></i>
                         </span>
                         <span class="text">Excel</span>
                       </a>
+                      <a @click="EliminarSelecc()" class="btn btn-danger btn-sm btn-icon-split m-1"
+                      :class="disabledMagnitudBtn">
+                      <span class="icon text-white">
+                        <i class="fas fa-trash"></i>
+                      </span>
+                      <span class="text text-white">Eliminar seleccionados</span>
+                    </a>
+                    <a @click="actualizarMagnitud()" class="btn btn-success btn-sm btn-icon-split m-1"
+                      :class="disabledMagnitudBtn">
+                      <span class="icon text-white">
+                        <i v-if="actualizarTablaM == false" class="fas fa-refresh"></i>
+                        <i v-else class="fa fa-spinner fa-spin"></i>
+                      </span>
+                      <span v-if="actualizarTablaM == false" class="text text-white">{{ Actualizar }}</span>
+                      <span v-else class="text text-white">{{ Actualizar }}</span>
+                    </a>
                       <!-- <a data-toggle="modal" @click="agrega()" data-target="#agregaMagnitudes"
-                        class="d-sm-inline-block btn btn-sm btn-info shadow-sm m-2" v-b-tooltip.hover
+                        class="d-sm-inline-block btn btn-sm btn-info shadow-sm m-2" 
                         title="Agregar magnitud" disabled><i class="fas fa-plus fa-sm "></i> Nuevo </a> -->
                       <!-- <a @click="abrirModalAddProd()" href="#"
-                        class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm" v-b-tooltip.hover
+                        class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm"
                         title="Agregar producto"><i class="fas fa-print fa-sm "></i> Imprimir </a> -->
                       <!-- <a @click="ExportExcel()" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
-                        v-b-tooltip.hover title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a> -->
+                         title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a> -->
                     </div>
                   </div>
                   <div class="col-md-6 col-xl-6 col-lg-12 ">
@@ -58,9 +74,9 @@
                 <br>
                 <!--Tabla -->
                 <EasyDataTable table-class-name="customize-table" :headers="headers" :items="itemsMagnitud1"
-                  buttons-pagination border-cell v-model:items-selected="itemsSelected" header-text-direction="center"
+                  buttons-pagination border-cell header-text-direction="center"
                   body-text-direction="center" :search-field="searchField" :search-value="searchValue"
-                  :rows-per-page="5" show-index :loading="store.esperandoMagnitudes">
+                  :rows-per-page="5" :loading="store.esperandoMagnitudes" v-model:items-selected="itemsSelected">
 
 
 
@@ -79,7 +95,7 @@
 
 
 
-                                      data-target="#EditarProducto" @click="seleccionaProducto(item)" v-b-tooltip.hover
+                                      data-target="#EditarProducto" @click="seleccionaProducto(item)"
 
 
 
@@ -88,14 +104,14 @@
 
 
                       <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal"
-                        @click="clickEditar(item.id)" data-target="#agregaMagnitudes" v-b-tooltip.hover
+                        @click="clickEditar(item.id)" data-target="#agregaMagnitudes"
                         title="Editar"><span class="fas fa-edit"></span></button>
                       <!-- <button class="btn btn-info" data-toggle="modal" @click="clickEditar(item.id)" data-target="#agregaEditaMagnitudes"> <span
                   class="fa fa-plus"></span> Nuevo</button> -->
 
 
 
-                      <!-- <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
+                      <!-- <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)"
 
 
 
@@ -103,20 +119,20 @@
 
 
 
-                          <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
+                          <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)"
 
 
 
                             title="Restar"><span class="fas fa-minus"></span></button> -->
                       <button class="btn btn-danger btn-sm btn-circle ml-1"
-                        @click="borrarU(item.id, item.attributes.magnitud)" v-b-tooltip.hover title="Eliminar"><span
+                        @click="borrarU(item.id, item.attributes.magnitud)"  title="Eliminar"><span
                           class="fas fas fa-trash-alt"></span></button>
 
                       <!-- <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode"
 
 
 
-                            @click="generarCodeBar(item.attributes.codigo)" v-b-tooltip.hover title="Código de barra"><span
+                            @click="generarCodeBar(item.attributes.codigo)"  title="Código de barra"><span
 
 
 
@@ -143,7 +159,7 @@
                     </div>
                   </template>
                   <template #loading>
-                    <img src="/cargando4.gif" style="width: 100px; height: 80px;" />
+                    <img src="/cargando2.gif" style="width: 60px; height: 60px;" />
                   </template>
                 </EasyDataTable>
               </div>
@@ -176,28 +192,44 @@
                         </span>
                         <span class="text">Nuevo</span>
                       </a>
-                      <a @click="generar_pdfMed()" class="btn btn-secondary btn-sm btn-icon-split m-2"
+                      <!-- <a @click="generar_pdfMed()" class="btn btn-secondary btn-sm btn-icon-split m-2"
                         :class="disabledProductos">
                         <span class="icon text-white-50">
                           <i class="fas fa-file-pdf"></i>
                         </span>
                         <span class="text">PDF</span>
-                      </a>
-                      <a @click="ExportExcelMedidas()" class="btn btn-secondary btn-sm btn-icon-split"
+                      </a> -->
+                      <a @click="ExportExcelMedidas()" class="btn btn-secondary btn-sm btn-icon-split m-2"
                         :class="disabledMedida">
                         <span class="icon text-white-50">
                           <i class="fas fa-download"></i>
                         </span>
                         <span class="text">Excel</span>
                       </a>
+                      <a @click="EliminarSeleccMed()" class="btn btn-danger btn-sm btn-icon-split m-1"
+                      :class="disabledMedida">
+                      <span class="icon text-white">
+                        <i class="fas fa-trash"></i>
+                      </span>
+                      <span class="text text-white">Eliminar seleccionados</span>
+                    </a>
+                    <a @click="actualizarMedida()" class="btn btn-success btn-sm btn-icon-split m-1"
+                      :class="disabledMedida">
+                      <span class="icon text-white">
+                        <i v-if="actualizarTablaMed == false" class="fas fa-refresh"></i>
+                        <i v-else class="fa fa-spinner fa-spin"></i>
+                      </span>
+                      <span v-if="actualizarTablaMed == false" class="text text-white">{{ ActualizarMed }}</span>
+                      <span v-else class="text text-white">{{ ActualizarMed }}</span>
+                    </a>
                       <!-- <a data-toggle="modal" @click="agrega()" data-target="#agregaMedidas"
-                        class="d-sm-inline-block btn btn-sm btn-info shadow-sm m-2" v-b-tooltip.hover
+                        class="d-sm-inline-block btn btn-sm btn-info shadow-sm m-2"
                         title="Agregar unidad de medida"><i class="fas fa-plus fa-sm "></i> Nuevo </a>
                       <a @click="abrirModalAddProd()" href="#"
-                        class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm" v-b-tooltip.hover
+                        class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm"
                         title="Agregar producto"><i class="fas fa-print fa-sm "></i> Imprimir </a>
                       <a @click="ExportExcel()" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
-                        v-b-tooltip.hover title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a> -->
+                         title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a> -->
                     </div>
                   </div>
                   <div class="col-md-6 col-xl-6 col-lg-12 ">
@@ -211,9 +243,9 @@
 
                 <!--Tabla -->
                 <EasyDataTable table-class-name="customize-table" :headers="headersMedidas" :items="itemsMedida1"
-                  buttons-pagination border-cell v-model:items-selected="itemsSelected" header-text-direction="center"
+                  buttons-pagination border-cell header-text-direction="center"
                   body-text-direction="center" :search-field="searchFieldMedida" :search-value="searchValueMedida"
-                  :rows-per-page="5" :loading="store.esperandoMedidas" show-index>
+                  :rows-per-page="5" :loading="store.esperandoMedidas" v-model:items-selected="itemsSelected1">
                   <template #empty-message>
                     <a>No hay datos que mostrar</a>
                   </template>
@@ -226,15 +258,15 @@
 
 
 
-                                      data-target="#EditarProducto" @click="seleccionaProducto(item)" v-b-tooltip.hover
+                                      data-target="#EditarProducto" @click="seleccionaProducto(item)"
 
 
 
                                       title="Modificar"><span class="fas fa-edit"></span></button> -->
                       <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal" data-target="#agregaMedidas"
-                        @click="clickEditarMedidas(item.id)" v-b-tooltip.hover title="Editar"><span
+                        @click="clickEditarMedidas(item.id)"  title="Editar"><span
                           class="fas fa-edit"></span></button>
-                      <!-- <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover
+                      <!-- <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)"
 
 
 
@@ -242,14 +274,14 @@
 
 
 
-                          <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
+                          <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)"
 
 
 
                             title="Restar"><span class="fas fa-minus"></span></button> -->
 
                       <button class="btn btn-danger btn-sm btn-circle ml-1"
-                        @click="borrarUMedida(item.id, item.attributes.medida)" v-b-tooltip.hover title="Eliminar"><span
+                        @click="borrarUMedida(item.id, item.attributes.medida)"  title="Eliminar"><span
                           class="fas fas fa-trash-alt"></span></button>
 
 
@@ -258,7 +290,7 @@
 
 
 
-                            @click="generarCodeBar(item.attributes.codigo)" v-b-tooltip.hover title="Código de barra"><span
+                            @click="generarCodeBar(item.attributes.codigo)"  title="Código de barra"><span
 
 
 
@@ -282,7 +314,7 @@
                     </div>
                   </template>
                   <template #loading>
-                    <img src="/cargando4.gif" style="width: 100px; height: 80px;" />
+                    <img src="/cargando2.gif" style="width: 60px; height: 60px;" />
                   </template>
                 </EasyDataTable>
               </div>
@@ -649,7 +681,7 @@ import { onMounted, reactive, ref } from 'vue';
 import * as XLSX from 'xlsx';
 import { useStoreAxios } from '@/store/AxiosStore';
 import { ErrorFull, successFull } from './controler/ControlerApp';
-import { EditarDatos, EliminarDatos, GuardarDatos, obtenerDatos } from './helper/useAxios';
+import { EditarDatos, EliminarDatos, GuardarDatos, obtenerDatos, verificarConexion } from './helper/useAxios';
 import jsPDF from 'jspdf';
 
 const itemsMagnitud1 = ref([])
@@ -657,6 +689,10 @@ const itemsMagnitud1 = ref([])
 const itemsMedida1 = ref([])
 
 const store = useStoreAxios();
+
+const itemsSelected = ref([]);
+
+const itemsSelected1 = ref([]);
 
 const btnModificar = ref('Modificar')
 
@@ -677,6 +713,14 @@ const activaModal1 = ref('')
 const displayModal1 = ref('')
 
 const disabledMagnitud = ref('')
+
+const Actualizar = ref('Actualizar')
+
+const actualizarTablaM = ref(false)
+
+const actualizarTablaMed = ref(false)
+
+const ActualizarMed = ref('Actualizar')
 
 const disabledMagnitudBtn = ref('')
 
@@ -714,6 +758,168 @@ function ExportExcel() {
   }
 }
 // Fin
+
+const actualizarMagnitud = async () => {
+  actualizarTablaM.value = true;
+  Actualizar.value = 'Actualizando...'
+  let bienActualizado = false;
+  disabledMagnitudBtn.value = 'disabled'
+  // localStorage.removeItem('Carg_datA'); // Articulos
+  localStorage.removeItem('Carg_datM'); // Departamentos
+  // localStorage.removeItem('Carg_datMe'); // Unidades de medida
+  // localStorage.removeItem('Carg_datM'); // Magitudes
+  // localStorage.removeItem('Carg_datP'); // Productos
+  // localStorage.removeItem('Carg_datS'); // Sucursales
+  // localStorage.removeItem('Carg_datU'); // Ubicaciones
+  // localStorage.removeItem('Carg_datE'); // Etiquetas
+  // localStorage.removeItem('Carg_datL'); // Lotes
+  // localStorage.removeItem('Carg_datMo'); // Monedas
+  // localStorage.removeItem('Carg_datIM'); // Imagenes
+  // localStorage.removeItem('Carg_datEP'); // Etiqueta productos
+  // localStorage.removeItem('Carg_datAu'); // Auditoria
+  // localStorage.removeItem('Carg_datPe'); // Personas
+  localStorage.setItem('Carg_datM', '0'); // Departamentos
+  // localStorage.setItem('Carg_datA', '0'); // Articulos
+  // localStorage.setItem('Carg_datMe', '0'); // Unidades de medida
+  // localStorage.setItem('Carg_datM', '0'); // Magitudes
+  // localStorage.setItem('Carg_datP', '0'); // Productos
+  // localStorage.setItem('Carg_datS', '0'); // Sucursales
+  // localStorage.setItem('Carg_datU', '0'); // Ubicaciones
+  // localStorage.setItem('Carg_datE', '0'); // Etiquetas
+  // localStorage.setItem('Carg_datL', '0'); // Lotes
+  // localStorage.setItem('Carg_datMo', '0'); // Monedas
+  // localStorage.setItem('Carg_datIM', '0'); // Imagenes
+  // localStorage.setItem('Carg_datEP', '0'); // Etiqueta productos
+  // localStorage.setItem('Carg_datAu', '0'); // Auditorias
+  // localStorage.setItem('Carg_datPe', '0'); // Personas
+
+  if (localStorage.getItem('userName')) {
+    // Cargando productos
+    // console.log(Store.itemsProductos)
+    // cargando departamentos
+    if (localStorage.getItem('Carg_datM') == '0') {
+      store.cambiaEstado(8);
+      const response = await obtenerDatos(4);
+      // console.log(response)
+      if (response == null) {
+        store.cambiaEstado(8);
+        // console.log("Nooo")
+      } else {
+        if (response.length >= 0) {
+          store.setListadoMagnitud(response)
+          bienActualizado = true;
+        // } else {
+        //   bienActualizado = false;
+        }
+        localStorage.setItem("Carg_datM", "1");
+        itemsMagnitud1.value = store.itemsMagnitudes;
+        store.cambiaEstado(8);
+      }
+    } else {
+      store.cambiaEstado(8);
+      itemsMagnitud1.value = store.itemsMagnitudes;
+      store.cambiaEstado(8);
+    }
+
+    disabledMagnitudBtn.value = '';
+    actualizarTablaM.value = false;
+    Actualizar.value = 'Actualizar'
+    if (bienActualizado == true) {
+      successFull("Datos actualizados satisfactoriamente.", "top-end")
+    } else {
+      ErrorFull("Hubo un error actualizando los datos. Vuelva a intentarlo.", "top-start")
+    }
+  }
+}
+
+const EliminarSelecc = () => {
+  for (let index = 0; index < itemsSelected.value.length; index++) {
+    // console.log(itemsSelected.value[index])
+    borrarU(itemsSelected.value[index].id, itemsSelected.value[index].attributes.codigo, 2)
+  }
+
+}
+
+const EliminarSeleccMed = () => {
+  for (let index = 0; index < itemsSelected1.value.length; index++) {
+    // console.log(itemsSelected.value[index])
+    borrarUMedida(itemsSelected1.value[index].id, itemsSelected1.value[index].attributes.codigo, 2)
+  }
+
+}
+
+const actualizarMedida = async () => {
+  actualizarTablaMed.value = true;
+  ActualizarMed.value = 'Actualizando...'
+  let bienActualizado = false;
+  disabledMedida.value = 'disabled'
+  // localStorage.removeItem('Carg_datA'); // Articulos
+  localStorage.removeItem('Carg_datMe'); // Departamentos
+  // localStorage.removeItem('Carg_datMe'); // Unidades de medida
+  // localStorage.removeItem('Carg_datM'); // Magitudes
+  // localStorage.removeItem('Carg_datP'); // Productos
+  // localStorage.removeItem('Carg_datS'); // Sucursales
+  // localStorage.removeItem('Carg_datU'); // Ubicaciones
+  // localStorage.removeItem('Carg_datE'); // Etiquetas
+  // localStorage.removeItem('Carg_datL'); // Lotes
+  // localStorage.removeItem('Carg_datMo'); // Monedas
+  // localStorage.removeItem('Carg_datIM'); // Imagenes
+  // localStorage.removeItem('Carg_datEP'); // Etiqueta productos
+  // localStorage.removeItem('Carg_datAu'); // Auditoria
+  // localStorage.removeItem('Carg_datPe'); // Personas
+  localStorage.setItem('Carg_datMe', '0'); // Departamentos
+  // localStorage.setItem('Carg_datA', '0'); // Articulos
+  // localStorage.setItem('Carg_datMe', '0'); // Unidades de medida
+  // localStorage.setItem('Carg_datM', '0'); // Magitudes
+  // localStorage.setItem('Carg_datP', '0'); // Productos
+  // localStorage.setItem('Carg_datS', '0'); // Sucursales
+  // localStorage.setItem('Carg_datU', '0'); // Ubicaciones
+  // localStorage.setItem('Carg_datE', '0'); // Etiquetas
+  // localStorage.setItem('Carg_datL', '0'); // Lotes
+  // localStorage.setItem('Carg_datMo', '0'); // Monedas
+  // localStorage.setItem('Carg_datIM', '0'); // Imagenes
+  // localStorage.setItem('Carg_datEP', '0'); // Etiqueta productos
+  // localStorage.setItem('Carg_datAu', '0'); // Auditorias
+  // localStorage.setItem('Carg_datPe', '0'); // Personas
+
+  if (localStorage.getItem('userName')) {
+    // Cargando productos
+    // console.log(Store.itemsProductos)
+    // cargando departamentos
+    if (localStorage.getItem('Carg_datMe') == '0') {
+      store.cambiaEstado(6);
+      const response = await obtenerDatos(3);
+      // console.log(response)
+      if (response == null) {
+        store.cambiaEstado(6);
+        // console.log("Nooo")
+      } else {
+        if (response.length >= 0) {
+          store.setListadoMedidas(response)
+          bienActualizado = true;
+        // } else {
+        //   bienActualizado = false;
+        }
+        localStorage.setItem("Carg_datMe", "1");
+        itemsMedida1.value = store.itemsMedidas;
+        store.cambiaEstado(6);
+      }
+    } else {
+      store.cambiaEstado(6);
+      itemsMedida1.value = store.itemsMedidas;
+      store.cambiaEstado(6);
+    }
+
+    disabledMedida.value = '';
+    actualizarTablaMed.value = false;
+    ActualizarMed.value = 'Actualizar'
+    if (bienActualizado == true) {
+      successFull("Datos actualizados satisfactoriamente.", "top-end")
+    } else {
+      ErrorFull("Hubo un error actualizando los datos. Vuelva a intentarlo.", "top-start")
+    }
+  }
+}
 
 const obtenMagnitud = (id) => {
   for (let index = 0; index < itemsMagnitud1.value.length; index++) {
@@ -1526,58 +1732,142 @@ const editarUMedida = async () => {
   store.cambiaEstado(6);
 }
 
-const borrarU = (id, correo) => {
-  Swal.fire({
-    title: "Confirmación",
-    text: `Está a punto de eliminar la magnitud: ${correo}`,
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Sí, eliminar",
-    cancelButtonText: "Cancelar"
-  }).then(async (result) => {
-    if (result.isConfirmed) {
-      store.cambiaEstado(8);
-      const response = await EliminarDatos(id, 4);
-      if (!response) {
+const borrarU = (id, correo, caso) => {
+  let correcto = false;
+  if (caso == 1){
+    Swal.fire({
+      title: "Confirmación",
+      text: `Está a punto de eliminar la magnitud: ${correo}`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
         store.cambiaEstado(8);
-      } else {
-        store.DeleteMagnitud(response);
-        itemsMagnitud1.value = store.itemsMagnitudes;
-        successFull("Magnitud eliminada satisfactoriamente.", "top-end")
-        store.cambiaEstado(8);
-      }
+        disabledMagnitud.value = 'disabled'
+        const response = await EliminarDatos(id, 4);
+        if (!response) {
+          store.cambiaEstado(8);
+        } else {
+          store.DeleteMagnitud(response);
+          itemsMagnitud1.value = store.itemsMagnitudes;
+          successFull("Magnitud eliminada satisfactoriamente.", "top-end")
+          disabledMagnitud.value = ''
+          store.cambiaEstado(8);
+        }
 
-    }
-  })
+      }
+    })
+  }else{
+    Swal.fire({
+      title: "Confirmación",
+      text: `Está a punto de eliminar ${itemsSelected.value.length} magnitudes. `,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, eliminar"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        store.cambiaEstado(8);
+        disabledMagnitud.value = 'disabled'
+        // Eliminar //
+        for (let index = 0; index < itemsSelected.value.length; index++) {
+
+          const response = await EliminarDatos(itemsSelected.value[index].id, 4);
+          if (response == null) {
+            // Store.cambiaEstado(1);
+            correcto = false;
+          } else {
+            store.DeleteMagnitud(response);
+            correcto = true;
+            // Store.cambiaEstado(1);
+          }
+        }
+        if (correcto == true) {
+          itemsMagnitud1.value = store.itemsMagnitudes;
+          successFull("Magnitudes eliminadas satisfactoriamente.", "top-end")
+          store.cambiaEstado(8);
+          disabledMagnitud.value = ''
+        } else {
+          ErrorFull("Error eliminando los elementos seleccionados.", "top-start")
+          store.cambiaEstado(8);
+          disabledMagnitud.value = ''
+        }
+      }
+    })
+  }
 }
 
-const borrarUMedida = (id, correo) => {
-  Swal.fire({
-    title: "Confirmación",
-    text: `Está a punto de eliminar la unidad de medida: ${correo}`,
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Sí, eliminar",
-    cancelButtonText: "Cancelar"
-  }).then(async (result) => {
-    if (result.isConfirmed) {
-      store.cambiaEstado(6);
-      const response = await EliminarDatos(id, 3);
-      if (!response) {
+const borrarUMedida = (id, correo, caso) => {
+  let correcto = false;
+  if (caso == 1){
+    Swal.fire({
+      title: "Confirmación",
+      text: `Está a punto de eliminar la unidad de medida: ${correo}`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
         store.cambiaEstado(6);
-      } else {
-        store.DeleteMedida(response);
-        itemsMedida1.value = store.itemsMedidas;
-        successFull("Unidad de medida eliminada satisfactoriamente.", "top-end")
-        store.cambiaEstado(6);
-      }
+        const response = await EliminarDatos(id, 3);
+        if (!response) {
+          store.cambiaEstado(6);
+        } else {
+          store.DeleteMedida(response);
+          itemsMedida1.value = store.itemsMedidas;
+          successFull("Unidad de medida eliminada satisfactoriamente.", "top-end")
+          store.cambiaEstado(6);
+        }
 
-    }
-  })
+      }
+    })
+  }else{
+    Swal.fire({
+      title: "Confirmación",
+      text: `Está a punto de eliminar ${itemsSelected1.value.length} unidades de medida. `,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, eliminar"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        store.cambiaEstado(6);
+        disabledMedida.value = 'disabled'
+        // Eliminar //
+        for (let index = 0; index < itemsSelected1.value.length; index++) {
+
+          const response = await EliminarDatos(itemsSelected1.value[index].id, 3);
+          if (response == null) {
+            // Store.cambiaEstado(1);
+            correcto = false;
+          } else {
+            store.DeleteMedida(response);
+            correcto = true;
+            // Store.cambiaEstado(1);
+          }
+        }
+        if (correcto == true) {
+          itemsMedida1.value = store.itemsMedidas;
+          successFull("Unidades de medida eliminadas satisfactoriamente.", "top-end")
+          store.cambiaEstado(6);
+          disabledMedida.value = ''
+        } else {
+          ErrorFull("Error eliminando los elementos seleccionados.", "top-start")
+          store.cambiaEstado(6);
+          disabledMedida.value = ''
+        }
+      }
+    })
+  }
 }
 // Fin CRUD
 
@@ -1662,50 +1952,56 @@ const almacenDatosUnidades = (Lista) => {
 }
 
 onMounted(async () => {
-  if (localStorage.getItem('userName')) {
-    // console.log("okk")
-    // ipPublica.value = localStorage.getItem('Host_back');
-    if (localStorage.getItem('Carg_datM') == '0') {
-      // MAGNITUDES
-      store.cambiaEstado(8)
-      const response = await obtenerDatos(4);
-      if (response != null) {
-        store.setListadoMagnitud(response)
+  const verConexion = await verificarConexion()
+  if (verConexion) {
+    if (localStorage.getItem('userName')) {
+      // console.log("okk")
+      // ipPublica.value = localStorage.getItem('Host_back');
+      if (localStorage.getItem('Carg_datM') == '0') {
+        // MAGNITUDES
+        store.cambiaEstado(8)
+        const response = await obtenerDatos(4);
+        if (response != null) {
+          store.setListadoMagnitud(response)
+        }
+        // for (let index = 0; index < response.length; index++) {
+        //   store.nextIDMagnitud = response[index].id;
+        // }
+        localStorage.setItem("Carg_datM", "1");
+        itemsMagnitud1.value = store.itemsMagnitudes;
+        store.cambiaEstado(8)
+
+      } else {
+        store.cambiaEstado(8)
+        itemsMagnitud1.value = store.itemsMagnitudes;
+        store.cambiaEstado(8)
       }
-      // for (let index = 0; index < response.length; index++) {
-      //   store.nextIDMagnitud = response[index].id;
-      // }
-      localStorage.setItem("Carg_datM", "1");
-      itemsMagnitud1.value = store.itemsMagnitudes;
-      store.cambiaEstado(8)
+
+      if (localStorage.getItem('Carg_datMe') == '0') {
+        store.cambiaEstado(6)
+        const response = await obtenerDatos(3);
+        if (response != null) {
+          store.setListadoMedidas(response)
+        }
+        // for (let index = 0; index < response.length; index++) {
+        //   store.nextIDMedida = response[index].id;
+        // }
+        localStorage.setItem("Carg_datMe", "1");
+        itemsMedida1.value = store.itemsMedidas;
+        store.cambiaEstado(6)
+
+      } else {
+        store.cambiaEstado(6)
+        itemsMedida1.value = store.itemsMedidas;
+        store.cambiaEstado(6)
+      }
 
     } else {
-      store.cambiaEstado(8)
-      itemsMagnitud1.value = store.itemsMagnitudes;
-      store.cambiaEstado(8)
+      router.push('/login');
     }
+  }else{
+ErrorFull("No tiene buena conexión a la red, vuelva a intentarlo más tarde.", "top-start")
 
-    if (localStorage.getItem('Carg_datMe') == '0') {
-      store.cambiaEstado(6)
-      const response = await obtenerDatos(3);
-      if (response != null) {
-        store.setListadoMedidas(response)
-      }
-      // for (let index = 0; index < response.length; index++) {
-      //   store.nextIDMedida = response[index].id;
-      // }
-      localStorage.setItem("Carg_datMe", "1");
-      itemsMedida1.value = store.itemsMedidas;
-      store.cambiaEstado(6)
-
-    } else {
-      store.cambiaEstado(6)
-      itemsMedida1.value = store.itemsMedidas;
-      store.cambiaEstado(6)
-    }
-
-  } else {
-    router.push('/login');
   }
 })
 
@@ -1714,7 +2010,7 @@ const headers = [
   // { text: "CODIGO", value: "attributes.codigo", sortable: true },
   { text: "NOMBRE", value: "attributes.magnitud" },
   { text: "DESCRIPCIÓN", value: "attributes.descripcion" },
-  { text: "OBSERVACIONES", value: "attributes.observacion" },
+  // { text: "OBSERVACIONES", value: "attributes.observacion" },
   // { text: "UNIDAD", value: "unidad" },
   { text: "FECHA DE CREACIÓN", value: "attributes.timestamps.created_at", sortable: true },
   { text: "FECHA DE ACTUALIZACION", value: "attributes.timestamps.updated_at", sortable: true },
@@ -1728,7 +2024,7 @@ const headersMedidas = [
   { text: "NOMBRE", value: "attributes.medida" },
   { text: "MAGNITUD", value: "magnitud" },
   { text: "DESCRIPCIÓN", value: "attributes.descripcion" },
-  { text: "OBSERVACIONES", value: "attributes.observacion" },
+  // { text: "OBSERVACIONES", value: "attributes.observacion" },
 
   { text: "FECHA DE CREACIÓN", value: "attributes.timestamps.created_at", sortable: true },
   { text: "FECHA DE ACTUALIZACION", value: "attributes.timestamps.updated_at", sortable: true },

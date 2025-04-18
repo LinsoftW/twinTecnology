@@ -2,7 +2,7 @@
   <div>
     <div class="container-fluid">
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800 text-center">SUCURSALES Y UBICACIONES</h1>
+        <h1 class="h3 mb-0 text-gray-800 text-center">MONEDAS</h1>
       </div>
       <div class="row">
         <!--Listado de magnitudes -->
@@ -11,14 +11,14 @@
             <!-- Card Header - Dropdown -->
             <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button"
               aria-expanded="true" aria-controls="collapseCardExample">
-              <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-edit"></i> SUCURSALES</h6>
+              <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-edit"></i> MONEDAS</h6>
             </a>
             <div class="collapse show" id="collapseCardExample">
               <div class="card-body">
                 <div class="row">
                   <div class="col-md-6 col-xl-6 col-lg-12">
                     <div class="justify-content-between">
-                      <a data-toggle="modal" @click="agrega()" data-target="#agregaSucursales"
+                      <a data-toggle="modal" @click="agrega()" data-target="#agregaMoneda"
                         class="btn btn-info btn-sm btn-icon-split" :class="disabledMagnitud">
                         <span class="icon text-white-50">
                           <i class="fas fa-plus"></i>
@@ -65,10 +65,10 @@
                 </div>
                 <br>
                 <!--Tabla -->
-                <EasyDataTable table-class-name="customize-table" :headers="headersSucursales" :items="itemsSucursales1"
+                <EasyDataTable table-class-name="customize-table" :headers="headersMoneda" :items="itemsMonedas1"
                   buttons-pagination border-cell header-text-direction="center" body-text-direction="center"
                   :search-field="searchField" :search-value="searchValue" :rows-per-page="5"
-                  :loading="store.esperandoSucursales" v-model:items-selected="itemsSelected">
+                  :loading="store.esperandoMonedas" v-model:items-selected="itemsSelected">
                   <template #empty-message>
                     <a>No hay datos que mostrar</a>
                   </template>
@@ -81,7 +81,7 @@
 
 
 
-                                      data-target="#EditarProducto" @click="seleccionaProducto(item)" 
+                                      data-target="#EditarProducto" @click="seleccionaProducto(item)"
 
 
 
@@ -90,7 +90,7 @@
 
 
                       <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal"
-                        @click="clickEditar(item.id)" data-target="#agregaSucursales"
+                        @click="clickEditar(item.id)" data-target="#agregaMoneda"
                         title="Editar"><span class="fas fa-edit"></span></button>
                       <!-- <button class="btn btn-info" data-toggle="modal" @click="clickEditar(item.id)" data-target="#agregaEditaMagnitudes"> <span
                   class="fa fa-plus"></span> Nuevo</button> -->
@@ -111,7 +111,7 @@
 
                             title="Restar"><span class="fas fa-minus"></span></button> -->
                       <button class="btn btn-danger btn-sm btn-circle ml-1"
-                        @click="borrarU(item.id, item.attributes.sucursal, 1)"  title="Eliminar"><span
+                        @click="borrarU(item.id, item.attributes.moneda, 1)"  title="Eliminar"><span
                           class="fas fas fa-trash-alt"></span></button>
 
                       <!-- <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode"
@@ -155,161 +155,6 @@
 
       </div>
 
-      <div class="row">
-        <div class="col-xl-12 col-lg-12">
-          <div class="card shadow mb-4">
-            <!-- Card Header - Dropdown -->
-            <a href="#collapseCardExample1" class="d-block card-header py-3" data-toggle="collapse" role="button"
-              aria-expanded="true" aria-controls="collapseCardExample">
-              <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-edit"></i> UBICACIONES</h6>
-            </a>
-            <!-- Card Body -->
-            <!-- <div class="card-body"> -->
-            <div class="collapse show" id="collapseCardExample1">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-md-6 col-xl-6 col-lg-12">
-                    <div class="justify-content-between">
-                      <!-- <router-link class="button" to="/gest_inventario"> -->
-                      <a data-toggle="modal" @click="agrega()" data-target="#agregaUbicaciones"
-                        class="btn btn-info btn-sm btn-icon-split" :class="disabledU">
-                        <span class="icon text-white-50">
-                          <i class="fas fa-plus"></i>
-                        </span>
-                        <span class="text">Nuevo</span>
-                      </a>
-                      <!-- <a @click="generar_pdfU()" class="btn btn-secondary btn-sm btn-icon-split m-2"
-                        :class="disabledProductos">
-                        <span class="icon text-white-50">
-                          <i class="fas fa-file-pdf"></i>
-                        </span>
-                        <span class="text">PDF</span>
-                      </a> -->
-                      <a @click="ExportExcelMedidas()" class="btn btn-secondary btn-sm btn-icon-split m-2"
-                        :class="disabledU">
-                        <span class="icon text-white-50">
-                          <i class="fas fa-download"></i>
-                        </span>
-                        <span class="text">Excel</span>
-                      </a>
-                      <a @click="EliminarSeleccUbicaciones()" class="btn btn-danger btn-sm btn-icon-split m-1"
-                        :class="disabledU">
-                        <span class="icon text-white">
-                          <i class="fas fa-trash"></i>
-                        </span>
-                        <span class="text text-white">Eliminar seleccionados</span>
-                      </a>
-                      <a @click="actualizarUbicaciones()" class="btn btn-success btn-sm btn-icon-split m-1"
-                        :class="disabledU">
-                        <span class="icon text-white">
-                          <i v-if="actualizaTablaUbi == false" class="fas fa-refresh"></i>
-                          <i v-else class="fa fa-spinner fa-spin"></i>
-                        </span>
-                        <span v-if="actualizaTablaUbi == false" class="text text-white">{{ ActualizarU }}</span>
-                        <span v-else class="text text-white">{{ ActualizarU }}</span>
-                      </a>
-                      <!-- <a data-toggle="modal" @click="agrega()" data-target="#agregaMedidas"
-                        class="d-sm-inline-block btn btn-sm btn-info shadow-sm m-2"
-                        title="Agregar unidad de medida"><i class="fas fa-plus fa-sm "></i> Nuevo </a>
-                      <a @click="abrirModalAddProd()" href="#"
-                        class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm"
-                        title="Agregar producto"><i class="fas fa-print fa-sm "></i> Imprimir </a>
-                      <a @click="ExportExcel()" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
-                         title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a> -->
-                    </div>
-                  </div>
-                  <div class="col-md-6 col-xl-6 col-lg-12 ">
-                    <span class="text-info">Buscar: </span>
-                    <!-- <input class="form-control" type="text" v-model="searchValue" placeholder="" /> -->
-                    <input class="form-control form-control-user" type="text" v-model="searchValueMedida"
-                      placeholder="Qué desea buscar..." />
-                  </div>
-                </div>
-                <br>
-
-                <!--Tabla -->
-                <EasyDataTable table-class-name="customize-table" :headers="headersUbicaciones"
-                  :items="itemsUbicaciones1" buttons-pagination border-cell header-text-direction="center"
-                  body-text-direction="center" :search-field="searchFieldMedida" :search-value="searchValueMedida"
-                  :rows-per-page="5" :loading="store.esperandoUbicaciones" v-model:items-selected="itemsSelected">
-                  <template #empty-message>
-                    <a>No hay datos que mostrar</a>
-                  </template>
-                  <template #item-sucursalid="item">
-                    {{ obtenSucursal(item.relationships.sucursal.data.id) }} <!-- item.relationships.medida.data.id -->
-                  </template>
-                  <template #item-opciones="item">
-                    <div class="operation-wrapper">
-                      <!-- <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal"
-
-
-
-                                      data-target="#EditarProducto" @click="seleccionaProducto(item)"
-
-
-
-                                      title="Modificar"><span class="fas fa-edit"></span></button> -->
-                      <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal"
-                        data-target="#agregaUbicaciones" @click="clickEditarMedidas(item.id)"
-                        title="Editar"><span class="fas fa-edit"></span></button>
-                      <!-- <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)"
-
-
-
-                            title="Aumentar"><span class="fas fa-plus"></span></button>
-
-
-
-                          <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)"
-
-
-
-                            title="Restar"><span class="fas fa-minus"></span></button> -->
-
-                      <button class="btn btn-danger btn-sm btn-circle ml-1"
-                        @click="borrarUMedida(item.id, item.attributes.ubicacion, 1)"
-                        title="Eliminar"><span class="fas fas fa-trash-alt"></span></button>
-
-
-
-                      <!-- <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode"
-
-
-
-                            @click="generarCodeBar(item.attributes.codigo)"  title="Código de barra"><span
-
-
-
-                              class="fas fas fa-barcode"></span></button> -->
-
-
-
-                      <!-- <a class="dropdown-item btn btn-info btn-sm btn-circle ml-1" href="#" @click="generarCodeBar(item.attributes.codigo)" data-toggle="modal" data-target="#BarCode"
-
-
-
-                            >
-
-
-
-                            <span class="fas fa-barcode"></span>
-
-
-
-                          </a> -->
-                    </div>
-                  </template>
-                  <template #loading>
-                    <img src="/cargando2.gif" style="width: 60px; height: 60px;" />
-                  </template>
-                </EasyDataTable>
-              </div>
-            </div>
-
-            <!-- </div> -->
-          </div>
-        </div>
-      </div>
       <!-- Datos del producto a agregar -->
 
       <!-- TABLA INVENTARIOS -->
@@ -326,16 +171,16 @@
   </div>
 
   <!-- Logout Modal-->
-  <div :class="'modal fade ' + showModal1" id="agregaSucursales" tabindex="-1" role="dialog"
+  <div :class="'modal fade ' + showModal1" id="agregaMoneda" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" :aria-hidden="activaHide1" :arial-modal="activaModal1" :style="displayModal1">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title text-info" id="exampleModalLabel" v-if="editar == false">NUEVA SUCURSAL</h5>
+          <h5 class="modal-title text-info" id="exampleModalLabel" v-if="editar == false">NUEVA MONEDA</h5>
           <h5 class="modal-title text-info text-center" id="exampleModalLabel" v-if="editar == true"><span
               class="fa fa-edit"></span>
-            MODIFICAR LOS DATOS DE LA SUCURSAL <br>(<label style="color: red;">{{
-              store.formSucursal.data.attributes.sucursal
+            MODIFICAR LOS DATOS DE LA MONEDA <br>(<label style="color: red;">{{
+              store.formMoneda.data.attributes.moneda
             }}</label>)</h5>
           <!-- <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
             style="text-align: center;">
@@ -363,28 +208,28 @@
 
                   <div class="row">
                     <div class="form-group col-lg-12 text-left">
-                      <label class="text-info">Nombre: <label style="color: red;">*</label></label>
+                      <label class="text-info">Nombre de la moneda: <label style="color: red;">*</label></label>
                       <input type="text" class="form-control" id="sucursal" aria-describedby="emailHelp"
-                        v-model="store.formSucursal.data.attributes.sucursal" placeholder="Ej: La Habana" required>
+                        v-model="store.formMoneda.data.attributes.moneda" placeholder="Ej: Peso cubano" required>
                       <span style="color: red;">{{ errores.sucursal }}</span>
                     </div>
                     <div class="form-group col-lg-12 text-left">
                       <label class="text-info">Abreviatura: <label style="color: red;">*</label></label>
                       <input type="text" class="form-control" id="abreviatura" aria-describedby="emailHelp"
-                        v-model="store.formSucursal.data.attributes.abreviatura" placeholder="Ej: HAB">
+                        v-model="store.formMoneda.data.attributes.abreviatura" placeholder="Ej: CUP">
                       <span style="color: red;">{{ errores.abreviatura }}</span>
                     </div>
                     <div class="form-group col-lg-12 text-left">
                       <label class="text-info">Descripción: <label style="color: red;">*</label></label>
                       <input type="text" class="form-control" id="descripcion" aria-describedby="emailHelp"
-                        v-model="store.formSucursal.data.attributes.descripcion" placeholder="Ej: La bella Habana">
+                        v-model="store.formMoneda.data.attributes.descripcion" placeholder="Ej: La moneda cubana">
                       <span style="color: red;">{{ errores.descripcion }}</span>
                     </div>
                     <div class="form-group col-lg-12 text-left">
                       <label class="text-info">Observaciones:</label>
                       <textarea class="form-control" id="observaciones"
-                        v-model="store.formSucursal.data.attributes.observacion"
-                        placeholder="Ej: Observaciones de la Habana"></textarea>
+                        v-model="store.formMoneda.data.attributes.observacion"
+                        placeholder="Ej: Disponible"></textarea>
 
                     </div>
                   </div>
@@ -702,6 +547,8 @@ const disabledMedida = ref('')
 
 const itemsSelected = ref([]);
 
+const itemsMonedas1 = ref([])
+
 const disabledMedidaBtn = ref('')
 
 const disabledProductos = ref('')
@@ -742,17 +589,17 @@ const obtenSucursal = (id) => {
 const nuevoArreglo = ref([]);
 const elementos = ref([]);
 function ExportExcel() {
-  if (itemsSucursales1.value.length > 0) {
+  if (itemsMonedas1.value.length > 0) {
     elementos.value = []
     nuevoArreglo.value = []
-    for (let index = 0; index < itemsSucursales1.value.length; index++) {
-      elementos.value.TIPO = itemsSucursales1.value[index].type;
-      elementos.value.SUCURSAL = itemsSucursales1.value[index].attributes.sucursal;
-      elementos.value.ABREVIATURA = itemsSucursales1.value[index].attributes.abreviatura;
-      elementos.value.DESCRIPCIÓN = itemsSucursales1.value[index].attributes.descripcion;
-      elementos.value.OBSERVACIÓN = itemsSucursales1.value[index].attributes.observacion;
-      elementos.value.CREADO = itemsSucursales1.value[index].attributes.timestamps.created_at;
-      elementos.value.MODIFICADO = itemsSucursales1.value[index].attributes.timestamps.updated_at;
+    for (let index = 0; index < itemsMonedas1.value.length; index++) {
+      elementos.value.TIPO = itemsMonedas1.value[index].type;
+      elementos.value.MONEDA = itemsMonedas1.value[index].attributes.moneda;
+      elementos.value.ABREVIATURA = itemsMonedas1.value[index].attributes.abreviatura;
+      elementos.value.DESCRIPCIÓN = itemsMonedas1.value[index].attributes.descripcion;
+      elementos.value.OBSERVACIÓN = itemsMonedas1.value[index].attributes.observacion;
+      elementos.value.CREADO = itemsMonedas1.value[index].attributes.timestamps.created_at;
+      elementos.value.MODIFICADO = itemsMonedas1.value[index].attributes.timestamps.updated_at;
       nuevoArreglo.value.push(elementos.value)
       elementos.value = []
     }
@@ -762,7 +609,7 @@ function ExportExcel() {
     // // Abriendo el excel
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
     // // Generar el archivo
-    const fileName = 'Sucursales.xlsx';
+    const fileName = 'Monedas.xlsx';
     // // Guardar el archivo execl
     XLSX.writeFile(workbook, fileName);
     successFull("Documento creado satisfactoriamente.", "top-end")
@@ -773,7 +620,7 @@ function ExportExcel() {
 const EliminarSeleccSucursales = () => {
   for (let index = 0; index < itemsSelected.value.length; index++) {
     // console.log(itemsSelected.value[index])
-    borrarU(itemsSelected.value[index].id, itemsSelected.value[index].attributes.codigo, 2)
+    borrarU(itemsSelected.value[index].id, itemsSelected.value[index].attributes.moneda, 2)
   }
 
 }
@@ -792,7 +639,7 @@ const actualizarSucursales = async () => {
   let bienActualizado = false;
   disabledMagnitud.value = 'disabled'
   // localStorage.removeItem('Carg_datA'); // Articulos
-  localStorage.removeItem('Carg_datS'); // Departamentos
+  localStorage.removeItem('Carg_datMo'); // Departamentos
   // localStorage.removeItem('Carg_datMe'); // Unidades de medida
   // localStorage.removeItem('Carg_datM'); // Magitudes
   // localStorage.removeItem('Carg_datP'); // Productos
@@ -805,7 +652,7 @@ const actualizarSucursales = async () => {
   // localStorage.removeItem('Carg_datEP'); // Etiqueta productos
   // localStorage.removeItem('Carg_datAu'); // Auditoria
   // localStorage.removeItem('Carg_datPe'); // Personas
-  localStorage.setItem('Carg_datS', '0'); // Departamentos
+  localStorage.setItem('Carg_datMo', '0'); // Departamentos
   // localStorage.setItem('Carg_datA', '0'); // Articulos
   // localStorage.setItem('Carg_datMe', '0'); // Unidades de medida
   // localStorage.setItem('Carg_datM', '0'); // Magitudes
@@ -824,28 +671,28 @@ const actualizarSucursales = async () => {
     // Cargando productos
     // console.log(Store.itemsProductos)
     // cargando departamentos
-    if (localStorage.getItem('Carg_datS') == '0') {
-      store.cambiaEstado(4);
-      const response = await obtenerDatos(2);
+    if (localStorage.getItem('Carg_datMo') == '0') {
+      store.cambiaEstado(12);
+      const response = await obtenerDatos(11);
       // console.log(response)
       if (response == null) {
-        store.cambiaEstado(4);
+        store.cambiaEstado(12);
         // console.log("Nooo")
       } else {
         if (response.length >= 0) {
-          store.setListadoSucursales(response)
+          store.setListadoMonedas(response)
           bienActualizado = true;
           // } else {
           //   bienActualizado = false;
         }
-        localStorage.setItem("Carg_datS", "1");
-        itemsSucursales1.value = store.itemsSucursales;
-        store.cambiaEstado(4);
+        localStorage.setItem("Carg_datMo", "1");
+        itemsMonedas1.value = store.itemsMonedas;
+        store.cambiaEstado(12);
       }
     } else {
-      store.cambiaEstado(4);
-      itemsSucursales1.value = store.itemsSucursales;
-      store.cambiaEstado(4);
+      store.cambiaEstado(12);
+      itemsMonedas1.value = store.itemsMonedas;
+      store.cambiaEstado(12);
     }
 
     disabledMagnitud.value = '';
@@ -1192,14 +1039,14 @@ const agrega = () => {
   errores.value.descripcionUbica = "";
   errores.value.obserUbica = "";
   errores.value.sucursal_id = "";
-  store.formUbicaciones.data.attributes.ubicacion = '';
-  store.formUbicaciones.data.attributes.descripcion = '';
-  store.formUbicaciones.data.attributes.observacion = '';
-  store.formUbicaciones.data.attributes.sucursal_id = '';
-  store.formSucursal.data.attributes.sucursal = '';
-  store.formSucursal.data.attributes.descripcion = '';
-  store.formSucursal.data.attributes.observacion = '';
-  store.formSucursal.data.attributes.abreviatura = '';
+  // store.formUbicaciones.data.attributes.ubicacion = '';
+  // store.formUbicaciones.data.attributes.descripcion = '';
+  // store.formUbicaciones.data.attributes.observacion = '';
+  // store.formUbicaciones.data.attributes.sucursal_id = '';
+  store.formMoneda.data.attributes.moneda = '';
+  store.formMoneda.data.attributes.descripcion = '';
+  store.formMoneda.data.attributes.observacion = '';
+  store.formMoneda.data.attributes.abreviatura = '';
 }
 
 const generar_pdfU = async () => {
@@ -1291,33 +1138,33 @@ const errores = ref({ sucursal: "", abreviatura: "", descripcion: "", observacio
 
 const agregarU = async () => {
   // console.log(formSucursal)
-  store.cambiaEstado(4)
-  if (store.formSucursal.data.attributes.sucursal != '' && store.formSucursal.data.attributes.abreviatura != '' && store.formSucursal.data.attributes.descripcion != '') {
+  store.cambiaEstado(12)
+  if (store.formMoneda.data.attributes.moneda != '' && store.formMoneda.data.attributes.abreviatura != '' && store.formMoneda.data.attributes.descripcion != '') {
     // console.log("OKKKK")
     disabledMagnitudBtn.value = 'disabled'
     GuardarMag.value = 'Guardando...';
-    store.formSucursal.id = store.nextIDSucursal + 1;
-    const response = await GuardarDatos(store.formSucursal, 2);
+    // store.formSucursal.id = store.nextIDSucursal + 1;
+    const response = await GuardarDatos(store.formMoneda, 11);
     if (response == null) {
-      store.cambiaEstado(4)
+      store.cambiaEstado(12)
     } else {
       disabledMagnitudBtn.value = '';
       GuardarMag.value = 'Agregar'
       // console.log(response)
-      store.formSucursal.data.attributes.sucursal = '';
-      store.formSucursal.data.attributes.descripcion = '';
-      store.formSucursal.data.attributes.abreviatura = '';
-      store.formSucursal.data.attributes.observacion = '';
-      store.AddSucursal(response)
-      itemsSucursales1.value = store.itemsSucursales;
-      successFull("Sucursal agregada satisfactoriamente.", "top-end")
+      store.formMoneda.data.attributes.moneda = '';
+      store.formMoneda.data.attributes.descripcion = '';
+      store.formMoneda.data.attributes.abreviatura = '';
+      store.formMoneda.data.attributes.observacion = '';
+      store.AddMoneda(response)
+      itemsMonedas1.value = store.itemsMonedas;
+      successFull("Modena agregada satisfactoriamente.", "top-end")
       disabledMagnitudBtn.value = '';
       GuardarMag.value = 'Agregar'
-      store.cambiaEstado(4)
+      store.cambiaEstado(12)
     }
   } else {
-    store.cambiaEstado(4);
-    if (store.formSucursal.data.attributes.sucursal == "") {
+    store.cambiaEstado(12);
+    if (store.formMoneda.data.attributes.moneda == "") {
       errores.value.sucursal = "Este campo es obligatorio"
     } else {
       errores.value.sucursal = ""
@@ -1696,22 +1543,22 @@ const EditarListado = async (newdato) => {
 const btnModificarClass = ref('')
 
 const editarU = async () => {
-  store.cambiaEstado(4);
+  store.cambiaEstado(12);
   btnModificar.value = 'Actualizando...'
   btnModificarClass.value = 'disabled'
-  const response = await EditarDatos(id.value, store.formSucursal, 2);
+  const response = await EditarDatos(id.value, store.formMoneda, 11);
   // console.log(response)
   editar.value = false;
-  store.formSucursal.data.attributes.descripcion = ''
-  store.formSucursal.data.attributes.observacion = '';
-  store.formSucursal.data.attributes.sucursal = '';
-  store.formSucursal.data.attributes.abreviatura = '';
-  store.EditSucursal(response)
-  itemsSucursales1.value = store.itemsSucursales;
+  store.formMoneda.data.attributes.descripcion = ''
+  store.formMoneda.data.attributes.observacion = '';
+  store.formMoneda.data.attributes.moneda = '';
+  store.formMoneda.data.attributes.abreviatura = '';
+  store.EditMoneda(response)
+  itemsMonedas1.value = store.itemsMonedas;
   btnModificar.value = 'Modificar'
   btnModificarClass.value = ''
-  successFull("Sucursal modificada satisfactoriamente.", "top-end")
-  store.cambiaEstado(4);
+  successFull("Moneda modificada satisfactoriamente.", "top-end")
+  store.cambiaEstado(12);
   // esperando.value = true;
   // btnModificar.value = 'Actualizando...'
   // btnModificarClass.value = 'disabled'
@@ -1861,7 +1708,7 @@ const borrarU = (id, correo, caso) => {
   if (caso == 1){
     Swal.fire({
       title: "Confirmación",
-      text: `Está a punto de eliminar la sucursal: ${correo}`,
+      text: `Está a punto de eliminar la moneda: ${correo}`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -1871,16 +1718,16 @@ const borrarU = (id, correo, caso) => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         disabledMagnitud.value = 'disabled'
-        store.cambiaEstado(4);
-        const response = await EliminarDatos(id, 2);
+        store.cambiaEstado(12);
+        const response = await EliminarDatos(id, 10);
         if (!response) {
-          store.cambiaEstado(4);
+          store.cambiaEstado(12);
         } else {
-          store.DeleteSucursal(response);
-          itemsSucursales1.value = store.itemsSucursales;
-          successFull("Sucursal eliminada satisfactoriamente.", "top-end")
+          store.DeleteMoneda(response);
+          itemsMonedas1.value = store.itemsMonedas;
+          successFull("Moneda eliminada satisfactoriamente.", "top-end")
           disabledMagnitud.value = ''
-          store.cambiaEstado(4);
+          store.cambiaEstado(12);
         }
 
       }
@@ -1888,7 +1735,7 @@ const borrarU = (id, correo, caso) => {
   }else{
     Swal.fire({
       title: "Confirmación",
-      text: `Está a punto de eliminar ${itemsSelected.value.length} sucursales. `,
+      text: `Está a punto de eliminar ${itemsSelected.value.length} monedas. `,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -1896,29 +1743,29 @@ const borrarU = (id, correo, caso) => {
       confirmButtonText: "Sí, eliminar"
     }).then(async (result) => {
       if (result.isConfirmed) {
-        store.cambiaEstado(4);
+        store.cambiaEstado(12);
         disabledMagnitud.value = 'disabled'
         // Eliminar //
         for (let index = 0; index < itemsSelected.value.length; index++) {
 
-          const response = await EliminarDatos(itemsSelected.value[index].id, 2);
+          const response = await EliminarDatos(itemsSelected.value[index].id, 10);
           if (response == null) {
             // Store.cambiaEstado(1);
             correcto = false;
           } else {
-            store.DeleteSucursal(response);
+            store.DeleteMoneda(response);
             correcto = true;
             // Store.cambiaEstado(1);
           }
         }
         if (correcto == true) {
-          itemsSucursales1.value = store.itemsSucursales;
-          successFull("Sucursales eliminadas satisfactoriamente.", "top-end")
-          store.cambiaEstado(4);
+          itemsMonedas1.value = store.itemsMonedas;
+          successFull("Monedas eliminadas satisfactoriamente.", "top-end")
+          store.cambiaEstado(12);
           disabledMagnitud.value = ''
         } else {
           ErrorFull("Error eliminando los elementos seleccionados.", "top-start")
-          store.cambiaEstado(4);
+          store.cambiaEstado(12);
           disabledMagnitud.value = ''
         }
       }
@@ -1958,7 +1805,7 @@ const borrarUMedida = (id, correo, caso) => {
   }else{
     Swal.fire({
       title: "Confirmación",
-      text: `Está a punto de eliminar ${itemsSelected.value.length} ubicaciones. `,
+      text: `Está a punto de eliminar ${itemsSelected.value.length} ubicaciones: `,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -2010,13 +1857,13 @@ const clickEditar = async (idSelect) => {
   // localStorage.setItem("editar", editar.value);
   id.value = idSelect;
 
-  for (let index = 0; index < itemsSucursales1.value.length; index++) {
-    const element = itemsSucursales1.value[index].id;
+  for (let index = 0; index < itemsMonedas1.value.length; index++) {
+    const element = itemsMonedas1.value[index].id;
     if (element == idSelect) {
-      store.formSucursal.data.attributes.descripcion = itemsSucursales1.value[index].attributes.descripcion;
-      store.formSucursal.data.attributes.sucursal = itemsSucursales1.value[index].attributes.sucursal;
-      store.formSucursal.data.attributes.abreviatura = itemsSucursales1.value[index].attributes.abreviatura;
-      store.formSucursal.data.attributes.observacion = itemsSucursales1.value[index].attributes.observacion;
+      store.formMoneda.data.attributes.descripcion = itemsMonedas1.value[index].attributes.descripcion;
+      store.formMoneda.data.attributes.moneda = itemsMonedas1.value[index].attributes.moneda;
+      store.formMoneda.data.attributes.abreviatura = itemsMonedas1.value[index].attributes.abreviatura;
+      store.formMoneda.data.attributes.observacion = itemsMonedas1.value[index].attributes.observacion;
       break;
     }
     // console.log(element)
@@ -2050,10 +1897,10 @@ const clickEditarMedidas = async (idSelect) => {
 
 const cancelarU = () => {
   editar.value = false;
-  store.formSucursal.data.attributes.descripcion = '';
-  store.formSucursal.data.attributes.sucursal = '';
-  store.formSucursal.data.attributes.abreviatura = '';
-  store.formSucursal.data.attributes.observacion = '';
+  store.formMoneda.data.attributes.descripcion = '';
+  store.formMoneda.data.attributes.moneda = '';
+  store.formMoneda.data.attributes.abreviatura = '';
+  store.formMoneda.data.attributes.observacion = '';
 }
 
 const cancelarUMedida = () => {
@@ -2098,6 +1945,8 @@ const almacenDatosSucursales = (Lista) => {
 
 const itemsSucursales1 = ref([])
 
+const itemsMoneda1 = ref([])
+
 const itemsUbicaciones1 = ref([])
 
 onMounted(async () => {
@@ -2106,44 +1955,25 @@ onMounted(async () => {
   if (verConexion) {
     if (localStorage.getItem('userName')) {
 
-      if (localStorage.getItem('Carg_datS') == '0') {
+      if (localStorage.getItem('Carg_datMo') == '0') {
         // Sucursales
-        store.cambiaEstado(4)
-        const response = await obtenerDatos(2);
+        store.cambiaEstado(12)
+        const response = await obtenerDatos(11);
+        // console.log(response)
         if (response != null) {
-          store.setListadoSucursales(response)
+          store.setListadoMonedas(response)
         }
         // for (let index = 0; index < response.length; index++) {
         //   store.nextIDSucursal = response[index].id;
         // }
-        localStorage.setItem("Carg_datS", "1");
-        itemsSucursales1.value = store.itemsSucursales;
-        store.cambiaEstado(4)
+        localStorage.setItem("Carg_datMo", "1");
+        itemsMonedas1.value = store.itemsMonedas;
+        store.cambiaEstado(12)
 
       } else {
-        store.cambiaEstado(4)
-        itemsSucursales1.value = store.itemsSucursales;
-        store.cambiaEstado(4)
-      }
-
-      if (localStorage.getItem('Carg_datU') == '0') {
-        // Ubicaciones
-        store.cambiaEstado(7)
-        const response = await obtenerDatos(7);
-        if (response != null) {
-          store.setListadoUbicaciones(response)
-        }
-        // for (let index = 0; index < response.length; index++) {
-        //   store.nextIDUbicacion = response[index].id;
-        // }
-        localStorage.setItem("Carg_datU", "1");
-        itemsUbicaciones1.value = store.itemsUbicaciones;
-        store.cambiaEstado(7)
-
-      } else {
-        store.cambiaEstado(7)
-        itemsUbicaciones1.value = store.itemsUbicaciones;
-        store.cambiaEstado(7)
+        store.cambiaEstado(12)
+        itemsMonedas1.value = store.itemsMonedas;
+        store.cambiaEstado(12)
       }
 
     } else {
@@ -2154,12 +1984,12 @@ ErrorFull("No tiene buena conexión a la red, vuelva a intentarlo más tarde.", 
   }
 })
 
-const headersSucursales = [
+const headersMoneda = [
   { text: "CÓDIGO", value: "id", width: 50, sortable: true },
   // { text: "CODIGO", value: "attributes.codigo", sortable: true },
-  { text: "NOMBRE", value: "attributes.sucursal" },
+  { text: "MONEDA", value: "attributes.moneda" },
   { text: "ABREVIATURA", value: "attributes.abreviatura" },
-  { text: "DESCRIPCIÓN", value: "attributes.descripcion" },
+  // { text: "DESCRIPCIÓN", value: "attributes.descripcion" },
   // { text: "OBSERVACIONES", value: "attributes.observacion" },
   // { text: "UNIDAD", value: "unidad" },
   { text: "FECHA DE CREACIÓN", value: "attributes.timestamps.created_at", sortable: true },

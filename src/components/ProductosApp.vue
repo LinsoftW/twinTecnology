@@ -3,9 +3,9 @@
     <div class="container-fluid">
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">PRODUCTOS </h1>
-        <img src="/cargando2.gif" style="width: 40px; height:40px" v-if="esperando" >
+        <img src="/cargando2.gif" style="width: 60px; height:60px" v-if="esperando" >
         <!-- {{ listado }} -->
-        <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" v-b-tooltip.hover
+        <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" 
         title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar productos</a> -->
       </div>
 
@@ -46,11 +46,11 @@
                       <td v-if="datos.attributes.deleted_at == null">{{ datos.attributes.observacion }}</td>
                       <td v-if="datos.attributes.deleted_at == null" style="text-align: center;">
                         <button class="btn btn-success btn-sm btn-circle" @click="clickEditar(datos.id)"
-                          v-b-tooltip.hover title="Editar"><span class="fas fa-edit"></span></button>&nbsp;
+                           title="Editar"><span class="fas fa-edit"></span></button>&nbsp;
                         <!-- <button class="btn btn-success btn-sm btn-circle" @click="editarUModel"
-                          v-b-tooltip.hover title="Editar"><span class="fas fa-edit"></span></button>&nbsp; -->
+                           title="Editar"><span class="fas fa-edit"></span></button>&nbsp; -->
                         <button class="btn btn-danger btn-sm btn-circle"
-                          @click="borrarU(datos.id, datos.attributes.codigo)" v-b-tooltip.hover title="Eliminar"><span
+                          @click="borrarU(datos.id, datos.attributes.codigo)"  title="Eliminar"><span
                             class="fas fa-trash"></span></button>
                       </td>
                     </tr>

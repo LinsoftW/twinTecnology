@@ -5,7 +5,7 @@
         <h1 class="h3 mb-0 text-gray-800">SUCURSALES</h1>
         <!-- <img src="/cargando2.gif" style="width: 40px; height:40px" v-if="esperando" > -->
         <router-link class="button" to="/gest_sucursal">
-          <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" v-b-tooltip.hover
+          <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm"
             title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar sucursal</a>
         </router-link>
 
@@ -83,10 +83,10 @@
                       <td style="text-align: center;">
 
                         <button class="btn btn-success btn-sm btn-circle" @click="clickEditar(datos.id)"
-                          v-b-tooltip.hover title="Editar"><span class="fas fa-edit"></span></button>&nbsp;
+                           title="Editar"><span class="fas fa-edit"></span></button>&nbsp;
 
                         <button class="btn btn-danger btn-sm btn-circle"
-                          @click="borrarU(datos.id, datos.attributes.abreviatura)" v-b-tooltip.hover
+                          @click="borrarU(datos.id, datos.attributes.abreviatura)"
                           title="Eliminar"><span class="fas fa-trash"></span></button>
 
                       </td>

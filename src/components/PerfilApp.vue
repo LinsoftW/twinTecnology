@@ -11,7 +11,7 @@
       <!-- <img src="/cargando2.gif" style="width: 40px; height:40px" > -->
 
       <!-- <router-link class="button" to="/gest_inventario">
-          <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" v-b-tooltip.hover
+          <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" 
             title="Generar resumen diario"><i class="fas fa-plus fa-sm "></i> Agregar productos</a>
         </router-link> -->
     </div>

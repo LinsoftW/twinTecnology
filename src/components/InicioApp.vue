@@ -3,9 +3,9 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-      <h1 class="h3 mb-0 text-gray-800 text-center">PÁGINA INICIAL</h1>
+      <h1 class="h3 mb-0 text-gray-800 text-center">PANEL PRINCIPAL</h1>
       <!-- <img src="/cargando2.gif" style="width: 40px; height:40px" v-if="esperando" > -->
-      <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" v-b-tooltip.hover
+      <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm"
         title="Generar resumen diario" @click="generar_pdf()"><i class="fas fa-download fa-sm text-white-50"></i>
         Generar Resumen</a> -->
     </div>
@@ -24,10 +24,10 @@
                 <div class="h5 mb-0 font-weight-bold text-gray-800">{{ store.cantidadProductos }}</div>
                 <!-- <div v-else class="h5 mb-0 font-weight-bold text-gray-800">0</div> -->
                 <div class="text-md font-weight-bold text-primary mb-1">
-                  PRODUCTOS REGISTRADOS</div>
+                  PRODUCTOS</div>
               </div>
               <div class="col-auto">
-                <i class="fas fa-poll-h fa-3x text-gray-300" v-if="!store.esperandoProductos"></i>
+                <i class="fas fa-poll-h fa-3x text-gray-400" v-if="!store.esperandoProductos"></i>
                 <img src="/cargando2.gif" style="width: 40px; height:40px" v-if="store.esperandoProductos"
                   class="img-profile rounded-circle">
               </div>
@@ -59,7 +59,7 @@
                   DEPARTAMENTOS</div>
               </div>
               <div class="col-auto">
-                <i class="fas fa-shopping-bag fa-3x text-gray-300" v-if="!store.esperandoDepartamentos"></i>
+                <i class="fas fa-home fa-3x text-gray-400" v-if="!store.esperandoDepartamentos"></i>
                 <img src="/cargando2.gif" style="width: 40px; height:40px" v-if="store.esperandoDepartamentos">
               </div>
               <hr>
@@ -84,7 +84,7 @@
                   TIPOS DE ARTÍCULOS</div>
               </div>
               <div class="col-auto">
-                <i class="fas fa-cart-plus fa-3x text-gray-300" v-if="!store.esperandoArticulos"></i>
+                <i class="fas fa-cart-plus fa-3x text-gray-400" v-if="!store.esperandoArticulos"></i>
                 <img src="/cargando2.gif" style="width: 40px; height:40px" v-if="store.esperandoArticulos">
               </div>
               <hr>
@@ -208,10 +208,10 @@
                 <div class="justify-content-between">
 
                   <a @click="abrirModalAddProd()" href="#" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm"
-                    v-b-tooltip.hover title="Agregar producto"><i class="fas fa-print fa-sm "></i> Imprimir </a>
+                     title="Agregar producto"><i class="fas fa-print fa-sm "></i> Imprimir </a>
 
                   <a @click="ExportExcel()" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
-                    v-b-tooltip.hover title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a>
+                     title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a>
                 </div>
               </div>
               <div class="col-md-6 col-xl-6 col-lg-12">
@@ -226,7 +226,7 @@
               :search-value="searchValue" :rows-per-page="5">
               <template #item-opciones="item">
                 <div class="operation-wrapper">
-                  <button class="btn btn-primary btn-sm btn-circle" @click="editarU(item.id)" v-b-tooltip.hover
+                  <button class="btn btn-primary btn-sm btn-circle" @click="editarU(item.id)"
                     title="Modificar"><span class="fas fa-eye"></span></button>
 
                 </div>
@@ -254,10 +254,10 @@
                 <div class="justify-content-between">
 
                   <a @click="abrirModalAddProd()" href="#" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm"
-                    v-b-tooltip.hover title="Agregar producto"><i class="fas fa-print fa-sm "></i> Imprimir </a>
+                     title="Agregar producto"><i class="fas fa-print fa-sm "></i> Imprimir </a>
 
                   <a @click="ExportExcel()" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
-                    v-b-tooltip.hover title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a>
+                     title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a>
                 </div>
               </div>
               <div class="col-md-6 col-xl-6 col-lg-12">
@@ -271,7 +271,7 @@
               :search-value="searchValue1" :rows-per-page="5">
               <template #item-opciones="item">
                 <div class="operation-wrapper">
-                  <button class="btn btn-primary btn-sm btn-circle" @click="editarU(item.id)" v-b-tooltip.hover
+                  <button class="btn btn-primary btn-sm btn-circle" @click="editarU(item.id)"
                     title="Modificar"><span class="fas fa-eye"></span></button>
 
                 </div>

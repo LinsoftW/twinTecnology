@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { reactive } from 'vue';
 // import { error } from 'jquery';
 const cache = new Map;
 const endpointP = [];
@@ -18,10 +19,16 @@ const endpointEp = [];
 const endpointOp = [];
 const endpointPe = [];
 
-// Nube
-export const urlAuditoria = "https://api.tododetalles.shop/auditoria_inventario";
-export const url = "https://api.tododetalles.shop";
-export const urlImagen = "https://api.tododetalles.shop/imagen/producto_imagenes";
+// Nube real
+// export const urlAuditoria = "https://api.tododetalles.shop/";
+// export const url = "https://api.tododetalles.shop";
+// export const urlImagen = "https://api.tododetalles.shop/imagen/producto_imagenes";
+// export const urlPersonas = urlAuditoria + "/autenticacion/";
+
+// Nube prueba
+export const urlAuditoria = "https://api-test.tododetalles.shop/";
+export const url = "https://api-test.tododetalles.shop";
+export const urlImagen = "https://api-test.tododetalles.shop/imagen/producto_imagenes";
 export const urlPersonas = urlAuditoria + "/autenticacion/";
 
 // Local
@@ -58,6 +65,25 @@ const axiosInstanceA = axios.create({
   // }
 });
 
+export async function verificarConexion() {
+  // Esto verifica si el navegador tiene conexion a alguna red
+  // if (navigator.onLine){
+  //   console.log('Hay conexion')
+  // }else{
+  //   console.log('No hay conexion')
+  // }
+
+  // Verificar si se le llega a la cabecera del sitio API
+  try {
+    await axios.head(url)
+    // console.log("Hay conexion al sitio")
+    return true;
+  } catch (error) {
+    // console.error("error", error)
+    return false;
+  }
+}
+
 // Obtener datos
 export async function obtenerDatos(n) {
   switch (n) {
@@ -65,6 +91,7 @@ export async function obtenerDatos(n) {
       // if (cache.has(endpointP)) {
       //   return cache.get(endpointP);
       // }
+      // Esta pincha a full
       try {
         const response = await axiosInstance.get('/productos');
         // cache.set(endpointP, response.data.data);
@@ -73,6 +100,18 @@ export async function obtenerDatos(n) {
         // throw error;
         return error;
       }
+    //  await axiosInstance.get('/productos')
+    //     .then(response => {
+    //       // console.log(response)
+    //       return response.data.data;
+    //     })
+    //     .catch(error => {
+    //       if (error.code === 'ECONNABORTED') {
+    //         console.error('La solicitud se demoró demasiado y fue cancelada.');
+    //       } else {
+    //         console.error('Error en la solicitud:', error.message);
+    //       }
+    //     })
       break;
     case 2:
       // if (cache.has(endpointS)) {
@@ -85,6 +124,18 @@ export async function obtenerDatos(n) {
       } catch (error) {
         throw error;
       }
+      // await axiosInstance.get('/sucursals')
+      //   .then(response => {
+      //     // console.log(response)
+      //     return response.data.data;
+      //   })
+      //   .catch(error => {
+      //     if (error.code === 'ECONNABORTED') {
+      //       console.error('La solicitud se demoró demasiado y fue cancelada.');
+      //     } else {
+      //       console.error('Error en la solicitud:', error.message);
+      //     }
+      //   })
       break;
     case 3:
       // if (cache.has(endpointM)) {
@@ -97,6 +148,18 @@ export async function obtenerDatos(n) {
       } catch (error) {
         throw error;
       }
+      // await axiosInstance.get('/medidas')
+      //   .then(response => {
+      //     // console.log(response)
+      //     return response.data.data;
+      //   })
+      //   .catch(error => {
+      //     if (error.code === 'ECONNABORTED') {
+      //       console.error('La solicitud se demoró demasiado y fue cancelada.');
+      //     } else {
+      //       console.error('Error en la solicitud:', error.message);
+      //     }
+      //   })
       break;
     case 4:
       // if (cache.has(endpointMa)) {
@@ -109,6 +172,18 @@ export async function obtenerDatos(n) {
       } catch (error) {
         throw error;
       }
+      // await axiosInstance.get('/magnituds')
+      //   .then(response => {
+      //     // console.log(response)
+      //     return response.data.data;
+      //   })
+      //   .catch(error => {
+      //     if (error.code === 'ECONNABORTED') {
+      //       console.error('La solicitud se demoró demasiado y fue cancelada.');
+      //     } else {
+      //       console.error('Error en la solicitud:', error.message);
+      //     }
+      //   })
       break;
     case 5:
       // if (cache.has(endpointA)) {
@@ -121,6 +196,18 @@ export async function obtenerDatos(n) {
       } catch (error) {
         throw error;
       }
+      // await axiosInstance.get('/articulos')
+      //   .then(response => {
+      //     // console.log(response)
+      //     return response.data.data;
+      //   })
+      //   .catch(error => {
+      //     if (error.code === 'ECONNABORTED') {
+      //       console.error('La solicitud se demoró demasiado y fue cancelada.');
+      //     } else {
+      //       console.error('Error en la solicitud:', error.message);
+      //     }
+      //   })
       break;
     case 6:
       // if (cache.has(endpointD)) {
@@ -133,6 +220,20 @@ export async function obtenerDatos(n) {
       } catch (error) {
         throw error;
       }
+      // let response = [];
+      // await axiosInstance.get('/departamentos')
+      //   .then(responses => {
+      //     response = responses.data.data
+      //     // console.log(response.data)
+      //     return response;
+      //   })
+      //   .catch(error => {
+      //     if (error.code === 'ECONNABORTED') {
+      //       console.error('La solicitud se demoró demasiado y fue cancelada.');
+      //     } else {
+      //       console.error('Error en la solicitud:', error.message);
+      //     }
+      //   })
       break;
     case 7:
       // if (cache.has(endpointU)) {
@@ -145,6 +246,18 @@ export async function obtenerDatos(n) {
       } catch (error) {
         throw error;
       }
+      // await axiosInstance.get('/ubicacions')
+      //   .then(response => {
+      //     // console.log(response)
+      //     return response.data.data;
+      //   })
+      //   .catch(error => {
+      //     if (error.code === 'ECONNABORTED') {
+      //       console.error('La solicitud se demoró demasiado y fue cancelada.');
+      //     } else {
+      //       console.error('Error en la solicitud:', error.message);
+      //     }
+      //   })
       break;
     case 8:
       // if (cache.has(endpointE)) {
@@ -157,6 +270,18 @@ export async function obtenerDatos(n) {
       } catch (error) {
         throw error;
       }
+      // await axiosInstance.get('/etiquetas')
+      //   .then(response => {
+      //     // console.log(response)
+      //     return response.data.data;
+      //   })
+      //   .catch(error => {
+      //     if (error.code === 'ECONNABORTED') {
+      //       console.error('La solicitud se demoró demasiado y fue cancelada.');
+      //     } else {
+      //       console.error('Error en la solicitud:', error.message);
+      //     }
+      //   })
       break;
     case 9:
       // if (cache.has(endpointMi)) {
@@ -169,6 +294,18 @@ export async function obtenerDatos(n) {
       } catch (error) {
         throw error;
       }
+      // await axiosInstance.get('/minimos')
+      //   .then(response => {
+      //     // console.log(response)
+      //     return response.data.data;
+      //   })
+      //   .catch(error => {
+      //     if (error.code === 'ECONNABORTED') {
+      //       console.error('La solicitud se demoró demasiado y fue cancelada.');
+      //     } else {
+      //       console.error('Error en la solicitud:', error.message);
+      //     }
+      //   })
       break;
     case 10:
       // if (cache.has(endpointL)) {
@@ -181,6 +318,18 @@ export async function obtenerDatos(n) {
       } catch (error) {
         throw error;
       }
+      // await axiosInstance.get('/lots')
+      //   .then(response => {
+      //     // console.log(response)
+      //     return response.data.data;
+      //   })
+      //   .catch(error => {
+      //     if (error.code === 'ECONNABORTED') {
+      //       console.error('La solicitud se demoró demasiado y fue cancelada.');
+      //     } else {
+      //       console.error('Error en la solicitud:', error.message);
+      //     }
+      //   })
       break;
     case 11:
       // if (cache.has(endpointMo)) {
@@ -193,6 +342,18 @@ export async function obtenerDatos(n) {
       } catch (error) {
         throw error;
       }
+      // await axiosInstance.get('/monedas')
+      //   .then(response => {
+      //     // console.log(response)
+      //     return response.data.data;
+      //   })
+      //   .catch(error => {
+      //     if (error.code === 'ECONNABORTED') {
+      //       console.error('La solicitud se demoró demasiado y fue cancelada.');
+      //     } else {
+      //       console.error('Error en la solicitud:', error.message);
+      //     }
+      //   })
       break;
     case 12:
       // if (cache.has(endpointI)) {
@@ -205,6 +366,18 @@ export async function obtenerDatos(n) {
       } catch (error) {
         throw error;
       }
+      // await axios.get(urlImagen)
+      //   .then(response => {
+      //     // console.log(response)
+      //     return response.data.data;
+      //   })
+      //   .catch(error => {
+      //     if (error.code === 'ECONNABORTED') {
+      //       console.error('La solicitud se demoró demasiado y fue cancelada.');
+      //     } else {
+      //       console.error('Error en la solicitud:', error.message);
+      //     }
+      //   })
       break;
     case 13:
       // if (cache.has(endpointEp)) {
@@ -217,6 +390,18 @@ export async function obtenerDatos(n) {
       } catch (error) {
         throw error;
       }
+      // await axiosInstance.get('/etiqueta_productos')
+      //   .then(response => {
+      //     // console.log(response)
+      //     return response.data.data;
+      //   })
+      //   .catch(error => {
+      //     if (error.code === 'ECONNABORTED') {
+      //       console.error('La solicitud se demoró demasiado y fue cancelada.');
+      //     } else {
+      //       console.error('Error en la solicitud:', error.message);
+      //     }
+      //   })
       break;
     case 14:
       // if (cache.has(endpointPe)) {
@@ -229,18 +414,42 @@ export async function obtenerDatos(n) {
       } catch (error) {
         throw error;
       }
+      // await axios.get(urlPersonas + 'personas')
+      //   .then(response => {
+      //     // console.log(response)
+      //     return response.data.data;
+      //   })
+      //   .catch(error => {
+      //     if (error.code === 'ECONNABORTED') {
+      //       console.error('La solicitud se demoró demasiado y fue cancelada.');
+      //     } else {
+      //       console.error('Error en la solicitud:', error.message);
+      //     }
+      //   })
       break;
     case 15:
       // if (cache.has(endpointIn)) {
       //   return cache.get(endpointIn);
       // }
       try {
-        const response = await axiosInstanceA.get('/auditoria/inventario');
+        const response = await axiosInstanceA.get('/auditoria_inventario');
         // cache.set(endpointIn, response.data.data);
         return response.data.data;
       } catch (error) {
         throw error;
       }
+      // await axiosInstanceA.get('/auditoria_inventario')
+      //   .then(response => {
+      //     // console.log(response)
+      //     return response.data.data;
+      //   })
+      //   .catch(error => {
+      //     if (error.code === 'ECONNABORTED') {
+      //       console.error('La solicitud se demoró demasiado y fue cancelada.');
+      //     } else {
+      //       console.error('Error en la solicitud:', error.message);
+      //     }
+      //   })
       break;
     case 16:
       // if (cache.has(endpointOp)) {
@@ -253,6 +462,18 @@ export async function obtenerDatos(n) {
       } catch (error) {
         throw error;
       }
+      // await axiosInstance.get('/operacions')
+      //   .then(response => {
+      //     // console.log(response)
+      //     return response.data.data;
+      //   })
+      //   .catch(error => {
+      //     if (error.code === 'ECONNABORTED') {
+      //       console.error('La solicitud se demoró demasiado y fue cancelada.');
+      //     } else {
+      //       console.error('Error en la solicitud:', error.message);
+      //     }
+      //   })
       break;
     case 17:
       // if (cache.has(endpointPe)) {
@@ -265,6 +486,18 @@ export async function obtenerDatos(n) {
       } catch (error) {
         throw error;
       }
+      // await axios.get(urlPersonas + 'passwords')
+      //   .then(response => {
+      //     // console.log(response)
+      //     return response.data.data;
+      //   })
+      //   .catch(error => {
+      //     if (error.code === 'ECONNABORTED') {
+      //       console.error('La solicitud se demoró demasiado y fue cancelada.');
+      //     } else {
+      //       console.error('Error en la solicitud:', error.message);
+      //     }
+      //   })
       break;
     default:
       break;
@@ -423,6 +656,14 @@ export async function GuardarDatos(datos, n, i) {
     case 15:
       try {
         const response = await axiosInstance.post('/personas', datos);
+        return response.data.data;
+      } catch (error) {
+        throw error;
+      }
+      break;
+    case 16:
+      try {
+        const response = await axiosInstance.post('/vencimientos', datos);
         return response.data.data;
       } catch (error) {
         throw error;
@@ -627,14 +868,26 @@ export async function EliminarDatos(id, n) {
   }
 }
 
-export async function subirImagen(id, imagen) {
+const formImagen = reactive({
+  data: {
+    imagen: '',
+    modelo: '',
+    nombre: ''
+  }
+})
+
+export async function subirImagen(image, exte) {
   try {
     // console.log(imagen)
-    const response = axiosInstance.post(`/productos/${id}?function[name]=upload_image`, imagen, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    });
+formImagen.data.imagen = image;
+formImagen.data.modelo = 'producto';
+formImagen.data.nombre = 'img' +'.'+ exte;
+const response = axiosInstance.post('/imagens', formImagen);
+    // const response = axiosInstance.post(`/productos/${id}?function[name]=upload_image`, imagen, {
+    //   headers: {
+    //     'Content-Type': 'multipart/form-data'
+    //   }
+    // });
     return response
   } catch (error) {
     throw error;

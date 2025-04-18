@@ -263,15 +263,15 @@
                       </template>
                       <template #item-opciones="item">
                         <button class="btn btn-primary btn-sm btn-circle ml-1" data-toggle="modal"
-                          data-target="#modificaFila" @click="editar(item)" v-b-tooltip.hover title="Modificar"><span
+                          data-target="#modificaFila" @click="editar(item)"  title="Modificar"><span
                             class="fas fa-edit"></span></button>
 
-                        <button class="btn btn-danger btn-sm btn-circle ml-1" @click="borrarU(item)" v-b-tooltip.hover
+                        <button class="btn btn-danger btn-sm btn-circle ml-1" @click="borrarU(item)"
                           title="Eliminar"><span class="fas fas fa-trash-alt"></span></button>
                       </template>
 
                       <template #loading>
-                        <img src="/cargando4.gif" style="width: 100px; height: 80px;" />
+                        <img src="/cargando2.gif" style="width: 60px; height: 60px;" />
                       </template>
                       <template #empty-message>
                         <a>No hay datos que mostrar</a>
@@ -318,17 +318,17 @@
     <template #item-opciones="item">
         <div class="operation-wrapper">
 
-            <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal" data-target="#EditarProducto" @click="seleccionaProducto(item)" v-b-tooltip.hover title="Modificar"><span class="fas fa-edit"></span></button>
+            <button class="btn btn-primary btn-sm btn-circle" data-toggle="modal" data-target="#EditarProducto" @click="seleccionaProducto(item)"  title="Modificar"><span class="fas fa-edit"></span></button>
 
-            <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)" v-b-tooltip.hover title="Aumentar"><span class="fas fa-plus"></span></button>
+            <button class="btn btn-success btn-sm btn-circle ml-1" @click="Aumentar(item)"  title="Aumentar"><span class="fas fa-plus"></span></button>
 
-            <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover title="Restar"><span class="fas fa-minus"></span></button>
+            <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)"  title="Restar"><span class="fas fa-minus"></span></button>
 
-            <button class="btn btn-danger btn-sm btn-circle ml-1" @click="borrarU(item.id, item.attributes.codigo, 1)" v-b-tooltip.hover title="Eliminar"><span
+            <button class="btn btn-danger btn-sm btn-circle ml-1" @click="borrarU(item.id, item.attributes.codigo, 1)"  title="Eliminar"><span
 
                                     class="fas fas fa-trash-alt"></span></button>
 
-            <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode" @click="generarCodeBar(item.attributes.codigo)" v-b-tooltip.hover title="Código de barra"><span class="fas fas fa-barcode"></span></button>
+            <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode" @click="generarCodeBar(item.attributes.codigo)"  title="Código de barra"><span class="fas fas fa-barcode"></span></button>
 
         </div>
     </template>

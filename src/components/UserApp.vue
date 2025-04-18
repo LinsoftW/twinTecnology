@@ -245,24 +245,24 @@
                 </template> -->
               <template #item-opciones="item">
                 <div class="operation-wrapper">
-                  <!-- <button class="btn btn-success btn-sm btn-circle" @click="Aumentar(item)" v-b-tooltip.hover
+                  <!-- <button class="btn btn-success btn-sm btn-circle" @click="Aumentar(item)" 
                         title="Aumentar / Disminuir"><span class="fas fa-plus"></span> / <span
                           class="fas fa-minus"></span></button> -->
                   <button class="btn btn-primary btn-sm btn-circle ml-1" data-toggle="modal"
-                    data-target="#agregaProducto" @click="clickEditarProducto(item.id)" v-b-tooltip.hover
+                    data-target="#agregaProducto" @click="clickEditarProducto(item.id)"
                     title="Modificar"><span class="fas fa-edit"></span></button>
 
-                  <!-- <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)" v-b-tooltip.hover
+                  <!-- <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Disminuir(item)"
                       title="Restar"><span class="fas fa-minus"></span></button> -->
 
                   <!-- <button class="btn btn-info btn-sm btn-circle ml-1" data-toggle="modal" data-target="#BarCode"
                     @click="generarCodeBar(item.relationships.departamento.data.id, item.relationships.articulo.data.id, item.id)"
-                    v-b-tooltip.hover title="Código de barra"><span class="fas fas fa-barcode"></span></button> -->
+                     title="Código de barra"><span class="fas fas fa-barcode"></span></button> -->
                   <!-- <router-link to="/detalles"> -->
-                  <!-- <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Detalles(item)" v-b-tooltip.hover
+                  <!-- <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Detalles(item)"
                       title="Detalles"><span class="fa fa-eye"></span></button> -->
                   <button class="btn btn-danger btn-sm btn-circle ml-1"
-                    @click="borrarU(item.id, item.attributes.descripcion, 1)" v-b-tooltip.hover title="Eliminar"><span
+                    @click="borrarU(item.id, item.attributes.descripcion, 1)"  title="Eliminar"><span
                       class="fas fas fa-trash-alt"></span></button>
                   <!-- </router-link> -->
                 </div>
@@ -279,7 +279,7 @@
                 {{ obtenEtiqueta(item.id) }}
               </template>
               <template #loading>
-                <img src="/cargando4.gif" style="width: 100px; height: 80px;" />
+                <img src="/cargando2.gif" style="width: 60px; height: 60px;" />
               </template>
               <template #empty-message>
                 <a>No hay datos que mostrar</a>

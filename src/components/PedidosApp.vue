@@ -50,7 +50,7 @@
                 <th>0</th>
                 <th>En Stock</th>
                 <th style="text-align: center;">
-                  <a class="btn btn-info btn-icon-split" v-b-tooltip.hover title="Conformar pedidos">
+                  <a class="btn btn-info btn-icon-split"  title="Conformar pedidos">
                     <span class="icon text-white-50">
                       <i class="fas fa-check"></i>
                     </span>
@@ -70,7 +70,7 @@
                 <th>0</th>
                 <th>Entregado al mensajero</th>
                 <th style="text-align: center;">
-                  <a class="btn btn-info btn-icon-split" v-b-tooltip.hover title="Conformar pedidos">
+                  <a class="btn btn-info btn-icon-split"  title="Conformar pedidos">
                     <span class="icon text-white-50">
                       <i class="fas fa-check"></i>
                     </span>

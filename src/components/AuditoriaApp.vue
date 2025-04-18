@@ -79,13 +79,22 @@
                          <span class="text text-white">Eliminar seleccionados</span>
                        </a> -->
                     <!-- <a @click="abrirModalAddProd()" href="#" class="d-sm-inline-block btn btn-sm btn-info shadow-sm"
-                       v-b-tooltip.hover title="Agregar producto"><i class="fas fa-plus fa-sm "></i> Agregar productos </a> -->
+                        title="Agregar producto"><i class="fas fa-plus fa-sm "></i> Agregar productos </a> -->
                     <!-- <a @click="EliminarSelecc()" href="#" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm m-2"
-                         v-b-tooltip.hover title="Eliminar seleccionados"><i class="fas fa-trash fa-sm "></i> Eliminar
+                          title="Eliminar seleccionados"><i class="fas fa-trash fa-sm "></i> Eliminar
                          seleccionados </a> -->
                     <!-- </router-link> -->
                     <!-- <a @click="ExportExcel()" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2"
-                       v-b-tooltip.hover title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a> -->
+                        title="Exportar a Excel"><i class="fas fa-download fa-sm "></i> Excel</a> -->
+                        <a @click="actualizarAuditoria()" class="btn btn-success btn-sm btn-icon-split m-1"
+                      :class="disabledAuditoria">
+                      <span class="icon text-white">
+                        <i v-if="actualizaTablaA == false" class="fas fa-refresh"></i>
+                        <i v-else class="fa fa-spinner fa-spin"></i>
+                      </span>
+                      <span v-if="actualizaTablaA == false" class="text text-white">{{ Actualizar }}</span>
+                      <span v-else class="text text-white">{{ Actualizar }}</span>
+                    </a>
                   </div>
                   <!-- </div> -->
                 </div>
@@ -121,7 +130,7 @@
                  </template> -->
                 <!-- <template #item-opciones="item">
                    <div class="operation-wrapper">
-                     <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Detalles(item)" v-b-tooltip.hover
+                     <button class="btn btn-warning btn-sm btn-circle ml-1" @click="Detalles(item)"
                        title="Detalles"><span class="fa fa-eye"></span></button>
                    </div>
                  </template> -->
@@ -140,7 +149,7 @@
                   {{ obtenLote(item.meta.foreign_keys_instances.lot_id) }}
                 </template>
                 <template #loading>
-                  <img src="/cargando4.gif" style="width: 100px; height: 80px;" />
+                  <img src="/cargando2.gif" style="width: 60px; height: 60px;" />
                 </template>
                 <template #empty-message>
                   <a>No hay datos que mostrar</a>
@@ -181,6 +190,7 @@ import { useStoreAxios } from '@/store/AxiosStore';
 import jsPDF from 'jspdf';
 // import autoTable from 'jspdf-autotable';
 import { obtenerDatos } from './helper/useAxios';
+import { ErrorFull, successFull } from './controler/ControlerApp';
 const Store = useStoreAxios()
 
 const searchField = ref(["id", "attributes.justificacion", "attributes.observacion", "attributes.cantidad"]);
@@ -188,6 +198,12 @@ const searchField = ref(["id", "attributes.justificacion", "attributes.observaci
 const searchValue = ref("");
 
 const itemsOperaciones1 = ref([]);
+
+const disabledAuditoria = ref('')
+
+const actualizaTablaA = ref(false)
+
+const Actualizar = ref('Actualizar')
 
 const itemsLotes1 = ref([])
 
@@ -258,6 +274,49 @@ const attachListeners = () => {
     console.log("Código de barras detectado:", barcode.value);
     Quagga.stop(); // Detener el escaneo si quieres solo un código
   });
+}
+
+const actualizarAuditoria = async () => {
+  actualizaTablaA.value = true;
+  Actualizar.value = 'Actualizando...';
+  disabledAuditoria.value = 'disabled';
+  let bienActualizado = false;
+  localStorage.removeItem('Carg_datAu'); // Lotes
+
+  localStorage.setItem('Carg_datAu', '0'); // Lotes
+
+  if (localStorage.getItem('userName')) {
+    // Cargando productos
+    // console.log(Store.itemsProductos)
+    // cargando lotes
+    if (localStorage.getItem("Carg_datAu") == '0') {
+      const response = await obtenerDatos(15);
+      if (response != null) {
+        Store.cambiaEstado(10)
+        Store.setListadoAuditorias(response)
+        localStorage.setItem("Carg_datAu", "1");
+        itemsAuditorias1.value = Store.itemsAuditorias;
+        Store.cambiaEstado(10)
+        bienActualizado = true;
+      } else {
+        bienActualizado = false;
+      }
+    } else {
+      Store.cambiaEstado(10)
+      itemsAuditorias1.value = Store.itemsAuditorias;
+      Store.cambiaEstado(10)
+
+    }
+
+    disabledAuditoria.value = '';
+    actualizaTablaA.value = false;
+    Actualizar.value = 'Actualizar'
+    if (bienActualizado == true) {
+      successFull("Datos actualizados satisfactoriamente.", "top-end")
+    } else {
+      ErrorFull("Hubo un error actualizando los datos. Vuelva a intentarlo.", "top-start")
+    }
+  }
 }
 
 const startScanner = () => {
@@ -347,11 +406,11 @@ const showRow = () => {
 const headers = [
   { text: "NO", value: "id", width: 50, sortable: true },
   // { text: "IMAGEN", value: "image" },
+  { text: "LOTE", value: "lote" },
   { text: "JUSTIFICACIÓN", value: "attributes.justificacion", width: 250 },
   { text: "CANTIDAD", value: "attributes.cantidad", width: 50, sortable: true },
-  { text: "LOTE", value: "lote" },
   { text: "OPERACIÓN", value: "operacion" },
-  { text: "OBSERVACIÓN", value: "attributes.observacion", width: 250 },
+  // { text: "OBSERVACIÓN", value: "attributes.observacion", width: 250 },
   { text: "FECHA CREACIÓN", value: "attributes.timestamps.created_at" },
   // { text: "U_MEDIDA", value: "unidad" },
   // { text: "STOCK", value: "attributes.cantidad", sortable: true },
@@ -360,7 +419,8 @@ const headers = [
 ];
 
 onMounted(async () => {
-
+localStorage.removeItem('Carg_datAu');
+localStorage.setItem('Carg_datAu', '0');
   if (localStorage.getItem('userName')) {
     // ipPublica.value = localStorage.getItem('Host_back');
     if (localStorage.getItem('Carg_datAu') == '0') {

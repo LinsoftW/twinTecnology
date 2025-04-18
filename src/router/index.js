@@ -91,6 +91,11 @@ const router = createRouter({
       name: 'perfil',
       component: MenuApp,
     },
+    {
+      path: '/monedas',
+      name: 'monedas',
+      component: MenuApp,
+    },
   ]
 })
 
