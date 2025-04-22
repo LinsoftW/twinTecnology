@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 // import { error } from 'jquery';
 const cache = new Map;
 const endpointP = [];
@@ -20,16 +20,16 @@ const endpointOp = [];
 const endpointPe = [];
 
 // Nube real
-export const urlAuditoria = "https://api.tododetalles.shop/";
-export const url = "https://api.tododetalles.shop";
-export const urlImagen = "https://api.tododetalles.shop/imagen/producto_imagenes";
-export const urlPersonas = urlAuditoria + "/autenticacion/";
+// export const urlAuditoria = "https://api.tododetalles.shop/";
+// export const url = "https://api.tododetalles.shop";
+// export const urlImagen = "https://api.tododetalles.shop/imagen/producto_imagenes";
+// export const urlPersonas = urlAuditoria + "/autenticacion/";
 
 // Nube prueba
-// export const urlAuditoria = "https://api-test.tododetalles.shop/";
-// export const url = "https://api-test.tododetalles.shop";
-// export const urlImagen = "https://api-test.tododetalles.shop/imagen/producto_imagenes";
-// export const urlPersonas = urlAuditoria + "/autenticacion/";
+export const urlAuditoria = "https://api-test.tododetalles.shop/";
+export const url = "https://api-test.tododetalles.shop";
+export const urlImagen = "https://api-test.tododetalles.shop/imagen/producto_imagenes";
+export const urlPersonas = urlAuditoria + "/autenticacion/";
 
 // Local
 // export const urlAuditoria = "https://localhost/auditoria_inventario";
@@ -85,6 +85,7 @@ export async function verificarConexion() {
 }
 
 // Obtener datos
+const error = ref("")
 export async function obtenerDatos(n) {
   switch (n) {
     case 1:
@@ -96,22 +97,31 @@ export async function obtenerDatos(n) {
         const response = await axiosInstance.get('/productos');
         // cache.set(endpointP, response.data.data);
         return response.data.data;
-      } catch (error) {
-        // throw error;
-        return error;
+      } catch (err) {
+        if (err.code === 'ECONNABORTED') {
+          // ⚡ Operación alternativa si el tiempo se agota
+          error.value = 'La API tardó demasiado. Usando datos locales...';
+          // loadLocalData(); // Función de respaldo
+          // console.log(error.value)
+          return error.value
+        } else {
+          error.value = 'Error en la petición: ';
+          // console.log(error.value)
+          return error.value
+        }
       }
-    //  await axiosInstance.get('/productos')
-    //     .then(response => {
-    //       // console.log(response)
-    //       return response.data.data;
-    //     })
-    //     .catch(error => {
-    //       if (error.code === 'ECONNABORTED') {
-    //         console.error('La solicitud se demoró demasiado y fue cancelada.');
-    //       } else {
-    //         console.error('Error en la solicitud:', error.message);
-    //       }
-    //     })
+      //  await axiosInstance.get('/productos')
+      //     .then(response => {
+      //       // console.log(response)
+      //       return response.data.data;
+      //     })
+      //     .catch(error => {
+      //       if (error.code === 'ECONNABORTED') {
+      //         console.error('La solicitud se demoró demasiado y fue cancelada.');
+      //       } else {
+      //         console.error('Error en la solicitud:', error.message);
+      //       }
+      //     })
       break;
     case 2:
       // if (cache.has(endpointS)) {
@@ -360,7 +370,7 @@ export async function obtenerDatos(n) {
       //   return cache.get(endpointI);
       // }
       try {
-        const response = await axios.get(urlImagen);
+        const response = await axiosInstance.get('/imagens');
         // cache.set(endpointI, response.data.data);
         return response.data.data;
       } catch (error) {
@@ -878,16 +888,7 @@ const formImagen = reactive({
 
 export async function subirImagen(image, exte) {
   try {
-    // console.log(imagen)
-formImagen.data.imagen = image;
-formImagen.data.modelo = 'producto';
-formImagen.data.nombre = 'img' +'.'+ exte;
-const response = axiosInstance.post('/imagens', formImagen);
-    // const response = axiosInstance.post(`/productos/${id}?function[name]=upload_image`, imagen, {
-    //   headers: {
-    //     'Content-Type': 'multipart/form-data'
-    //   }
-    // });
+    const response = axiosInstance.post('/imagens', image);
     return response
   } catch (error) {
     throw error;

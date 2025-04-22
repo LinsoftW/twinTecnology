@@ -2409,7 +2409,7 @@ onMounted(async () => {
       if (localStorage.getItem('Carg_datD') == '0') {
         store.cambiaEstado(2);
         const response = await obtenerDatos(6);
-        console.log(response)
+        // console.log(response)
         if (!response) {
           store.cambiaEstado(2);
         } else {
