@@ -22,13 +22,13 @@ const endpointPe = [];
 // Nube real
 // export const urlAuditoria = "https://api.tododetalles.shop/";
 // export const url = "https://api.tododetalles.shop";
-// export const urlImagen = "https://api.tododetalles.shop/imagen/producto_imagenes";
+// export const urlImagen = "https://api.tododetalles.shop/imagens";
 // export const urlPersonas = urlAuditoria + "/autenticacion/";
 
 // Nube prueba
-export const urlAuditoria = "https://api-test.tododetalles.shop/";
+export const urlAuditoria = "https://api-test.tododetalles.shop";
 export const url = "https://api-test.tododetalles.shop";
-export const urlImagen = "https://api-test.tododetalles.shop/imagen/producto_imagenes";
+export const urlImagen = "https://api-test.tododetalles.shop/imagens";
 export const urlPersonas = urlAuditoria + "/autenticacion/";
 
 // Local

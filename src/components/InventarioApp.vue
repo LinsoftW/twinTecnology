@@ -220,14 +220,15 @@
                 :search-field="searchField" :search-value="searchValue" @click-row="showRow" :rows-per-page="5"
                 :loading="Store.esperandoProductos" :key="actualizaTabla">
                 <template #item-image="item">
-                  <a data-toggle="modal" data-target="#verImagen" @click="obtenDescripcion(item.relationships.imagen.data.id)">
+                  <a data-toggle="modal" data-target="#verImagen"
+                    @click="obtenDescripcion(item.relationships.imagen.data.id)">
+                    <!--  -->
                     <!-- "{{ obtenImagen(item.relationships.imagen.data.id) }}" -->
                     <!-- {{ item.attributes.imagen_id }} -->
-                    <img v-if="item.attributes.imagen_id != ''"
-                      :src="urlAuditoria + obtenImagen(item.relationships.imagen.data.id)" alt="No image"
+                    <img :src="urlAuditoria + '/' + obtenImagen(item.relationships.imagen.data.id)" alt="No image"
                       class="img img-thumbnail" style="width: 50px; height: 50px;" />
-                    <img v-else src="/productos.jpg" alt="No image" class="img img-thumbnail"
-                      style="width: 50px; height: 50px;" />
+                    <!-- <img v-else src="/productos.jpg" alt="No image" class="img img-thumbnail"
+                      style="width: 50px; height: 50px;" /> -->
                   </a>
 
                 </template>
@@ -1530,7 +1531,7 @@
         <div class="modal-header">
           <h5 class="modal-title text-info" id="exampleModalLabel">LOTE (<label style="color: red;">{{
             Store.formLotes.data.attributes.descripcion
-              }}</label>) </h5>
+          }}</label>) </h5>
           <!-- <h5 class="modal-title text-info text-center" id="exampleModalLabel" v-if="editar == true"><span
               class="fa fa-edit"></span>
             MODIFICAR LOS DATOS DEL LOTE <br>(<label style="color: red;">{{
@@ -1719,11 +1720,12 @@ import router from '@/router';
 // import Quagga from 'quagga';
 import { useStoreAxios } from '@/store/AxiosStore';
 import { ErrorFull, successFull } from './controler/ControlerApp';
-import { ActualizarImagen, Delete_Imagen, EditarDatos, EliminarDatos, GuardarDatos, obtenerDatos, subirImagen, url, urlAuditoria, verificarConexion } from './helper/useAxios';
+import { ActualizarImagen, Delete_Imagen, EditarDatos, EliminarDatos, GuardarDatos, obtenerDatos, subirImagen, url, urlAuditoria, urlImagen, verificarConexion } from './helper/useAxios';
 // import { data } from 'jquery';
 import jsPDF from 'jspdf';
 // import { event } from 'jquery';
 import ClickRowArgument from 'vue3-easy-data-table';
+import axios from 'axios';
 // import { i } from 'vite/dist/node/types.d-aGj9QkWt';
 const Store = useStoreAxios()
 
@@ -1805,34 +1807,14 @@ const generar_pdf = async () => {
 
 const NombreProducto = ref('');
 const fileName = ref('');
-const obtenDescripcion = (d) => {
-  // console.log(d)
-  for (let index = 0; index < itemsImagenes1.value.length; index++) {
-    // console.log(itemsImagenes1.value[index].attributes.path)
-    if (d == itemsImagenes1.value[index].id) {
-      // console.log(listadoMedida.value[index].id)
-      // console.log(itemsImagenes1.value[index].attributes.path)
-      // return itemsImagenes1.value[index].attributes.path
-      // break;
-      NombreProducto.value = itemsImagenes1.value[index].attributes.path;
-      const segments = NombreProducto.value.split('/');
-      // Toma el último segmento que es el nombre del archivo
-      fileName.value = segments.pop();
-      break
-    } else {
-      NombreProducto.value = "Sin imagen"
-      fileName.value = NombreProducto.value;
-    }
-  }
-  // if (d != null) {
-  //   NombreProducto.value = d;
-  //   const segments = NombreProducto.value.split('/');
-  //   // Toma el último segmento que es el nombre del archivo
-  //   fileName.value = segments.pop();
-  // } else {
-  //   NombreProducto.value = "Sin imagen"
-  //   fileName.value = NombreProducto.value;
-  // }
+// let dirImage = ""
+// const ListadoImagenes = ref([]);
+const  obtenDescripcion = async (d) => {
+  const response = await axios.get(urlImagen+ `/${d}`)
+  NombreProducto.value = response.data.data.attributes.path;
+  const segments = NombreProducto.value.split('/');
+  // Toma el último segmento que es el nombre del archivo
+  fileName.value = segments.pop();
 }
 
 const disabledProductos = ref('')
@@ -2291,18 +2273,35 @@ const obtenMedida = (id) => {
 
 }
 
-const x = ref("")
+let x = ""
+
+// watchEffect(() => {
+//   dirImage.value = NombreProducto.value; // Ejemplo: almacena el doble
+// });
+
 const obtenImagen = (id) => {
 
+  // const response = await axios.get(urlImagen+`/${id}`)
+  // console.log(response.data)
+  // x.value = response.data.data.attributes.path;
+  // const response = await axios.get(urlImagen+ `/${id}`)
+  // // console.log(response.data)
+  // NombreProducto.value = response.data.data.attributes.path;
+  // const segments = NombreProducto.value.split('/');
+  // // Toma el último segmento que es el nombre del archivo
+  // fileName.value = segments.pop();
   for (let index = 0; index < itemsImagenes1.value.length; index++) {
     if (id == itemsImagenes1.value[index].id) {
-      x.value = itemsImagenes1.value[index].attributes.path
+      x = itemsImagenes1.value[index].attributes.path
       break;
     }
   }
-// console.log(x.value)
-  return x.value
-
+  // obtenDescripcion(id)
+  // for (let index = 0; index < ListadoImagenes.value.length; index++) {
+  //   let y = ListadoImagenes.value[index].split('-')
+  //   // console.log(y)
+  // }
+  return x
 }
 
 const obtenDepartamento = (id) => {
@@ -2481,11 +2480,12 @@ const Modificar_Imagen = async (id) => {
 
 const Asignar_Imagen = async () => {
   var data = new FormData();
+  const resp = ""
   if (imgPerfil.value) {
     data.append('imagen', imgPerfil.value);
     data.append('nombre', nombreImagen.value)
     data.append('modelo', 'producto')
-    await subirImagen(data, nombreIMG.value);
+    resp = await subirImagen(data, nombreIMG.value);
 
     const response1 = await obtenerDatos(12)
 
@@ -2532,6 +2532,7 @@ const Asignar_Imagen = async () => {
     // itemsProductos1.value = Store.itemsProductos;
     // return 1;
   }
+  return resp.data.error
 }
 
 const errores = ref({ descripcion: "", observacion: "", articulo_id: "", ubicacion_id: "", cantidad: "", descripLote: "", precio_compra: "", precio_venta: "", moneda_compra: "", moneda_venta: "", producto_id: "", obsvacLote: "", fecha_compra: "" })
@@ -2539,7 +2540,8 @@ const errores = ref({ descripcion: "", observacion: "", articulo_id: "", ubicaci
 const agregarUProducto = async (n) => {
   if (Store.formProductos.data.attributes.descripcion != '' && Store.formProductos.data.attributes.articulo_id != 0) {
     // var idImage = 1;
-    await Asignar_Imagen();
+    const r = await Asignar_Imagen();
+    // console.log(r)
     // Store.formProductos.data.attributes.imagen_id = 1000;
     if (n == 1) {
       GuardarProductoC.value = 'Guardando...';
@@ -3067,6 +3069,8 @@ const editarULote = async () => {
 }
 
 const showRow = (item = ClickRowArgument) => {
+  // const index = item;
+  // console.log(index)
   const NewLote = [];
   for (let index = 0; index < Store.getListadoLotes().value.length; index++) {
     const element = Store.getListadoLotes().value[index];

@@ -628,7 +628,7 @@ export default {
     },
     archivaValor(ite) {
       // console.log(ite)
-      this.itemEditar.dat.forEach((item, index) => {
+      this.itemEditar.dat.forEach((ite, index) => {
         if (index == ite) {
           this.itemEditar.dat[index] = document.getElementById(ite).value
         }
@@ -954,6 +954,7 @@ export default {
                 observacion: element[2],
                 articulo_id: element[4],
                 minimo: element[3],
+                imagen_id: '1'
               }
             })
           }
