@@ -179,7 +179,7 @@
         <!-- Area Chart -->
         <!-- <div class="card shadow mb-4">
           <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">TOTAL DE VENTAS DEL MES</h6>
+            <h6 class="m-0 font-weight-bold text-primary">PRODUCTOS Y SUS MÍNIMOS</h6>
           </div>
           <div class="card-body">
 
@@ -297,7 +297,7 @@
 
 <script setup>
 
-import { reactive, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 // import { useRoute } from 'vue-router';
 import axios from 'axios';
 import router from '@/router';
@@ -305,9 +305,12 @@ import Swal from 'sweetalert2';
 import { BarChart } from 'vue-chart-3';
 import { Chart, registerables } from "chart.js";
 import { useStoreAxios } from '../store/AxiosStore';
+// const Store = useStoreAxios()
 
 const store = useStoreAxios();
 const emit = defineEmits(['esperar'])
+
+const itemsProductos1 = ref([])
 
 Chart.register(...registerables);
 
@@ -315,15 +318,68 @@ Chart.register(...registerables);
 
 const doughnutRef = ref();
 
-const testData = {
-  labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
+const testData = ref({
+  labels: [],
   datasets: [
     {
-      data: [130, 40, 60, 70, 5],
+      data: [],
       backgroundColor: ['#77CEFF', '#0079AF', '#123E6B', '#97B0C4', '#A5C8ED'],
     },
   ],
-};
+});
+
+onMounted(async () => {
+  // console.log(Store.itemsProductos)
+  // console.log(localStorage.getItem('Carg_datP'))
+  const verConexion = await verificarConexion()
+  if (verConexion) {
+    if (localStorage.getItem('userName')) {
+      // Cargando productos
+      // console.log(Store.itemsProductos)
+      if (localStorage.getItem('Carg_datP') == '0') {
+        // disabledProductos.value = 'disabled';
+        store.cambiaEstado(1)
+        const response = await obtenerDatos(1);
+        // console.log(response)
+        if (response == "La API tardó demasiado. Usando datos locales..." || response == "Error en la petición:") {
+          // Store.cambiaEstado(1)
+          ErrorFull("No se cargaron todos los productos, presione el botón de actualizar.", "top-start")
+          // itemsProductos1.value = Store.itemsProductos;
+          store.cambiaEstado(1)
+        } else {
+          store.setListadoProductos(response)
+          localStorage.setItem("Carg_datP", "1");
+          // localStorage.setItem("LProductos", Store.itemsProductos);
+          itemsProductos1.value = store.itemsProductos;
+          store.cambiaEstado(1)
+        }
+        // console.log(testData.value)
+        for (let index = 0; index < itemsProductos1.value.length; index++) {
+          testData.value.labels.push(itemsProductos1.value[index].attributes.descripcion)
+          testData.value.datasets[0].data.push(itemsProductos1.value[index].attributes.minimo)
+
+        }
+        // if (response != null) {
+        // }
+
+      } else {
+        store.cambiaEstado(1)
+        itemsProductos1.value = store.itemsProductos;
+        store.cambiaEstado(1)
+        for (let index = 0; index < itemsProductos1.value.length; index++) {
+          testData.value.labels.push(itemsProductos1.value[index].attributes.descripcion)
+          testData.value.datasets[0].data.push(itemsProductos1.value[index].attributes.minimo)
+
+        }
+      }
+
+    } else {
+      router.push('/login');
+    }
+  } else {
+    ErrorFull("No tiene buena conexión a la red, vuelva a intentarlo más tarde.", "top-start")
+  }
+})
 
 const options = ref({
   responsive: true,
@@ -333,7 +389,7 @@ const options = ref({
     },
     title: {
       display: true,
-      text: 'Ventas del mes',
+      text: 'Productos & Mínimos en Stock',
     },
   },
 });
@@ -730,7 +786,8 @@ const almacenDatosProductos = (Lista) => {
 
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import { cantidadArticulos, cantidadDepartamentos, cantidadProductos, esperandoArticulos, esperandoDepartamentos, esperandoProductos, listadoArticulos, listadoDepartamentos, listadoProductos } from './controler/ControlerApp';
+import { cantidadArticulos, cantidadDepartamentos, cantidadProductos, ErrorFull, esperandoArticulos, esperandoDepartamentos, esperandoProductos, listadoArticulos, listadoDepartamentos, listadoProductos } from './controler/ControlerApp';
+import { obtenerDatos, verificarConexion } from './helper/useAxios';
 
 const generar_pdf = async () => {
 

@@ -675,7 +675,7 @@ const actualizarSucursales = async () => {
       store.cambiaEstado(12);
       const response = await obtenerDatos(11);
       // console.log(response)
-      if (response == null) {
+      if (response === "La API tardó demasiado. Usando datos locales..." || response === "Error en la petición:") {
         store.cambiaEstado(12);
         // console.log("Nooo")
       } else {
@@ -1960,15 +1960,18 @@ onMounted(async () => {
         store.cambiaEstado(12)
         const response = await obtenerDatos(11);
         // console.log(response)
-        if (response != null) {
+        if (response === "La API tardó demasiado. Usando datos locales..." || response === "Error en la petición:") {
+          store.cambiaEstado(12)
+        }else{
           store.setListadoMonedas(response)
+          localStorage.setItem("Carg_datMo", "1");
+          itemsMonedas1.value = store.itemsMonedas;
+          store.cambiaEstado(12)
+
         }
         // for (let index = 0; index < response.length; index++) {
         //   store.nextIDSucursal = response[index].id;
         // }
-        localStorage.setItem("Carg_datMo", "1");
-        itemsMonedas1.value = store.itemsMonedas;
-        store.cambiaEstado(12)
 
       } else {
         store.cambiaEstado(12)

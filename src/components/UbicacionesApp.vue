@@ -81,7 +81,7 @@
 
 
 
-                                      data-target="#EditarProducto" @click="seleccionaProducto(item)" 
+                                      data-target="#EditarProducto" @click="seleccionaProducto(item)"
 
 
 
@@ -828,7 +828,7 @@ const actualizarSucursales = async () => {
       store.cambiaEstado(4);
       const response = await obtenerDatos(2);
       // console.log(response)
-      if (response == null) {
+      if (response === "La API tardó demasiado. Usando datos locales..." || response === "Error en la petición:") {
         store.cambiaEstado(4);
         // console.log("Nooo")
       } else {
@@ -901,7 +901,7 @@ const actualizarUbicaciones = async () => {
       store.cambiaEstado(7);
       const response = await obtenerDatos(7);
       // console.log(response)
-      if (response == null) {
+      if (response === "La API tardó demasiado. Usando datos locales..." || response === "Error en la petición:") {
         store.cambiaEstado(7);
         // console.log("Nooo")
       } else {
@@ -2110,15 +2110,17 @@ onMounted(async () => {
         // Sucursales
         store.cambiaEstado(4)
         const response = await obtenerDatos(2);
-        if (response != null) {
+        if (response === "La API tardó demasiado. Usando datos locales..." || response === "Error en la petición:") {
+          store.cambiaEstado(4)
+        }else{
           store.setListadoSucursales(response)
+          localStorage.setItem("Carg_datS", "1");
+          itemsSucursales1.value = store.itemsSucursales;
+          store.cambiaEstado(4)
         }
         // for (let index = 0; index < response.length; index++) {
         //   store.nextIDSucursal = response[index].id;
         // }
-        localStorage.setItem("Carg_datS", "1");
-        itemsSucursales1.value = store.itemsSucursales;
-        store.cambiaEstado(4)
 
       } else {
         store.cambiaEstado(4)
@@ -2130,15 +2132,15 @@ onMounted(async () => {
         // Ubicaciones
         store.cambiaEstado(7)
         const response = await obtenerDatos(7);
-        if (response != null) {
+        if (response === "La API tardó demasiado. Usando datos locales..." || response === "Error en la petición:") {
+          store.cambiaEstado(7)
+        }else{
           store.setListadoUbicaciones(response)
+          localStorage.setItem("Carg_datU", "1");
+          itemsUbicaciones1.value = store.itemsUbicaciones;
+          store.cambiaEstado(7)
+
         }
-        // for (let index = 0; index < response.length; index++) {
-        //   store.nextIDUbicacion = response[index].id;
-        // }
-        localStorage.setItem("Carg_datU", "1");
-        itemsUbicaciones1.value = store.itemsUbicaciones;
-        store.cambiaEstado(7)
 
       } else {
         store.cambiaEstado(7)

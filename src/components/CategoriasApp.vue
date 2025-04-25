@@ -1801,7 +1801,7 @@ const actualizarDepartamento = async () => {
       store.cambiaEstado(2);
       const response = await obtenerDatos(6);
       // console.log(response)
-      if (response == null) {
+      if (response === "La API tardó demasiado. Usando datos locales..." || response === "Error en la petición:") {
         store.cambiaEstado(2);
         // console.log("Nooo")
       } else {
@@ -1874,7 +1874,7 @@ const actualizarArticulo = async () => {
       store.cambiaEstado(3);
       const response = await obtenerDatos(5);
       // console.log(response)
-      if (response == null) {
+      if (response === "La API tardó demasiado. Usando datos locales..." || response === "Error en la petición:") {
         store.cambiaEstado(3);
         // console.log("Nooo")
       } else {
@@ -1900,7 +1900,7 @@ const actualizarArticulo = async () => {
     if (bienActualizado == true) {
       successFull("Datos actualizados satisfactoriamente.", "top-end")
     } else {
-      ErrorFull("Hubo un error actualizando los datos. Vuelva a intentarlo.", "top-start")
+      ErrorFull("Hubo un error actualizando los artículos. Click en el botón Actualizar.", "top-start")
     }
   }
 }
@@ -2410,7 +2410,7 @@ onMounted(async () => {
         store.cambiaEstado(2);
         const response = await obtenerDatos(6);
         // console.log(response)
-        if (!response) {
+        if (response === "La API tardó demasiado. Usando datos locales..." || response === "Error en la petición:") {
           store.cambiaEstado(2);
         } else {
           if (response.length > 0) {
@@ -2428,7 +2428,7 @@ onMounted(async () => {
       if (localStorage.getItem('Carg_datA') == '0') {
         store.cambiaEstado(3);
         const response = await obtenerDatos(5);
-        if (!response) {
+        if (response === "La API tardó demasiado. Usando datos locales..." || response === "Error en la petición:") {
           store.cambiaEstado(3);
         } else {
           if (response.length > 0) {
@@ -2446,7 +2446,7 @@ onMounted(async () => {
       if (localStorage.getItem("Carg_datMe") == "0") {
 
         const response = await obtenerDatos(3);
-        if (!response) {
+        if (response === "La API tardó demasiado. Usando datos locales..." || response === "Error en la petición:") {
 
         } else {
           if (response.length > 0) {
@@ -2467,7 +2467,7 @@ onMounted(async () => {
       if (localStorage.getItem('Carg_datE') == '0') {
         store.cambiaEstado(5);
         const response = await obtenerDatos(8);
-        if (!response) {
+        if (response === "La API tardó demasiado. Usando datos locales..." || response === "Error en la petición:") {
           store.cambiaEstado(5);
         } else {
           if (response.length > 0) {

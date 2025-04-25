@@ -1220,7 +1220,7 @@
 
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
 
-          <a :class="'btn btn-' + Cosc_Clar" href="/login">Salir</a>
+          <a :class="'btn btn-' + Cosc_Clar" v-on:click="LimpiarTodo()">Salir</a>
 
         </div>
 
@@ -2096,7 +2096,7 @@ onMounted(async () => {
           Store.cambiaEstado(1)
           const response = await obtenerDatos(1);
           // console.log(response)
-          if (response == null) {
+          if (response === "La API tardó demasiado. Usando datos locales..." || response === "Error en la petición:") {
             Store.cambiaEstado(1)
             // buenaConsulta = false;
             // ErrorFull("Error de red, intente más tarde.", "top-start")
@@ -2121,7 +2121,7 @@ onMounted(async () => {
           // cargando los departamentos
           Store.cambiaEstado(2)
           const response = await obtenerDatos(6);
-          if (response == null) {
+          if (response === "La API tardó demasiado. Usando datos locales..." || response === "Error en la petición:") {
             Store.cambiaEstado(2)
             // buenaConsulta = false;
             // ErrorFull("Error de red, intente más tarde.", "top-start")
@@ -2148,7 +2148,7 @@ onMounted(async () => {
           // cargando los articulos
           Store.cambiaEstado(3)
           const response = await obtenerDatos(5);
-          if (response == null) {
+          if (response === "La API tardó demasiado. Usando datos locales..." || response === "Error en la petición:") {
             Store.cambiaEstado(3)
             // buenaConsulta = false;
             // ErrorFull("Error de red, intente más tarde.", "top-start")

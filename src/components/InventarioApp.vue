@@ -232,6 +232,20 @@
                   </a>
 
                 </template>
+                <template #item-cantidad="item">
+                  {{ ObtenCantidad(item) }}
+                  <!-- <a data-toggle="modal" data-target="#verImagen"
+                    @click="obtenDescripcion(item.relationships.imagen.data.id)"> -->
+                  <!--  -->
+                  <!-- "{{ obtenImagen(item.relationships.imagen.data.id) }}" -->
+                  <!-- {{ item.attributes.imagen_id }} -->
+                  <!-- <img :src="urlAuditoria + '/' + obtenImagen(item.relationships.imagen.data.id)" alt="No image"
+                      class="img img-thumbnail" style="width: 50px; height: 50px;" /> -->
+                  <!-- <img v-else src="/productos.jpg" alt="No image" class="img img-thumbnail"
+                      style="width: 50px; height: 50px;" /> -->
+                  <!-- </a> -->
+
+                </template>
                 <!-- <template #item-rows>
                   <a>Filas por paginas</a>
                 </template> -->
@@ -808,10 +822,8 @@
           <form class="user">
             <div class="row">
               <div class="col-lg-12">
-                <img v-if="Store.formProductos.data.attributes.imagen_id" class="img-profile rounded-circle"
-                  v-bind:src="urlAuditoria + '/' + Store.formProductos.data.attributes.imagen_id"
-                  style="width: 100px; height: 100px">
-                <img v-else class="img-profile rounded-circle" src="/src/assets/new/img/undraw_profile.svg"
+                <img class="img-profile rounded-circle"
+                  v-bind:src="urlAuditoria + '/' + obtenImagen1(Store.formProductos.data.attributes.imagen_id)"
                   style="width: 100px; height: 100px">
 
               </div>
@@ -1750,7 +1762,7 @@ const itemsOperaciones1 = ref([]);
 let imgPerfil = ref("");
 const nombreIMG = ref("");
 const nombreImagen = ref('')
-
+let cambio = ref(false);
 const cargarImagen = async () => {
   let file = document.getElementById("file").files[0];
   nombreImagen.value = file.name.split('.')[0];
@@ -1768,6 +1780,7 @@ const cargarImagen = async () => {
     // data.append
     // successFull("Imagen cambiada satisfactoriamente.", "top-start");
   }
+  cambio.value = true;
 }
 
 const actualizaTabla = ref(0)
@@ -1809,12 +1822,24 @@ const NombreProducto = ref('');
 const fileName = ref('');
 // let dirImage = ""
 // const ListadoImagenes = ref([]);
-const  obtenDescripcion = async (d) => {
-  const response = await axios.get(urlImagen+ `/${d}`)
+const obtenDescripcion = async (d) => {
+  const response = await axios.get(urlImagen + `/${d}`)
   NombreProducto.value = response.data.data.attributes.path;
   const segments = NombreProducto.value.split('/');
   // Toma el último segmento que es el nombre del archivo
   fileName.value = segments.pop();
+}
+
+let cantidad = 0;
+let L = []
+const ObtenCantidad = (id) => {
+  cantidad = 0;
+  for (let index = 0; index < itemsLotes1.value.length; index++) {
+    if (id.id == itemsLotes1.value[index].relationships.producto.data.id) {
+      cantidad = cantidad + itemsLotes1.value[index].attributes.cantidad;
+    }
+  }
+  return cantidad
 }
 
 const disabledProductos = ref('')
@@ -2281,27 +2306,25 @@ let x = ""
 
 const obtenImagen = (id) => {
 
-  // const response = await axios.get(urlImagen+`/${id}`)
-  // console.log(response.data)
-  // x.value = response.data.data.attributes.path;
-  // const response = await axios.get(urlImagen+ `/${id}`)
-  // // console.log(response.data)
-  // NombreProducto.value = response.data.data.attributes.path;
-  // const segments = NombreProducto.value.split('/');
-  // // Toma el último segmento que es el nombre del archivo
-  // fileName.value = segments.pop();
   for (let index = 0; index < itemsImagenes1.value.length; index++) {
     if (id == itemsImagenes1.value[index].id) {
       x = itemsImagenes1.value[index].attributes.path
       break;
     }
   }
-  // obtenDescripcion(id)
-  // for (let index = 0; index < ListadoImagenes.value.length; index++) {
-  //   let y = ListadoImagenes.value[index].split('-')
-  //   // console.log(y)
-  // }
   return x
+}
+
+let yy = "";
+const obtenImagen1 = (id) => {
+// console.log(id)
+  for (let index = 0; index < itemsImagenes1.value.length; index++) {
+    if (id == itemsImagenes1.value[index].id) {
+      yy = itemsImagenes1.value[index].attributes.path
+      break;
+    }
+  }
+  return yy
 }
 
 const obtenDepartamento = (id) => {
@@ -2480,12 +2503,12 @@ const Modificar_Imagen = async (id) => {
 
 const Asignar_Imagen = async () => {
   var data = new FormData();
-  const resp = ""
+  // const resp = ""
   if (imgPerfil.value) {
     data.append('imagen', imgPerfil.value);
     data.append('nombre', nombreImagen.value)
     data.append('modelo', 'producto')
-    resp = await subirImagen(data, nombreIMG.value);
+    const resp = await subirImagen(data, nombreIMG.value);
 
     const response1 = await obtenerDatos(12)
 
@@ -2532,7 +2555,7 @@ const Asignar_Imagen = async () => {
     // itemsProductos1.value = Store.itemsProductos;
     // return 1;
   }
-  return resp.data.error
+  // return resp
 }
 
 const errores = ref({ descripcion: "", observacion: "", articulo_id: "", ubicacion_id: "", cantidad: "", descripLote: "", precio_compra: "", precio_venta: "", moneda_compra: "", moneda_venta: "", producto_id: "", obsvacLote: "", fecha_compra: "" })
@@ -2540,7 +2563,7 @@ const errores = ref({ descripcion: "", observacion: "", articulo_id: "", ubicaci
 const agregarUProducto = async (n) => {
   if (Store.formProductos.data.attributes.descripcion != '' && Store.formProductos.data.attributes.articulo_id != 0) {
     // var idImage = 1;
-    const r = await Asignar_Imagen();
+    await Asignar_Imagen();
     // console.log(r)
     // Store.formProductos.data.attributes.imagen_id = 1000;
     if (n == 1) {
@@ -2979,6 +3002,9 @@ const editarU = async () => {
   deactiva.value = 'disabled';
   // console.log(Store.formProductos)
   // console.log(Store.formProductos.data.attributes.imagen_id)
+  if (cambio.value == true){
+    await Asignar_Imagen()
+  }
   const response = await EditarDatos(Store.id, Store.formProductos, 1);
   // console.log(response)
   editar.value = false;
@@ -2989,14 +3015,14 @@ const editarU = async () => {
   Store.formProductos.data.attributes.imagen_id = '';
   Store.EditProductos(response)
   // console.log(Store.formProductos.data.attributes.imagen_id)
-  if (response.attributes.imagen_id == "" || response.attributes.imagen_id == null) {
-    Store.formProductos.data.attributes.imagen_id = "imagenes/productos/" + Store.id + ".png";
-  } else {
-    // console.log(response.attributes.imagen_id +' === ' +Store.formProductos.data.attributes.imagen_id)
-    if (response.attributes.imagen_id != Store.formProductos.data.attributes.imagen_id || response.attributes.imagen_id == 'imagenes/productos/productos.jpg') {
-      Modificar_Imagen(Store.id)
-    }
-  }
+  // if (response.attributes.imagen_id == "" || response.attributes.imagen_id == null) {
+  //   Store.formProductos.data.attributes.imagen_id = "imagenes/productos/" + Store.id + ".png";
+  // } else {
+  //   // console.log(response.attributes.imagen_id +' === ' +Store.formProductos.data.attributes.imagen_id)
+  //   if (response.attributes.imagen_id != Store.formProductos.data.attributes.imagen_id || response.attributes.imagen_id == 'imagenes/productos/productos.jpg') {
+  //     Modificar_Imagen(Store.id)
+  //   }
+  // }
   itemsProductos1.value = Store.itemsProductos;
   actualizaTabla.value = actualizaTabla.value + 1;
   btnModificarM.value = 'Modificar'
@@ -3081,6 +3107,7 @@ const showRow = (item = ClickRowArgument) => {
     }
   }
   itemsLotes1.value = NewLote;
+  // ObtenCantidad(item)
 }
 
 const EliminarSelecc = () => {
@@ -3170,7 +3197,7 @@ const headers = [
   { text: "DESCRIPCIÓN", value: "attributes.descripcion", width: 250 },
   { text: "DEPARTAMENTO", value: "departamento" },
   // { text: "ETIQUETA", value: "etiqueta" },
-  // { text: "CANTIDAD", value: "cantidad" },
+  { text: "CANTIDAD", value: "cantidad" },
   // { text: "P.COMPRA", value: "precioc", sortable: true },
   { text: "MÍNIMO STOCK", value: "attributes.minimo", sortable: true },
   // { text: "U_MEDIDA", value: "unidad" },
@@ -3252,7 +3279,7 @@ const clickEditarProducto = async (idSelect) => {
       Store.formProductos.data.attributes.minimo = itemsProductos1.value[index].attributes.minimo;
       Store.formProductos.data.attributes.observacion = itemsProductos1.value[index].attributes.observacion;
       Store.formProductos.data.attributes.articulo_id = itemsProductos1.value[index].relationships.articulo.data.id;
-      Store.formProductos.data.attributes.imagen_id = itemsProductos1.value[index].attributes.imagen_id;
+      Store.formProductos.data.attributes.imagen_id = itemsProductos1.value[index].relationships.imagen.data.id;
       if (itemsProductos1.value[index].relationships.etiquetas.data[0] == null) {
         etiqueta_R.value = 0;
       } else {
@@ -3889,8 +3916,9 @@ onMounted(async () => {
         const response = await obtenerDatos(1);
         // console.log(response)
         if (response == "La API tardó demasiado. Usando datos locales..." || response == "Error en la petición:") {
-          Store.cambiaEstado(1)
-          itemsProductos1.value = Store.itemsProductos;
+          // Store.cambiaEstado(1)
+          ErrorFull("No se cargaron todos los productos, presione el botón de actualizar.", "top-start")
+          // itemsProductos1.value = Store.itemsProductos;
           Store.cambiaEstado(1)
         } else {
           Store.setListadoProductos(response)
@@ -3924,12 +3952,21 @@ onMounted(async () => {
       if (localStorage.getItem('Carg_datA') == '0') {
         Store.cambiaEstado(3)
         const response = await obtenerDatos(5);
-        if (response != null) {
+        // console.log(response)
+        if (response === "La API tardó demasiado. Usando datos locales..." || response === "Error en la petición:") {
+          // localStorage.setItem("Carg_datA", "1");
+          // ErrorFull("No se cargaron todos los artículos, presione el botón de actualizar", "top-start")
+          itemsArticulos1.value = Store.itemsArticulos;
+          Store.cambiaEstado(3)
+        } else {
+          localStorage.setItem("Carg_datA", "1");
           Store.setListadoArticulos(response)
+          itemsArticulos1.value = Store.itemsArticulos;
+          Store.cambiaEstado(3)
         }
-        localStorage.setItem("Carg_datA", "1");
-        itemsArticulos1.value = Store.itemsArticulos;
-        Store.cambiaEstado(3)
+        // if (response != null) {
+        //   Store.setListadoArticulos(response)
+        // }
 
       } else {
         Store.cambiaEstado(3)

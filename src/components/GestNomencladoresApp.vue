@@ -56,7 +56,7 @@
                       <span v-else class="text text-white">{{ Actualizar }}</span>
                     </a>
                       <!-- <a data-toggle="modal" @click="agrega()" data-target="#agregaMagnitudes"
-                        class="d-sm-inline-block btn btn-sm btn-info shadow-sm m-2" 
+                        class="d-sm-inline-block btn btn-sm btn-info shadow-sm m-2"
                         title="Agregar magnitud" disabled><i class="fas fa-plus fa-sm "></i> Nuevo </a> -->
                       <!-- <a @click="abrirModalAddProd()" href="#"
                         class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm"
@@ -801,7 +801,7 @@ const actualizarMagnitud = async () => {
       store.cambiaEstado(8);
       const response = await obtenerDatos(4);
       // console.log(response)
-      if (response == null) {
+      if (response === "La API tardó demasiado. Usando datos locales..." || response === "Error en la petición:") {
         store.cambiaEstado(8);
         // console.log("Nooo")
       } else {
@@ -890,7 +890,7 @@ const actualizarMedida = async () => {
       store.cambiaEstado(6);
       const response = await obtenerDatos(3);
       // console.log(response)
-      if (response == null) {
+      if (response === "La API tardó demasiado. Usando datos locales..." || response === "Error en la petición:") {
         store.cambiaEstado(6);
         // console.log("Nooo")
       } else {
@@ -1961,15 +1961,15 @@ onMounted(async () => {
         // MAGNITUDES
         store.cambiaEstado(8)
         const response = await obtenerDatos(4);
-        if (response != null) {
+        if (response === "La API tardó demasiado. Usando datos locales..." || response === "Error en la petición:") {
+          store.cambiaEstado(8)
+        }else{
           store.setListadoMagnitud(response)
+          localStorage.setItem("Carg_datM", "1");
+          itemsMagnitud1.value = store.itemsMagnitudes;
+          store.cambiaEstado(8)
+
         }
-        // for (let index = 0; index < response.length; index++) {
-        //   store.nextIDMagnitud = response[index].id;
-        // }
-        localStorage.setItem("Carg_datM", "1");
-        itemsMagnitud1.value = store.itemsMagnitudes;
-        store.cambiaEstado(8)
 
       } else {
         store.cambiaEstado(8)
@@ -1980,15 +1980,15 @@ onMounted(async () => {
       if (localStorage.getItem('Carg_datMe') == '0') {
         store.cambiaEstado(6)
         const response = await obtenerDatos(3);
-        if (response != null) {
+        if (response === "La API tardó demasiado. Usando datos locales..." || response === "Error en la petición:") {
+          store.cambiaEstado(6)
+        }else{
           store.setListadoMedidas(response)
+          localStorage.setItem("Carg_datMe", "1");
+          itemsMedida1.value = store.itemsMedidas;
+          store.cambiaEstado(6)
+
         }
-        // for (let index = 0; index < response.length; index++) {
-        //   store.nextIDMedida = response[index].id;
-        // }
-        localStorage.setItem("Carg_datMe", "1");
-        itemsMedida1.value = store.itemsMedidas;
-        store.cambiaEstado(6)
 
       } else {
         store.cambiaEstado(6)

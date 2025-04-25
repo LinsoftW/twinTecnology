@@ -203,8 +203,18 @@ export async function obtenerDatos(n) {
         const response = await axiosInstance.get('/articulos');
         // cache.set(endpointA, response.data.data);
         return response.data.data;
-      } catch (error) {
-        throw error;
+      } catch (err) {
+        if (err.code === 'ECONNABORTED') {
+          // ⚡ Operación alternativa si el tiempo se agota
+          error.value = 'La API tardó demasiado. Usando datos locales...';
+          // loadLocalData(); // Función de respaldo
+          // console.log(error.value)
+          return error.value
+        } else {
+          error.value = 'Error en la petición: ';
+          // console.log(error.value)
+          return error.value
+        }
       }
       // await axiosInstance.get('/articulos')
       //   .then(response => {
@@ -227,8 +237,18 @@ export async function obtenerDatos(n) {
         const response = await axiosInstance.get('/departamentos');
         // cache.set(endpointD, response.data.data);
         return response.data.data;
-      } catch (error) {
-        throw error;
+      } catch (err) {
+        if (err.code === 'ECONNABORTED') {
+          // ⚡ Operación alternativa si el tiempo se agota
+          error.value = 'La API tardó demasiado. Usando datos locales...';
+          // loadLocalData(); // Función de respaldo
+          // console.log(error.value)
+          return error.value
+        } else {
+          error.value = 'Error en la petición: ';
+          // console.log(error.value)
+          return error.value
+        }
       }
       // let response = [];
       // await axiosInstance.get('/departamentos')
@@ -253,8 +273,18 @@ export async function obtenerDatos(n) {
         const response = await axiosInstance.get('/ubicacions');
         // cache.set(endpointU, response.data.data);
         return response.data.data;
-      } catch (error) {
-        throw error;
+      } catch (err) {
+        if (err.code === 'ECONNABORTED') {
+          // ⚡ Operación alternativa si el tiempo se agota
+          error.value = 'La API tardó demasiado. Usando datos locales...';
+          // loadLocalData(); // Función de respaldo
+          // console.log(error.value)
+          return error.value
+        } else {
+          error.value = 'Error en la petición: ';
+          // console.log(error.value)
+          return error.value
+        }
       }
       // await axiosInstance.get('/ubicacions')
       //   .then(response => {
@@ -277,8 +307,18 @@ export async function obtenerDatos(n) {
         const response = await axiosInstance.get('/etiquetas');
         // cache.set(endpointE, response.data.data);
         return response.data.data;
-      } catch (error) {
-        throw error;
+      } catch (err) {
+        if (err.code === 'ECONNABORTED') {
+          // ⚡ Operación alternativa si el tiempo se agota
+          error.value = 'La API tardó demasiado. Usando datos locales...';
+          // loadLocalData(); // Función de respaldo
+          // console.log(error.value)
+          return error.value
+        } else {
+          error.value = 'Error en la petición: ';
+          // console.log(error.value)
+          return error.value
+        }
       }
       // await axiosInstance.get('/etiquetas')
       //   .then(response => {
@@ -301,8 +341,18 @@ export async function obtenerDatos(n) {
         const response = await axiosInstance.get('/minimos');
         // cache.set(endpointMi, response.data.data);
         return response.data.data;
-      } catch (error) {
-        throw error;
+      } catch (err) {
+        if (err.code === 'ECONNABORTED') {
+          // ⚡ Operación alternativa si el tiempo se agota
+          error.value = 'La API tardó demasiado. Usando datos locales...';
+          // loadLocalData(); // Función de respaldo
+          // console.log(error.value)
+          return error.value
+        } else {
+          error.value = 'Error en la petición: ';
+          // console.log(error.value)
+          return error.value
+        }
       }
       // await axiosInstance.get('/minimos')
       //   .then(response => {
@@ -325,8 +375,18 @@ export async function obtenerDatos(n) {
         const response = await axiosInstance.get('/lots');
         // cache.set(endpointL, response.data.data);
         return response.data.data;
-      } catch (error) {
-        throw error;
+      } catch (err) {
+        if (err.code === 'ECONNABORTED') {
+          // ⚡ Operación alternativa si el tiempo se agota
+          error.value = 'La API tardó demasiado. Usando datos locales...';
+          // loadLocalData(); // Función de respaldo
+          // console.log(error.value)
+          return error.value
+        } else {
+          error.value = 'Error en la petición: ';
+          // console.log(error.value)
+          return error.value
+        }
       }
       // await axiosInstance.get('/lots')
       //   .then(response => {
@@ -349,8 +409,18 @@ export async function obtenerDatos(n) {
         const response = await axiosInstance.get('/monedas');
         // cache.set(endpointMo, response.data.data);
         return response.data.data;
-      } catch (error) {
-        throw error;
+      } catch (err) {
+        if (err.code === 'ECONNABORTED') {
+          // ⚡ Operación alternativa si el tiempo se agota
+          error.value = 'La API tardó demasiado. Usando datos locales...';
+          // loadLocalData(); // Función de respaldo
+          // console.log(error.value)
+          return error.value
+        } else {
+          error.value = 'Error en la petición: ';
+          // console.log(error.value)
+          return error.value
+        }
       }
       // await axiosInstance.get('/monedas')
       //   .then(response => {
@@ -373,8 +443,18 @@ export async function obtenerDatos(n) {
         const response = await axiosInstance.get('/imagens');
         // cache.set(endpointI, response.data.data);
         return response.data.data;
-      } catch (error) {
-        throw error;
+      } catch (err) {
+        if (err.code === 'ECONNABORTED') {
+          // ⚡ Operación alternativa si el tiempo se agota
+          error.value = 'La API tardó demasiado. Usando datos locales...';
+          // loadLocalData(); // Función de respaldo
+          // console.log(error.value)
+          return error.value
+        } else {
+          error.value = 'Error en la petición: ';
+          // console.log(error.value)
+          return error.value
+        }
       }
       // await axios.get(urlImagen)
       //   .then(response => {
@@ -397,8 +477,18 @@ export async function obtenerDatos(n) {
         const response = await axiosInstance.get('/etiqueta_productos');
         // cache.set(endpointEp, response.data.data);
         return response.data.data;
-      } catch (error) {
-        throw error;
+      } catch (err) {
+        if (err.code === 'ECONNABORTED') {
+          // ⚡ Operación alternativa si el tiempo se agota
+          error.value = 'La API tardó demasiado. Usando datos locales...';
+          // loadLocalData(); // Función de respaldo
+          // console.log(error.value)
+          return error.value
+        } else {
+          error.value = 'Error en la petición: ';
+          // console.log(error.value)
+          return error.value
+        }
       }
       // await axiosInstance.get('/etiqueta_productos')
       //   .then(response => {
@@ -421,8 +511,18 @@ export async function obtenerDatos(n) {
         const response = await axios.get(urlPersonas + 'personas');
         // cache.set(endpointPe, response.data.data);
         return response.data.data;
-      } catch (error) {
-        throw error;
+      } catch (err) {
+        if (err.code === 'ECONNABORTED') {
+          // ⚡ Operación alternativa si el tiempo se agota
+          error.value = 'La API tardó demasiado. Usando datos locales...';
+          // loadLocalData(); // Función de respaldo
+          // console.log(error.value)
+          return error.value
+        } else {
+          error.value = 'Error en la petición: ';
+          // console.log(error.value)
+          return error.value
+        }
       }
       // await axios.get(urlPersonas + 'personas')
       //   .then(response => {
@@ -445,8 +545,18 @@ export async function obtenerDatos(n) {
         const response = await axiosInstanceA.get('/auditoria_inventario');
         // cache.set(endpointIn, response.data.data);
         return response.data.data;
-      } catch (error) {
-        throw error;
+      } catch (err) {
+        if (err.code === 'ECONNABORTED') {
+          // ⚡ Operación alternativa si el tiempo se agota
+          error.value = 'La API tardó demasiado. Usando datos locales...';
+          // loadLocalData(); // Función de respaldo
+          // console.log(error.value)
+          return error.value
+        } else {
+          error.value = 'Error en la petición: ';
+          // console.log(error.value)
+          return error.value
+        }
       }
       // await axiosInstanceA.get('/auditoria_inventario')
       //   .then(response => {
@@ -469,8 +579,18 @@ export async function obtenerDatos(n) {
         const response = await axiosInstance.get('/operacions');
         // cache.set(endpointOp, response.data.data);
         return response.data.data;
-      } catch (error) {
-        throw error;
+      } catch (err) {
+        if (err.code === 'ECONNABORTED') {
+          // ⚡ Operación alternativa si el tiempo se agota
+          error.value = 'La API tardó demasiado. Usando datos locales...';
+          // loadLocalData(); // Función de respaldo
+          // console.log(error.value)
+          return error.value
+        } else {
+          error.value = 'Error en la petición: ';
+          // console.log(error.value)
+          return error.value
+        }
       }
       // await axiosInstance.get('/operacions')
       //   .then(response => {
@@ -493,8 +613,18 @@ export async function obtenerDatos(n) {
         const response = await axios.get(urlPersonas + 'passwords');
         // cache.set(endpointPe, response.data.data);
         return response.data.data;
-      } catch (error) {
-        throw error;
+      } catch (err) {
+        if (err.code === 'ECONNABORTED') {
+          // ⚡ Operación alternativa si el tiempo se agota
+          error.value = 'La API tardó demasiado. Usando datos locales...';
+          // loadLocalData(); // Función de respaldo
+          // console.log(error.value)
+          return error.value
+        } else {
+          error.value = 'Error en la petición: ';
+          // console.log(error.value)
+          return error.value
+        }
       }
       // await axios.get(urlPersonas + 'passwords')
       //   .then(response => {
